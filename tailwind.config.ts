@@ -57,6 +57,14 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+        legal: {
+          holding: "hsl(var(--legal-holding))",
+          "holding-bg": "hsl(var(--legal-holding-bg))",
+          ratio: "hsl(var(--legal-ratio))",
+          "ratio-bg": "hsl(var(--legal-ratio-bg))",
+          obiter: "hsl(var(--legal-obiter))",
+          "obiter-bg": "hsl(var(--legal-obiter-bg))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",
