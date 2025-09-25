@@ -119,7 +119,7 @@ const Index = () => {
                   })}
                 </div>
                 <CardTitle className="line-clamp-2">
-                  <Link to={`/${item.type}/${item.slug}`} className="hover:text-primary">
+                  <Link to={`/posts/${item.id}`} className="hover:text-primary">
                     {item.title}
                   </Link>
                 </CardTitle>
@@ -129,7 +129,7 @@ const Index = () => {
               </CardHeader>
               <CardContent>
                 <div className="flex items-center justify-between text-sm text-muted-foreground">
-                  <span>{new Date(item.date).toLocaleDateString()}</span>
+                  <span>{new Date(item.created_at).toLocaleDateString()}</span>
                   <span>
                     {item.authors.length > 0 && authors.find(a => a.id === item.authors[0])?.name}
                   </span>

@@ -1,123 +1,193 @@
-import { useState } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useState, useEffect } from 'react';
+import { ContentItem, Author } from '@/types/blog';
+import { useBlogStore } from '@/stores/blogStore';
+import { useAuth } from '@/hooks/useAuth';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Badge } from '@/components/ui/badge';
+import { Label } from '@/components/ui/label';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Plus, Edit, Trash2, Save } from 'lucide-react';
-import { useBlogStore } from '@/stores/blogStore';
-import { ContentItem, Author, LEGAL_CATEGORIES } from '@/types/blog';
+import { Trash2, Edit3, PlusCircle, BookOpen, FileText, Scale, Map, Briefcase, LogOut } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
-const Admin = () => {
-  const { content, authors, addContent, updateContent, deleteContent, addAuthor } = useBlogStore();
-  const { toast } = useToast();
+export default function Admin() {
   const [activeTab, setActiveTab] = useState('overview');
   const [editingContent, setEditingContent] = useState<ContentItem | null>(null);
-  const [newContentForm, setNewContentForm] = useState({
+  const { content, authors, addContent, updateContent, deleteContent, addAuthor, updateAuthor, deleteAuthor, fetchContent, fetchAuthors, loading } = useBlogStore();
+  const { signOut } = useAuth();
+  const { toast } = useToast();
+
+  const [newContent, setNewContent] = useState({
     type: 'post' as ContentItem['type'],
     title: '',
     summary: '',
-    content: '',
     categories: [] as string[],
-    tags: '',
+    tags: [] as string[],
+    content: '',
     authors: [] as string[],
     draft: true,
   });
 
-  const handleCreateContent = () => {
-    const newContent: ContentItem = {
-      id: `content-${Date.now()}`,
-      title: newContentForm.title,
-      slug: newContentForm.title.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-      date: new Date().toISOString().split('T')[0],
-      summary: newContentForm.summary,
-      content: newContentForm.content,
-      categories: newContentForm.categories,
-      tags: newContentForm.tags.split(',').map(t => t.trim()).filter(Boolean),
-      authors: newContentForm.authors,
-      draft: newContentForm.draft,
-      type: newContentForm.type,
-      ...(newContentForm.type === 'case' && {
-        court: '',
-        jurisdiction: '',
-        citation: '',
-        holding: '',
-        rationale: '',
-      }),
-      ...(newContentForm.type === 'statute' && {
-        act: '',
-        section: '',
-        interpretation: '',
-      }),
-    } as ContentItem;
+  const [newAuthor, setNewAuthor] = useState({
+    name: '',
+    email: '',
+    bio: '',
+  });
 
-    addContent(newContent);
-    setNewContentForm({
-      type: 'post',
-      title: '',
-      summary: '',
-      content: '',
-      categories: [],
-      tags: '',
-      authors: [],
-      draft: true,
-    });
-    toast({
-      title: 'Content Created',
-      description: 'Your content has been saved successfully.',
-    });
+  useEffect(() => {
+    fetchContent();
+    fetchAuthors();
+  }, [fetchContent, fetchAuthors]);
+
+  const handleCreateContent = async () => {
+    try {
+      await addContent({
+        ...newContent,
+        reading_time: Math.ceil(newContent.content.split(' ').length / 200),
+      });
+
+      setNewContent({
+        type: 'post',
+        title: '',
+        summary: '',
+        categories: [],
+        tags: [],
+        content: '',
+        authors: [],
+        draft: true,
+      });
+
+      toast({
+        title: "Content created",
+        description: "Your content has been saved successfully.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to create content. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleCreateAuthor = async () => {
+    try {
+      await addAuthor(newAuthor);
+      
+      setNewAuthor({
+        name: '',
+        email: '',
+        bio: '',
+      });
+
+      toast({
+        title: "Author created",
+        description: "Author has been added successfully.",
+      });
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to create author. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const contentByType = {
+    post: content.filter(c => c.type === 'post').length,
+    case: content.filter(c => c.type === 'case').length,
+    statute: content.filter(c => c.type === 'statute').length,
+    guide: content.filter(c => c.type === 'guide').length,
+    briefing: content.filter(c => c.type === 'briefing').length,
   };
 
   return (
-    <div className="container py-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-4">Content Management</h1>
-        <p className="text-lg text-muted-foreground">
-          Manage your legal blog content and authors
-        </p>
+    <div className="container mx-auto px-6 py-8">
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h1 className="text-3xl font-bold">Content Management</h1>
+          <p className="text-muted-foreground">Manage your legal blog content and authors</p>
+        </div>
+        <Button variant="outline" onClick={signOut}>
+          <LogOut className="h-4 w-4 mr-2" />
+          Sign Out
+        </Button>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="create">Create</TabsTrigger>
-          <TabsTrigger value="manage">Manage</TabsTrigger>
+          <TabsTrigger value="create">Create Content</TabsTrigger>
+          <TabsTrigger value="manage">Manage Content</TabsTrigger>
           <TabsTrigger value="authors">Authors</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
             <Card>
-              <CardContent className="p-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-muted-foreground">Total Content</p>
-                    <p className="text-2xl font-bold">{content.length}</p>
-                  </div>
-                  <Badge variant="secondary">{content.filter(c => !c.draft).length} published</Badge>
-                </div>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Total Content</CardTitle>
+                <FileText className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{content.length}</div>
               </CardContent>
             </Card>
-            
-            {['post', 'case', 'statute', 'guide', 'briefing'].map(type => (
-              <Card key={type}>
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="text-sm font-medium text-muted-foreground capitalize">{type}s</p>
-                      <p className="text-2xl font-bold">
-                        {content.filter(c => c.type === type).length}
-                      </p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Posts</CardTitle>
+                <BookOpen className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{contentByType.post}</div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Cases</CardTitle>
+                <Scale className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{contentByType.case}</div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Statutes</CardTitle>
+                <Map className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{contentByType.statute}</div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Guides</CardTitle>
+                <Map className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{contentByType.guide}</div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">Briefings</CardTitle>
+                <Briefcase className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-2xl font-bold">{contentByType.briefing}</div>
+              </CardContent>
+            </Card>
           </div>
         </TabsContent>
 
@@ -125,174 +195,246 @@ const Admin = () => {
           <Card>
             <CardHeader>
               <CardTitle>Create New Content</CardTitle>
-              <CardDescription>Add new legal analysis, case digest, or other content</CardDescription>
+              <CardDescription>Add new legal content to your blog</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="grid md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="type">Content Type</Label>
-                  <Select value={newContentForm.type} onValueChange={(value) => setNewContentForm({...newContentForm, type: value as ContentItem['type']})}>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="content-type">Content Type</Label>
+                  <Select 
+                    value={newContent.type} 
+                    onValueChange={(value: ContentItem['type']) => 
+                      setNewContent(prev => ({ ...prev, type: value }))
+                    }
+                  >
                     <SelectTrigger>
-                      <SelectValue />
+                      <SelectValue placeholder="Select content type" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="post">Analysis/Opinion</SelectItem>
-                      <SelectItem value="case">Case Digest</SelectItem>
+                      <SelectItem value="post">Blog Post</SelectItem>
+                      <SelectItem value="case">Case Analysis</SelectItem>
                       <SelectItem value="statute">Statute Note</SelectItem>
-                      <SelectItem value="guide">Guide</SelectItem>
-                      <SelectItem value="briefing">Briefing</SelectItem>
+                      <SelectItem value="guide">Legal Guide</SelectItem>
+                      <SelectItem value="briefing">Legal Briefing</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
-                
-                <div className="flex items-center space-x-2">
-                  <Checkbox 
-                    id="draft" 
-                    checked={newContentForm.draft}
-                    onCheckedChange={(checked) => setNewContentForm({...newContentForm, draft: checked as boolean})}
+
+                <div className="space-y-2">
+                  <Label htmlFor="title">Title</Label>
+                  <Input
+                    id="title"
+                    value={newContent.title}
+                    onChange={(e) => setNewContent(prev => ({ ...prev, title: e.target.value }))}
+                    placeholder="Enter content title"
                   />
-                  <Label htmlFor="draft">Save as draft</Label>
                 </div>
               </div>
 
-              <div>
-                <Label htmlFor="title">Title</Label>
-                <Input
-                  id="title"
-                  value={newContentForm.title}
-                  onChange={(e) => setNewContentForm({...newContentForm, title: e.target.value})}
-                  placeholder="Enter content title"
-                />
-              </div>
-
-              <div>
+              <div className="space-y-2">
                 <Label htmlFor="summary">Summary</Label>
                 <Textarea
                   id="summary"
-                  value={newContentForm.summary}
-                  onChange={(e) => setNewContentForm({...newContentForm, summary: e.target.value})}
-                  placeholder="Brief summary or description"
+                  value={newContent.summary}
+                  onChange={(e) => setNewContent(prev => ({ ...prev, summary: e.target.value }))}
+                  placeholder="Enter content summary"
                   rows={3}
                 />
               </div>
 
-              <div>
-                <Label htmlFor="categories">Categories</Label>
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {LEGAL_CATEGORIES.map(category => (
-                    <Badge
-                      key={category.id}
-                      variant={newContentForm.categories.includes(category.id) ? "default" : "outline"}
-                      className="cursor-pointer"
-                      onClick={() => {
-                        const categories = newContentForm.categories.includes(category.id)
-                          ? newContentForm.categories.filter(c => c !== category.id)
-                          : [...newContentForm.categories, category.id];
-                        setNewContentForm({...newContentForm, categories});
-                      }}
-                    >
-                      {category.name}
-                    </Badge>
-                  ))}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="categories">Categories (comma-separated)</Label>
+                  <Input
+                    id="categories"
+                    value={newContent.categories.join(', ')}
+                    onChange={(e) => setNewContent(prev => ({ 
+                      ...prev, 
+                      categories: e.target.value.split(',').map(c => c.trim()).filter(Boolean)
+                    }))}
+                    placeholder="company-law, securities"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="tags">Tags (comma-separated)</Label>
+                  <Input
+                    id="tags"
+                    value={newContent.tags.join(', ')}
+                    onChange={(e) => setNewContent(prev => ({ 
+                      ...prev, 
+                      tags: e.target.value.split(',').map(t => t.trim()).filter(Boolean)
+                    }))}
+                    placeholder="analysis, regulation"
+                  />
                 </div>
               </div>
 
-              <div>
-                <Label htmlFor="tags">Tags (comma-separated)</Label>
-                <Input
-                  id="tags"
-                  value={newContentForm.tags}
-                  onChange={(e) => setNewContentForm({...newContentForm, tags: e.target.value})}
-                  placeholder="tag1, tag2, tag3"
-                />
-              </div>
-
-              <div>
-                <Label htmlFor="content">Content (Markdown supported)</Label>
+              <div className="space-y-2">
+                <Label htmlFor="content">Content</Label>
                 <Textarea
                   id="content"
-                  value={newContentForm.content}
-                  onChange={(e) => setNewContentForm({...newContentForm, content: e.target.value})}
-                  placeholder="Write your content in markdown format"
-                  rows={15}
+                  value={newContent.content}
+                  onChange={(e) => setNewContent(prev => ({ ...prev, content: e.target.value }))}
+                  placeholder="Enter your content here"
+                  rows={10}
                 />
               </div>
 
-              <Button onClick={handleCreateContent} disabled={!newContentForm.title}>
-                <Save className="mr-2 h-4 w-4" />
-                Create Content
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id="draft"
+                  checked={newContent.draft}
+                  onCheckedChange={(checked) => 
+                    setNewContent(prev => ({ ...prev, draft: checked as boolean }))
+                  }
+                />
+                <Label htmlFor="draft">Save as draft</Label>
+              </div>
+
+              <Button onClick={handleCreateContent} disabled={loading} className="w-full">
+                <PlusCircle className="h-4 w-4 mr-2" />
+                {loading ? 'Creating...' : 'Create Content'}
               </Button>
             </CardContent>
           </Card>
         </TabsContent>
 
         <TabsContent value="manage" className="space-y-6">
-          <div className="grid gap-4">
-            {content.map((item) => (
-              <Card key={item.id}>
-                <CardContent className="p-4">
-                  <div className="flex items-center justify-between">
+          <Card>
+            <CardHeader>
+              <CardTitle>Manage Content</CardTitle>
+              <CardDescription>Edit or delete existing content</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {content.map((item) => (
+                  <div key={item.id} className="flex items-center justify-between p-4 border rounded-lg">
                     <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-2">
-                        <Badge variant="outline">{item.type}</Badge>
-                        {item.draft && <Badge variant="destructive">Draft</Badge>}
-                      </div>
                       <h3 className="font-semibold">{item.title}</h3>
                       <p className="text-sm text-muted-foreground mt-1">{item.summary}</p>
-                      <p className="text-xs text-muted-foreground mt-2">
-                        {new Date(item.date).toLocaleDateString()} • {item.categories.length} categories • {item.tags.length} tags
-                      </p>
+                      <div className="flex items-center gap-2 mt-2">
+                        <Badge variant="outline">{item.type}</Badge>
+                        {item.draft && <Badge variant="secondary">Draft</Badge>}
+                        <span className="text-xs text-muted-foreground">
+                          {new Date(item.created_at).toLocaleDateString()}
+                        </span>
+                      </div>
                     </div>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm">
-                        <Edit className="h-4 w-4" />
+                    <div className="flex items-center gap-2">
+                      <Button size="sm" variant="outline">
+                        <Edit3 className="h-4 w-4" />
                       </Button>
                       <Button 
+                        size="sm" 
                         variant="outline" 
-                        size="sm"
                         onClick={() => deleteContent(item.id)}
+                        disabled={loading}
                       >
                         <Trash2 className="h-4 w-4" />
                       </Button>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </TabsContent>
-
-        <TabsContent value="authors" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle>Authors</CardTitle>
-              <CardDescription>Manage blog contributors and their profiles</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-4">
-                {authors.map((author) => (
-                  <div key={author.id} className="flex items-center justify-between p-4 border rounded-lg">
-                    <div>
-                      <h3 className="font-semibold">{author.name}</h3>
-                      <p className="text-sm text-muted-foreground line-clamp-2">{author.bio}</p>
-                      <Badge variant="outline" className="mt-2">
-                        {content.filter(c => c.authors.includes(author.id)).length} articles
-                      </Badge>
-                    </div>
-                    <div className="flex gap-2">
-                      <Button variant="outline" size="sm">
-                        <Edit className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
                 ))}
+                {content.length === 0 && (
+                  <div className="text-center py-8 text-muted-foreground">
+                    No content available. Create your first piece of content!
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
         </TabsContent>
+
+        <TabsContent value="authors" className="space-y-6">
+          <div className="grid gap-6 lg:grid-cols-2">
+            <Card>
+              <CardHeader>
+                <CardTitle>Add New Author</CardTitle>
+                <CardDescription>Add a new author to your blog</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="author-name">Name</Label>
+                  <Input
+                    id="author-name"
+                    value={newAuthor.name}
+                    onChange={(e) => setNewAuthor(prev => ({ ...prev, name: e.target.value }))}
+                    placeholder="Author name"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="author-email">Email</Label>
+                  <Input
+                    id="author-email"
+                    type="email"
+                    value={newAuthor.email}
+                    onChange={(e) => setNewAuthor(prev => ({ ...prev, email: e.target.value }))}
+                    placeholder="author@example.com"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="author-bio">Bio</Label>
+                  <Textarea
+                    id="author-bio"
+                    value={newAuthor.bio}
+                    onChange={(e) => setNewAuthor(prev => ({ ...prev, bio: e.target.value }))}
+                    placeholder="Author biography"
+                    rows={4}
+                  />
+                </div>
+
+                <Button onClick={handleCreateAuthor} disabled={loading} className="w-full">
+                  <PlusCircle className="h-4 w-4 mr-2" />
+                  {loading ? 'Adding...' : 'Add Author'}
+                </Button>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Existing Authors</CardTitle>
+                <CardDescription>Manage your blog authors</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {authors.map((author) => (
+                    <div key={author.id} className="flex items-center justify-between p-4 border rounded-lg">
+                      <div>
+                        <h4 className="font-semibold">{author.name}</h4>
+                        <p className="text-sm text-muted-foreground">{author.email}</p>
+                        {author.bio && (
+                          <p className="text-sm text-muted-foreground mt-1">{author.bio}</p>
+                        )}
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Button size="sm" variant="outline">
+                          <Edit3 className="h-4 w-4" />
+                        </Button>
+                        <Button 
+                          size="sm" 
+                          variant="outline"
+                          onClick={() => deleteAuthor(author.id)}
+                          disabled={loading}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                  {authors.length === 0 && (
+                    <div className="text-center py-8 text-muted-foreground">
+                      No authors available. Add your first author!
+                    </div>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
       </Tabs>
     </div>
   );
-};
-
-export default Admin;
+}

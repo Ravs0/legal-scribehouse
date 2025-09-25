@@ -18,7 +18,9 @@ import Search from "./pages/Search";
 import CategoryPage from "./pages/CategoryPage";
 import PostDetail from "./pages/PostDetail";
 import Admin from "./pages/Admin";
+import Auth from "./pages/Auth";
 import NotFound from "./pages/NotFound";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -41,14 +43,18 @@ const App = () => (
                 <Route path="/briefings" element={<Briefings />} />
                 <Route path="/authors" element={<Authors />} />
                 <Route path="/about" element={<About />} />
+                <Route path="/auth" element={<Auth />} />
                 <Route path="/search" element={<Search />} />
                 <Route path="/categories/:category" element={<CategoryPage />} />
-                <Route path="/post/:slug" element={<PostDetail />} />
-                <Route path="/case/:slug" element={<PostDetail />} />
+                <Route path="/posts/:id" element={<PostDetail />} />
                 <Route path="/statute/:slug" element={<PostDetail />} />
                 <Route path="/guide/:slug" element={<PostDetail />} />
                 <Route path="/briefing/:slug" element={<PostDetail />} />
-                <Route path="/admin" element={<Admin />} />
+                <Route path="/admin" element={
+                  <ProtectedRoute requireAdmin>
+                    <Admin />
+                  </ProtectedRoute>
+                } />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>

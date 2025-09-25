@@ -17,7 +17,7 @@ const Cases = () => {
           <Card key={caseItem.id}>
             <CardHeader>
               <CardTitle>
-                <Link to={`/case/${caseItem.slug}`} className="hover:text-primary">
+                <Link to={`/posts/${caseItem.id}`} className="hover:text-primary">
                   {caseItem.title}
                 </Link>
               </CardTitle>

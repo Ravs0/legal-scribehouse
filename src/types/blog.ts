@@ -1,53 +1,28 @@
 export interface Author {
   id: string;
   name: string;
-  bio: string;
-  photo?: string;
-  links?: { label: string; url: string }[];
+  email: string;
+  bio?: string;
+  avatar_url?: string;
+  created_at: string;
+  updated_at: string;
 }
 
-export interface BaseContent {
+export interface ContentItem {
   id: string;
   title: string;
-  date: string;
   summary: string;
+  content: string;
+  type: 'post' | 'case' | 'statute' | 'guide' | 'briefing';
   categories: string[];
   tags: string[];
   authors: string[];
   draft: boolean;
-  content: string;
-  slug: string;
+  reading_time?: number;
+  published_at?: string;
+  created_at: string;
+  updated_at: string;
 }
-
-export interface Post extends BaseContent {
-  type: 'post';
-}
-
-export interface CaseDigest extends BaseContent {
-  type: 'case';
-  court: string;
-  jurisdiction: string;
-  citation: string;
-  holding: string;
-  rationale: string;
-}
-
-export interface StatuteNote extends BaseContent {
-  type: 'statute';
-  act: string;
-  section: string;
-  interpretation: string;
-}
-
-export interface Guide extends BaseContent {
-  type: 'guide';
-}
-
-export interface Briefing extends BaseContent {
-  type: 'briefing';
-}
-
-export type ContentItem = Post | CaseDigest | StatuteNote | Guide | Briefing;
 
 export interface LegalCategory {
   id: string;

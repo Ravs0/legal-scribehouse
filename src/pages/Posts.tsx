@@ -38,7 +38,7 @@ const Posts = () => {
               </div>
               
               <CardTitle className="text-2xl mb-2">
-                <Link to={`/post/${post.slug}`} className="hover:text-primary">
+                <Link to={`/posts/${post.id}`} className="hover:text-primary">
                   {post.title}
                 </Link>
               </CardTitle>
@@ -53,7 +53,7 @@ const Posts = () => {
                 <div className="flex items-center gap-4 text-sm text-muted-foreground">
                   <div className="flex items-center gap-1">
                     <CalendarDays className="h-4 w-4" />
-                    {new Date(post.date).toLocaleDateString('en-US', {
+                    {new Date(post.created_at).toLocaleDateString('en-US', {
                       year: 'numeric',
                       month: 'long',
                       day: 'numeric'
@@ -71,7 +71,7 @@ const Posts = () => {
                 </div>
                 
                 <Button variant="ghost" size="sm" asChild>
-                  <Link to={`/post/${post.slug}`}>
+                  <Link to={`/posts/${post.id}`}>
                     Read More <ArrowRight className="ml-1 h-4 w-4" />
                   </Link>
                 </Button>
