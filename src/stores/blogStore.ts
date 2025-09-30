@@ -1,225 +1,86 @@
 import { create } from 'zustand';
 import { ContentItem, Author } from '@/types/blog';
-import { supabase } from '@/integrations/supabase/client';
+import { sampleContent, sampleAuthors } from '@/data/sampleContent';
 
 interface BlogStore {
   content: ContentItem[];
   authors: Author[];
   loading: boolean;
-  error: string | null;
-  fetchContent: () => Promise<void>;
-  fetchAuthors: () => Promise<void>;
-  addContent: (item: Omit<ContentItem, 'id' | 'created_at' | 'updated_at'>) => Promise<void>;
-  updateContent: (id: string, item: Partial<ContentItem>) => Promise<void>;
-  deleteContent: (id: string) => Promise<void>;
-  addAuthor: (author: Omit<Author, 'id' | 'created_at' | 'updated_at'>) => Promise<void>;
-  updateAuthor: (id: string, author: Partial<Author>) => Promise<void>;
-  deleteAuthor: (id: string) => Promise<void>;
+  searchTerm: string;
+  setSearchTerm: (term: string) => void;
+  getFilteredContent: (type?: string, category?: string) => ContentItem[];
   getContentByType: (type: ContentItem['type']) => ContentItem[];
   getContentByCategory: (category: string) => ContentItem[];
   getContentByAuthor: (authorId: string) => ContentItem[];
   searchContent: (query: string) => ContentItem[];
 }
 
-export const useBlogStore = create<BlogStore>()((set, get) => ({
-  content: [],
-  authors: [],
+export const useBlogStore = create<BlogStore>((set, get) => ({
+  content: sampleContent,
+  authors: sampleAuthors,
   loading: false,
-  error: null,
+  searchTerm: '',
 
-  fetchContent: async () => {
-    set({ loading: true, error: null });
-    try {
-      const { data, error } = await supabase
-        .from('content')
-        .select('*')
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      
-      set({ content: (data || []) as unknown as ContentItem[], loading: false });
-    } catch (error: any) {
-      set({ error: error.message, loading: false });
-    }
-  },
+  setSearchTerm: (term) => set({ searchTerm: term }),
 
-  fetchAuthors: async () => {
-    set({ loading: true, error: null });
-    try {
-      const { data, error } = await supabase
-        .from('authors')
-        .select('*')
-        .order('created_at', { ascending: false });
-      
-      if (error) throw error;
-      
-      set({ authors: data || [], loading: false });
-    } catch (error: any) {
-      set({ error: error.message, loading: false });
-    }
-  },
+  getFilteredContent: (type, category) => {
+    const { content, searchTerm } = get();
+    let filtered = content;
 
-  addContent: async (item) => {
-    set({ loading: true, error: null });
-    try {
-      const { data, error } = await supabase
-        .from('content')
-        .insert([item])
-        .select()
-        .single();
-      
-      if (error) throw error;
-      
-      set((state) => ({
-        content: [data as unknown as ContentItem, ...state.content],
-        loading: false
-      }));
-    } catch (error: any) {
-      set({ error: error.message, loading: false });
-      throw error;
+    if (type) {
+      filtered = filtered.filter(item => item.type === type);
     }
-  },
 
-  updateContent: async (id, updates) => {
-    set({ loading: true, error: null });
-    try {
-      const { data, error } = await supabase
-        .from('content')
-        .update(updates)
-        .eq('id', id)
-        .select()
-        .single();
-      
-      if (error) throw error;
-      
-      set((state) => ({
-        content: state.content.map((item) =>
-          item.id === id ? data as unknown as ContentItem : item
-        ),
-        loading: false
-      }));
-    } catch (error: any) {
-      set({ error: error.message, loading: false });
-      throw error;
+    if (category) {
+      filtered = filtered.filter(item => 
+        item.categories.some(cat => cat.toLowerCase() === category.toLowerCase())
+      );
     }
-  },
 
-  deleteContent: async (id) => {
-    set({ loading: true, error: null });
-    try {
-      const { error } = await supabase
-        .from('content')
-        .delete()
-        .eq('id', id);
-      
-      if (error) throw error;
-      
-      set((state) => ({
-        content: state.content.filter((item) => item.id !== id),
-        loading: false
-      }));
-    } catch (error: any) {
-      set({ error: error.message, loading: false });
-      throw error;
+    if (searchTerm) {
+      const term = searchTerm.toLowerCase();
+      filtered = filtered.filter(item =>
+        item.title.toLowerCase().includes(term) ||
+        item.summary.toLowerCase().includes(term) ||
+        item.content.toLowerCase().includes(term) ||
+        item.tags.some(tag => tag.toLowerCase().includes(term)) ||
+        item.categories.some(cat => cat.toLowerCase().includes(term))
+      );
     }
-  },
 
-  addAuthor: async (author) => {
-    set({ loading: true, error: null });
-    try {
-      const { data, error } = await supabase
-        .from('authors')
-        .insert(author)
-        .select()
-        .single();
-      
-      if (error) throw error;
-      
-      set((state) => ({
-        authors: [data, ...state.authors],
-        loading: false
-      }));
-    } catch (error: any) {
-      set({ error: error.message, loading: false });
-      throw error;
-    }
-  },
-
-  updateAuthor: async (id, updates) => {
-    set({ loading: true, error: null });
-    try {
-      const { data, error } = await supabase
-        .from('authors')
-        .update(updates)
-        .eq('id', id)
-        .select()
-        .single();
-      
-      if (error) throw error;
-      
-      set((state) => ({
-        authors: state.authors.map((author) =>
-          author.id === id ? data : author
-        ),
-        loading: false
-      }));
-    } catch (error: any) {
-      set({ error: error.message, loading: false });
-      throw error;
-    }
-  },
-
-  deleteAuthor: async (id) => {
-    set({ loading: true, error: null });
-    try {
-      const { error } = await supabase
-        .from('authors')
-        .delete()
-        .eq('id', id);
-      
-      if (error) throw error;
-      
-      set((state) => ({
-        authors: state.authors.filter((author) => author.id !== id),
-        loading: false
-      }));
-    } catch (error: any) {
-      set({ error: error.message, loading: false });
-      throw error;
-    }
+    return filtered.sort((a, b) => 
+      new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    );
   },
 
   getContentByType: (type: ContentItem['type']) => {
     const { content } = get();
-    return content.filter((item) => item.type === type && !item.draft);
+    return content.filter((item) => item.type === type);
   },
 
   getContentByCategory: (category: string) => {
     const { content } = get();
     return content.filter((item) => 
-      item.categories.includes(category) && !item.draft
+      item.categories.includes(category)
     );
   },
 
   getContentByAuthor: (authorId: string) => {
     const { content } = get();
     return content.filter((item) => 
-      item.authors.includes(authorId) && !item.draft
+      item.authors.includes(authorId)
     );
   },
 
   searchContent: (query: string) => {
     const { content } = get();
     const lowercaseQuery = query.toLowerCase();
-    return content.filter((item) => {
-      if (item.draft) return false;
-      return (
-        item.title.toLowerCase().includes(lowercaseQuery) ||
-        item.summary.toLowerCase().includes(lowercaseQuery) ||
-        item.content.toLowerCase().includes(lowercaseQuery) ||
-        item.tags.some(tag => tag.toLowerCase().includes(lowercaseQuery)) ||
-        item.categories.some(cat => cat.toLowerCase().includes(lowercaseQuery))
-      );
-    });
+    return content.filter((item) => (
+      item.title.toLowerCase().includes(lowercaseQuery) ||
+      item.summary.toLowerCase().includes(lowercaseQuery) ||
+      item.content.toLowerCase().includes(lowercaseQuery) ||
+      item.tags.some(tag => tag.toLowerCase().includes(lowercaseQuery)) ||
+      item.categories.some(cat => cat.toLowerCase().includes(lowercaseQuery))
+    ));
   },
 }));

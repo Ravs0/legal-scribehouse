@@ -2,9 +2,9 @@ import { useParams } from 'react-router-dom';
 import { useBlogStore } from '@/stores/blogStore';
 
 const PostDetail = () => {
-  const { slug } = useParams();
+  const { id } = useParams();
   const { content } = useBlogStore();
-  const post = content.find(p => p.slug === slug);
+  const post = content.find(p => p.id === id);
 
   if (!post) {
     return <div className="container py-8">Content not found</div>;
