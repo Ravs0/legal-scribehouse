@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Badge } from '@/components/ui/badge';
 import { Clock, User } from 'lucide-react';
@@ -5,7 +6,13 @@ import { useBlogStore } from '@/stores/blogStore';
 import { LEGAL_CATEGORIES } from '@/types/blog';
 
 const Index = () => {
-  const { content, authors } = useBlogStore();
+  const { content, authors, fetchContent, fetchAuthors } = useBlogStore();
+  
+  useEffect(() => {
+    fetchContent();
+    fetchAuthors();
+  }, [fetchContent, fetchAuthors]);
+
   const allContent = content.filter(item => !item.draft);
   const featuredPost = allContent[0];
   const mainPosts = allContent.slice(1, 4);

@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { ContentItem, Author } from '@/types/blog';
+import { supabase } from '@/integrations/supabase/client';
 import { sampleContent, sampleAuthors } from '@/data/sampleContent';
 
 interface BlogStore {
@@ -13,11 +14,13 @@ interface BlogStore {
   getContentByCategory: (category: string) => ContentItem[];
   getContentByAuthor: (authorId: string) => ContentItem[];
   searchContent: (query: string) => ContentItem[];
+  fetchContent: () => Promise<void>;
+  fetchAuthors: () => Promise<void>;
 }
 
 export const useBlogStore = create<BlogStore>((set, get) => ({
-  content: sampleContent,
-  authors: sampleAuthors,
+  content: [],
+  authors: [],
   loading: false,
   searchTerm: '',
 
@@ -82,5 +85,45 @@ export const useBlogStore = create<BlogStore>((set, get) => ({
       item.tags.some(tag => tag.toLowerCase().includes(lowercaseQuery)) ||
       item.categories.some(cat => cat.toLowerCase().includes(lowercaseQuery))
     ));
+  },
+
+  fetchContent: async () => {
+    set({ loading: true });
+    try {
+      const { data, error } = await supabase
+        .from('content')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      set({ content: (data || []) as ContentItem[] });
+    } catch (error) {
+      console.error('Error fetching content:', error);
+      // Fallback to sample data if fetch fails
+      set({ content: sampleContent });
+    } finally {
+      set({ loading: false });
+    }
+  },
+
+  fetchAuthors: async () => {
+    set({ loading: true });
+    try {
+      // Use the secure function to get authors without email addresses
+      const { data, error } = await supabase.rpc('get_authors_public');
+
+      if (error) throw error;
+      set({ authors: (data || []) as Author[] });
+    } catch (error) {
+      console.error('Error fetching authors:', error);
+      // Fallback to sample data if fetch fails (but remove emails from sample data)
+      const safeAuthors = sampleAuthors.map(({ email, ...author }) => ({
+        ...author,
+        email: '' // Provide empty email to satisfy type requirements
+      }));
+      set({ authors: safeAuthors });
+    } finally {
+      set({ loading: false });
+    }
   },
 }));
