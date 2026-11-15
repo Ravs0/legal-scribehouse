@@ -13,7 +13,8 @@ const Posts = () => {
   return (
     <div className="container py-8">
       <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-4">Legal Analysis & Commentary</h1>
+        <p className="label-mono mb-3 text-accent">Insights</p>
+        <h1 className="text-4xl font-semibold tracking-tight mb-4">Legal Analysis & Commentary</h1>
         <p className="text-lg text-muted-foreground">
           In-depth analysis, opinion pieces, and commentary on current legal developments
         </p>

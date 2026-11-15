@@ -7,6 +7,8 @@ import { ThemeProvider } from "next-themes";
 import Header from "@/components/Layout/Header";
 import Footer from "@/components/Layout/Footer";
 import Index from "./pages/Index";
+import Insights from "./pages/Insights";
+import { ScrollManager } from "@/components/site/ScrollManager";
 import Posts from "./pages/Posts";
 import Cases from "./pages/Cases";
 import Statutes from "./pages/Statutes";
@@ -26,13 +28,15 @@ const App = () => (
     <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <TooltipProvider>
         <Toaster />
-        <Sonner />
+        <Sonner position="bottom-right" />
         <BrowserRouter>
+          <ScrollManager />
           <div className="min-h-screen flex flex-col">
             <Header />
             <main className="flex-1">
               <Routes>
                 <Route path="/" element={<Index />} />
+                <Route path="/insights" element={<Insights />} />
                 <Route path="/posts" element={<Posts />} />
                 <Route path="/cases" element={<Cases />} />
                 <Route path="/statutes" element={<Statutes />} />

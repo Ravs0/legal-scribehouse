@@ -9,7 +9,8 @@ const Cases = () => {
 
   return (
     <div className="container py-8">
-      <h1 className="text-4xl font-bold mb-4">Case Digests</h1>
+      <p className="label-mono mb-3 text-accent">Insights</p>
+      <h1 className="text-4xl font-semibold tracking-tight mb-4">Case Digests</h1>
       <p className="text-lg text-muted-foreground mb-8">Court decisions and tribunal rulings</p>
       
       <div className="grid gap-6">

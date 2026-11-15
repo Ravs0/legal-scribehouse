@@ -1,167 +1,157 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from '@/components/ui/navigation-menu';
-import { Menu, X, Search, Moon, Sun } from 'lucide-react';
-import { LEGAL_CATEGORIES } from '@/types/blog';
+import { ChevronDown, Menu, Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { HashLink } from '@/components/site/HashLink';
+import { SITE } from '@/config/site';
+import { INSIGHT_LINKS } from '@/config/nav';
+
+const SECTIONS = [
+  { id: 'markets', label: 'Markets' },
+  { id: 'services', label: 'Services' },
+  { id: 'process', label: 'How it works' },
+  { id: 'check', label: 'Readiness check' },
+];
+
+export const Wordmark = () => (
+  <span className="flex items-center gap-1.5 font-mono text-[15px] font-semibold uppercase tracking-[0.18em]">
+    <span className="text-accent">~/</span>
+    {SITE.name}
+  </span>
+);
+
+const ThemeToggle = () => {
+  const { resolvedTheme, setTheme } = useTheme();
+  return (
+    <Button
+      variant="ghost"
+      size="icon"
+      className="relative rounded-sm"
+      onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
+    >
+      <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+      <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+      <span className="sr-only">Toggle colour theme</span>
+    </Button>
+  );
+};
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const location = useLocation();
-  const { theme, setTheme } = useTheme();
-
-  const isActive = (path: string) => location.pathname === path;
+  const [open, setOpen] = useState(false);
+  const { pathname } = useLocation();
+  const inInsights = INSIGHT_LINKS.some((l) => pathname.startsWith(l.to)) || pathname.startsWith('/posts');
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center justify-between">
-        <div className="flex items-center gap-6">
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="h-8 w-8 rounded-full bg-primary"></div>
-            <div className="hidden font-bold sm:inline-block">
-              <div className="text-lg">cicero's scribe</div>
-              <div className="text-xs text-muted-foreground">then there was law</div>
-            </div>
-          </Link>
+    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/90 backdrop-blur supports-[backdrop-filter]:bg-background/75">
+      <div className="container flex h-16 items-center justify-between gap-4">
+        <Link to="/" aria-label={`${SITE.name} home`} className="shrink-0">
+          <Wordmark />
+        </Link>
 
-          <NavigationMenu className="hidden lg:flex">
-            <NavigationMenuList>
-              <NavigationMenuItem>
-                <Link to="/">
-                  <NavigationMenuLink className={`px-3 py-2 text-sm font-medium transition-colors hover:text-primary ${isActive('/') ? 'text-primary' : ''}`}>
-                    Home
-                  </NavigationMenuLink>
-                </Link>
-              </NavigationMenuItem>
-
-              <NavigationMenuItem>
-                <NavigationMenuTrigger>Topics</NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <div className="grid w-[400px] gap-3 p-4 md:w-[500px] md:grid-cols-2 lg:w-[600px]">
-                    {LEGAL_CATEGORIES.map((category) => (
-                      <Link
-                        key={category.id}
-                        to={`/categories/${category.slug}`}
-                        className="group block space-y-1 rounded-md p-3 text-sm leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
-                      >
-                        <div className="text-sm font-medium leading-none">{category.name}</div>
-                        {category.description && (
-                          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-                            {category.description}
-                          </p>
-                        )}
-                      </Link>
-                    ))}
-                  </div>
-                </NavigationMenuContent>
-              </NavigationMenuItem>
-
-              {[
-                { name: 'Cases', path: '/cases' },
-                { name: 'Statutes', path: '/statutes' },
-                { name: 'Guides', path: '/guides' },
-                { name: 'Briefings', path: '/briefings' },
-                { name: 'About', path: '/about' },
-              ].map((item) => (
-                <NavigationMenuItem key={item.path}>
-                  <Link to={item.path}>
-                    <NavigationMenuLink className={`px-3 py-2 text-sm font-medium transition-colors hover:text-primary ${isActive(item.path) ? 'text-primary' : ''}`}>
-                      {item.name}
-                    </NavigationMenuLink>
-                  </Link>
-                </NavigationMenuItem>
+        <nav aria-label="Main" className="hidden items-center gap-1 lg:flex">
+          {SECTIONS.map((s) => (
+            <HashLink key={s.id} to={s.id} className="bracket-link px-2 py-2 text-sm font-medium hover:text-primary">
+              {s.label}
+            </HashLink>
+          ))}
+          <DropdownMenu>
+            <DropdownMenuTrigger
+              className="bracket-link flex items-center gap-1 px-2 py-2 text-sm font-medium outline-none hover:text-primary"
+              aria-current={inInsights ? 'page' : undefined}
+            >
+              Insights <ChevronDown className="h-3.5 w-3.5" aria-hidden="true" />
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-48 rounded-sm font-mono text-sm">
+              {INSIGHT_LINKS.map((l, i) => (
+                <div key={l.to}>
+                  {i === 1 && <DropdownMenuSeparator />}
+                  <DropdownMenuItem asChild className="rounded-none">
+                    <Link to={l.to}>{l.label}</Link>
+                  </DropdownMenuItem>
+                </div>
               ))}
-            </NavigationMenuList>
-          </NavigationMenu>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <Button variant="ghost" size="sm" asChild>
-            <Link to="/search">
-              <Search className="h-4 w-4" />
-              <span className="sr-only">Search</span>
-            </Link>
-          </Button>
-
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+            </DropdownMenuContent>
+          </DropdownMenu>
+          <Link
+            to="/about"
+            aria-current={pathname === '/about' ? 'page' : undefined}
+            className="bracket-link px-2 py-2 text-sm font-medium hover:text-primary"
           >
-            <Sun className="h-4 w-4 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-            <Moon className="absolute h-4 w-4 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-            <span className="sr-only">Toggle theme</span>
+            About
+          </Link>
+        </nav>
+
+        <div className="flex items-center gap-1 sm:gap-2">
+          <ThemeToggle />
+          <Button asChild size="sm" className="arrow-nudge hidden h-9 rounded-sm px-4 sm:inline-flex">
+            <HashLink to="contact">
+              Book a consult <span className="arrow font-mono">-&gt;</span>
+            </HashLink>
           </Button>
 
-          <Badge variant="secondary" className="hidden md:flex">
-            <Link to="/admin" className="text-xs">Admin</Link>
-          </Badge>
-
-          <Button
-            variant="ghost"
-            size="sm"
-            className="lg:hidden"
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-          >
-            {isMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
-          </Button>
+          <Sheet open={open} onOpenChange={setOpen}>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="rounded-sm lg:hidden">
+                <Menu className="h-5 w-5" />
+                <span className="sr-only">Open menu</span>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="right" className="flex w-full flex-col gap-0 rounded-none p-0 sm:max-w-sm">
+              <SheetTitle className="flex h-16 items-center border-b border-border px-5">
+                <Wordmark />
+              </SheetTitle>
+              <nav aria-label="Mobile" className="flex-1 overflow-y-auto px-5 py-6">
+                <div className="label-mono mb-3 text-muted-foreground">Sections</div>
+                <ul className="space-y-1">
+                  {SECTIONS.map((s, i) => (
+                    <li key={s.id}>
+                      <HashLink
+                        to={s.id}
+                        onClick={() => setOpen(false)}
+                        className="flex items-baseline gap-3 py-2 font-mono text-xl"
+                      >
+                        <span className="text-xs text-accent">{String(i + 1).padStart(2, '0')}</span>
+                        {s.label}
+                      </HashLink>
+                    </li>
+                  ))}
+                  <li>
+                    <Link to="/about" onClick={() => setOpen(false)} className="flex items-baseline gap-3 py-2 font-mono text-xl">
+                      <span className="text-xs text-accent">05</span>About
+                    </Link>
+                  </li>
+                </ul>
+                <div className="label-mono mb-3 mt-8 text-muted-foreground">Insights</div>
+                <ul className="grid grid-cols-2 gap-1">
+                  {INSIGHT_LINKS.map((l) => (
+                    <li key={l.to}>
+                      <Link to={l.to} onClick={() => setOpen(false)} className="block py-1.5 font-mono">
+                        {l.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+              <div className="border-t border-border p-5">
+                <Button asChild size="lg" className="arrow-nudge h-12 w-full rounded-sm">
+                  <HashLink to="contact" onClick={() => setOpen(false)}>
+                    Book a free consult <span className="arrow ml-1 font-mono">-&gt;</span>
+                  </HashLink>
+                </Button>
+              </div>
+            </SheetContent>
+          </Sheet>
         </div>
       </div>
-
-      {/* Mobile menu */}
-      {isMenuOpen && (
-        <div className="border-t bg-background lg:hidden">
-          <div className="container py-4">
-            <nav className="grid gap-2">
-              <Link to="/" className="block px-3 py-2 text-sm font-medium" onClick={() => setIsMenuOpen(false)}>
-                Home
-              </Link>
-              <div className="px-3 py-2">
-                <div className="text-sm font-medium text-muted-foreground mb-2">Topics</div>
-                <div className="grid gap-1 pl-3">
-                  {LEGAL_CATEGORIES.map((category) => (
-                    <Link
-                      key={category.id}
-                      to={`/categories/${category.slug}`}
-                      className="block py-1 text-sm"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      {category.name}
-                    </Link>
-                  ))}
-                </div>
-              </div>
-              {[
-                { name: 'Cases', path: '/cases' },
-                { name: 'Statutes', path: '/statutes' },
-                { name: 'Guides', path: '/guides' },
-                { name: 'Briefings', path: '/briefings' },
-                { name: 'About', path: '/about' },
-                { name: 'Search', path: '/search' },
-                { name: 'Admin', path: '/admin' },
-              ].map((item) => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className="block px-3 py-2 text-sm font-medium"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {item.name}
-                </Link>
-              ))}
-            </nav>
-          </div>
-        </div>
-      )}
     </header>
   );
 };

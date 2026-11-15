@@ -2,41 +2,42 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Cicero's Scribe Legal Blog Design System */
+/* "The Manifest" design system — paper, ink, ledger rules and customs stamps.
+   Brand strings live in src/config/site.ts, never here. */
 
 @layer base {
   :root {
     /* Legal-themed color palette */
-    --background: 0 0% 100%;
-    --foreground: 215 25% 15%;
+    --background: 40 33% 96%;
+    --foreground: 205 45% 12%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 215 25% 15%;
+    --card: 40 40% 98%;
+    --card-foreground: 205 45% 12%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 215 25% 15%;
+    --popover: 40 40% 98%;
+    --popover-foreground: 205 45% 12%;
 
     /* Deep navy for legal authority */
-    --primary: 215 85% 15%;
-    --primary-foreground: 0 0% 98%;
+    --primary: 198 62% 20%;
+    --primary-foreground: 40 33% 96%;
 
     /* Warm gray for secondary elements */
-    --secondary: 210 20% 96%;
-    --secondary-foreground: 215 25% 15%;
+    --secondary: 40 22% 90%;
+    --secondary-foreground: 205 45% 12%;
 
-    --muted: 210 20% 96%;
-    --muted-foreground: 215 15% 45%;
+    --muted: 40 22% 90%;
+    --muted-foreground: 205 15% 36%;
 
     /* Gold accent for highlights */
-    --accent: 45 85% 55%;
-    --accent-foreground: 215 85% 15%;
+    --accent: 8 72% 44%;
+    --accent-foreground: 40 40% 98%;
 
-    --destructive: 0 75% 55%;
-    --destructive-foreground: 0 0% 98%;
+    --destructive: 0 72% 42%;
+    --destructive-foreground: 40 40% 98%;
 
-    --border: 215 15% 88%;
-    --input: 215 15% 88%;
-    --ring: 215 85% 15%;
+    --border: 40 16% 80%;
+    --input: 40 16% 80%;
+    --ring: 198 62% 30%;
 
     /* Legal-specific colors */
     --legal-holding: 120 45% 25%;
@@ -46,7 +47,12 @@
     --legal-obiter: 30 85% 40%;
     --legal-obiter-bg: 30 85% 96%;
 
-    --radius: 0.5rem;
+    --radius: 0.125rem;
+
+    /* Manifest extras */
+    --rule: 198 25% 72%;
+    --ascii: 198 30% 45%;
+    --success: 150 45% 28%;
 
     --sidebar-background: 0 0% 98%;
 
@@ -66,33 +72,37 @@
   }
 
   .dark {
-    --background: 215 30% 8%;
-    --foreground: 210 40% 95%;
+    --background: 205 40% 7%;
+    --foreground: 40 30% 92%;
 
-    --card: 215 30% 10%;
-    --card-foreground: 210 40% 95%;
+    --card: 205 36% 10%;
+    --card-foreground: 40 30% 92%;
 
-    --popover: 215 30% 10%;
-    --popover-foreground: 210 40% 95%;
+    --popover: 205 36% 10%;
+    --popover-foreground: 40 30% 92%;
 
-    --primary: 45 85% 55%;
-    --primary-foreground: 215 30% 8%;
+    --primary: 172 45% 58%;
+    --primary-foreground: 205 40% 7%;
 
-    --secondary: 215 20% 15%;
-    --secondary-foreground: 210 40% 95%;
+    --secondary: 205 28% 14%;
+    --secondary-foreground: 40 30% 92%;
 
-    --muted: 215 20% 15%;
-    --muted-foreground: 215 15% 65%;
+    --muted: 205 28% 14%;
+    --muted-foreground: 205 15% 68%;
 
-    --accent: 45 85% 55%;
-    --accent-foreground: 215 30% 8%;
+    --accent: 36 90% 60%;
+    --accent-foreground: 205 40% 7%;
 
-    --destructive: 0 75% 55%;
-    --destructive-foreground: 210 40% 95%;
+    --destructive: 0 70% 60%;
+    --destructive-foreground: 205 40% 7%;
 
-    --border: 215 20% 20%;
-    --input: 215 20% 20%;
-    --ring: 45 85% 55%;
+    --border: 205 22% 20%;
+    --input: 205 22% 20%;
+    --ring: 36 90% 60%;
+
+    --rule: 198 25% 26%;
+    --ascii: 172 30% 45%;
+    --success: 150 45% 60%;
 
     /* Dark mode legal colors */
     --legal-holding: 120 45% 65%;
@@ -120,4 +130,162 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply font-sans antialiased;
+    font-size: 17px;
+    line-height: 1.6;
+  }
+
+  h1, h2, h3 {
+    @apply font-display;
+  }
+
+  :focus-visible {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: hsl(var(--accent) / 0.25);
+  }
+}
+
+@layer components {
+  /* Mono "field label" text used for section numbers, form labels and metadata */
+  .label-mono {
+    @apply font-mono text-[11px] uppercase tracking-[0.12em] sm:text-xs;
+  }
+
+  /* Faint dot grid, used behind the hero only */
+  .dot-grid {
+    background-image: radial-gradient(hsl(var(--foreground) / 0.06) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* Dashed perforation divider between sections */
+  .perforation {
+    background-image: linear-gradient(to right, hsl(var(--rule)) 50%, transparent 50%);
+    background-size: 10px 1px;
+    background-repeat: repeat-x;
+    height: 1px;
+  }
+
+  /* Hard offset "printed" shadow on hover */
+  .hard-hover {
+    transition: transform 150ms ease, box-shadow 150ms ease;
+  }
+  .hard-hover:hover,
+  .hard-hover:focus-within {
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0 hsl(var(--primary));
+  }
+
+  /* Scroll reveal */
+  .reveal {
+    opacity: 0;
+    transform: translateY(12px);
+    transition: opacity 500ms cubic-bezier(0.2, 0.7, 0.2, 1), transform 500ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .reveal[data-in="true"] {
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Ledger rule that draws itself from the left */
+  .rule-draw {
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 700ms cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .rule-draw[data-in="true"] {
+    transform: scaleX(1);
+  }
+
+  /* Customs stamp */
+  .stamp {
+    @apply inline-flex flex-col items-center font-mono font-medium uppercase text-accent;
+    border: 3px double hsl(var(--accent));
+    padding: 0.35em 0.8em;
+    letter-spacing: 0.14em;
+    transform: rotate(-6deg);
+  }
+  .stamp-animate {
+    animation: stamp-in 280ms cubic-bezier(0.3, 1.4, 0.5, 1) both;
+  }
+
+  /* Marquee ticker */
+  .ticker-track {
+    animation: ticker 60s linear infinite;
+  }
+  .ticker:hover .ticker-track,
+  .ticker:focus-within .ticker-track {
+    animation-play-state: paused;
+  }
+
+  /* Trailing arrow nudge for CTAs */
+  .arrow-nudge .arrow {
+    display: inline-block;
+    transition: transform 150ms ease;
+  }
+  .arrow-nudge:hover .arrow,
+  .arrow-nudge:focus-visible .arrow {
+    transform: translateX(4px);
+  }
+
+  /* Nav links get a [ ] bracket pair on hover */
+  .bracket-link::before,
+  .bracket-link::after {
+    @apply font-mono text-accent;
+    opacity: 0;
+    transition: opacity 150ms ease;
+  }
+  .bracket-link::before { content: "["; margin-right: 0.25em; }
+  .bracket-link::after { content: "]"; margin-left: 0.25em; }
+  .bracket-link:hover::before,
+  .bracket-link:hover::after,
+  .bracket-link:focus-visible::before,
+  .bracket-link:focus-visible::after,
+  .bracket-link[aria-current="page"]::before,
+  .bracket-link[aria-current="page"]::after {
+    opacity: 1;
+  }
+
+  .blink {
+    animation: blink 1s steps(1) infinite;
+  }
+}
+
+@keyframes stamp-in {
+  from { opacity: 0; transform: rotate(-14deg) scale(1.6); }
+  to { opacity: 1; transform: rotate(-6deg) scale(1); }
+}
+
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* Backstop: kill motion globally for people who ask for less of it. */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal { opacity: 1; transform: none; }
+  .rule-draw { transform: none; }
+  .ticker-track { animation: none !important; }
+  .blink { animation: none !important; }
 }

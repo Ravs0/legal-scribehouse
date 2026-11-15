@@ -7,13 +7,21 @@ export default {
   theme: {
     container: {
       center: true,
-      padding: "2rem",
+      padding: { DEFAULT: "1rem", sm: "1.5rem" },
       screens: {
-        "2xl": "1400px",
+        "2xl": "1248px",
       },
     },
     extend: {
+      fontFamily: {
+        display: ['Fraunces', 'Georgia', 'Cambria', '"Times New Roman"', 'serif'],
+        sans: ['"IBM Plex Sans"', 'system-ui', '-apple-system', '"Segoe UI"', 'Roboto', 'sans-serif'],
+        mono: ['"IBM Plex Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'Consolas', 'monospace'],
+      },
       colors: {
+        rule: "hsl(var(--rule))",
+        ascii: "hsl(var(--ascii))",
+        success: "hsl(var(--success))",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
