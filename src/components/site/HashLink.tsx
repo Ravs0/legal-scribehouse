@@ -1,4 +1,4 @@
-import { AnchorHTMLAttributes, MouseEvent } from 'react';
+import { AnchorHTMLAttributes, forwardRef, MouseEvent } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 interface HashLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
@@ -7,7 +7,7 @@ interface HashLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
 }
 
 /** Link to a homepage section that works from any route (navigates home, then scrolls). */
-export const HashLink = ({ to, onClick, children, ...rest }: HashLinkProps) => {
+export const HashLink = forwardRef<HTMLAnchorElement, HashLinkProps>(({ to, onClick, children, ...rest }, ref) => {
   const location = useLocation();
   const handleClick = (e: MouseEvent<HTMLAnchorElement>) => {
     onClick?.(e);
@@ -21,8 +21,9 @@ export const HashLink = ({ to, onClick, children, ...rest }: HashLinkProps) => {
     }
   };
   return (
-    <Link to={`/#${to}`} onClick={handleClick} {...rest}>
+    <Link ref={ref} to={`/#${to}`} onClick={handleClick} {...rest}>
       {children}
     </Link>
   );
-};
+});
+HashLink.displayName = 'HashLink';

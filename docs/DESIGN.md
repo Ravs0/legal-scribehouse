@@ -396,3 +396,21 @@ Scroll speed adds up to 2.5× spin. Layouts live in `src/three/layouts.ts` as `[
 - Glass must be able to see the canvas: **no filling opacity/transform/filter animations on ancestors of glass.** Entrance animations use `animation-fill-mode: backwards`.
 - Stones never carry text or meaning; the canvas is `aria-hidden` and `pointer-events: none`.
 - Tilt, magnetic pull and sheen are off for touch and reduced motion; 3D buttons keep their edge but don't move.
+
+---
+
+# v2.2 addendum: "Liquid Glass"
+
+The client's reference: glass that reads as wet, poured clear resin, combining classic Aqua gloss with VisionOS
+depth. A standalone, dependency-free reference implementation lives at `prototypes/liquid-glass-nav.html`.
+
+| Element | Recipe |
+|---|---|
+| Material (`.liquid`) | `backdrop-filter: blur(50px) saturate(200%)`. Tint: white/.32 (light), hsl(232 40% 60% / .10) (dark). |
+| Specular (`::before`) | Curved highlight over the top 52%: `border-radius: 999px 999px 60% 60% / 999px 999px 100% 100%`. Gradient white × spec (.9 → .32 → 0); spec .85 light / .40 dark. |
+| Caustics and volume | Rim `inset 0 1px .5px`. Bottom refraction `inset 0 -10px 18px -12px white/.7` and `inset 0 -1.5px 1px -.5px white/.45`. Thick-resin band `inset 0 8px 22px -14px black/.18`. Drops `0 1px 2px`, `0 12px 28px -8px`, `0 34px 70px -24px` in the liquid shadow colour. |
+| Glare (`::after`) | `radial-gradient(140px circle at --mx --my, white × .9 light / .45 dark, transparent 70%)`, `mix-blend-mode: overlay`. Fades in on pointer enter (400ms); position updates are throttled to one per animation frame. |
+| Sliding pill (`.spring-pill`) | Absolutely positioned behind the active item, measured from `offsetLeft` / `offsetWidth`. Transform and width transition at `0.5s cubic-bezier(0.34, 1.2, 0.64, 1)`. Snaps on first paint and on resize; springs only on user changes. |
+| Press (`.press-spring`) | `:active` scales to .92 (120ms in, 260ms spring out). |
+| Theme icons | Sun and moon rotate ±90°, scale .4 ↔ 1 and cross-fade over 600ms on the same spring. |
+| Where used | Header bar (`.liquid`, always on), markets tab track (`.liquid`). Main panels (console, markets, readiness, contact, featured post) use `.liquid-sheen`: the same highlight, toned down to 34% height at .32 opacity so body text stays crisp. |

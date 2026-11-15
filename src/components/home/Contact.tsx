@@ -137,7 +137,7 @@ export const Contact = () => {
           </div>
 
           <Reveal className="col-span-4 md:col-span-12 lg:col-span-7">
-            <div className="glass glass-tall panel-pad rounded-xl">
+            <div className="glass liquid-sheen glass-tall panel-pad rounded-xl">
               {sent ? (
                 <div role="status" className="flex animate-step-in flex-col items-start py-4">
                   <IconContainer icon={Check} tone="success" className="h-14 w-14" />

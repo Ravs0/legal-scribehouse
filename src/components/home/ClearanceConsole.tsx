@@ -32,7 +32,7 @@ export const ClearanceConsole = ({ className }: { className?: string }) => (
     </div>
 
     <div className="animate-float-slow">
-    <div {...tilt} className="glass lift-card animate-rise-in rounded-xl p-6 shadow-elevation-4 [animation-delay:200ms] hover:shadow-elevation-5 lg:rounded-2xl">
+    <div {...tilt} className="glass liquid-sheen lift-card animate-rise-in rounded-xl p-6 shadow-elevation-4 [animation-delay:200ms] hover:shadow-elevation-5 lg:rounded-2xl">
       <div className="flex items-start gap-3">
         <IconContainer icon={Ship} size="sm" />
         <div className="min-w-0 flex-1">

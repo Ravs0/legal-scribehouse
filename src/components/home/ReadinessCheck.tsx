@@ -95,7 +95,7 @@ export const ReadinessCheck = () => {
           </div>
 
           <Reveal className="col-span-4 md:col-span-12 lg:col-span-7">
-            <div className="glass panel-pad overflow-hidden rounded-xl">
+            <div className="glass liquid-sheen panel-pad overflow-hidden rounded-xl">
               <div className="flex items-center justify-between gap-4">
                 <span className="type-label-md text-muted-foreground">
                   {done ? 'Your result' : `Question ${step + 1} of ${total}`}

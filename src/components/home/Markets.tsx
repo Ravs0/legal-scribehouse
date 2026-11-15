@@ -75,11 +75,11 @@ export const Markets = () => {
               role="tablist"
               aria-label="ASEAN markets"
               onKeyDown={onKeyDown}
-              className="glass-subtle relative inline-flex h-[52px] min-w-full snap-x snap-proximity items-center rounded-full p-1 md:flex"
+              className="liquid relative inline-flex h-[52px] min-w-full snap-x snap-proximity items-center rounded-full p-1 md:flex"
             >
               <span
                 aria-hidden="true"
-                className="lip absolute bottom-1 top-1 rounded-full bg-primary-container transition-[transform,width] duration-medium3 ease-emphasized"
+                className="spring-pill absolute bottom-1 top-1 rounded-full bg-primary-container"
                 style={{ width: indicator.width, transform: `translateX(${indicator.left - 4}px)`, left: 4 }}
               />
               {MARKETS.map((m, i) => {
@@ -97,7 +97,7 @@ export const Markets = () => {
                     onClick={() => select(i)}
                     onPointerDown={(e) => spawnRipple(e.currentTarget, e.clientX, e.clientY)}
                     className={cn(
-                      'state-layer type-label-lg relative h-11 shrink-0 snap-start overflow-hidden whitespace-nowrap rounded-full px-4 transition-colors duration-short4 md:flex-1',
+                      'state-layer press-spring type-label-lg relative h-11 shrink-0 snap-start overflow-hidden whitespace-nowrap rounded-full px-4 md:flex-1',
                       selected ? 'text-primary-on-container' : 'text-muted-foreground',
                     )}
                   >
@@ -112,7 +112,7 @@ export const Markets = () => {
             id="market-panel"
             role="tabpanel"
             aria-labelledby={`market-tab-${market.code}`}
-            className="glass panel-pad mt-6 rounded-xl"
+            className="glass liquid-sheen panel-pad mt-6 rounded-xl"
           >
             <div key={market.code} className="grid-12 animate-panel-in gap-y-8">
               <div className="col-span-4 md:col-span-5">
