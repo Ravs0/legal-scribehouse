@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { pointerGlow } from '@/hooks/usePointerGlow';
+import { tilt } from "@/hooks/usePointerGlow";
 import type { ContentItem } from '@/types/blog';
 import { formatDate, TYPE_META } from '@/lib/insights';
 import { cn } from '@/lib/utils';
@@ -28,7 +28,7 @@ export const PostCard = ({ post }: { post: ContentItem }) => {
   return (
     <Link
       to={`/posts/${post.id}`}
-      onMouseMove={pointerGlow}
+      {...tilt}
       className="glass-subtle lift-card group flex h-full flex-col rounded-lg p-3"
     >
       <GradientTile type={post.type} className="aspect-video" />

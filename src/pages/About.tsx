@@ -7,7 +7,7 @@ import { CtaBand } from '@/components/site/CtaBand';
 import { SectionHeading } from '@/components/site/SectionHeading';
 import { SITE } from '@/config/site';
 import { PLACEHOLDER, STATS } from '@/data/proof';
-import { pointerGlow } from '@/hooks/usePointerGlow';
+import { tilt } from "@/hooks/usePointerGlow";
 
 const PRINCIPLES = [
   {
@@ -79,7 +79,7 @@ const About = () => (
       <ul className="after-heading stack-gap grid md:grid-cols-3">
         {PRINCIPLES.map((p, i) => (
           <Reveal as="li" key={p.title} index={i}>
-            <article onMouseMove={pointerGlow} className="glass-subtle lift-card card-pad h-full rounded-lg">
+            <article {...tilt} className="glass-subtle lift-card card-pad h-full rounded-lg">
               <IconContainer icon={p.icon} />
               <h3 className="type-title-lg mt-5">{p.title}</h3>
               <p className="type-body-md mt-2 text-muted-foreground">{p.copy}</p>

@@ -3,6 +3,7 @@ import { useInView } from '@/hooks/useInView';
 import { Reveal } from '@/components/motion/Reveal';
 import { SectionHeading } from '@/components/site/SectionHeading';
 import { cn } from '@/lib/utils';
+import { tilt } from '@/hooks/usePointerGlow';
 
 // Durations are placeholders until the firm confirms its service levels.
 const STEPS = [
@@ -19,7 +20,7 @@ export const Process = () => {
   const inView = useInView(ref, { threshold: 0.3 });
 
   return (
-    <section id="process" className="section">
+    <section id="process" data-stage="process" className="section">
       <div className="container">
         <div className="grid-12">
           <SectionHeading
@@ -51,14 +52,14 @@ export const Process = () => {
             <Reveal as="li" key={s.title} index={i} className="relative">
               <span
                 aria-hidden="true"
-                className="type-title-sm absolute -left-12 top-0 flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-glow lg:hidden"
+                className="pebble type-title-sm absolute -left-12 top-0 flex h-10 w-10 items-center justify-center bg-primary text-primary-foreground lg:hidden"
               >
                 {i + 1}
               </span>
-              <div className="glass-subtle card-pad h-full rounded-lg">
+              <div {...tilt} className="glass-subtle lift-card card-pad h-full rounded-lg">
                 <span
                   aria-hidden="true"
-                  className="type-title-sm relative z-20 hidden h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-glow lg:flex"
+                  className="pebble type-title-sm relative z-20 hidden h-10 w-10 items-center justify-center bg-primary text-primary-foreground lg:flex"
                 >
                   {i + 1}
                 </span>

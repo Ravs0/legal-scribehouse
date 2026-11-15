@@ -2,6 +2,7 @@ import { BadgePercent, Check, ShieldCheck, Ship } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { IconContainer } from '@/components/ui/chip';
 import { cn } from '@/lib/utils';
+import { tilt } from '@/hooks/usePointerGlow';
 
 const CHECKS = [
   { label: 'Structure agreed', at: 900 },
@@ -18,19 +19,20 @@ export const ClearanceConsole = ({ className }: { className?: string }) => (
   <div aria-hidden="true" className={cn('relative mx-auto w-full max-w-[400px] lg:max-w-[520px]', className)}>
     {/* Satellites */}
     <div className="absolute -left-6 top-[72px] z-10 hidden animate-float-a sm:block">
-      <div className="glass-subtle flex items-center gap-2 rounded-lg px-4 py-3 shadow-elevation-3">
+      <div className="glass-subtle lip flex items-center gap-2 rounded-lg px-4 py-3">
         <BadgePercent className="h-5 w-5 text-tertiary" />
         <span className="type-label-md">Duty 0% with origin proof</span>
       </div>
     </div>
     <div className="absolute -bottom-7 -right-5 z-10 hidden animate-float-b sm:block">
-      <div className="glass-subtle flex items-center gap-2 rounded-lg px-4 py-3 shadow-elevation-3">
+      <div className="glass-subtle lip flex items-center gap-2 rounded-lg px-4 py-3">
         <ShieldCheck className="h-5 w-5 text-success" />
         <span className="type-label-md">Trademark filed</span>
       </div>
     </div>
 
-    <div className="glass animate-rise-in rounded-xl p-6 shadow-elevation-4 [animation-delay:200ms] lg:rounded-2xl">
+    <div className="animate-float-slow">
+    <div {...tilt} className="glass lift-card animate-rise-in rounded-xl p-6 shadow-elevation-4 [animation-delay:200ms] hover:shadow-elevation-5 lg:rounded-2xl">
       <div className="flex items-start gap-3">
         <IconContainer icon={Ship} size="sm" />
         <div className="min-w-0 flex-1">
@@ -106,6 +108,7 @@ export const ClearanceConsole = ({ className }: { className?: string }) => (
         </div>
         <p className="type-label-md mt-2 text-muted-foreground">3 of 4 checks cleared</p>
       </div>
+    </div>
     </div>
   </div>
 );

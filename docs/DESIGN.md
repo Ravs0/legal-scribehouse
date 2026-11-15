@@ -326,3 +326,73 @@ Mobile is <768px; desktop is ≥768px, except at 768–1023px where display-lg i
 - [ ] **Contact details and name** (`src/config/site.ts`): placeholders. The name is undecided and has not been trademark-checked.
 - [ ] **Enquiry delivery** (`src/lib/enquiry.ts`): opens a prefilled email. Swap it for a real endpoint.
 - [ ] **Regulatory wording:** the FAQ "licensed" answer, the footer disclaimer, the response-time promise and the process durations.
+
+---
+
+# v2.1 addendum: "Depth & Stone" (3D layer)
+
+Client direction: Material 3 + glass + **real 3D**, with stone-like objects and a floating, tactile feel on buttons
+and cards. (The reference sites could not be loaded from our sandbox; this addendum works from the client's
+description.) Concept: **stepping stones across the strait.** Polished stones float behind the frosted glass and
+rearrange as you scroll, so the 3D tells the same story as the copy.
+
+## Rendering
+
+| Item | Value |
+|---|---|
+| Engine | three.js r169, one fixed full-viewport `<canvas>` at `z-index:-5` (above aurora, below all UI). Lazy-loaded after first paint (`requestIdleCallback`, 1200ms timeout). Code-split: ~123 KB gzip. |
+| Camera | Perspective, fov 35°, z 14, looks at origin. Pointer parallax ±0.6 (x) / ±0.4 (y) world units, damped at 2.5/s. |
+| Quality | DPR ≤ 1.5 desktop, 1.0 mobile; antialias desktop only. If >50% of 90 frames exceed 28ms: drop DPR to 1, then disable glass transmission. |
+| Lighting | RoomEnvironment PMREM (no texture files). Hemisphere, white key (5,6,8), cyan rim #3FE0FF (−6,2,−4), magenta rim #FF5AD1 (6,−4,−3). Dark: 0.6 / 2.2 / 1.6 / 0.9, env 0.9. Light: 0.9 / 2.6 / 1.0 / 0.5, env 1.1. ACES tone mapping. |
+| Fallbacks | No WebGL: the canvas never mounts (aurora remains). Reduced motion: a single static frame, re-placed 150ms after scrolling stops. Mobile canvas opacity 0.7. |
+
+## Stones
+
+Each stone is an icosphere (detail 14 desktop / 8 mobile) displaced along its normals by 7 random sine waves
+(lumps) plus 5 high-frequency waves at 0.02 (worn grain), then squashed into a river-stone shape. Nine stones on
+desktop, five on mobile.
+
+| Variant | Material (MeshPhysicalMaterial) |
+|---|---|
+| Basalt | #1C2132 dark / #2B3248 light, roughness .34, clearcoat 1 (.12) |
+| Sandstone | #D39C6C / #E5B385, roughness .8, clearcoat .25, sheen .5 #FFD7AD |
+| Jade (glass) | #9EF0E2, transmission 1, thickness 1.4, ior 1.5, attenuation #1FA596 @1.1, roughness .12. Mobile: opaque #3FC2B2. |
+| Pearl | #E6E3FF, roughness .22, iridescence 1 (ior 1.35, 180–620nm), clearcoat 1 |
+| Glaze | #7B6DFF / #5B4CE8, roughness .26, clearcoat 1 (.06) |
+
+## Choreography
+
+Every home section carries `data-stage`. The stage is held while its section's middle is at the viewport centre;
+between centres the layouts blend with smoothstep, and stones chase their targets at 3.2/s (exponential damping).
+Scroll speed adds up to 2.5× spin. Layouts live in `src/three/layouts.ts` as `[nx, ny, z, scale]` per stone.
+
+| Stage | Arrangement | Tumble | Float |
+|---|---|---|---|
+| hero | **Cairn** of 4 stones stacked at the right edge, behind the Clearance Console (blurs through it); 5 small stones frame the page | 0 (level, slow turn) | .08, in sync |
+| problems | Scattered, tumbling: things going wrong | 1 | .2 |
+| markets | **Archipelago** low and deep behind the markets panel | .25 | .1 |
+| services | Loose orbit at the edges | .6 | .16 |
+| process | **Stepping stones** rising left→right beneath the four steps | 0 | .05 |
+| readiness | The **cairn** rebuilt under the heading on the left | 0 | .07, in sync |
+| proof / insights / faq | Calm, at the edges | .3–.5 | .12–.15 |
+| contact | Cluster deep behind the form | .35 | .14 |
+| inner pages | `page` layout, out of the reading column | .3 | .12 |
+
+## 3D UI layer (CSS)
+
+| Element | Recipe |
+|---|---|
+| Buttons (`.btn-3d`) | Inset top highlight `0 1px 0 white/.38`, inset base `0 -2px 0 black/.12`, **thickness edge** `0 4px 0 var(--btn-edge)`, drop `0 12px 18px -6px var(--btn-drop)`. Hover: rise 2px, edge 6px. Pressed: sink 3px, edge 1px (70ms). 160ms emphasized. Filled uses a top gradient `--primary-hi → --primary`; edges: filled `--primary-edge`, tonal `--container-edge`, glass `--btn-edge-glass`, outlined `--btn-edge-outline`. Text buttons stay flat. |
+| Floating cards (`.lift-card`) | `perspective(900px)`, pointer tilt max 6° (desktop hover only), lift −6px on hover, elevation-4, border primary/.45. Two-layer sheen follows the pointer: white 160px at .14 inside primary 320px at .14. Release eases back over 450ms. |
+| Pebbles (`.pebble`) | Icon containers, step numbers, avatars: organic radius `46% 54% 52% 48% / 55% 48% 52% 45%`, specular radial at 30%/18%, carved underside inset shadow. |
+| Lip (`.lip`) | Selected chips, tab indicator, console satellites: `0 2px 0 --container-edge` plus a soft drop. |
+| Carved fields (`.carved`) | Inputs, selects, textarea: `inset 0 2px 4px shadow/.16`. |
+| Console | Idle float ±8px over 8s, plus tilt and sheen. |
+| Magnetic CTAs | Hero CTAs and the header CTA pull toward the pointer: 0.25× offset, max 8px, 250ms. |
+| Reveal | Rises out of the water: `perspective(800px) translateY(32px) rotateX(10°)` → none, 500ms. |
+
+## Guardrails
+
+- Glass must be able to see the canvas: **no filling opacity/transform/filter animations on ancestors of glass.** Entrance animations use `animation-fill-mode: backwards`.
+- Stones never carry text or meaning; the canvas is `aria-hidden` and `pointer-events: none`.
+- Tilt, magnetic pull and sheen are off for touch and reduced motion; 3D buttons keep their edge but don't move.

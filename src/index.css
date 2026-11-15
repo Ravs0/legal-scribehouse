@@ -54,6 +54,13 @@
 
     --gradient-text: linear-gradient(90deg, hsl(248 78% 50%), hsl(190 90% 32%));
 
+    /* 3D "stone" depth */
+    --primary-hi: 248 90% 66%;
+    --primary-edge: 248 72% 36%;
+    --container-edge: 246 55% 80%;
+    --btn-edge-glass: hsl(232 30% 70% / 0.55);
+    --btn-edge-outline: hsl(230 28% 80%);
+
     --shadow-tint: 232 45% 20%;
     --elevation-1: 0 1px 2px hsl(var(--shadow-tint) / 0.06), 0 1px 3px hsl(var(--shadow-tint) / 0.08);
     --elevation-2: 0 2px 4px hsl(var(--shadow-tint) / 0.06), 0 4px 12px hsl(var(--shadow-tint) / 0.08);
@@ -136,6 +143,12 @@
     --veil-max: 0.45;
 
     --gradient-text: linear-gradient(90deg, hsl(246 100% 84%), hsl(190 95% 68%));
+
+    --primary-hi: 246 100% 89%;
+    --primary-edge: 246 52% 56%;
+    --container-edge: 246 55% 15%;
+    --btn-edge-glass: hsl(232 50% 3% / 0.75);
+    --btn-edge-outline: hsl(230 30% 14%);
 
     --shadow-tint: 232 60% 2%;
     --elevation-1: 0 1px 2px hsl(var(--shadow-tint) / 0.4), 0 1px 3px hsl(var(--shadow-tint) / 0.3);
@@ -401,20 +414,28 @@
     transition: opacity 200ms linear;
   }
 
-  /* ---------- Interactive grid card ---------- */
+  /* ---------- Floating 3D card: pointer tilt + specular sheen ---------- */
   .lift-card {
     position: relative;
+    transform: perspective(900px) translateY(var(--lift, 0px)) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
     transition:
-      transform 250ms cubic-bezier(0.2, 0, 0, 1),
+      transform 450ms cubic-bezier(0.2, 0, 0, 1),
+      box-shadow 250ms cubic-bezier(0.2, 0, 0, 1),
+      border-color 250ms cubic-bezier(0.2, 0, 0, 1);
+  }
+  .lift-card[data-tilting="true"] {
+    transition:
+      transform 120ms linear,
       box-shadow 250ms cubic-bezier(0.2, 0, 0, 1),
       border-color 250ms cubic-bezier(0.2, 0, 0, 1);
   }
   .lift-card:hover,
   .lift-card:focus-within {
-    transform: translateY(-4px);
-    box-shadow: inset 0 1px 0 var(--glass-subtle-hi), var(--glass-edge), var(--elevation-3);
+    --lift: -6px;
+    box-shadow: inset 0 1px 0 var(--glass-subtle-hi), var(--glass-edge), var(--elevation-4);
     border-color: hsl(var(--primary) / 0.45);
   }
+  /* Specular highlight (white) inside a wider primary glow, both following the pointer. */
   .lift-card::after {
     content: "";
     position: absolute;
@@ -422,17 +443,81 @@
     border-radius: inherit;
     pointer-events: none;
     opacity: 0;
-    background: radial-gradient(240px circle at var(--mx, 50%) var(--my, 50%), hsl(var(--primary) / 0.14), transparent);
+    background:
+      radial-gradient(160px circle at var(--mx, 50%) var(--my, 0%), hsl(0 0% 100% / 0.14), transparent 60%),
+      radial-gradient(320px circle at var(--mx, 50%) var(--my, 0%), hsl(var(--primary) / 0.14), transparent 70%);
     transition: opacity 200ms cubic-bezier(0.2, 0, 0, 1);
   }
   @media (hover: hover) and (min-width: 1024px) {
     .lift-card:hover::after { opacity: 1; }
   }
 
+  /* ---------- 3D stone buttons ---------- */
+  .btn-3d {
+    --edge: 4px;
+    --rise: 0px;
+    transform: translateY(var(--rise));
+    box-shadow:
+      inset 0 1px 0 hsl(0 0% 100% / 0.38),
+      inset 0 -2px 0 hsl(0 0% 0% / 0.12),
+      0 var(--edge) 0 var(--btn-edge, transparent),
+      0 calc(var(--edge) + 8px) 18px -6px var(--btn-drop, transparent);
+    transition:
+      transform 160ms cubic-bezier(0.2, 0, 0, 1),
+      box-shadow 160ms cubic-bezier(0.2, 0, 0, 1),
+      background-color 150ms cubic-bezier(0.2, 0, 0, 1),
+      color 150ms;
+  }
+  .btn-3d:hover:not(:disabled) { --edge: 6px; --rise: -2px; }
+  .btn-3d:active:not(:disabled) { --edge: 1px; --rise: 3px; transition-duration: 70ms; }
+  .btn-3d:disabled { box-shadow: none; transform: none; }
+  .btn-filled {
+    background-image: linear-gradient(180deg, hsl(var(--primary-hi)), hsl(var(--primary)) 70%);
+    --btn-edge: hsl(var(--primary-edge));
+    --btn-drop: hsl(var(--primary) / 0.5);
+  }
+  .btn-tonal {
+    background-image: linear-gradient(180deg, hsl(0 0% 100% / 0.14), transparent 70%);
+    --btn-edge: hsl(var(--container-edge));
+    --btn-drop: hsl(var(--shadow-tint) / 0.35);
+  }
+  .btn-glass {
+    --btn-edge: var(--btn-edge-glass);
+    --btn-drop: hsl(var(--shadow-tint) / 0.4);
+  }
+  .btn-outline3d {
+    --btn-edge: var(--btn-edge-outline);
+    --btn-drop: transparent;
+  }
+
+  /* Polished pebble: organic outline, top-left specular, carved underside. */
+  .pebble {
+    border-radius: 46% 54% 52% 48% / 55% 48% 52% 45%;
+    background-image: radial-gradient(120% 90% at 30% 18%, hsl(0 0% 100% / 0.42), transparent 52%);
+    box-shadow:
+      inset 0 -3px 6px hsl(var(--shadow-tint) / 0.28),
+      inset 0 2px 2px hsl(0 0% 100% / 0.35),
+      0 8px 16px -8px hsl(var(--shadow-tint) / 0.55);
+  }
+
+  /* Carved-in fields */
+  .carved {
+    box-shadow: inset 0 2px 4px hsl(var(--shadow-tint) / 0.16), inset 0 -1px 0 hsl(0 0% 100% / 0.06);
+  }
+
+  /* Small 3D lip for selected chips and the tab indicator */
+  .lip {
+    box-shadow:
+      inset 0 1px 0 hsl(0 0% 100% / 0.3),
+      0 2px 0 hsl(var(--container-edge)),
+      0 6px 12px -6px hsl(var(--shadow-tint) / 0.4);
+  }
+
   /* ---------- Scroll reveal ---------- */
   .reveal {
     opacity: 0;
-    transform: translateY(24px);
+    transform: perspective(800px) translateY(32px) rotateX(10deg);
+    transform-origin: 50% 100%;
     transition:
       opacity 500ms cubic-bezier(0.05, 0.7, 0.1, 1),
       transform 500ms cubic-bezier(0.05, 0.7, 0.1, 1);
@@ -464,6 +549,8 @@
   .reveal { opacity: 1; transform: none; }
   .ripple-wave { display: none; }
   .lift-card::after { display: none; }
+  .lift-card { transform: none !important; }
+  .btn-3d { transform: none !important; }
 }
 
 @media (prefers-reduced-transparency: reduce) {

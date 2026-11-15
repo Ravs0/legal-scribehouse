@@ -72,7 +72,7 @@ export const ReadinessCheck = () => {
   const progress = done ? 1 : step / total;
 
   return (
-    <section id="readiness" className="section">
+    <section id="readiness" data-stage="readiness" className="section">
       <div className="container">
         <div className="grid-12 items-start gap-y-8">
           <div className="col-span-4 md:col-span-12 lg:sticky lg:top-[120px] lg:col-span-5">

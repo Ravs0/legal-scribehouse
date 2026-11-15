@@ -58,7 +58,7 @@ export const Markets = () => {
   };
 
   return (
-    <section id="markets" className="section">
+    <section id="markets" data-stage="markets" className="section">
       <div className="container">
         <div className="grid-12">
           <SectionHeading
@@ -79,7 +79,7 @@ export const Markets = () => {
             >
               <span
                 aria-hidden="true"
-                className="absolute bottom-1 top-1 rounded-full bg-primary-container shadow-elevation-1 transition-[transform,width] duration-medium3 ease-emphasized"
+                className="lip absolute bottom-1 top-1 rounded-full bg-primary-container transition-[transform,width] duration-medium3 ease-emphasized"
                 style={{ width: indicator.width, transform: `translateX(${indicator.left - 4}px)`, left: 4 }}
               />
               {MARKETS.map((m, i) => {
@@ -117,7 +117,7 @@ export const Markets = () => {
             <div key={market.code} className="grid-12 animate-panel-in gap-y-8">
               <div className="col-span-4 md:col-span-5">
                 <div className="flex items-center gap-4">
-                  <span className="type-title-lg flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-tertiary-container text-tertiary-on-container">
+                  <span className="pebble type-title-lg flex h-14 w-14 shrink-0 items-center justify-center bg-tertiary-container text-tertiary-on-container">
                     {market.code}
                   </span>
                   <h3 className="type-headline-md">{market.name}</h3>

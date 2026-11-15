@@ -21,7 +21,7 @@ export const FilterChip = React.forwardRef<HTMLButtonElement, FilterChipProps>(
       className={cn(
         'state-layer type-label-md relative inline-flex h-9 shrink-0 items-center gap-1.5 overflow-hidden rounded-full transition-colors duration-short3 ease-standard',
         selected
-          ? 'bg-primary-container pl-2.5 pr-4 text-primary-on-container'
+          ? 'lip bg-primary-container pl-2.5 pr-4 text-primary-on-container'
           : 'border border-outline-variant px-4 text-foreground',
         className,
       )}
@@ -68,7 +68,7 @@ export const IconContainer = ({ icon: Icon, size = 'md', tone = 'primary', class
   <span
     aria-hidden="true"
     className={cn(
-      'inline-flex shrink-0 items-center justify-center rounded-md',
+      'pebble inline-flex shrink-0 items-center justify-center',
       size === 'md' ? 'h-12 w-12' : 'h-10 w-10',
       TONES[tone],
       className,

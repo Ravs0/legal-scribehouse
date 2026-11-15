@@ -5,6 +5,7 @@ import { AssistChip } from '@/components/ui/chip';
 import { HashLink } from '@/components/site/HashLink';
 import { ClearanceConsole } from '@/components/home/ClearanceConsole';
 import { useHeroVisible } from '@/stores/heroVisible';
+import { Magnetic } from '@/components/motion/Magnetic';
 
 const TRUST = ['10 ASEAN markets', '6 advisory services', '2-minute readiness check'];
 const stagger = (ms: number) => ({ animationDelay: `${ms}ms` });
@@ -28,7 +29,7 @@ export const Hero = () => {
   }, [setVisible]);
 
   return (
-    <section ref={ref} className="flex min-h-[calc(100svh-76px)] items-center pb-24 pt-10 lg:pt-16">
+    <section ref={ref} data-stage="hero" className="flex min-h-[calc(100svh-76px)] items-center pb-24 pt-10 lg:pt-16">
       <div className="container">
         <div className="grid-12 items-center gap-y-10">
           <div className="col-span-4 md:col-span-12 lg:col-span-6">
@@ -46,14 +47,18 @@ export const Hero = () => {
               for small exporters, explained in plain English.
             </p>
             <div className="mt-8 flex animate-fade-up flex-col gap-3 sm:flex-row" style={stagger(240)}>
-              <Button asChild size="lg" icon="trailing" className="w-full sm:w-auto">
-                <HashLink to="contact">
-                  Book a consult <ArrowRight aria-hidden="true" />
-                </HashLink>
-              </Button>
-              <Button asChild size="lg" variant="glass" className="w-full sm:w-auto">
-                <HashLink to="readiness">Check my readiness</HashLink>
-              </Button>
+              <Magnetic className="w-full sm:w-auto">
+                <Button asChild size="lg" icon="trailing" className="w-full sm:w-auto">
+                  <HashLink to="contact">
+                    Book a consult <ArrowRight aria-hidden="true" />
+                  </HashLink>
+                </Button>
+              </Magnetic>
+              <Magnetic className="w-full sm:w-auto">
+                <Button asChild size="lg" variant="glass" className="w-full sm:w-auto">
+                  <HashLink to="readiness">Check my readiness</HashLink>
+                </Button>
+              </Magnetic>
             </div>
             <ul
               className="type-body-sm mt-8 flex animate-fade-up flex-wrap items-center gap-x-3 gap-y-2 text-muted-foreground"

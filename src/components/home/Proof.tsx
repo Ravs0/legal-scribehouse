@@ -4,6 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { CountUp } from '@/components/motion/CountUp';
 import { Reveal } from '@/components/motion/Reveal';
 import { SectionHeading } from '@/components/site/SectionHeading';
+import { tilt } from '@/hooks/usePointerGlow';
 
 const initials = (who: string) =>
   who
@@ -15,7 +16,7 @@ const initials = (who: string) =>
     .join('');
 
 export const Proof = () => (
-  <section id="proof" className="section">
+  <section id="proof" data-stage="proof" className="section">
     <div className="container">
       <div className="grid-12">
         <SectionHeading
@@ -36,7 +37,7 @@ export const Proof = () => (
 
       <dl className="after-heading stack-gap grid grid-cols-2 lg:grid-cols-4">
         {STATS.map((s, i) => (
-          <Reveal key={s.label} index={i} className="glass-subtle flex flex-col-reverse rounded-lg p-5 md:p-6">
+          <Reveal key={s.label} index={i} className="glass-subtle lift-card flex flex-col-reverse rounded-lg p-5 md:p-6">
             <dt className="type-body-sm mt-2 text-muted-foreground">{s.label}</dt>
             <dd className="type-display-md text-gradient tabular">
               <CountUp value={s.value} suffix={s.suffix} />
@@ -48,11 +49,11 @@ export const Proof = () => (
       <ul className="no-scrollbar -mx-4 mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6 md:mx-0 md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:px-0 xl:gap-8">
         {TESTIMONIALS.map((t, i) => (
           <Reveal as="li" key={t.who} index={i} className="w-[86vw] shrink-0 snap-center md:w-auto">
-            <figure className="glass-subtle card-pad flex h-full flex-col rounded-lg">
+            <figure {...tilt} className="glass-subtle lift-card card-pad flex h-full flex-col rounded-lg">
               <Quote className="h-6 w-6 text-primary" aria-hidden="true" />
               <blockquote className="type-body-lg mt-4 flex-1">{t.quote}</blockquote>
               <figcaption className="mt-6 flex items-center gap-3 border-t border-outline-variant pt-5">
-                <span className="type-label-md flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-tertiary-container text-tertiary-on-container">
+                <span className="pebble type-label-md flex h-10 w-10 shrink-0 items-center justify-center bg-tertiary-container text-tertiary-on-container">
                   {initials(t.who)}
                 </span>
                 <div className="min-w-0">

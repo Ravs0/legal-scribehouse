@@ -17,6 +17,7 @@ import { INSIGHT_LINKS, SECTIONS } from '@/config/nav';
 import { useScrollSpy } from '@/hooks/useScrollSpy';
 import { spawnRipple } from '@/hooks/useRipple';
 import { cn } from '@/lib/utils';
+import { Magnetic } from '@/components/motion/Magnetic';
 
 export const Wordmark = ({ withDescriptor = false }: { withDescriptor?: boolean }) => (
   <span className="flex items-center gap-2.5">
@@ -138,11 +139,13 @@ const Header = () => {
 
           <div className="flex items-center gap-1 md:gap-2">
             <ThemeToggle />
-            <Button asChild icon="trailing" className="hidden lg:inline-flex">
-              <HashLink to="contact">
-                Book a consult <ArrowRight aria-hidden="true" />
-              </HashLink>
-            </Button>
+            <Magnetic className="hidden lg:inline-flex">
+              <Button asChild icon="trailing">
+                <HashLink to="contact">
+                  Book a consult <ArrowRight aria-hidden="true" />
+                </HashLink>
+              </Button>
+            </Magnetic>
             <Button asChild size="sm" className="hidden min-[480px]:inline-flex lg:hidden">
               <HashLink to="contact">Book a consult</HashLink>
             </Button>

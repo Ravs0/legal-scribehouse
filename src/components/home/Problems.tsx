@@ -2,7 +2,7 @@ import { AlertTriangle, FileX, PackageX } from 'lucide-react';
 import { IconContainer } from '@/components/ui/chip';
 import { Reveal } from '@/components/motion/Reveal';
 import { SectionHeading } from '@/components/site/SectionHeading';
-import { pointerGlow } from '@/hooks/usePointerGlow';
+import { tilt } from "@/hooks/usePointerGlow";
 
 const PROBLEMS = [
   {
@@ -23,7 +23,7 @@ const PROBLEMS = [
 ];
 
 export const Problems = () => (
-  <section id="problems" className="section">
+  <section id="problems" data-stage="problems" className="section">
     <div className="container">
       <div className="grid-12">
         <SectionHeading
@@ -35,7 +35,7 @@ export const Problems = () => (
       <ul className="grid-12 after-heading">
         {PROBLEMS.map((p, i) => (
           <Reveal as="li" key={p.title} index={i} className="col-span-4">
-            <article onMouseMove={pointerGlow} className="glass-subtle lift-card card-pad h-full rounded-lg">
+            <article {...tilt} className="glass-subtle lift-card card-pad h-full rounded-lg">
               <IconContainer icon={p.icon} size="sm" tone="destructive" />
               <h3 className="type-title-lg mt-5">{p.title}</h3>
               <p className="type-body-md mt-2 text-muted-foreground">{p.copy}</p>

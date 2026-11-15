@@ -11,7 +11,7 @@ import { spawnRipple } from "@/hooks/useRipple";
  */
 const buttonVariants = cva(
   [
-    "state-layer press relative inline-flex shrink-0 select-none items-center justify-center overflow-hidden whitespace-nowrap rounded-full",
+    "state-layer relative inline-flex shrink-0 select-none items-center justify-center overflow-hidden whitespace-nowrap rounded-full",
     "transition-[box-shadow,background-color,border-color,color,transform] duration-short3 ease-standard",
     "disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-foreground/[0.12] disabled:text-foreground/[0.38] disabled:shadow-none disabled:border-transparent",
     "[&_svg]:pointer-events-none [&_svg]:shrink-0",
@@ -19,12 +19,12 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-primary text-primary-foreground hover:shadow-[var(--elevation-1),0_8px_28px_hsl(var(--primary)/0.35)]",
-        secondary: "bg-primary-container text-primary-on-container",
-        outline: "border border-input bg-transparent text-primary focus-visible:border-primary",
-        ghost: "bg-transparent text-primary",
-        glass: "glass-subtle text-foreground hover:shadow-elevation-2",
-        destructive: "bg-destructive text-destructive-foreground",
+        default: "btn-3d btn-filled bg-primary text-primary-foreground",
+        secondary: "btn-3d btn-tonal bg-primary-container text-primary-on-container",
+        outline: "btn-3d btn-outline3d border border-input bg-background/40 text-primary focus-visible:border-primary",
+        ghost: "press bg-transparent text-primary",
+        glass: "glass-subtle btn-3d btn-glass text-foreground",
+        destructive: "btn-3d bg-destructive text-destructive-foreground",
         link: "h-auto rounded-sm px-0 text-primary underline-offset-4 hover:underline before:hidden",
       },
       size: {
