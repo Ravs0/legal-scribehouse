@@ -13,7 +13,7 @@ import { SectionHeading } from '@/components/site/SectionHeading';
 import { Reveal } from '@/components/motion/Reveal';
 import { SITE } from '@/config/site';
 import { MARKETS } from '@/data/markets';
-import { submitEnquiry, type Enquiry } from '@/lib/enquiry';
+import { IS_PREVIEW, submitEnquiry, type Enquiry } from '@/lib/enquiry';
 import { useEnquiryDraft } from '@/stores/enquiryDraft';
 import { cn } from '@/lib/utils';
 
@@ -103,9 +103,10 @@ export const Contact = () => {
     if (values.website) return;
     await submitEnquiry(values as Enquiry);
     setSent(true);
-    toast.success('Enquiry ready to send', {
-      description: `Your email app should have opened. If not, write to ${SITE.email}.`,
-    });
+    if (!IS_PREVIEW)
+      toast.success('Enquiry ready to send', {
+        description: `Your email app should have opened. If not, write to ${SITE.email}.`,
+      });
   };
 
   const a11y = (name: keyof FormValues) => ({
@@ -141,8 +142,14 @@ export const Contact = () => {
               {sent ? (
                 <div role="status" className="flex animate-step-in flex-col items-start py-4">
                   <IconContainer icon={Check} tone="success" className="h-12 w-12" />
-                  <p className="type-headline-sm mt-6">Thanks, we've got it.</p>
-                  <p className="type-body-md mt-2 max-w-[52ch] text-muted-foreground">
+                  <p className="type-headline-sm mt-6">{IS_PREVIEW ? 'This is a preview of the form.' : "Thanks, we've got it."}</p>
+                  {IS_PREVIEW ? (
+                    <p className="type-body-md mt-2 max-w-[52ch] text-muted-foreground">
+                      Enquiries aren't sent from this preview link. On the live site this opens a prefilled email to{' '}
+                      <span className="select-all font-semibold text-foreground">{SITE.email}</span>.
+                    </p>
+                  ) : (
+                    <p className="type-body-md mt-2 max-w-[52ch] text-muted-foreground">
                     Your email app should have opened with everything filled in. Hit send there and we'll reply within
                     one business day. Nothing opened? Write to{' '}
                     <a className="text-primary-ink underline underline-offset-[3px]" href={`mailto:${SITE.email}`}>
@@ -150,6 +157,7 @@ export const Contact = () => {
                     </a>
                     .
                   </p>
+                  )}
                   <Button
                     variant="outline"
                     className="mt-8"

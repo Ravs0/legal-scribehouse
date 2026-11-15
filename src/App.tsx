@@ -2,7 +2,10 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, MemoryRouter, Routes, Route } from "react-router-dom";
+
+// Hosted previews can't change the page URL, so they route in memory.
+const Router = import.meta.env.VITE_ARTIFACT ? MemoryRouter : BrowserRouter;
 import { ThemeProvider } from "next-themes";
 import Header from "@/components/Layout/Header";
 import Footer from "@/components/Layout/Footer";
@@ -31,7 +34,7 @@ const App = () => (
       <TooltipProvider>
         <Toaster />
         <Sonner position="bottom-right" />
-        <BrowserRouter>
+        <Router>
           <ScrollManager />
           <DawnBackground />
           <div className="relative flex min-h-screen flex-col">
@@ -61,7 +64,7 @@ const App = () => (
             </main>
             <Footer />
           </div>
-        </BrowserRouter>
+        </Router>
       </TooltipProvider>
     </ThemeProvider>
   </QueryClientProvider>

@@ -10,6 +10,16 @@ export default defineConfig(({ mode }) => ({
     port: 8080,
   },
   plugins: [react(), mode === "development" && componentTagger()].filter(Boolean),
+  // "artifact" mode: a self-contained build with relative paths and fixed file names, for hosted previews.
+  ...(mode === "artifact"
+    ? {
+        base: "./",
+        build: {
+          outDir: "dist-artifact",
+          rollupOptions: { output: { entryFileNames: "assets/app.js", assetFileNames: "assets/[name][extname]" } },
+        },
+      }
+    : {}),
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

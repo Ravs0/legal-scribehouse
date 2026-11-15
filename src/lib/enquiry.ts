@@ -18,7 +18,11 @@ export interface Enquiry {
  * client with a prefilled email to SITE.email. Swap the body of this function for a real
  * endpoint (form service, Supabase edge function, CRM webhook) when one exists.
  */
+export const IS_PREVIEW = Boolean(import.meta.env.VITE_ARTIFACT);
+
 export async function submitEnquiry(e: Enquiry): Promise<void> {
+  // Hosted previews cannot open mail apps; the form shows a preview notice instead.
+  if (IS_PREVIEW) return;
   const subject = `Consult request: ${e.company || e.name}`;
   const body = [
     `Name: ${e.name}`,
