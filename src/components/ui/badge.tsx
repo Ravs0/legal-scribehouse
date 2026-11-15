@@ -3,15 +3,19 @@ import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
 
+/** Tonal M3 badge: 24px, pill, role colour on a 16%-alpha container. */
 const badgeVariants = cva(
-  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
+  "type-label-sm inline-flex h-6 shrink-0 items-center gap-1 whitespace-nowrap rounded-full px-2.5 transition-colors",
   {
     variants: {
       variant: {
-        default: "border-transparent bg-primary text-primary-foreground hover:bg-primary/80",
-        secondary: "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        destructive: "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
-        outline: "text-foreground",
+        default: "bg-primary/[0.16] text-primary",
+        secondary: "bg-secondary text-secondary-foreground",
+        tertiary: "bg-tertiary/[0.16] text-tertiary",
+        success: "bg-success/[0.16] text-success",
+        warning: "bg-warning/[0.16] text-warning",
+        destructive: "bg-destructive/[0.16] text-destructive",
+        outline: "border border-outline-variant text-foreground",
       },
     },
     defaultVariants: {

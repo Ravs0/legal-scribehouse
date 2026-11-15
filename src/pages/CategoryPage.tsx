@@ -1,20 +1,16 @@
 import { useParams } from 'react-router-dom';
-import { useBlogStore } from '@/stores/blogStore';
 import { LEGAL_CATEGORIES } from '@/types/blog';
+import { InsightsListing } from './Insights';
 
 const CategoryPage = () => {
   const { category } = useParams();
-  const { getContentByCategory } = useBlogStore();
-  const categoryInfo = LEGAL_CATEGORIES.find(c => c.slug === category);
-  const content = getContentByCategory(categoryInfo?.id || '');
-
+  const info = LEGAL_CATEGORIES.find((c) => c.slug === category);
   return (
-    <div className="container py-8">
-      <p className="label-mono mb-3 text-accent">Insights</p>
-      <h1 className="text-4xl font-semibold tracking-tight mb-4">{categoryInfo?.name}</h1>
-      <p className="text-lg text-muted-foreground mb-8">{content.length} articles</p>
-    </div>
+    <InsightsListing
+      category={info?.id ?? category}
+      title={`${info?.name ?? 'Topic'}.`}
+      subtitle={info?.description ?? 'Everything we have published on this topic.'}
+    />
   );
 };
-
 export default CategoryPage;

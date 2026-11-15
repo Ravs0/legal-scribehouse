@@ -1,63 +1,71 @@
-import { useRef } from 'react';
-import { useInView } from '@/hooks/useInView';
+import { Quote } from 'lucide-react';
 import { PLACEHOLDER, STATS, TESTIMONIALS } from '@/data/proof';
+import { Badge } from '@/components/ui/badge';
 import { CountUp } from '@/components/motion/CountUp';
 import { Reveal } from '@/components/motion/Reveal';
-import { Stamp } from '@/components/motion/Stamp';
-import { SectionLabel } from '@/components/site/SectionLabel';
+import { SectionHeading } from '@/components/site/SectionHeading';
 
-export const Proof = () => {
-  const stampRef = useRef<HTMLDivElement>(null);
-  const stampIn = useInView(stampRef, { threshold: 0.6 });
+const initials = (who: string) =>
+  who
+    .replace(/\(.*?\)/g, '')
+    .split(/[ ,]+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase())
+    .join('');
 
-  return (
-    <section className="relative py-20 md:py-28">
-      <div className="container">
-        <SectionLabel index="07" label="TRACK RECORD" />
-        <div className="flex flex-wrap items-end justify-between gap-6">
-          <Reveal>
-            <h2 className="text-3xl font-semibold leading-tight tracking-tight md:text-5xl">
-              Small exporters, <em className="font-medium text-accent">cleared</em>.
-            </h2>
-            {PLACEHOLDER && (
-              <p className="mt-4 inline-block border border-dashed border-accent px-2 py-1 font-mono text-xs uppercase tracking-[0.12em] text-accent">
-                Sample data · replace before launch
-              </p>
-            )}
-          </Reveal>
-          <div ref={stampRef} aria-hidden="true" className="hidden h-16 w-44 items-center justify-center md:flex">
-            {stampIn && <Stamp sub="SGSIN">Cleared</Stamp>}
-          </div>
-        </div>
-
-        <dl className="mt-12 grid grid-cols-2 gap-px overflow-hidden border border-border bg-border lg:grid-cols-4">
-          {STATS.map((s, i) => (
-            <Reveal key={s.label} index={i} className="bg-background p-5 md:p-8">
-              <dt className="label-mono text-muted-foreground">{s.label}</dt>
-              <dd className="mt-3 font-display text-4xl font-semibold md:text-5xl">
-                <CountUp value={s.value} suffix={s.suffix} />
-              </dd>
-            </Reveal>
-          ))}
-        </dl>
-
-        <ul className="mt-10 grid gap-6 md:grid-cols-3">
-          {TESTIMONIALS.map((t, i) => (
-            <Reveal as="li" key={t.who} index={i}>
-              <figure className="flex h-full flex-col border border-border bg-card p-6">
-                <span aria-hidden="true" className="font-display text-5xl leading-none text-accent">
-                  “
-                </span>
-                <blockquote className="mt-2 flex-1 text-lg leading-snug">{t.quote}</blockquote>
-                <figcaption className="mt-6 border-t border-dashed border-rule pt-3">
-                  <div className="font-medium">{t.who}</div>
-                  <div className="font-mono text-xs uppercase tracking-[0.1em] text-muted-foreground">{t.route}</div>
-                </figcaption>
-              </figure>
-            </Reveal>
-          ))}
-        </ul>
+export const Proof = () => (
+  <section id="proof" className="section">
+    <div className="container">
+      <div className="grid-12">
+        <SectionHeading
+          className="col-span-4 md:col-span-7"
+          eyebrow="Results"
+          title={
+            <>
+              Small exporters, cleared to sell.
+              {PLACEHOLDER && (
+                <Badge variant="warning" className="ml-3 align-middle">
+                  Sample data
+                </Badge>
+              )}
+            </>
+          }
+        />
       </div>
-    </section>
-  );
-};
+
+      <dl className="after-heading stack-gap grid grid-cols-2 lg:grid-cols-4">
+        {STATS.map((s, i) => (
+          <Reveal key={s.label} index={i} className="glass-subtle flex flex-col-reverse rounded-lg p-5 md:p-6">
+            <dt className="type-body-sm mt-2 text-muted-foreground">{s.label}</dt>
+            <dd className="type-display-md text-gradient tabular">
+              <CountUp value={s.value} suffix={s.suffix} />
+            </dd>
+          </Reveal>
+        ))}
+      </dl>
+
+      <ul className="no-scrollbar -mx-4 mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6 md:mx-0 md:grid md:grid-cols-3 md:gap-6 md:overflow-visible md:px-0 xl:gap-8">
+        {TESTIMONIALS.map((t, i) => (
+          <Reveal as="li" key={t.who} index={i} className="w-[86vw] shrink-0 snap-center md:w-auto">
+            <figure className="glass-subtle card-pad flex h-full flex-col rounded-lg">
+              <Quote className="h-6 w-6 text-primary" aria-hidden="true" />
+              <blockquote className="type-body-lg mt-4 flex-1">{t.quote}</blockquote>
+              <figcaption className="mt-6 flex items-center gap-3 border-t border-outline-variant pt-5">
+                <span className="type-label-md flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-tertiary-container text-tertiary-on-container">
+                  {initials(t.who)}
+                </span>
+                <div className="min-w-0">
+                  <div className="type-label-lg">{t.who}</div>
+                  <Badge variant="tertiary" className="mt-1">
+                    {t.route}
+                  </Badge>
+                </div>
+              </figcaption>
+            </figure>
+          </Reveal>
+        ))}
+      </ul>
+    </div>
+  </section>
+);

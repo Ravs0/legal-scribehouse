@@ -1,59 +1,95 @@
-import { Button } from '@/components/ui/button';
-import { HashLink } from '@/components/site/HashLink';
-import { SectionLabel } from '@/components/site/SectionLabel';
+import { Compass, Handshake, Receipt, Users } from 'lucide-react';
+import { IconContainer } from '@/components/ui/chip';
+import { Badge } from '@/components/ui/badge';
+import { CountUp } from '@/components/motion/CountUp';
 import { Reveal } from '@/components/motion/Reveal';
+import { CtaBand } from '@/components/site/CtaBand';
+import { SectionHeading } from '@/components/site/SectionHeading';
 import { SITE } from '@/config/site';
+import { PLACEHOLDER, STATS } from '@/data/proof';
+import { pointerGlow } from '@/hooks/usePointerGlow';
 
 const PRINCIPLES = [
   {
+    icon: Compass,
     title: 'Plain answers',
     copy: 'We name the document, the regulator and the deadline. If the answer is "it depends", we tell you what it depends on.',
   },
   {
+    icon: Receipt,
     title: 'Fixed fees where we can',
     copy: 'Most work is scoped up front, so you know the number before we start and can budget the whole route.',
   },
   {
+    icon: Handshake,
     title: 'Local counsel, coordinated',
-    copy: 'Where local-law advice is needed, it comes from, or together with, locally qualified practitioners. You deal with one desk.',
-  },
-  {
-    title: 'Built for small teams',
-    copy: 'No in-house lawyer? That is who we work for. Checklists, templates and briefings your team can reuse.',
+    copy: 'Where local-law advice is needed, it comes from, or together with, locally qualified practitioners. You deal with one team.',
   },
 ];
 
 const About = () => (
-  <div className="container py-14 md:py-20">
-    <SectionLabel index="AB" label="ABOUT" />
-    <h1 className="max-w-4xl text-[clamp(2.25rem,6vw,4rem)] font-semibold leading-[1.05] tracking-tight">
-      Export counsel for businesses that don't have a <em className="font-medium text-accent">legal department</em>.
-    </h1>
-    <p className="mt-6 max-w-2xl text-lg text-muted-foreground">
-      {SITE.name} helps small and growing product businesses sell into Southeast Asia: choosing a market-entry
-      structure, getting products registered, using trade agreements properly, protecting their brand, and signing
-      contracts that hold up when something goes wrong.
-    </p>
+  <>
+    <section className="container pb-16 pt-12 md:pt-16">
+      <div className="grid-12">
+        <SectionHeading
+          as="h1"
+          className="col-span-4 md:col-span-8"
+          eyebrow="About"
+          title="Trade counsel sized for small exporters."
+          subtitle={`${SITE.name} helps small and growing product businesses sell into Southeast Asia, without a legal department.`}
+        />
+      </div>
 
-    <ul className="mt-14 grid gap-px overflow-hidden border border-border bg-border md:grid-cols-2">
-      {PRINCIPLES.map((p, i) => (
-        <Reveal as="li" key={p.title} index={i} className="bg-background p-6 md:p-8">
-          <div className="label-mono text-accent">P-{String(i + 1).padStart(2, '0')}</div>
-          <h2 className="mt-3 text-2xl font-semibold">{p.title}</h2>
-          <p className="mt-2 text-muted-foreground">{p.copy}</p>
+      <div className="grid-12 after-heading">
+        <Reveal className="glass panel-pad col-span-4 rounded-xl md:col-span-12 lg:col-span-7">
+          <IconContainer icon={Users} />
+          <h2 className="type-headline-sm mt-6">Why we exist</h2>
+          <div className="type-body-lg mt-4 space-y-4 text-muted-foreground">
+            <p>
+              Large companies have legal teams who know what a distributor agreement should say, which agency registers
+              a cosmetic in Indonesia, and how to prove origin for a lower tariff. Small exporters usually find out the
+              hard way.
+            </p>
+            <p>
+              We close that gap: market-entry structure, contracts, customs and FTAs, product registration, trademarks
+              and dispute planning, explained clearly and priced up front.
+            </p>
+          </div>
         </Reveal>
-      ))}
-    </ul>
+        <div className="stack-gap col-span-4 grid grid-cols-2 md:col-span-12 lg:col-span-5">
+          {STATS.map((s, i) => (
+            <Reveal key={s.label} index={i} className="glass-subtle flex flex-col justify-center rounded-lg p-5 md:p-6">
+              <span className="type-display-md text-gradient tabular">
+                <CountUp value={s.value} suffix={s.suffix} />
+              </span>
+              <span className="type-body-sm mt-2 text-muted-foreground">{s.label}</span>
+            </Reveal>
+          ))}
+          {PLACEHOLDER && (
+            <Badge variant="warning" className="col-span-2 justify-self-start">
+              Sample data
+            </Badge>
+          )}
+        </div>
+      </div>
+    </section>
 
-    <div className="mt-14 flex flex-col items-start gap-4 border-t border-dashed border-rule pt-8 sm:flex-row sm:items-center sm:justify-between">
-      <p className="font-display text-2xl font-semibold">Planning your first shipment?</p>
-      <Button asChild size="lg" className="arrow-nudge h-12 rounded-sm px-6">
-        <HashLink to="contact">
-          Book a free 30-minute consult <span className="arrow ml-1 font-mono">-&gt;</span>
-        </HashLink>
-      </Button>
-    </div>
-  </div>
+    <section className="container pb-16 md:pb-24">
+      <SectionHeading eyebrow="How we work" title="Three promises we keep." />
+      <ul className="after-heading stack-gap grid md:grid-cols-3">
+        {PRINCIPLES.map((p, i) => (
+          <Reveal as="li" key={p.title} index={i}>
+            <article onMouseMove={pointerGlow} className="glass-subtle lift-card card-pad h-full rounded-lg">
+              <IconContainer icon={p.icon} />
+              <h3 className="type-title-lg mt-5">{p.title}</h3>
+              <p className="type-body-md mt-2 text-muted-foreground">{p.copy}</p>
+            </article>
+          </Reveal>
+        ))}
+      </ul>
+    </section>
+    <CtaBand />
+  </>
 );
 
 export default About;

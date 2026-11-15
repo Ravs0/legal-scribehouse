@@ -1,5 +1,5 @@
 import { Hero } from '@/components/home/Hero';
-import { ProblemStrip } from '@/components/home/ProblemStrip';
+import { Problems } from '@/components/home/Problems';
 import { Markets } from '@/components/home/Markets';
 import { Services } from '@/components/home/Services';
 import { Process } from '@/components/home/Process';
@@ -12,7 +12,7 @@ import { Contact } from '@/components/home/Contact';
 const Index = () => (
   <>
     <Hero />
-    <ProblemStrip />
+    <Problems />
     <Markets />
     <Services />
     <Process />

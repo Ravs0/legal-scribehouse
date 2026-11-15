@@ -9,6 +9,8 @@ import Footer from "@/components/Layout/Footer";
 import Index from "./pages/Index";
 import Insights from "./pages/Insights";
 import { ScrollManager } from "@/components/site/ScrollManager";
+import { AuroraBackground } from "@/components/site/AuroraBackground";
+import { PageTransition } from "@/components/site/PageTransition";
 import Posts from "./pages/Posts";
 import Cases from "./pages/Cases";
 import Statutes from "./pages/Statutes";
@@ -25,15 +27,17 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
       <TooltipProvider>
         <Toaster />
         <Sonner position="bottom-right" />
         <BrowserRouter>
           <ScrollManager />
-          <div className="min-h-screen flex flex-col">
+          <AuroraBackground />
+          <div className="relative flex min-h-screen flex-col">
             <Header />
-            <main className="flex-1">
+            <main id="main" className="flex-1">
+              <PageTransition>
               <Routes>
                 <Route path="/" element={<Index />} />
                 <Route path="/insights" element={<Insights />} />
@@ -53,6 +57,7 @@ const App = () => (
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
+              </PageTransition>
             </main>
             <Footer />
           </div>

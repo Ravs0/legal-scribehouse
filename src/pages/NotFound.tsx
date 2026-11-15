@@ -1,31 +1,25 @@
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-const SHIP = String.raw`
-        __|__
-  ___/_[]_[]\__
-  \__________/
-~~~~~~~~~~~~~~~~~~~~~`;
-
-const NotFound = () => {
-  const { pathname } = useLocation();
-  return (
-    <div className="container flex min-h-[70vh] flex-col items-center justify-center py-20 text-center">
-      <pre aria-hidden="true" className="select-none font-mono text-sm leading-tight text-ascii sm:text-base">
-        {SHIP}
-      </pre>
-      <p className="label-mono mt-8 text-accent">ERR 404 · Consignment not found</p>
-      <h1 className="mt-3 text-4xl font-semibold tracking-tight md:text-5xl">This page never left port.</h1>
-      <p className="mt-4 max-w-md text-muted-foreground">
-        Nothing is manifested at <code className="break-all font-mono text-sm text-foreground">{pathname}</code>.
-      </p>
-      <Button asChild className="arrow-nudge mt-8 rounded-sm font-mono">
+const NotFound = () => (
+  <div className="container flex min-h-[70svh] flex-col items-center justify-center py-16 text-center">
+    <p className="type-display-lg text-gradient tabular" aria-hidden="true">
+      404
+    </p>
+    <h1 className="type-headline-md mt-4">This route isn't on the map.</h1>
+    <p className="type-body-md mt-2 text-muted-foreground">The page moved or never existed.</p>
+    <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+      <Button asChild icon="trailing">
         <Link to="/">
-          Back to home <span className="arrow">-&gt;</span>
+          Back to home <ArrowRight aria-hidden="true" />
         </Link>
       </Button>
+      <Button asChild variant="ghost">
+        <Link to="/insights">Browse insights</Link>
+      </Button>
     </div>
-  );
-};
+  </div>
+);
 
 export default NotFound;

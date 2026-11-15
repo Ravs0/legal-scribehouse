@@ -1,8 +1,11 @@
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { ArrowRight, ChevronDown } from 'lucide-react';
+import * as AccordionPrimitive from '@radix-ui/react-accordion';
+import { Button } from '@/components/ui/button';
+import { HashLink } from '@/components/site/HashLink';
+import { SectionHeading } from '@/components/site/SectionHeading';
 import { Reveal } from '@/components/motion/Reveal';
-import { SectionLabel } from '@/components/site/SectionLabel';
 
-// The "licensed" answer depends on the firm's regulatory status; confirm the wording before launch.
+// The "licensed" answer depends on the firm's regulatory status; confirm wording before launch.
 const FAQS = [
   {
     q: 'Do I need a local company to export?',
@@ -31,34 +34,41 @@ const FAQS = [
 ];
 
 export const Faq = () => (
-  <section id="faq" className="scroll-mt-20 py-20 md:py-28">
-    <div className="container grid gap-10 lg:grid-cols-12">
-      <div className="lg:col-span-4">
-        <SectionLabel index="09" label="QUESTIONS" />
-        <Reveal>
-          <h2 className="text-3xl font-semibold leading-tight tracking-tight md:text-5xl">
-            Fair <em className="font-medium text-accent">questions</em>.
-          </h2>
-          <p className="mt-4 text-lg text-muted-foreground">The things most first-time exporters ask us.</p>
+  <section id="faq" className="section">
+    <div className="container">
+      <div className="grid-12 items-start gap-y-8">
+        <div className="col-span-4 md:col-span-12 lg:sticky lg:top-[120px] lg:col-span-4">
+          <SectionHeading eyebrow="FAQ" title="Questions we hear every week.">
+            <Button asChild variant="ghost" icon="trailing" className="-ml-3 mt-6">
+              <HashLink to="contact">
+                Ask us something else <ArrowRight aria-hidden="true" />
+              </HashLink>
+            </Button>
+          </SectionHeading>
+        </div>
+        <Reveal className="col-span-4 md:col-span-12 lg:col-span-7 lg:col-start-6">
+          <AccordionPrimitive.Root type="single" collapsible className="space-y-3">
+            {FAQS.map((f, i) => (
+              <AccordionPrimitive.Item key={f.q} value={`faq-${i}`} className="glass-subtle overflow-hidden rounded-lg">
+                <AccordionPrimitive.Header>
+                  <AccordionPrimitive.Trigger className="state-layer type-title-md group flex min-h-16 w-full items-center justify-between gap-4 px-5 py-4 text-left md:px-6">
+                    {f.q}
+                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-secondary text-secondary-foreground">
+                      <ChevronDown
+                        className="h-5 w-5 transition-transform duration-medium2 ease-emphasized group-data-[state=open]:rotate-180"
+                        aria-hidden="true"
+                      />
+                    </span>
+                  </AccordionPrimitive.Trigger>
+                </AccordionPrimitive.Header>
+                <AccordionPrimitive.Content className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
+                  <p className="type-body-md max-w-[64ch] px-5 pb-6 text-muted-foreground md:px-6">{f.a}</p>
+                </AccordionPrimitive.Content>
+              </AccordionPrimitive.Item>
+            ))}
+          </AccordionPrimitive.Root>
         </Reveal>
       </div>
-      <Reveal className="lg:col-span-8">
-        <Accordion type="single" collapsible className="border-t border-border">
-          {FAQS.map((f, i) => (
-            <AccordionItem key={f.q} value={`faq-${i}`}>
-              <AccordionTrigger className="gap-4 py-5 text-left font-display text-lg font-semibold hover:no-underline md:text-xl">
-                <span className="flex gap-4">
-                  <span aria-hidden="true" className="pt-1 font-mono text-xs font-normal text-accent">
-                    Q{String(i + 1).padStart(2, '0')}
-                  </span>
-                  {f.q}
-                </span>
-              </AccordionTrigger>
-              <AccordionContent className="pb-6 pl-11 text-base text-muted-foreground">{f.a}</AccordionContent>
-            </AccordionItem>
-          ))}
-        </Accordion>
-      </Reveal>
     </div>
   </section>
 );

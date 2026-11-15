@@ -35,17 +35,17 @@ const LegalCallout = ({ type, children, className }: LegalCalloutProps) => {
 
   return (
     <div className={cn(
-      'rounded-lg border-l-4 p-4 my-4',
+      'my-6 rounded-lg border-l-4 p-5',
       config.bgClass,
       className
     )}>
       <div className="flex items-center gap-2 mb-2">
         <Icon className={cn('h-4 w-4', config.textClass)} />
-        <h4 className={cn('font-semibold text-sm', config.textClass)}>
+        <h4 className={cn('type-label-md', config.textClass)}>
           {config.title}
         </h4>
       </div>
-      <div className="text-sm leading-relaxed">
+      <div className="type-body-md">
         {children}
       </div>
     </div>

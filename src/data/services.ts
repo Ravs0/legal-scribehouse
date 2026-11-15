@@ -1,4 +1,4 @@
-import { Anchor, FileSignature, Scale, ShieldCheck, Stamp, Waypoints, type LucideIcon } from 'lucide-react';
+import { Anchor, FileSignature, Scale, ShieldCheck, ClipboardCheck, Waypoints, type LucideIcon } from 'lucide-react';
 
 export interface Service {
   id: string;
@@ -35,7 +35,7 @@ export const SERVICES: Service[] = [
     title: 'Product registration & licensing',
     copy: 'Food, cosmetics, medical devices, halal: coordinated with local licence holders.',
     deliverable: 'Registration roadmap',
-    icon: Stamp,
+    icon: ClipboardCheck,
   },
   {
     id: 'ip',

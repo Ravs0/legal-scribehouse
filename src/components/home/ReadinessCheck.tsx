@@ -1,30 +1,35 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { ArrowLeft, ArrowRight, Check, RotateCcw } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Stamp } from '@/components/motion/Stamp';
+import { SectionHeading } from '@/components/site/SectionHeading';
 import { Reveal } from '@/components/motion/Reveal';
-import { SectionLabel } from '@/components/site/SectionLabel';
+import { ScoreGauge } from '@/components/home/ScoreGauge';
 import { MAX_SCORE, READINESS_QUESTIONS, verdictFor } from '@/data/readiness';
+import { spawnRipple } from '@/hooks/useRipple';
 import { useEnquiryDraft } from '@/stores/enquiryDraft';
+import { cn } from '@/lib/utils';
 
-const Progress = ({ step, total }: { step: number; total: number }) => (
-  <span className="font-mono text-sm" aria-hidden="true">
-    [<span className="text-accent">{'#'.repeat(step)}</span>
-    <span className="text-muted-foreground">{'-'.repeat(total - step)}</span>] {step}/{total}
-  </span>
-);
+const STATUS = {
+  HOLD: { label: 'Hold', badge: 'destructive', color: 'hsl(var(--destructive))' },
+  INSPECT: { label: 'Inspect', badge: 'warning', color: 'hsl(var(--warning))' },
+  CLEARED: { label: 'Cleared', badge: 'success', color: 'hsl(var(--success))' },
+} as const;
 
 export const ReadinessCheck = () => {
   const total = READINESS_QUESTIONS.length;
   const [step, setStep] = useState(0);
   const [answers, setAnswers] = useState<(number | null)[]>(() => Array(total).fill(null));
   const prefill = useEnquiryDraft((s) => s.prefill);
+  const advanceTimer = useRef<number>();
+  const headingRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => () => window.clearTimeout(advanceTimer.current), []);
 
   const done = step >= total;
   const score = answers.reduce<number>((sum, a) => sum + (a ?? 0), 0);
   const verdict = verdictFor(score);
-
+  const status = STATUS[verdict.stamp];
   const gaps = useMemo(
     () =>
       READINESS_QUESTIONS.map((q, i) => ({ q, score: answers[i] ?? 0 }))
@@ -34,146 +39,184 @@ export const ReadinessCheck = () => {
     [answers],
   );
 
+  const go = (next: number) => {
+    setStep(next);
+    // Keep keyboard and screen-reader users oriented on the new question.
+    window.requestAnimationFrame(() => headingRef.current?.focus({ preventScroll: true }));
+  };
+
+  const choose = (value: number) => {
+    setAnswers((prev) => prev.map((a, i) => (i === step ? value : a)));
+    window.clearTimeout(advanceTimer.current);
+    if (step < total - 1) advanceTimer.current = window.setTimeout(() => go(step + 1), 250);
+  };
+
   const restart = () => {
     setAnswers(Array(total).fill(null));
-    setStep(0);
+    go(0);
   };
 
   const sendResult = () => {
     const lines = [
-      `I took the export readiness check and scored ${score}/${MAX_SCORE} (${verdict.stamp}).`,
-      gaps.length > 0 ? `Gaps to fix first:\n${gaps.map((g) => `- ${g.q.fix}`).join('\n')}` : '',
+      `I took the export readiness check and scored ${score}/${MAX_SCORE} (${status.label}).`,
+      ...(gaps.length ? ['Gaps to fix first:', ...gaps.map((g) => `- ${g.q.fix}`)] : []),
       '',
       'About my product and target market: ',
     ];
-    prefill(lines.filter((l, i) => l !== '' || i === 2).join('\n'));
+    prefill(lines.join('\n'));
     document.getElementById('contact')?.scrollIntoView({ block: 'start' });
     window.setTimeout(() => document.getElementById('enquiry-message')?.focus({ preventScroll: true }), 600);
   };
 
   const q = READINESS_QUESTIONS[Math.min(step, total - 1)];
+  const progress = done ? 1 : step / total;
 
   return (
-    <section id="check" className="scroll-mt-20 py-20 md:py-28">
-      <div className="container grid gap-10 lg:grid-cols-12">
-        <div className="lg:col-span-5">
-          <SectionLabel index="06" label="READINESS CHECK" />
-          <Reveal>
-            <h2 className="text-3xl font-semibold leading-tight tracking-tight md:text-5xl">
-              Are you ready to <em className="font-medium text-accent">ship</em>?
-            </h2>
-            <p className="mt-4 text-lg text-muted-foreground">
-              Two minutes, six questions. You'll get a clearance verdict and the gaps worth fixing first. Nothing is
-              stored or sent anywhere.
-            </p>
-            <pre
-              aria-hidden="true"
-              className="mt-10 hidden select-none font-mono text-xs leading-tight text-ascii lg:block"
-            >{`   [ ]  HS code
-   [ ]  Registration
-   [ ]  Trademark
-   [ ]  Contract
-   [ ]  Origin / FTA
-   [ ]  Payment terms`}</pre>
-          </Reveal>
-        </div>
-
-        <div className="lg:col-span-7">
-          <div className="border border-border bg-card">
-            <div className="label-mono flex items-center justify-between gap-4 border-b border-border px-5 py-3 text-muted-foreground">
-              <span>Form RC-6 · Export readiness</span>
-              <Progress step={done ? total : step} total={total} />
-            </div>
-
-            <div className="p-5 md:p-8" aria-live="polite">
-              {!done ? (
-                <fieldset key={q.id} className="duration-200 animate-in fade-in">
-                  <legend className="label-mono mb-3 text-accent">
-                    Question {step + 1} of {total}
-                  </legend>
-                  <p className="font-display text-2xl font-semibold leading-snug md:text-3xl">{q.question}</p>
-                  <RadioGroup
-                    className="mt-6 gap-3"
-                    value={answers[step] === null ? '' : String(answers[step])}
-                    onValueChange={(v) =>
-                      setAnswers((prev) => prev.map((a, i) => (i === step ? Number(v) : a)))
-                    }
-                  >
-                    {q.options.map((opt, i) => (
-                      <Label
-                        key={opt}
-                        htmlFor={`${q.id}-${i}`}
-                        className="flex cursor-pointer items-center gap-3 border border-border bg-background p-4 text-base font-normal transition-colors hover:border-primary has-[[data-state=checked]]:border-primary has-[[data-state=checked]]:bg-primary/5"
-                      >
-                        <RadioGroupItem id={`${q.id}-${i}`} value={String(i)} />
-                        {opt}
-                      </Label>
-                    ))}
-                  </RadioGroup>
-                  <div className="mt-8 flex items-center justify-between">
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      className="rounded-sm font-mono"
-                      onClick={() => setStep((s) => Math.max(0, s - 1))}
-                      disabled={step === 0}
-                    >
-                      &lt;- Back
-                    </Button>
-                    <Button
-                      type="button"
-                      className="arrow-nudge rounded-sm font-mono"
-                      onClick={() => setStep((s) => s + 1)}
-                      disabled={answers[step] === null}
-                    >
-                      {step === total - 1 ? 'See verdict' : 'Next'} <span className="arrow">-&gt;</span>
-                    </Button>
-                  </div>
-                </fieldset>
-              ) : (
-                <div className="duration-300 animate-in fade-in">
-                  <div className="flex flex-wrap items-center gap-6">
-                    <Stamp sub={`${score} / ${MAX_SCORE}`} className="text-2xl">
-                      {verdict.stamp}
-                    </Stamp>
-                    <div>
-                      <p className="font-display text-3xl font-semibold">{verdict.title}</p>
-                      <p className="mt-1 text-muted-foreground">{verdict.copy}</p>
-                    </div>
-                  </div>
-
-                  {gaps.length > 0 && (
-                    <div className="mt-8 border-t border-dashed border-rule pt-5">
-                      <div className="label-mono mb-3 text-muted-foreground">Fix first</div>
-                      <ul className="space-y-3">
-                        {gaps.map((g) => (
-                          <li key={g.q.id} className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:gap-3">
-                            <span className="font-mono text-accent" aria-hidden="true">
-                              [!]
-                            </span>
-                            <span className="flex-1">{g.q.fix}</span>
-                            <span className="font-mono text-xs uppercase tracking-[0.1em] text-muted-foreground">
-                              {g.q.service}
-                            </span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                  <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-                    <Button type="button" className="arrow-nudge h-11 rounded-sm" onClick={sendResult}>
-                      Send my result with a consult request <span className="arrow ml-1 font-mono">-&gt;</span>
-                    </Button>
-                    <Button type="button" variant="ghost" className="rounded-sm font-mono" onClick={restart}>
-                      Start over
-                    </Button>
-                  </div>
-                  <p className="mt-6 font-mono text-xs text-muted-foreground">Indicative only. Not legal advice.</p>
-                </div>
-              )}
-            </div>
+    <section id="readiness" className="section">
+      <div className="container">
+        <div className="grid-12 items-start gap-y-8">
+          <div className="col-span-4 md:col-span-12 lg:sticky lg:top-[120px] lg:col-span-5">
+            <SectionHeading
+              eyebrow="Readiness check"
+              title="Is your product ready to ship?"
+              subtitle="Answer six quick questions. Get a clear status and the first things to fix."
+            >
+              <ul className="mt-8 space-y-3">
+                {['6 questions', 'No email needed', 'Instant result'].map((t) => (
+                  <li key={t} className="type-body-md flex items-center gap-3">
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-tertiary/[0.16] text-tertiary">
+                      <Check className="h-4 w-4" aria-hidden="true" />
+                    </span>
+                    {t}
+                  </li>
+                ))}
+              </ul>
+            </SectionHeading>
           </div>
+
+          <Reveal className="col-span-4 md:col-span-12 lg:col-span-7">
+            <div className="glass panel-pad overflow-hidden rounded-xl">
+              <div className="flex items-center justify-between gap-4">
+                <span className="type-label-md text-muted-foreground">
+                  {done ? 'Your result' : `Question ${step + 1} of ${total}`}
+                </span>
+                <span className="type-label-md tabular text-muted-foreground">{Math.round(progress * 100)}%</span>
+              </div>
+              <div
+                className="mt-3 h-1 overflow-hidden rounded-full bg-surface-high"
+                role="progressbar"
+                aria-label="Readiness check progress"
+                aria-valuemin={0}
+                aria-valuemax={total}
+                aria-valuenow={done ? total : step}
+              >
+                <div
+                  className="h-full rounded-full bg-primary transition-[width] duration-medium2 ease-standard"
+                  style={{ width: `${progress * 100}%` }}
+                />
+              </div>
+
+              <div aria-live="polite">
+                {!done ? (
+                  <div key={q.id} className="animate-step-in">
+                    <p ref={headingRef} tabIndex={-1} id={`q-${q.id}`} className="type-headline-sm mt-6 outline-none">
+                      {q.question}
+                    </p>
+                    <div role="radiogroup" aria-labelledby={`q-${q.id}`} className="mt-6 grid gap-3">
+                      {q.options.map((opt, i) => {
+                        const selected = answers[step] === i;
+                        return (
+                          <button
+                            key={opt}
+                            type="button"
+                            role="radio"
+                            aria-checked={selected}
+                            onClick={() => choose(i)}
+                            onPointerDown={(e) => spawnRipple(e.currentTarget, e.clientX, e.clientY)}
+                            className={cn(
+                              'state-layer type-body-md relative flex min-h-14 w-full items-center gap-3 overflow-hidden rounded-md p-4 text-left text-foreground transition-colors duration-short3',
+                              selected
+                                ? 'border-2 border-primary bg-primary/10 p-[15px]'
+                                : 'border border-outline-variant bg-card/40',
+                            )}
+                          >
+                            <span
+                              aria-hidden="true"
+                              className={cn(
+                                'flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2',
+                                selected ? 'border-primary' : 'border-input',
+                              )}
+                            >
+                              {selected && <span className="h-2.5 w-2.5 rounded-full bg-primary" />}
+                            </span>
+                            {opt}
+                          </button>
+                        );
+                      })}
+                    </div>
+                    <div className="mt-6 flex items-center justify-between">
+                      <Button
+                        variant="ghost"
+                        icon="leading"
+                        onClick={() => go(Math.max(0, step - 1))}
+                        disabled={step === 0}
+                        className="-ml-3 disabled:bg-transparent"
+                      >
+                        <ArrowLeft aria-hidden="true" /> Back
+                      </Button>
+                      {step === total - 1 && (
+                        <Button icon="trailing" onClick={() => go(total)} disabled={answers[step] === null}>
+                          See my result <ArrowRight aria-hidden="true" />
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="animate-step-in">
+                    <div className="mt-6 flex flex-col items-center text-center">
+                      <ScoreGauge score={score} max={MAX_SCORE} color={status.color} />
+                      <Badge variant={status.badge} className="mt-4">
+                        {status.label}
+                      </Badge>
+                      <p ref={headingRef} tabIndex={-1} className="type-headline-sm mt-3 outline-none">
+                        {verdict.title}
+                      </p>
+                      <p className="type-body-md mt-2 max-w-[48ch] text-muted-foreground">{verdict.copy}</p>
+                    </div>
+
+                    {gaps.length > 0 && (
+                      <div className="mt-8 rounded-lg border border-outline-variant p-5">
+                        <h4 className="type-title-sm">Fix first</h4>
+                        <ol className="mt-4 space-y-4">
+                          {gaps.map((g, i) => (
+                            <li key={g.q.id} className="flex gap-3">
+                              <span className="type-label-md flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-container text-primary-on-container">
+                                {i + 1}
+                              </span>
+                              <div>
+                                <p className="type-body-md">{g.q.fix}</p>
+                                <p className="type-body-sm text-muted-foreground">{g.q.service}</p>
+                              </div>
+                            </li>
+                          ))}
+                        </ol>
+                      </div>
+                    )}
+
+                    <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
+                      <Button size="lg" icon="trailing" onClick={sendResult} className="w-full sm:w-auto">
+                        Book a consult about this <ArrowRight aria-hidden="true" />
+                      </Button>
+                      <Button variant="ghost" icon="leading" onClick={restart}>
+                        <RotateCcw aria-hidden="true" /> Start over
+                      </Button>
+                    </div>
+                    <p className="type-body-sm mt-6 text-muted-foreground">Indicative only. Not legal advice.</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </Reveal>
         </div>
       </div>
     </section>

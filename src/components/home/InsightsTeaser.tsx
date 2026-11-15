@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ArrowRight, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
+import { IconContainer } from '@/components/ui/chip';
+import { PostCard } from '@/components/Blog/PostCard';
 import { Reveal } from '@/components/motion/Reveal';
-import { SectionLabel } from '@/components/site/SectionLabel';
+import { SectionHeading } from '@/components/site/SectionHeading';
 import { useBlogStore } from '@/stores/blogStore';
 
 export const InsightsTeaser = () => {
@@ -20,64 +23,60 @@ export const InsightsTeaser = () => {
 
   const latest = content.filter((c) => !c.draft).slice(0, 3);
 
+  const allButton = (className: string) => (
+    <Button asChild variant="ghost" icon="trailing" className={className}>
+      <Link to="/insights">
+        All insights <ArrowRight aria-hidden="true" />
+      </Link>
+    </Button>
+  );
+
   return (
-    <section className="border-y border-border bg-card/50 py-20 md:py-28">
+    <section id="insights" className="section">
       <div className="container">
-        <SectionLabel index="08" label="FROM THE DESK" />
-        <div className="flex flex-wrap items-end justify-between gap-4">
-          <Reveal>
-            <h2 className="text-3xl font-semibold leading-tight tracking-tight md:text-5xl">
-              From the <em className="font-medium text-accent">desk</em>.
-            </h2>
-            <p className="mt-4 text-lg text-muted-foreground">Guides and briefings on exporting to ASEAN.</p>
-          </Reveal>
-          <Button asChild variant="outline" className="arrow-nudge rounded-sm bg-transparent font-mono">
-            <Link to="/insights">
-              All insights <span className="arrow">-&gt;</span>
-            </Link>
-          </Button>
+        <div className="grid-12 items-end">
+          <SectionHeading
+            className="col-span-4 md:col-span-8"
+            eyebrow="Insights"
+            title="Plain-English guides to ASEAN trade rules."
+          />
+          <div className="col-span-4 hidden justify-end md:flex">{allButton('-mr-3')}</div>
         </div>
 
         {!ready ? (
-          <div className="mt-12 grid gap-6 md:grid-cols-3" aria-busy="true" aria-label="Loading insights">
+          <div className="after-heading stack-gap grid md:grid-cols-3" aria-busy="true" aria-label="Loading insights">
             {[0, 1, 2].map((i) => (
-              <div key={i} className="space-y-3 border border-border bg-background p-6">
-                <Skeleton className="h-3 w-24" />
-                <Skeleton className="h-6 w-full" />
-                <Skeleton className="h-4 w-5/6" />
+              <div key={i} className="glass-subtle space-y-4 rounded-lg p-3">
+                <Skeleton className="aspect-video w-full rounded-md" />
+                <Skeleton className="h-6 w-20 rounded-full" />
+                <Skeleton className="h-6 w-5/6" />
                 <Skeleton className="h-4 w-2/3" />
               </div>
             ))}
           </div>
         ) : latest.length === 0 ? (
-          <p className="mt-12 border border-dashed border-rule p-6 font-mono text-sm text-muted-foreground">
-            &gt; Insights coming soon<span className="blink text-accent">_</span>
-          </p>
+          <Reveal className="after-heading">
+            <div className="glass-subtle flex flex-col items-center rounded-lg px-6 py-12 text-center">
+              <IconContainer icon={BookOpen} className="h-14 w-14" />
+              <p className="type-headline-sm mt-5">First guides are on the way.</p>
+              <p className="type-body-md mt-2 max-w-[48ch] text-muted-foreground">
+                We're writing plain-English explainers on HS codes, rules of origin and distributor contracts.
+              </p>
+            </div>
+          </Reveal>
         ) : (
-          <ul className="mt-12 grid gap-6 md:grid-cols-3">
+          <ul className="after-heading stack-gap grid md:grid-cols-3">
             {latest.map((post, i) => (
               <Reveal as="li" key={post.id} index={i}>
-                <Link
-                  to={`/posts/${post.id}`}
-                  className="hard-hover flex h-full flex-col border border-border bg-background p-6"
-                >
-                  <div className="label-mono flex justify-between text-muted-foreground">
-                    <time dateTime={post.created_at}>
-                      {new Date(post.created_at).toLocaleDateString(undefined, {
-                        day: '2-digit',
-                        month: 'short',
-                        year: 'numeric',
-                      })}
-                    </time>
-                    {post.reading_time ? <span>{post.reading_time} min</span> : null}
-                  </div>
-                  <h3 className="mt-4 text-xl font-semibold leading-snug">{post.title}</h3>
-                  <p className="mt-2 line-clamp-2 text-muted-foreground">{post.summary}</p>
-                </Link>
+                <PostCard post={post} />
               </Reveal>
             ))}
           </ul>
         )}
+
+        <Button asChild variant="outline" className="mt-8 w-full md:hidden">
+          <Link to="/insights">All insights</Link>
+        </Button>
       </div>
     </section>
   );

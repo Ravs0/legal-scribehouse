@@ -1,28 +1,6 @@
-import { useBlogStore } from '@/stores/blogStore';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { InsightsListing } from './Insights';
 
-const Statutes = () => {
-  const { getContentByType } = useBlogStore();
-  const statutes = getContentByType('statute');
-
-  return (
-    <div className="container py-8">
-      <p className="label-mono mb-3 text-accent">Insights</p>
-      <h1 className="text-4xl font-semibold tracking-tight mb-4">Statute Notes</h1>
-      <p className="text-lg text-muted-foreground mb-8">Legislative analysis and interpretation</p>
-      
-      <div className="grid gap-6">
-        {statutes.map((statute) => (
-          <Card key={statute.id}>
-            <CardHeader>
-              <CardTitle>{statute.title}</CardTitle>
-              <CardDescription>{statute.summary}</CardDescription>
-            </CardHeader>
-          </Card>
-        ))}
-      </div>
-    </div>
-  );
-};
-
+const Statutes = () => (
+  <InsightsListing type="statute" title="Statute notes." subtitle="The rules behind the paperwork, summarised in plain English." />
+);
 export default Statutes;

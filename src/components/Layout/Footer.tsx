@@ -1,88 +1,77 @@
 import { Link } from 'react-router-dom';
 import { SITE } from '@/config/site';
-import { MARKETS } from '@/data/markets';
-import { SERVICES } from '@/data/services';
+import { INSIGHT_LINKS, SECTIONS } from '@/config/nav';
 import { HashLink } from '@/components/site/HashLink';
-import { INSIGHT_LINKS } from '@/config/nav';
-import { Wordmark } from './Header';
+import { ThemeToggle, Wordmark } from './Header';
 
-const WAVE = String.raw`   .--.      .--.      .--.
---'    '----'    '----'    '--
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~`;
+const linkClass = 'type-body-md flex min-h-11 items-center text-muted-foreground transition-colors hover:text-foreground md:min-h-0 md:py-1.5';
 
 const Footer = () => (
-  <footer className="border-t border-border bg-card">
-    <div className="container py-14">
-      <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-12">
-        <div className="lg:col-span-4">
+  <footer className="border-t border-outline-variant bg-surface-low/80">
+    <div className="container pb-6 pt-12 md:pb-8 md:pt-16">
+      <div className="grid-12 gap-y-10">
+        <div className="col-span-4 md:col-span-12 lg:col-span-4">
           <Wordmark />
-          <p className="mt-2 text-sm text-muted-foreground">{SITE.descriptor}</p>
-          <p className="mt-4 font-display text-xl font-semibold">{SITE.tagline}</p>
-          <pre aria-hidden="true" className="mt-6 select-none overflow-hidden font-mono text-xs leading-tight text-ascii">
-            {WAVE}
-          </pre>
+          <p className="type-body-md mt-4 max-w-[36ch] text-muted-foreground">{SITE.tagline}</p>
+          <div className="mt-6 space-y-1">
+            <a href={`mailto:${SITE.email}`} className="type-label-lg block hover:text-primary">
+              {SITE.email}
+            </a>
+            <a href={`tel:${SITE.phone.replace(/\s/g, '')}`} className="type-body-md block text-muted-foreground hover:text-primary">
+              {SITE.phone}
+            </a>
+          </div>
         </div>
 
-        <div className="lg:col-span-3">
-          <h2 className="label-mono mb-4 text-muted-foreground">Services</h2>
-          <ul className="space-y-2 text-sm">
-            {SERVICES.map((s) => (
+        <nav aria-label="Explore" className="col-span-2 md:col-span-3 lg:col-span-2 lg:col-start-6">
+          <h2 className="type-label-md mb-3 font-sans text-foreground">Explore</h2>
+          <ul>
+            {SECTIONS.map((s) => (
               <li key={s.id}>
-                <HashLink to="services" className="hover:text-primary">
-                  {s.title}
+                <HashLink to={s.id} className={linkClass}>
+                  {s.label}
                 </HashLink>
               </li>
             ))}
-          </ul>
-        </div>
-
-        <div className="lg:col-span-2">
-          <h2 className="label-mono mb-4 text-muted-foreground">Markets</h2>
-          <ul className="grid grid-cols-5 gap-x-3 gap-y-2 font-mono text-sm sm:grid-cols-4 lg:grid-cols-3">
-            {MARKETS.map((m) => (
-              <li key={m.code}>
-                <HashLink to="markets" className="hover:text-accent" title={m.name}>
-                  {m.code}
-                </HashLink>
-              </li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="lg:col-span-3">
-          <h2 className="label-mono mb-4 text-muted-foreground">Insights</h2>
-          <ul className="space-y-2 text-sm">
             <li>
-              <Link to="/posts" className="hover:text-primary">
-                Posts
-              </Link>
-            </li>
-            {INSIGHT_LINKS.slice(1).map((l) => (
-              <li key={l.to}>
-                <Link to={l.to} className="hover:text-primary">
-                  {l.label}
-                </Link>
-              </li>
-            ))}
-            <li>
-              <Link to="/about" className="hover:text-primary">
+              <Link to="/about" className={linkClass}>
                 About
               </Link>
             </li>
           </ul>
+        </nav>
+
+        <nav aria-label="Insights" className="col-span-2 md:col-span-3 lg:col-span-2">
+          <h2 className="type-label-md mb-3 font-sans text-foreground">Insights</h2>
+          <ul>
+            {INSIGHT_LINKS.map((l) => (
+              <li key={l.to}>
+                <Link to={l.to} className={linkClass}>
+                  {l.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        {/* Disclaimer wording depends on the firm's regulatory status; confirm before launch. */}
+        <div className="col-span-4 md:col-span-6 lg:col-span-3">
+          <div className="rounded-lg border border-outline-variant p-5">
+            <h2 className="type-label-md font-sans text-foreground">Disclaimer</h2>
+            <p className="type-body-sm mt-2 text-muted-foreground">
+              Information on this site is general in nature and is not legal advice. Contacting us does not create an
+              adviser–client relationship. Local-law services are provided with independent local counsel where
+              required.
+            </p>
+          </div>
         </div>
       </div>
 
-      <div className="perforation mt-12" aria-hidden="true" />
-      <div className="mt-6 flex flex-col gap-4 text-xs text-muted-foreground md:flex-row md:justify-between">
-        <p className="font-mono">
+      <div className="mt-12 flex items-center justify-between border-t border-outline-variant pt-6">
+        <p className="type-body-sm text-muted-foreground">
           © {new Date().getFullYear()} {SITE.name}
         </p>
-        {/* Disclaimer wording depends on the firm's regulatory status; confirm before launch. */}
-        <p className="max-w-3xl leading-relaxed md:text-right">
-          Information on this site is general in nature and is not legal advice. Contacting us does not create an
-          adviser–client relationship. Local-law services are provided with independent local counsel where required.
-        </p>
+        <ThemeToggle />
       </div>
     </div>
   </footer>

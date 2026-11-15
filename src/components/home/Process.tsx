@@ -1,10 +1,10 @@
 import { useRef } from 'react';
 import { useInView } from '@/hooks/useInView';
 import { Reveal } from '@/components/motion/Reveal';
-import { SectionLabel } from '@/components/site/SectionLabel';
+import { SectionHeading } from '@/components/site/SectionHeading';
 import { cn } from '@/lib/utils';
 
-// NOTE: durations are placeholders until the firm confirms its service levels.
+// Durations are placeholders until the firm confirms its service levels.
 const STEPS = [
   { title: 'Scoping call', meta: 'Free · 30 min', copy: "Your product, target market, and what's already in motion." },
   { title: 'Route plan', meta: '1–2 weeks', copy: 'A written plan: structure, registrations, duty position, risks, fixed fee.' },
@@ -12,55 +12,64 @@ const STEPS = [
   { title: 'Ship & support', meta: 'Ongoing', copy: 'On call for the first consignments and renewals.' },
 ];
 
+const GRADIENT = 'linear-gradient(90deg, hsl(var(--aurora-1)), hsl(var(--aurora-2)))';
+
 export const Process = () => {
   const ref = useRef<HTMLOListElement>(null);
   const inView = useInView(ref, { threshold: 0.3 });
 
   return (
-    <section id="process" className="scroll-mt-20 border-y border-border bg-card/50 py-20 md:py-28">
+    <section id="process" className="section">
       <div className="container">
-        <SectionLabel index="05" label="HOW IT WORKS" />
-        <Reveal>
-          <h2 className="text-3xl font-semibold leading-tight tracking-tight md:text-5xl">
-            From first call to first <em className="font-medium text-accent">shipment</em>.
-          </h2>
-        </Reveal>
+        <div className="grid-12">
+          <SectionHeading
+            className="col-span-4 md:col-span-7"
+            eyebrow="How it works"
+            title="From first call to first shipment in four steps."
+          />
+        </div>
 
-        <ol ref={ref} className="relative mt-14 grid gap-10 pl-8 md:grid-cols-4 md:gap-6 md:pl-0 md:pt-10">
-          {/* The connector: vertical on mobile, horizontal from md up. It draws itself once. */}
+        <ol ref={ref} className="after-heading stack-gap relative grid pl-12 lg:grid-cols-4 lg:pl-0">
+          {/* Connector: vertical on mobile/tablet, horizontal at numeral height on desktop. */}
           <span
             aria-hidden="true"
             className={cn(
-              'absolute bottom-2 left-[7px] top-2 w-px origin-top border-l border-dashed border-primary transition-transform [transition-duration:1200ms] ease-out md:hidden',
+              'absolute bottom-10 left-5 top-10 w-0.5 origin-top rounded-full transition-transform [transition-duration:800ms] ease-emphasized lg:hidden',
               inView ? 'scale-y-100' : 'scale-y-0',
             )}
+            style={{ background: 'linear-gradient(180deg, hsl(var(--aurora-1)), hsl(var(--aurora-2)))' }}
           />
           <span
             aria-hidden="true"
             className={cn(
-              'absolute left-2 right-[12%] top-[7px] hidden h-px origin-left border-t border-dashed border-primary transition-transform [transition-duration:1200ms] ease-out md:block',
+              'absolute z-10 hidden h-0.5 origin-left rounded-full transition-transform [transition-duration:800ms] ease-emphasized lg:left-[44px] lg:right-[calc(25%-62px)] lg:top-[43px] lg:block xl:left-[48px] xl:right-[calc(25%-72px)] xl:top-[47px]',
               inView ? 'scale-x-100' : 'scale-x-0',
             )}
+            style={{ background: GRADIENT }}
           />
           {STEPS.map((s, i) => (
-            <li key={s.title} className="relative">
+            <Reveal as="li" key={s.title} index={i} className="relative">
               <span
                 aria-hidden="true"
-                className={cn(
-                  'absolute -left-8 top-0 flex h-4 w-4 items-center justify-center bg-background font-mono text-sm leading-none text-primary transition-colors md:-top-10 md:left-0',
-                  inView && 'text-accent',
-                )}
-                style={{ transitionDelay: `${i * 300}ms` }}
+                className="type-title-sm absolute -left-12 top-0 flex h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-glow lg:hidden"
               >
-                o
+                {i + 1}
               </span>
-              <div className="label-mono flex items-center gap-3">
-                <span className="text-accent">{String(i + 1).padStart(2, '0')}</span>
-                <span className="text-muted-foreground">{s.meta}</span>
+              <div className="glass-subtle card-pad h-full rounded-lg">
+                <span
+                  aria-hidden="true"
+                  className="type-title-sm relative z-20 hidden h-10 w-10 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-glow lg:flex"
+                >
+                  {i + 1}
+                </span>
+                <p className="type-label-md text-tertiary lg:mt-5">{s.meta}</p>
+                <h3 className="type-title-lg mt-2">
+                  <span className="sr-only">Step {i + 1}: </span>
+                  {s.title}
+                </h3>
+                <p className="type-body-md mt-2 text-muted-foreground">{s.copy}</p>
               </div>
-              <h3 className="mt-3 text-2xl font-semibold">{s.title}</h3>
-              <p className="mt-2 text-muted-foreground">{s.copy}</p>
-            </li>
+            </Reveal>
           ))}
         </ol>
       </div>

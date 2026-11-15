@@ -1,16 +1,6 @@
-import { useBlogStore } from '@/stores/blogStore';
+import { InsightsListing } from './Insights';
 
-const Guides = () => {
-  const { getContentByType } = useBlogStore();
-  const guides = getContentByType('guide');
-
-  return (
-    <div className="container py-8">
-      <p className="label-mono mb-3 text-accent">Insights</p>
-      <h1 className="text-4xl font-semibold tracking-tight mb-4">Legal Guides</h1>
-      <p className="text-lg text-muted-foreground mb-8">Comprehensive legal guides</p>
-    </div>
-  );
-};
-
+const Guides = () => (
+  <InsightsListing type="guide" title="Step-by-step export guides." subtitle="Practical walkthroughs: registrations, origin paperwork, contracts and more." />
+);
 export default Guides;
