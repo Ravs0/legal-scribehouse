@@ -23,7 +23,7 @@ const PROBLEMS = [
 ];
 
 export const Problems = () => (
-  <section id="problems" data-stage="problems" className="section">
+  <section id="problems" className="section">
     <div className="container">
       <div className="grid-12">
         <SectionHeading

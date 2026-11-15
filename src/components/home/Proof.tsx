@@ -16,7 +16,7 @@ const initials = (who: string) =>
     .join('');
 
 export const Proof = () => (
-  <section id="proof" data-stage="proof" className="section">
+  <section id="proof" className="section">
     <div className="container">
       <div className="grid-12">
         <SectionHeading

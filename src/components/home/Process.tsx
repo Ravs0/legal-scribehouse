@@ -20,7 +20,7 @@ export const Process = () => {
   const inView = useInView(ref, { threshold: 0.3 });
 
   return (
-    <section id="process" data-stage="process" className="section">
+    <section id="process" className="section">
       <div className="container">
         <div className="grid-12">
           <SectionHeading

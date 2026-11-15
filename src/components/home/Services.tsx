@@ -6,7 +6,7 @@ import { SectionHeading } from '@/components/site/SectionHeading';
 import { tilt } from "@/hooks/usePointerGlow";
 
 export const Services = () => (
-  <section id="services" data-stage="services" className="section">
+  <section id="services" className="section">
     <div className="container">
       <div className="grid-12">
         <SectionHeading

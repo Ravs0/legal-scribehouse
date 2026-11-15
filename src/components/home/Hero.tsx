@@ -29,7 +29,7 @@ export const Hero = () => {
   }, [setVisible]);
 
   return (
-    <section ref={ref} data-stage="hero" className="flex min-h-[calc(100svh-76px)] items-center pb-24 pt-10 lg:pt-16">
+    <section ref={ref} className="flex min-h-[calc(100svh-76px)] items-center pb-24 pt-10 lg:pt-16">
       <div className="container">
         <div className="grid-12 items-center gap-y-10">
           <div className="col-span-4 md:col-span-12 lg:col-span-6">

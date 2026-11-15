@@ -58,7 +58,7 @@ export const Markets = () => {
   };
 
   return (
-    <section id="markets" data-stage="markets" className="section">
+    <section id="markets" className="section">
       <div className="container">
         <div className="grid-12">
           <SectionHeading

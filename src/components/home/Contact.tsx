@@ -120,7 +120,7 @@ export const Contact = () => {
   ];
 
   return (
-    <section id="contact" data-stage="contact" className="section">
+    <section id="contact" className="section">
       <div className="container">
         <div className="grid-12 items-start gap-y-10">
           <div className="col-span-4 md:col-span-12 lg:col-span-5">

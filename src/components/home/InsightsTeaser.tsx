@@ -32,7 +32,7 @@ export const InsightsTeaser = () => {
   );
 
   return (
-    <section id="insights" data-stage="insights" className="section">
+    <section id="insights" className="section">
       <div className="container">
         <div className="grid-12 items-end">
           <SectionHeading
