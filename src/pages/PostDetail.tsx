@@ -124,7 +124,7 @@ const PostDetail = () => {
             />
 
             <div className="mt-12 flex gap-3 rounded-lg border border-outline-variant p-5">
-              <Info className="mt-0.5 h-5 w-5 shrink-0 text-primary" aria-hidden="true" />
+              <Info className="mt-0.5 h-4 w-4 shrink-0 text-primary-ink" aria-hidden="true" />
               <p className="type-body-sm text-muted-foreground">
                 This article is general information, current at the date of publication. It is not legal advice; rules
                 change and depend on your product and route.
@@ -134,7 +134,7 @@ const PostDetail = () => {
 
           {toc.length > 1 && (
             <aside className="hidden xl:col-span-2 xl:col-start-11 xl:row-start-1 xl:block">
-              <nav aria-label="On this page" className="glass sticky top-[120px] rounded-lg p-4">
+              <nav aria-label="On this page" className="surface-1 sticky top-[120px] rounded-[20px] p-4">
                 <p className="type-label-md text-muted-foreground">On this page</p>
                 <ul className="mt-3 space-y-1">
                   {toc.map((t) => (
@@ -143,7 +143,7 @@ const PostDetail = () => {
                         href={`#${t.id}`}
                         className={
                           activeId === t.id
-                            ? 'type-label-md block border-l-2 border-primary py-1 pl-3 text-primary'
+                            ? 'type-label-md block border-l-2 border-primary py-1 pl-3 text-primary-ink'
                             : 'type-label-md block border-l-2 border-transparent py-1 pl-3 text-muted-foreground hover:text-foreground'
                         }
                       >

@@ -19,7 +19,7 @@ const SheetOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <SheetPrimitive.Overlay
     className={cn(
-      "fixed inset-0 z-50 bg-[hsl(232_45%_4%/0.55)] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      "fixed inset-0 z-50 bg-[hsl(24_30%_8%/0.45)] backdrop-blur-[2px] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
       className,
     )}
     {...props}
@@ -29,7 +29,7 @@ const SheetOverlay = React.forwardRef<
 SheetOverlay.displayName = SheetPrimitive.Overlay.displayName;
 
 const sheetVariants = cva(
-  "glass-strong fixed z-50 gap-4 p-6 transition ease-emphasized data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:duration-short4 data-[state=open]:duration-medium4",
+  "surface-4 fixed z-50 gap-4 p-6 transition ease-emphasized data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:duration-short4 data-[state=open]:duration-medium4",
   {
     variants: {
       side: {
@@ -38,7 +38,7 @@ const sheetVariants = cva(
           "inset-x-0 bottom-0 border-t data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom",
         left: "inset-y-0 left-0 h-full w-3/4 border-r data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left sm:max-w-sm",
         right:
-          "inset-y-0 right-0 h-full w-[min(88vw,360px)] rounded-l-xl data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right",
+          "inset-y-0 right-0 h-full w-[min(88vw,360px)] rounded-l-[28px] data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right",
       },
     },
     defaultVariants: {
@@ -57,8 +57,8 @@ const SheetContent = React.forwardRef<React.ElementRef<typeof SheetPrimitive.Con
       <SheetOverlay />
       <SheetPrimitive.Content ref={ref} className={cn(sheetVariants({ side }), className)} {...props}>
         {children}
-        <SheetPrimitive.Close className="state-layer absolute right-4 top-4 flex h-10 w-10 items-center justify-center rounded-full disabled:pointer-events-none">
-          <X className="h-5 w-5" />
+        <SheetPrimitive.Close className="press absolute right-4 top-4 flex h-8 w-8 items-center justify-center rounded-full hover:bg-secondary disabled:pointer-events-none">
+          <X className="h-4 w-4" />
           <span className="sr-only">Close</span>
         </SheetPrimitive.Close>
       </SheetPrimitive.Content>

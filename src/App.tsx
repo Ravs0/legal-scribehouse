@@ -9,7 +9,7 @@ import Footer from "@/components/Layout/Footer";
 import Index from "./pages/Index";
 import Insights from "./pages/Insights";
 import { ScrollManager } from "@/components/site/ScrollManager";
-import { AuroraBackground } from "@/components/site/AuroraBackground";
+import { DawnBackground } from "@/components/site/DawnBackground";
 import { PageTransition } from "@/components/site/PageTransition";
 import Posts from "./pages/Posts";
 import Cases from "./pages/Cases";
@@ -27,13 +27,13 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
+    <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange>
       <TooltipProvider>
         <Toaster />
         <Sonner position="bottom-right" />
         <BrowserRouter>
           <ScrollManager />
-          <AuroraBackground />
+          <DawnBackground />
           <div className="relative flex min-h-screen flex-col">
             <Header />
             <main id="main" className="flex-1">

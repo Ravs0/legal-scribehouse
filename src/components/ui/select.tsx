@@ -17,14 +17,14 @@ const SelectTrigger = React.forwardRef<
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      "group type-body-md flex h-14 w-full items-center justify-between gap-2 carved rounded-md border border-input bg-card/50 px-4 text-left text-foreground transition-colors duration-short3 hover:border-foreground focus:outline-none focus-visible:shadow-none focus-visible:outline-none focus:border-2 focus:border-primary focus:px-[15px] data-[placeholder]:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+      "group type-body-md recessed flex h-11 w-full items-center justify-between gap-2 rounded-lg border border-border bg-card px-3.5 text-left text-foreground transition-[border-color,box-shadow] duration-150 hover:border-input focus:outline-none focus-visible:outline-none focus:border-ring data-[placeholder]:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-40 [&>span]:line-clamp-1",
       className,
     )}
     {...props}
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      <ChevronDown className="h-5 w-5 shrink-0 text-muted-foreground transition-transform duration-short4 ease-emphasized group-data-[state=open]:rotate-180" />
+      <ChevronDown className="h-4 w-4 shrink-0 text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180" />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ));
@@ -66,7 +66,7 @@ const SelectContent = React.forwardRef<
     <SelectPrimitive.Content
       ref={ref}
       className={cn(
-        "glass-strong relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-lg text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+        "menu-surface relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-2xl text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
         position === "popper" &&
           "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
         className,
@@ -77,7 +77,7 @@ const SelectContent = React.forwardRef<
       <SelectScrollUpButton />
       <SelectPrimitive.Viewport
         className={cn(
-          "p-2",
+          "p-1.5",
           position === "popper" &&
             "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)]",
         )}
@@ -105,14 +105,14 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      "type-body-md relative flex h-11 w-full cursor-pointer select-none items-center rounded-sm pl-3 pr-10 outline-none transition-colors data-[disabled]:pointer-events-none data-[disabled]:opacity-50 focus:bg-foreground/[0.08] data-[state=checked]:bg-primary-container data-[state=checked]:text-primary-on-container",
+      "type-body-sm relative flex h-9 w-full cursor-pointer select-none items-center rounded-md pl-2.5 pr-8 outline-none transition-colors data-[disabled]:pointer-events-none data-[disabled]:opacity-40 focus:bg-secondary data-[state=checked]:font-semibold",
       className,
     )}
     {...props}
   >
-    <span className="absolute right-3 flex h-4 w-4 items-center justify-center">
+    <span className="absolute right-2.5 flex h-3.5 w-3.5 items-center justify-center text-primary-ink">
       <SelectPrimitive.ItemIndicator>
-        <Check className="h-4 w-4" />
+        <Check className="h-3.5 w-3.5" />
       </SelectPrimitive.ItemIndicator>
     </span>
 

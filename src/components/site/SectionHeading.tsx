@@ -3,8 +3,8 @@ import { Reveal } from '@/components/motion/Reveal';
 import { cn } from '@/lib/utils';
 
 export const Eyebrow = ({ children, className }: { children: ReactNode; className?: string }) => (
-  <p className={cn('type-eyebrow flex items-center gap-2 text-primary', className)}>
-    <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-tertiary" />
+  <p className={cn('type-eyebrow flex items-center gap-2 text-primary-ink', className)}>
+    <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
     {children}
   </p>
 );
@@ -23,10 +23,10 @@ interface SectionHeadingProps {
 export const SectionHeading = ({ eyebrow, title, subtitle, className, as: H = 'h2', children }: SectionHeadingProps) => (
   <Reveal className={className}>
     <Eyebrow>{eyebrow}</Eyebrow>
-    <H className={cn('mt-4', H === 'h1' ? 'type-display-md max-w-[18ch]' : 'type-headline-lg max-w-[24ch]')}>
+    <H className={cn('mt-3', H === 'h1' ? 'type-display-md max-w-[18ch]' : 'type-headline-lg max-w-[24ch]')}>
       {title}
     </H>
-    {subtitle && <p className="type-body-lg mt-4 max-w-[56ch] text-muted-foreground">{subtitle}</p>}
+    {subtitle && <p className="type-body-lg mt-3 max-w-[56ch] text-muted-foreground">{subtitle}</p>}
     {children}
   </Reveal>
 );

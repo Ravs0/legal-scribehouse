@@ -1,6 +1,9 @@
 /** Export readiness check: six questions, each answer scores 0, 1 or 2 (options listed in that order). */
 export interface ReadinessQuestion {
   id: string;
+  /** Switch-panel label and sub-label. */
+  label: string;
+  sublabel: string;
   question: string;
   options: [string, string, string];
   /** Short "fix first" line shown when this question scores low. */
@@ -12,6 +15,8 @@ export interface ReadinessQuestion {
 export const READINESS_QUESTIONS: ReadinessQuestion[] = [
   {
     id: 'hs',
+    label: 'HS code confirmed',
+    sublabel: 'For the destination, not just home',
     question: "Do you know your product's HS code for the target country?",
     options: ['No', 'We have our home-country code', 'Confirmed for the destination'],
     fix: 'Confirm the destination HS classification',
@@ -19,6 +24,8 @@ export const READINESS_QUESTIONS: ReadinessQuestion[] = [
   },
   {
     id: 'registration',
+    label: 'Registration mapped',
+    sublabel: 'Licence holder identified',
     question: 'Have you checked whether your product needs registration or a licence there?',
     options: ['Not yet', 'We think so', 'Yes, and we know who will hold it'],
     fix: 'Map registration requirements and who holds them',
@@ -26,6 +33,8 @@ export const READINESS_QUESTIONS: ReadinessQuestion[] = [
   },
   {
     id: 'trademark',
+    label: 'Trademark filed there',
+    sublabel: 'In the target country',
     question: 'Is your trademark filed in the target country?',
     options: ['No', 'Home country only', 'Filed or registered there'],
     fix: 'File your trademark before you ship',
@@ -33,6 +42,8 @@ export const READINESS_QUESTIONS: ReadinessQuestion[] = [
   },
   {
     id: 'contract',
+    label: 'Contract negotiated',
+    sublabel: 'Governing law and dispute clause',
     question: 'Do you have a written contract with your buyer or distributor?',
     options: ['No, or emails only', 'Their template', 'Negotiated, with governing law and a dispute clause'],
     fix: 'Put a negotiated contract in place',
@@ -40,6 +51,8 @@ export const READINESS_QUESTIONS: ReadinessQuestion[] = [
   },
   {
     id: 'fta',
+    label: 'FTA origin checked',
+    sublabel: 'Origin analysis done',
     question: 'Do you know whether your goods qualify for FTA preferential duty?',
     options: ['Never checked', 'Probably', 'Origin analysis done'],
     fix: 'Check origin before relying on an FTA rate',
@@ -47,6 +60,8 @@ export const READINESS_QUESTIONS: ReadinessQuestion[] = [
   },
   {
     id: 'payment',
+    label: 'Payment secured',
+    sublabel: 'LC, insured or secured terms',
     question: 'How will you get paid?',
     options: ['Open account, new buyer', 'Part deposit', 'LC, insured or secured terms'],
     fix: 'Secure your payment terms',

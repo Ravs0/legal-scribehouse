@@ -2,7 +2,6 @@ import { AlertTriangle, FileX, PackageX } from 'lucide-react';
 import { IconContainer } from '@/components/ui/chip';
 import { Reveal } from '@/components/motion/Reveal';
 import { SectionHeading } from '@/components/site/SectionHeading';
-import { tilt } from "@/hooks/usePointerGlow";
 
 const PROBLEMS = [
   {
@@ -35,9 +34,9 @@ export const Problems = () => (
       <ul className="grid-12 after-heading">
         {PROBLEMS.map((p, i) => (
           <Reveal as="li" key={p.title} index={i} className="col-span-4">
-            <article {...tilt} className="glass-subtle lift-card card-pad h-full rounded-lg">
+            <article className="surface-1 card-hover card-pad h-full rounded-[20px]">
               <IconContainer icon={p.icon} size="sm" tone="destructive" />
-              <h3 className="type-title-lg mt-5">{p.title}</h3>
+              <h3 className="type-title-lg mt-4">{p.title}</h3>
               <p className="type-body-md mt-2 text-muted-foreground">{p.copy}</p>
             </article>
           </Reveal>

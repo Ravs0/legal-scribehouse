@@ -39,7 +39,7 @@ export const Faq = () => (
       <div className="grid-12 items-start gap-y-8">
         <div className="col-span-4 md:col-span-12 lg:sticky lg:top-[120px] lg:col-span-4">
           <SectionHeading eyebrow="FAQ" title="Questions we hear every week.">
-            <Button asChild variant="ghost" icon="trailing" className="-ml-3 mt-6">
+            <Button asChild variant="ghost" icon="trailing" className="-ml-3 mt-5">
               <HashLink to="contact">
                 Ask us something else <ArrowRight aria-hidden="true" />
               </HashLink>
@@ -47,22 +47,22 @@ export const Faq = () => (
           </SectionHeading>
         </div>
         <Reveal className="col-span-4 md:col-span-12 lg:col-span-7 lg:col-start-6">
-          <AccordionPrimitive.Root type="single" collapsible className="space-y-3">
+          <AccordionPrimitive.Root type="single" collapsible className="space-y-2.5">
             {FAQS.map((f, i) => (
-              <AccordionPrimitive.Item key={f.q} value={`faq-${i}`} className="glass-subtle overflow-hidden rounded-lg">
+              <AccordionPrimitive.Item key={f.q} value={`faq-${i}`} className="surface-1 overflow-hidden rounded-2xl">
                 <AccordionPrimitive.Header>
-                  <AccordionPrimitive.Trigger className="state-layer type-title-md group flex min-h-16 w-full items-center justify-between gap-4 px-5 py-4 text-left md:px-6">
+                  <AccordionPrimitive.Trigger className="state-layer type-title-md group flex min-h-14 w-full items-center justify-between gap-3 px-5 py-4 text-left">
                     {f.q}
-                    <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-secondary text-secondary-foreground">
+                    <span className="icon-well flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-muted-foreground">
                       <ChevronDown
-                        className="h-5 w-5 transition-transform duration-medium2 ease-emphasized group-data-[state=open]:rotate-180"
+                        className="h-4 w-4 transition-transform duration-300 group-data-[state=open]:rotate-180"
                         aria-hidden="true"
                       />
                     </span>
                   </AccordionPrimitive.Trigger>
                 </AccordionPrimitive.Header>
                 <AccordionPrimitive.Content className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
-                  <p className="type-body-md max-w-[64ch] px-5 pb-6 text-muted-foreground md:px-6">{f.a}</p>
+                  <p className="type-body-md max-w-[64ch] px-5 pb-5 text-muted-foreground">{f.a}</p>
                 </AccordionPrimitive.Content>
               </AccordionPrimitive.Item>
             ))}

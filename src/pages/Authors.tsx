@@ -14,7 +14,7 @@ const Authors = () => {
         )}
         <ul className="after-heading stack-gap grid sm:grid-cols-2 lg:grid-cols-3">
           {authors.map((a, i) => (
-            <Reveal as="li" key={a.id} index={i} className="glass-subtle card-pad rounded-lg">
+            <Reveal as="li" key={a.id} index={i} className="surface-1 card-pad rounded-[20px]">
               <div className="flex items-center gap-4">
                 <span className="type-title-sm flex h-14 w-14 shrink-0 items-center justify-center rounded-full bg-tertiary-container text-tertiary-on-container">
                   {a.name

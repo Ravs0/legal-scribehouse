@@ -1,75 +1,81 @@
-import { useRef } from 'react';
-import { useInView } from '@/hooks/useInView';
+import { useEffect, useRef, useState } from 'react';
 import { Reveal } from '@/components/motion/Reveal';
 import { SectionHeading } from '@/components/site/SectionHeading';
-import { cn } from '@/lib/utils';
-import { tilt } from '@/hooks/usePointerGlow';
+import { PIXEL, PixelIcon } from '@/components/site/PixelIcon';
 
 // Durations are placeholders until the firm confirms its service levels.
 const STEPS = [
-  { title: 'Scoping call', meta: 'Free · 30 min', copy: "Your product, target market, and what's already in motion." },
-  { title: 'Route plan', meta: '1–2 weeks', copy: 'A written plan: structure, registrations, duty position, risks, fixed fee.' },
-  { title: 'Paperwork', meta: 'Fixed fee', copy: 'We draft, file and coordinate local counsel.' },
-  { title: 'Ship & support', meta: 'Ongoing', copy: 'On call for the first consignments and renewals.' },
+  { icon: PIXEL.handshake, title: 'Scoping call', meta: 'Free · 30 min', copy: "Your product, target market, and what's already in motion." },
+  { icon: PIXEL.document, title: 'Route plan', meta: '1–2 weeks', copy: 'A written plan: structure, registrations, duty position, risks, fixed fee.' },
+  { icon: PIXEL.stamp, title: 'Paperwork', meta: 'Fixed fee', copy: 'We draft, file and coordinate local counsel.' },
+  { icon: PIXEL.ship, title: 'Ship & support', meta: 'Ongoing', copy: 'On call for the first consignments and renewals.' },
 ];
 
-const GRADIENT = 'linear-gradient(90deg, hsl(var(--aurora-1)), hsl(var(--aurora-2)))';
+/** Fill fraction of the recessed track, linked to scroll position through the section. */
+function useScrollProgress(ref: React.RefObject<HTMLElement>) {
+  const [p, setP] = useState(0);
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return setP(1);
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const el = ref.current;
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      const vh = window.innerHeight;
+      setP(Math.max(0, Math.min(1, (vh * 0.8 - r.top) / (r.height + vh * 0.3))));
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onScroll);
+      cancelAnimationFrame(raf);
+    };
+  }, [ref]);
+  return p;
+}
 
 export const Process = () => {
   const ref = useRef<HTMLOListElement>(null);
-  const inView = useInView(ref, { threshold: 0.3 });
+  const progress = useScrollProgress(ref);
 
   return (
     <section id="process" className="section">
       <div className="container">
         <div className="grid-12">
-          <SectionHeading
-            className="col-span-4 md:col-span-7"
-            eyebrow="How it works"
-            title="From first call to first shipment in four steps."
-          />
+          <SectionHeading className="col-span-4 md:col-span-7" eyebrow="How it works" title="From first call to first shipment in four steps." />
         </div>
 
-        <ol ref={ref} className="after-heading stack-gap relative grid pl-12 lg:grid-cols-4 lg:pl-0">
-          {/* Connector: vertical on mobile/tablet, horizontal at numeral height on desktop. */}
-          <span
-            aria-hidden="true"
-            className={cn(
-              'absolute bottom-10 left-5 top-10 w-0.5 origin-top rounded-full transition-transform [transition-duration:800ms] ease-emphasized lg:hidden',
-              inView ? 'scale-y-100' : 'scale-y-0',
-            )}
-            style={{ background: 'linear-gradient(180deg, hsl(var(--aurora-1)), hsl(var(--aurora-2)))' }}
-          />
-          <span
-            aria-hidden="true"
-            className={cn(
-              'absolute z-10 hidden h-0.5 origin-left rounded-full transition-transform [transition-duration:800ms] ease-emphasized lg:left-[44px] lg:right-[calc(25%-62px)] lg:top-[43px] lg:block xl:left-[48px] xl:right-[calc(25%-72px)] xl:top-[47px]',
-              inView ? 'scale-x-100' : 'scale-x-0',
-            )}
-            style={{ background: GRADIENT }}
-          />
+        <ol ref={ref} className="after-heading relative grid gap-8 pl-[60px] lg:grid-cols-4 lg:gap-6 lg:pl-0">
+          {/* Recessed track: vertical on mobile, horizontal on desktop, filled in dawn orange as you scroll. */}
+          <span aria-hidden="true" className="bezel-well absolute bottom-12 left-[21px] top-12 w-1.5 rounded-full lg:hidden">
+            <span className="absolute inset-x-0 top-0 rounded-full bg-primary" style={{ height: `${progress * 100}%` }} />
+          </span>
+          <span aria-hidden="true" className="bezel-well absolute left-[60px] right-[calc(25%-60px)] top-[57px] hidden h-1.5 rounded-full lg:block">
+            <span className="absolute inset-y-0 left-0 rounded-full bg-primary" style={{ width: `${progress * 100}%` }} />
+          </span>
+
           {STEPS.map((s, i) => (
             <Reveal as="li" key={s.title} index={i} className="relative">
-              <span
-                aria-hidden="true"
-                className="pebble type-title-sm absolute -left-12 top-0 flex h-10 w-10 items-center justify-center bg-primary text-primary-foreground lg:hidden"
-              >
-                {i + 1}
-              </span>
-              <div {...tilt} className="glass-subtle lift-card card-pad h-full rounded-lg">
-                <span
-                  aria-hidden="true"
-                  className="pebble type-title-sm relative z-20 hidden h-10 w-10 items-center justify-center bg-primary text-primary-foreground lg:flex"
-                >
-                  {i + 1}
-                </span>
-                <p className="type-label-md text-tertiary lg:mt-5">{s.meta}</p>
-                <h3 className="type-title-lg mt-2">
-                  <span className="sr-only">Step {i + 1}: </span>
-                  {s.title}
-                </h3>
-                <p className="type-body-md mt-2 text-muted-foreground">{s.copy}</p>
+              <div className="bezel absolute -left-[60px] top-0 rounded-[18px] !p-1.5 lg:static lg:inline-block lg:rounded-[30px] lg:!p-3">
+                <div className="bezel-well flex h-[34px] w-[34px] items-center justify-center rounded-[13px] text-primary-ink lg:h-[96px] lg:w-[96px] lg:rounded-[22px]">
+                  <PixelIcon map={s.icon} cell={5} className="hidden lg:block" />
+                  <PixelIcon map={s.icon} cell={2} className="lg:hidden" />
+                </div>
               </div>
+              <p className="type-mono-sm mt-0 text-primary-ink lg:mt-5">
+                {String(i + 1).padStart(2, '0')} · {s.meta}
+              </p>
+              <h3 className="type-title-lg mt-1.5">
+                <span className="sr-only">Step {i + 1}: </span>
+                {s.title}
+              </h3>
+              <p className="type-body-md mt-1.5 max-w-[30ch] text-muted-foreground">{s.copy}</p>
             </Reveal>
           ))}
         </ol>

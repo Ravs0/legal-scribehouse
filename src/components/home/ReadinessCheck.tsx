@@ -1,65 +1,94 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowLeft, ArrowRight, Check, RotateCcw } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import { useMemo, useState } from 'react';
+import { ArrowRight, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { SectionHeading } from '@/components/site/SectionHeading';
 import { Reveal } from '@/components/motion/Reveal';
-import { ScoreGauge } from '@/components/home/ScoreGauge';
 import { MAX_SCORE, READINESS_QUESTIONS, verdictFor } from '@/data/readiness';
-import { spawnRipple } from '@/hooks/useRipple';
 import { useEnquiryDraft } from '@/stores/enquiryDraft';
 import { cn } from '@/lib/utils';
 
 const STATUS = {
-  HOLD: { label: 'Hold', badge: 'destructive', color: 'hsl(var(--destructive))' },
-  INSPECT: { label: 'Inspect', badge: 'warning', color: 'hsl(var(--warning))' },
-  CLEARED: { label: 'Cleared', badge: 'success', color: 'hsl(var(--success))' },
+  HOLD: { label: 'Hold', color: 'hsl(var(--destructive))' },
+  INSPECT: { label: 'Inspect', color: 'hsl(var(--warning))' },
+  CLEARED: { label: 'Cleared', color: 'hsl(var(--success))' },
 } as const;
 
+/** iOS-style switch: track 44×26, thumb 20, 18px travel on a spring. */
+const Toggle = ({ checked, onChange, labelledBy, describedBy }: { checked: boolean; onChange: (v: boolean) => void; labelledBy: string; describedBy: string }) => (
+  <button
+    type="button"
+    role="switch"
+    aria-checked={checked}
+    aria-labelledby={labelledBy}
+    aria-describedby={describedBy}
+    onClick={() => onChange(!checked)}
+    className="group relative h-[26px] w-11 shrink-0 rounded-full p-[3px] transition-colors duration-200"
+    style={{
+      background: checked ? 'hsl(var(--success))' : 'hsl(var(--input) / 0.35)',
+      boxShadow: checked ? 'inset 0 1px 2px hsl(0 0% 0% / .12)' : 'inset 0 1px 2px hsl(0 0% 0% / .12)',
+    }}
+  >
+    <span
+      aria-hidden="true"
+      className="block h-5 w-5 rounded-full bg-white transition-[transform,width] [transition-duration:220ms] [transition-timing-function:cubic-bezier(0.34,1.2,0.64,1)] group-active:w-6"
+      style={{
+        transform: `translateX(${checked ? 18 : 0}px)`,
+        boxShadow: '0 1px 2px hsl(0 0% 0% / .3), 0 0 0 .5px hsl(0 0% 0% / .08)',
+        marginLeft: 0,
+      }}
+    />
+  </button>
+);
+
+/** Header illustration: a crate on a pallet with a clearance tag in the verdict colour. */
+const CrateScene = ({ tag, score }: { tag: string; score: number }) => (
+  <div className="relative h-[168px] overflow-hidden rounded-[18px] bg-[#CFEBDD] dark:bg-[#17352E]">
+    <svg aria-hidden="true" viewBox="0 0 416 168" className="absolute inset-0 h-full w-full">
+      <ellipse cx="208" cy="142" rx="96" ry="12" fill="#000" opacity="0.12" />
+      {/* pallet */}
+      <rect x="134" y="124" width="148" height="10" rx="2" fill="#B98A5E" />
+      <rect x="140" y="134" width="14" height="8" fill="#9C7149" />
+      <rect x="201" y="134" width="14" height="8" fill="#9C7149" />
+      <rect x="262" y="134" width="14" height="8" fill="#9C7149" />
+      {/* crate */}
+      <rect x="146" y="50" width="124" height="74" rx="4" fill="#E2B27F" />
+      <rect x="146" y="50" width="124" height="74" rx="4" fill="url(#crate-shade)" />
+      {[66, 84, 102].map((y) => (
+        <rect key={y} x="146" y={y} width="124" height="2" fill="#C99561" />
+      ))}
+      <path d="M150 54 L266 120 M266 54 L150 120" stroke="#C99561" strokeWidth="4" />
+      <rect x="146" y="50" width="124" height="74" rx="4" fill="none" stroke="#B07E4D" strokeWidth="3" />
+      {/* tag + string */}
+      <path d="M262 62 Q292 54 300 76" stroke="#6B5844" strokeWidth="1.5" fill="none" />
+      <g style={{ transition: 'fill 220ms' }}>
+        <rect x="288" y="74" width="44" height="26" rx="5" fill={tag} style={{ transition: 'fill 220ms cubic-bezier(0.2,0,0,1)' }} />
+        <circle cx="295" cy="87" r="3" fill="#fff" opacity="0.8" />
+      </g>
+      <defs>
+        <linearGradient id="crate-shade" x1="0" x2="0" y1="0" y2="1">
+          <stop offset="0" stopColor="#fff" stopOpacity="0.22" />
+          <stop offset="1" stopColor="#000" stopOpacity="0.08" />
+        </linearGradient>
+      </defs>
+    </svg>
+    <span className="type-mono-md tabular absolute right-3 top-3 inline-flex h-7 items-center rounded-full bg-white/80 px-2.5 text-[#1F1A16] shadow-e1">
+      {score} / {MAX_SCORE}
+    </span>
+  </div>
+);
+
 export const ReadinessCheck = () => {
-  const total = READINESS_QUESTIONS.length;
-  const [step, setStep] = useState(0);
-  const [answers, setAnswers] = useState<(number | null)[]>(() => Array(total).fill(null));
+  const [on, setOn] = useState<boolean[]>(() => READINESS_QUESTIONS.map(() => false));
   const prefill = useEnquiryDraft((s) => s.prefill);
-  const advanceTimer = useRef<number>();
-  const headingRef = useRef<HTMLParagraphElement>(null);
-
-  useEffect(() => () => window.clearTimeout(advanceTimer.current), []);
-
-  const done = step >= total;
-  const score = answers.reduce<number>((sum, a) => sum + (a ?? 0), 0);
+  const score = on.filter(Boolean).length * 2;
   const verdict = verdictFor(score);
   const status = STATUS[verdict.stamp];
-  const gaps = useMemo(
-    () =>
-      READINESS_QUESTIONS.map((q, i) => ({ q, score: answers[i] ?? 0 }))
-        .filter((g) => g.score < 2)
-        .sort((a, b) => a.score - b.score)
-        .slice(0, 3),
-    [answers],
-  );
-
-  const go = (next: number) => {
-    setStep(next);
-    // Keep keyboard and screen-reader users oriented on the new question.
-    window.requestAnimationFrame(() => headingRef.current?.focus({ preventScroll: true }));
-  };
-
-  const choose = (value: number) => {
-    setAnswers((prev) => prev.map((a, i) => (i === step ? value : a)));
-    window.clearTimeout(advanceTimer.current);
-    if (step < total - 1) advanceTimer.current = window.setTimeout(() => go(step + 1), 250);
-  };
-
-  const restart = () => {
-    setAnswers(Array(total).fill(null));
-    go(0);
-  };
+  const gaps = useMemo(() => READINESS_QUESTIONS.filter((_, i) => !on[i]), [on]);
 
   const sendResult = () => {
     const lines = [
       `I took the export readiness check and scored ${score}/${MAX_SCORE} (${status.label}).`,
-      ...(gaps.length ? ['Gaps to fix first:', ...gaps.map((g) => `- ${g.q.fix}`)] : []),
+      ...(gaps.length ? ['Still to do:', ...gaps.slice(0, 3).map((g) => `- ${g.fix}`)] : []),
       '',
       'About my product and target market: ',
     ];
@@ -68,24 +97,21 @@ export const ReadinessCheck = () => {
     window.setTimeout(() => document.getElementById('enquiry-message')?.focus({ preventScroll: true }), 600);
   };
 
-  const q = READINESS_QUESTIONS[Math.min(step, total - 1)];
-  const progress = done ? 1 : step / total;
-
   return (
     <section id="readiness" className="section">
       <div className="container">
-        <div className="grid-12 items-start gap-y-8">
-          <div className="col-span-4 md:col-span-12 lg:sticky lg:top-[120px] lg:col-span-5">
+        <div className="grid-12 items-center gap-y-8">
+          <div className="col-span-4 md:col-span-12 lg:col-span-6">
             <SectionHeading
               eyebrow="Readiness check"
               title="Is your product ready to ship?"
-              subtitle="Answer six quick questions. Get a clear status and the first things to fix."
+              subtitle="Six switches. Twelve points. One honest answer."
             >
-              <ul className="mt-8 space-y-3">
-                {['6 questions', 'No email needed', 'Instant result'].map((t) => (
-                  <li key={t} className="type-body-md flex items-center gap-3">
-                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-tertiary/[0.16] text-tertiary">
-                      <Check className="h-4 w-4" aria-hidden="true" />
+              <ul className="mt-6 space-y-2.5">
+                {['Takes under a minute', 'No email needed', 'Your answers stay in your browser'].map((t) => (
+                  <li key={t} className="type-body-md flex items-center gap-2.5">
+                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-success/15 text-success">
+                      <Check className="h-3 w-3" strokeWidth={3} aria-hidden="true" />
                     </span>
                     {t}
                   </li>
@@ -94,126 +120,73 @@ export const ReadinessCheck = () => {
             </SectionHeading>
           </div>
 
-          <Reveal className="col-span-4 md:col-span-12 lg:col-span-7">
-            <div className="glass liquid-sheen panel-pad overflow-hidden rounded-xl">
-              <div className="flex items-center justify-between gap-4">
-                <span className="type-label-md text-muted-foreground">
-                  {done ? 'Your result' : `Question ${step + 1} of ${total}`}
-                </span>
-                <span className="type-label-md tabular text-muted-foreground">{Math.round(progress * 100)}%</span>
-              </div>
-              <div
-                className="mt-3 h-1 overflow-hidden rounded-full bg-surface-high"
-                role="progressbar"
-                aria-label="Readiness check progress"
-                aria-valuemin={0}
-                aria-valuemax={total}
-                aria-valuenow={done ? total : step}
-              >
-                <div
-                  className="h-full rounded-full bg-primary transition-[width] duration-medium2 ease-standard"
-                  style={{ width: `${progress * 100}%` }}
-                />
-              </div>
+          <Reveal className="col-span-4 md:col-span-12 lg:col-span-5 lg:col-start-8">
+            <div className="surface-3 mx-auto w-full max-w-[440px] rounded-[28px] p-3">
+              <CrateScene tag={status.color} score={score} />
+              <div className="px-3 pb-1 pt-4">
+                <div className="flex items-center justify-between gap-3">
+                  <h3 className="type-headline-sm">Export readiness</h3>
+                  <span
+                    className="type-label-sm inline-flex h-5 items-center rounded-md px-2 transition-colors duration-200"
+                    style={{ color: status.color, background: `color-mix(in srgb, ${status.color} 14%, transparent)` }}
+                    aria-live="polite"
+                  >
+                    {status.label}
+                  </span>
+                </div>
+                <p className="type-body-sm mt-0.5 text-muted-foreground">Flip on what's already done.</p>
 
-              <div aria-live="polite">
-                {!done ? (
-                  <div key={q.id} className="animate-step-in">
-                    <p ref={headingRef} tabIndex={-1} id={`q-${q.id}`} className="type-headline-sm mt-6 outline-none">
-                      {q.question}
-                    </p>
-                    <div role="radiogroup" aria-labelledby={`q-${q.id}`} className="mt-6 grid gap-3">
-                      {q.options.map((opt, i) => {
-                        const selected = answers[step] === i;
-                        return (
-                          <button
-                            key={opt}
-                            type="button"
-                            role="radio"
-                            aria-checked={selected}
-                            onClick={() => choose(i)}
-                            onPointerDown={(e) => spawnRipple(e.currentTarget, e.clientX, e.clientY)}
-                            className={cn(
-                              'state-layer type-body-md relative flex min-h-14 w-full items-center gap-3 overflow-hidden rounded-md p-4 text-left text-foreground transition-colors duration-short3',
-                              selected
-                                ? 'border-2 border-primary bg-primary/10 p-[15px]'
-                                : 'border border-outline-variant bg-card/40',
-                            )}
-                          >
-                            <span
-                              aria-hidden="true"
-                              className={cn(
-                                'flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2',
-                                selected ? 'border-primary' : 'border-input',
-                              )}
-                            >
-                              {selected && <span className="h-2.5 w-2.5 rounded-full bg-primary" />}
-                            </span>
-                            {opt}
-                          </button>
-                        );
-                      })}
-                    </div>
-                    <div className="mt-6 flex items-center justify-between">
-                      <Button
-                        variant="ghost"
-                        icon="leading"
-                        onClick={() => go(Math.max(0, step - 1))}
-                        disabled={step === 0}
-                        className="-ml-3 disabled:bg-transparent"
-                      >
-                        <ArrowLeft aria-hidden="true" /> Back
-                      </Button>
-                      {step === total - 1 && (
-                        <Button icon="trailing" onClick={() => go(total)} disabled={answers[step] === null}>
-                          See my result <ArrowRight aria-hidden="true" />
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                ) : (
-                  <div className="animate-step-in">
-                    <div className="mt-6 flex flex-col items-center text-center">
-                      <ScoreGauge score={score} max={MAX_SCORE} color={status.color} />
-                      <Badge variant={status.badge} className="mt-4">
-                        {status.label}
-                      </Badge>
-                      <p ref={headingRef} tabIndex={-1} className="type-headline-sm mt-3 outline-none">
-                        {verdict.title}
-                      </p>
-                      <p className="type-body-md mt-2 max-w-[48ch] text-muted-foreground">{verdict.copy}</p>
-                    </div>
-
-                    {gaps.length > 0 && (
-                      <div className="mt-8 rounded-lg border border-outline-variant p-5">
-                        <h4 className="type-title-sm">Fix first</h4>
-                        <ol className="mt-4 space-y-4">
-                          {gaps.map((g, i) => (
-                            <li key={g.q.id} className="flex gap-3">
-                              <span className="type-label-md flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-container text-primary-on-container">
-                                {i + 1}
-                              </span>
-                              <div>
-                                <p className="type-body-md">{g.q.fix}</p>
-                                <p className="type-body-sm text-muted-foreground">{g.q.service}</p>
-                              </div>
-                            </li>
-                          ))}
-                        </ol>
+                <ul className="mt-3 divide-y divide-outline-variant">
+                  {READINESS_QUESTIONS.map((q, i) => (
+                    <li key={q.id} className="flex min-h-14 items-center justify-between gap-4 py-2">
+                      <div className="min-w-0">
+                        <p id={`rq-${q.id}`} className="type-title-sm">
+                          {q.label}
+                        </p>
+                        <p id={`rq-${q.id}-d`} className="type-body-sm text-muted-foreground">
+                          {q.sublabel}
+                        </p>
                       </div>
-                    )}
+                      <Toggle
+                        checked={on[i]}
+                        onChange={(v) => setOn((prev) => prev.map((x, j) => (j === i ? v : x)))}
+                        labelledBy={`rq-${q.id}`}
+                        describedBy={`rq-${q.id}-d`}
+                      />
+                    </li>
+                  ))}
+                </ul>
 
-                    <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center">
-                      <Button size="lg" icon="trailing" onClick={sendResult} className="w-full sm:w-auto">
-                        Book a consult about this <ArrowRight aria-hidden="true" />
-                      </Button>
-                      <Button variant="ghost" icon="leading" onClick={restart}>
-                        <RotateCcw aria-hidden="true" /> Start over
-                      </Button>
-                    </div>
-                    <p className="type-body-sm mt-6 text-muted-foreground">Indicative only. Not legal advice.</p>
-                  </div>
-                )}
+                <p className="type-body-sm mt-3 min-h-[20px] text-muted-foreground">
+                  {gaps.length ? (
+                    <>
+                      <span className="font-semibold text-foreground">Fix first:</span> {gaps[0].fix}.
+                    </>
+                  ) : (
+                    <>
+                      <span className="font-semibold text-foreground">{verdict.title}</span> {verdict.copy}
+                    </>
+                  )}
+                </p>
+
+                <div className="mt-4 grid grid-cols-2 gap-2">
+                  <Button onClick={sendResult} className="px-3">
+                    Book a consult <ArrowRight aria-hidden="true" />
+                  </Button>
+                  <Button variant="outline" onClick={() => setOn(READINESS_QUESTIONS.map(() => true))}>
+                    Mark all done
+                  </Button>
+                </div>
+                <div className="mt-2 flex items-center justify-between">
+                  <button
+                    type="button"
+                    onClick={() => setOn(READINESS_QUESTIONS.map(() => false))}
+                    className={cn('press type-label-md h-8 rounded-full px-2 text-primary-ink hover:bg-primary/10')}
+                  >
+                    Reset
+                  </button>
+                  <span className="type-label-sm text-muted-foreground">Indicative only · not legal advice</span>
+                </div>
               </div>
             </div>
           </Reveal>

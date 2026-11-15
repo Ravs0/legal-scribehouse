@@ -3,7 +3,6 @@ import { Badge } from '@/components/ui/badge';
 import { IconContainer } from '@/components/ui/chip';
 import { Reveal } from '@/components/motion/Reveal';
 import { SectionHeading } from '@/components/site/SectionHeading';
-import { tilt } from "@/hooks/usePointerGlow";
 
 export const Services = () => (
   <section id="services" className="section">
@@ -19,11 +18,11 @@ export const Services = () => (
       <ul className="after-heading stack-gap grid sm:grid-cols-2 lg:grid-cols-3">
         {SERVICES.map((s, i) => (
           <Reveal as="li" key={s.id} index={i}>
-            <article {...tilt} className="glass-subtle lift-card card-pad flex h-full flex-col rounded-lg">
+            <article className="surface-1 card-hover card-pad flex h-full flex-col rounded-lg">
               <IconContainer icon={s.icon} />
-              <h3 className="type-title-lg mt-5">{s.title}</h3>
+              <h3 className="type-title-lg mt-4">{s.title}</h3>
               <p className="type-body-md mt-2 flex-1 text-muted-foreground">{s.copy}</p>
-              <div className="mt-5 flex flex-wrap items-center gap-2 border-t border-outline-variant pt-4">
+              <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-outline-variant pt-3">
                 <span className="type-label-sm text-muted-foreground">You get</span>
                 <Badge>{s.deliverable}</Badge>
               </div>

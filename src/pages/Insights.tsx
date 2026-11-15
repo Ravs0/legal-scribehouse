@@ -12,7 +12,6 @@ import { Reveal } from '@/components/motion/Reveal';
 import { CtaBand } from '@/components/site/CtaBand';
 import { SectionHeading } from '@/components/site/SectionHeading';
 import { useInsights } from '@/hooks/useInsights';
-import { tilt } from '@/hooks/usePointerGlow';
 import type { ContentItem } from '@/types/blog';
 import { cn } from '@/lib/utils';
 
@@ -88,7 +87,7 @@ export const InsightsListing = ({
             ))}
           </div>
           <div className="relative w-full md:w-[280px]">
-            <Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
+            <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
             <Input
               ref={searchRef}
               type="search"
@@ -96,7 +95,7 @@ export const InsightsListing = ({
               placeholder="Search insights"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="h-11 rounded-full pl-12 focus-visible:pl-[47px]"
+              className="h-10 rounded-full pl-10"
             />
           </div>
         </div>
@@ -106,7 +105,7 @@ export const InsightsListing = ({
         {!ready ? (
           <div className="stack-gap grid sm:grid-cols-2 lg:grid-cols-3">
             {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="glass-subtle space-y-4 rounded-lg p-3">
+              <div key={i} className="surface-1 space-y-3 rounded-[20px] p-2.5">
                 <Skeleton className="aspect-video w-full rounded-md" />
                 <Skeleton className="h-6 w-20 rounded-full" />
                 <Skeleton className="h-6 w-5/6" />
@@ -115,7 +114,7 @@ export const InsightsListing = ({
             ))}
           </div>
         ) : filtered.length === 0 ? (
-          <div className="glass-subtle flex flex-col items-center rounded-lg px-6 py-16 text-center">
+          <div className="surface-1 flex flex-col items-center rounded-[28px] px-6 py-16 text-center">
             <IconContainer icon={SearchX} className="h-14 w-14" />
             <p className="type-headline-sm mt-5">{query ? 'No matches found.' : 'Nothing published here yet.'}</p>
             <p className="type-body-md mt-2 max-w-[48ch] text-muted-foreground">
@@ -137,12 +136,12 @@ export const InsightsListing = ({
           <>
             {featured && (
               <Reveal className="mb-6 xl:mb-8">
-                <Link to={`/posts/${featured.id}`} {...tilt} className="glass liquid-sheen lift-card grid-12 items-center rounded-xl p-3 md:p-4">
+                <Link to={`/posts/${featured.id}`} className="surface-2 card-hover grid-12 items-center rounded-[28px] p-2.5 md:p-3">
                   <div className="order-2 col-span-4 p-3 md:order-1 md:col-span-7 md:p-6">
                     <Badge>{TYPE_META[featured.type]?.label ?? 'Analysis'} · Featured</Badge>
                     <h2 className="type-headline-md mt-4">{featured.title}</h2>
                     <p className="type-body-lg mt-3 line-clamp-3 text-muted-foreground">{featured.summary}</p>
-                    <p className="type-label-md mt-6 flex items-center gap-2 text-primary">
+                    <p className="type-label-md mt-5 flex items-center gap-2 text-primary-ink">
                       Read the {TYPE_META[featured.type]?.label.toLowerCase() ?? 'post'} <ArrowRight className="h-4 w-4" aria-hidden="true" />
                     </p>
                   </div>
@@ -170,8 +169,8 @@ export const InsightsListing = ({
                     aria-current={i === page ? 'page' : undefined}
                     onClick={() => setPage(i)}
                     className={cn(
-                      'state-layer type-label-lg relative h-10 w-10 overflow-hidden rounded-full',
-                      i === page ? 'bg-primary-container text-primary-on-container' : 'text-foreground',
+                      'press type-label-md relative h-9 w-9 rounded-full',
+                      i === page ? 'btn-device bg-device text-device-foreground' : 'text-foreground hover:bg-secondary',
                     )}
                   >
                     {i + 1}

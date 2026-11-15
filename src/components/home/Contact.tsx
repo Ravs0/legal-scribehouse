@@ -54,7 +54,7 @@ const Field = ({
   children: ReactNode;
 }) => (
   <div className={className}>
-    <label htmlFor={htmlFor} className="type-label-md mb-2 block text-foreground">
+    <label htmlFor={htmlFor} className="type-label-md mb-1.5 block text-foreground">
       {label}
       {required && <span className="text-destructive"> *</span>}
     </label>
@@ -137,15 +137,15 @@ export const Contact = () => {
           </div>
 
           <Reveal className="col-span-4 md:col-span-12 lg:col-span-7">
-            <div className="glass liquid-sheen glass-tall panel-pad rounded-xl">
+            <div className="surface-3 panel-pad rounded-[28px]">
               {sent ? (
                 <div role="status" className="flex animate-step-in flex-col items-start py-4">
-                  <IconContainer icon={Check} tone="success" className="h-14 w-14" />
+                  <IconContainer icon={Check} tone="success" className="h-12 w-12" />
                   <p className="type-headline-sm mt-6">Thanks, we've got it.</p>
                   <p className="type-body-md mt-2 max-w-[52ch] text-muted-foreground">
                     Your email app should have opened with everything filled in. Hit send there and we'll reply within
                     one business day. Nothing opened? Write to{' '}
-                    <a className="text-primary underline underline-offset-[3px]" href={`mailto:${SITE.email}`}>
+                    <a className="text-primary-ink underline underline-offset-[3px]" href={`mailto:${SITE.email}`}>
                       {SITE.email}
                     </a>
                     .
@@ -162,7 +162,7 @@ export const Contact = () => {
                   </Button>
                 </div>
               ) : (
-                <form noValidate onSubmit={handleSubmit(onSubmit)} className="grid gap-x-4 gap-y-5 sm:grid-cols-2">
+                <form noValidate onSubmit={handleSubmit(onSubmit)} className="grid gap-x-3 gap-y-4 sm:grid-cols-2">
                   <Field label="Name" htmlFor="enquiry-name" required error={errors.name?.message} errorId="name-error">
                     <Input id="enquiry-name" autoComplete="name" {...register('name')} {...a11y('name')} />
                   </Field>
@@ -177,7 +177,7 @@ export const Contact = () => {
                   </Field>
 
                   <fieldset className="sm:col-span-2">
-                    <legend className="type-label-md mb-3 text-foreground">Target markets</legend>
+                    <legend className="type-label-md mb-2 text-foreground">Target markets</legend>
                     <div className="flex flex-wrap gap-2">
                       {MARKET_CHOICES.map((m) => (
                         <FilterChip key={m} selected={markets.includes(m)} onClick={() => toggleMarket(m)}>
@@ -257,12 +257,12 @@ export const Contact = () => {
                       <span
                         aria-hidden="true"
                         className={cn(
-                          'mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-xs border-2 border-input text-primary-foreground transition-colors duration-short3',
+                          'mt-px flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-[5px] border-[1.5px] border-input bg-card text-primary-foreground transition-colors duration-150',
                           'peer-checked:border-primary peer-checked:bg-primary peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ring',
                           '[&>svg]:opacity-0 peer-checked:[&>svg]:opacity-100',
                         )}
                       >
-                        <Check className="h-3.5 w-3.5" strokeWidth={3} />
+                        <Check className="h-3 w-3" strokeWidth={3} />
                       </span>
                       <span className="type-body-sm">
                         I understand this enquiry doesn't create an adviser–client relationship.
@@ -317,7 +317,7 @@ const ContactDetails = ({
         <div>
           <p className="type-label-sm text-muted-foreground">{r.label}</p>
           {r.href ? (
-            <a href={r.href} className="type-title-sm hover:text-primary">
+            <a href={r.href} className="type-title-sm hover:text-primary-ink">
               {r.value}
             </a>
           ) : (
@@ -330,12 +330,12 @@ const ContactDetails = ({
 );
 
 const NextSteps = () => (
-  <div className="rounded-lg border border-outline-variant p-5 md:p-6">
+  <div className="surface-1 rounded-[20px] p-5">
     <h3 className="type-title-md font-sans">What happens next</h3>
     <ol className="mt-4 space-y-3">
       {NEXT_STEPS.map((s, i) => (
         <li key={s} className="type-body-md flex items-start gap-3">
-          <span className="type-label-md flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-container text-primary-on-container">
+          <span className="type-label-sm flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary-container text-primary-on-container">
             {i + 1}
           </span>
           {s}

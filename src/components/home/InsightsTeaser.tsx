@@ -46,7 +46,7 @@ export const InsightsTeaser = () => {
         {!ready ? (
           <div className="after-heading stack-gap grid md:grid-cols-3" aria-busy="true" aria-label="Loading insights">
             {[0, 1, 2].map((i) => (
-              <div key={i} className="glass-subtle space-y-4 rounded-lg p-3">
+              <div key={i} className="surface-1 space-y-3 rounded-[20px] p-2.5">
                 <Skeleton className="aspect-video w-full rounded-md" />
                 <Skeleton className="h-6 w-20 rounded-full" />
                 <Skeleton className="h-6 w-5/6" />
@@ -56,8 +56,8 @@ export const InsightsTeaser = () => {
           </div>
         ) : latest.length === 0 ? (
           <Reveal className="after-heading">
-            <div className="glass-subtle flex flex-col items-center rounded-lg px-6 py-12 text-center">
-              <IconContainer icon={BookOpen} className="h-14 w-14" />
+            <div className="surface-1 flex flex-col items-center rounded-[28px] px-6 py-12 text-center">
+              <IconContainer icon={BookOpen} className="h-12 w-12" />
               <p className="type-headline-sm mt-5">First guides are on the way.</p>
               <p className="type-body-md mt-2 max-w-[48ch] text-muted-foreground">
                 We're writing plain-English explainers on HS codes, rules of origin and distributor contracts.

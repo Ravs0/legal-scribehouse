@@ -7,7 +7,6 @@ import { CtaBand } from '@/components/site/CtaBand';
 import { SectionHeading } from '@/components/site/SectionHeading';
 import { SITE } from '@/config/site';
 import { PLACEHOLDER, STATS } from '@/data/proof';
-import { tilt } from "@/hooks/usePointerGlow";
 
 const PRINCIPLES = [
   {
@@ -41,7 +40,7 @@ const About = () => (
       </div>
 
       <div className="grid-12 after-heading">
-        <Reveal className="glass panel-pad col-span-4 rounded-xl md:col-span-12 lg:col-span-7">
+        <Reveal className="surface-3 panel-pad col-span-4 rounded-[28px] md:col-span-12 lg:col-span-7">
           <IconContainer icon={Users} />
           <h2 className="type-headline-sm mt-6">Why we exist</h2>
           <div className="type-body-lg mt-4 space-y-4 text-muted-foreground">
@@ -58,7 +57,7 @@ const About = () => (
         </Reveal>
         <div className="stack-gap col-span-4 grid grid-cols-2 md:col-span-12 lg:col-span-5">
           {STATS.map((s, i) => (
-            <Reveal key={s.label} index={i} className="glass-subtle flex flex-col justify-center rounded-lg p-5 md:p-6">
+            <Reveal key={s.label} index={i} className="surface-1 flex flex-col justify-center rounded-[20px] p-5">
               <span className="type-display-md text-gradient tabular">
                 <CountUp value={s.value} suffix={s.suffix} />
               </span>
@@ -79,9 +78,9 @@ const About = () => (
       <ul className="after-heading stack-gap grid md:grid-cols-3">
         {PRINCIPLES.map((p, i) => (
           <Reveal as="li" key={p.title} index={i}>
-            <article {...tilt} className="glass-subtle lift-card card-pad h-full rounded-lg">
+            <article className="surface-1 card-hover card-pad h-full rounded-[20px]">
               <IconContainer icon={p.icon} />
-              <h3 className="type-title-lg mt-5">{p.title}</h3>
+              <h3 className="type-title-lg mt-4">{p.title}</h3>
               <p className="type-body-md mt-2 text-muted-foreground">{p.copy}</p>
             </article>
           </Reveal>

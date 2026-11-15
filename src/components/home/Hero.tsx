@@ -1,35 +1,15 @@
-import { useEffect, useRef } from 'react';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { AssistChip } from '@/components/ui/chip';
 import { HashLink } from '@/components/site/HashLink';
-import { ClearanceConsole } from '@/components/home/ClearanceConsole';
-import { useHeroVisible } from '@/stores/heroVisible';
-import { Magnetic } from '@/components/motion/Magnetic';
+import { ClearancePrinter } from '@/components/home/ClearancePrinter';
 
 const TRUST = ['10 ASEAN markets', '6 advisory services', '2-minute readiness check'];
 const stagger = (ms: number) => ({ animationDelay: `${ms}ms` });
 
 export const Hero = () => {
-  const ref = useRef<HTMLElement>(null);
-  const setVisible = useHeroVisible((s) => s.set);
-
-  // Lift the aurora veil while the hero is at least 40% on screen.
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || typeof IntersectionObserver === 'undefined') return;
-    const io = new IntersectionObserver(([e]) => setVisible(e.intersectionRatio >= 0.4), {
-      threshold: [0, 0.4, 1],
-    });
-    io.observe(el);
-    return () => {
-      io.disconnect();
-      setVisible(false);
-    };
-  }, [setVisible]);
-
   return (
-    <section ref={ref} className="flex min-h-[calc(100svh-76px)] items-center pb-24 pt-10 lg:pt-16">
+    <section className="flex min-h-[calc(100svh-80px)] items-center pb-20 pt-8 lg:pt-10">
       <div className="container">
         <div className="grid-12 items-center gap-y-10">
           <div className="col-span-4 md:col-span-12 lg:col-span-6">
@@ -47,18 +27,14 @@ export const Hero = () => {
               for small exporters, explained in plain English.
             </p>
             <div className="mt-8 flex animate-fade-up flex-col gap-3 sm:flex-row" style={stagger(240)}>
-              <Magnetic className="w-full sm:w-auto">
-                <Button asChild size="lg" icon="trailing" className="w-full sm:w-auto">
-                  <HashLink to="contact">
-                    Book a consult <ArrowRight aria-hidden="true" />
-                  </HashLink>
-                </Button>
-              </Magnetic>
-              <Magnetic className="w-full sm:w-auto">
-                <Button asChild size="lg" variant="glass" className="w-full sm:w-auto">
-                  <HashLink to="readiness">Check my readiness</HashLink>
-                </Button>
-              </Magnetic>
+              <Button asChild size="lg" className="w-full sm:w-auto">
+                <HashLink to="contact">
+                  Book a consult <ArrowRight aria-hidden="true" />
+                </HashLink>
+              </Button>
+              <Button asChild size="lg" variant="outline" className="w-full sm:w-auto">
+                <HashLink to="readiness">Check my readiness</HashLink>
+              </Button>
             </div>
             <ul
               className="type-body-sm mt-8 flex animate-fade-up flex-wrap items-center gap-x-3 gap-y-2 text-muted-foreground"
@@ -72,8 +48,8 @@ export const Hero = () => {
               ))}
             </ul>
           </div>
-          <div className="col-span-4 md:col-span-12 lg:col-span-6">
-            <ClearanceConsole />
+          <div className="col-span-4 md:col-span-12 lg:col-span-5 lg:col-start-8">
+            <ClearancePrinter />
           </div>
         </div>
       </div>
