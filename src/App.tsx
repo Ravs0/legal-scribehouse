@@ -13,6 +13,7 @@ import Index from "./pages/Index";
 import Insights from "./pages/Insights";
 import { ScrollManager } from "@/components/site/ScrollManager";
 import { DawnBackground } from "@/components/site/DawnBackground";
+import { PebbleLight } from "@/components/site/PebbleLight";
 import { PageTransition } from "@/components/site/PageTransition";
 import Posts from "./pages/Posts";
 import Cases from "./pages/Cases";
@@ -37,6 +38,7 @@ const App = () => (
         <Router>
           <ScrollManager />
           <DawnBackground />
+          <PebbleLight />
           <div className="relative flex min-h-screen flex-col">
             <Header />
             <main id="main" className="flex-1">

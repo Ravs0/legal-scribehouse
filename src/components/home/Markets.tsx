@@ -101,7 +101,7 @@ export const Markets = () => {
                     }}
                     className={cn(
                       'press type-label-md h-[30px] shrink-0 rounded-full px-3 transition-colors',
-                      filter === f.id ? 'bg-[#F4EEE6] text-[#1F1A16]' : 'bg-white/[0.08] text-white/75 hover:bg-white/[0.12]',
+                      filter === f.id ? 'pebble btn-lift bg-[#F4EEE6] text-[#1F1A16] [--sheen-a:0.7]' : 'bg-white/[0.08] text-white/75 hover:bg-white/[0.12]',
                     )}
                   >
                     {f.label}
@@ -111,7 +111,7 @@ export const Markets = () => {
               <button
                 type="button"
                 onClick={askAbout}
-                className="press type-label-md hidden h-[30px] shrink-0 items-center gap-1.5 rounded-full bg-[#F4EEE6] px-3 text-[#1F1A16] sm:inline-flex"
+                className="pebble btn-lift type-label-md hidden h-[30px] shrink-0 items-center gap-1.5 rounded-full bg-[#F4EEE6] px-3 text-[#1F1A16] [--sheen-a:0.7] sm:inline-flex"
               >
                 Ask about {market.name} <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
               </button>
@@ -128,7 +128,7 @@ export const Markets = () => {
               >
                 <span
                   aria-hidden="true"
-                  className="absolute inset-x-0 hidden rounded-[14px] bg-white/[0.08] lg:block"
+                  className="pebble absolute inset-x-0 hidden rounded-[14px] bg-white/[0.08] [--sheen-a:0.12] lg:block"
                   style={{
                     top: 0,
                     height: surface.h,

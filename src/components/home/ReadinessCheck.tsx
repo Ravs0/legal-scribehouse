@@ -24,17 +24,16 @@ const Toggle = ({ checked, onChange, labelledBy, describedBy }: { checked: boole
     onClick={() => onChange(!checked)}
     className="group relative h-[26px] w-11 shrink-0 rounded-full p-[3px] transition-colors duration-200"
     style={{
-      background: checked ? 'hsl(var(--success))' : 'hsl(var(--input) / 0.35)',
-      boxShadow: checked ? 'inset 0 1px 2px hsl(0 0% 0% / .12)' : 'inset 0 1px 2px hsl(0 0% 0% / .12)',
+      background: checked ? 'hsl(var(--success))' : 'hsl(var(--input) / 0.3)',
+      backgroundImage: 'linear-gradient(to bottom, hsl(0 0% 0% / .10), transparent 60%)',
+      boxShadow: 'inset 0 1px 2px hsl(0 0% 0% / .16), inset 0 -1px 0 hsl(0 0% 100% / .35)',
     }}
   >
     <span
       aria-hidden="true"
-      className="block h-5 w-5 rounded-full bg-white transition-[transform,width] [transition-duration:220ms] [transition-timing-function:cubic-bezier(0.34,1.2,0.64,1)] group-active:w-6"
+      className="pebble-thumb block h-5 w-5 rounded-full transition-[transform,width] [transition-duration:220ms] [transition-timing-function:cubic-bezier(0.34,1.2,0.64,1)] group-active:w-6"
       style={{
         transform: `translateX(${checked ? 18 : 0}px)`,
-        boxShadow: '0 1px 2px hsl(0 0% 0% / .3), 0 0 0 .5px hsl(0 0% 0% / .08)',
-        marginLeft: 0,
       }}
     />
   </button>
@@ -121,7 +120,7 @@ export const ReadinessCheck = () => {
           </div>
 
           <Reveal className="col-span-4 md:col-span-12 lg:col-span-5 lg:col-start-8">
-            <div className="surface-3 mx-auto w-full max-w-[440px] rounded-[28px] p-3">
+            <div className="surface-3 mx-auto w-full max-w-[440px] rounded-[28px] p-3 transition-transform duration-300 hover:-translate-y-1">
               <CrateScene tag={status.color} score={score} />
               <div className="px-3 pb-1 pt-4">
                 <div className="flex items-center justify-between gap-3">

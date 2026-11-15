@@ -120,6 +120,21 @@ text, LED readouts, glass-chip counters and widget unit labels.
 - The widget swaps by crossfade only.
 - The process track shows full.
 
+## 6a. Pebble finish (v3.1)
+
+One satin material shared by every raised component (cards, buttons, chips, widgets, bezels, menus, toggle thumbs):
+
+| Layer | Spec |
+|---|---|
+| Satin sheen | `radial-gradient(130% 110% at --lx --ly, white × sheen, transparent 58%)`. Sheen .62 light / .13 dark; filled buttons .42. |
+| Bounce light | `linear-gradient(to top, white × .14 / .05, transparent 34%)` |
+| Matte grain | SVG fractal noise tile, 140px, alpha .09 (warm) light / .05 (white) dark. Also applied to wells and fields. |
+| Convex shading | Top rim `inset 0 1px 0`; underside `inset 0 -10…-14px 18…24px` in the tint at .16 light / .45 dark |
+| Float | Rest `0 2px 3px` + `0 14px 26px -12px`. Hover lifts 5px (cards) or 2px (buttons) to `0 26px 40px -16px`, 320ms spring. Press: cards scale .985, buttons sink 1px and scale .96 |
+| Interactive light | `--lx` / `--ly` are registered properties. One delegated pointer listener (`PebbleLight.tsx`) moves the highlight toward the cursor on the hovered surface (upper half only); it glides over 500–600ms and drifts back on leave. Fine pointers only; off for reduced motion. |
+| Idle float | The hero printer drifts ±3–4px over 7s |
+| Toggle thumb | White pebble: radial highlight at 35%/25%, underside shade, two-step drop |
+
 ## 7. Removed
 
 - **3D layer:** three.js and the stones.

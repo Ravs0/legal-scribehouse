@@ -39,7 +39,7 @@ const StatBezel = ({ value, suffix, label }: { value: number; suffix: string; la
     </>
   );
   return (
-    <div className="bezel rounded-full">
+    <div className="bezel card-hover rounded-full">
       <div
         ref={wellRef}
         onMouseMove={onMove}

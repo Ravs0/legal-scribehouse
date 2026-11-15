@@ -49,7 +49,7 @@ export const Faq = () => (
         <Reveal className="col-span-4 md:col-span-12 lg:col-span-7 lg:col-start-6">
           <AccordionPrimitive.Root type="single" collapsible className="space-y-2.5">
             {FAQS.map((f, i) => (
-              <AccordionPrimitive.Item key={f.q} value={`faq-${i}`} className="surface-1 overflow-hidden rounded-2xl">
+              <AccordionPrimitive.Item key={f.q} value={`faq-${i}`} className="surface-1 card-hover overflow-hidden rounded-2xl data-[state=open]:surface-2">
                 <AccordionPrimitive.Header>
                   <AccordionPrimitive.Trigger className="state-layer type-title-md group flex min-h-14 w-full items-center justify-between gap-3 px-5 py-4 text-left">
                     {f.q}

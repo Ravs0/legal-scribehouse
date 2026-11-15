@@ -49,7 +49,7 @@ export const Hero = () => {
             </ul>
           </div>
           <div className="col-span-4 md:col-span-12 lg:col-span-5 lg:col-start-8">
-            <ClearancePrinter />
+            <ClearancePrinter className="float-idle" />
           </div>
         </div>
       </div>

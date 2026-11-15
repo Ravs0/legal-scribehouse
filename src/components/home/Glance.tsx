@@ -105,9 +105,10 @@ export const Glance = () => {
     return (
       <div
         className={cn(
-          'absolute overflow-hidden transition-[left,top,width,height,transform,opacity,border-radius,box-shadow] [transition-duration:480ms] [transition-timing-function:cubic-bezier(0.32,0.72,0,1)]',
+          'pebble absolute overflow-hidden transition-[left,top,width,height,transform,opacity,border-radius,box-shadow,--lx,--ly] [transition-duration:480ms] [transition-timing-function:cubic-bezier(0.32,0.72,0,1)]',
           surface,
-          isOpen ? 'z-[2] rounded-[44px] shadow-e4' : 'z-[1] rounded-[40px] shadow-e2',
+          isOpen ? 'z-[2] rounded-[44px] shadow-e4' : 'z-[1] rounded-[40px] [box-shadow:inset_0_1px_0_hsl(0_0%_100%/0.35),inset_0_-14px_22px_-16px_hsl(var(--tint)/var(--shade-a)),var(--float-drop)]',
+          !open && 'hover:-translate-y-1 hover:[box-shadow:inset_0_1px_0_hsl(0_0%_100%/0.35),inset_0_-14px_22px_-16px_hsl(var(--tint)/var(--shade-a)),var(--float-drop-hover)]',
           dim && "scale-[0.96] opacity-[0.45]",
         )}
         style={rect(id)}
@@ -155,9 +156,13 @@ export const Glance = () => {
                 <div className="flex h-full flex-col">
                   <p className="type-mono-sm opacity-70">Duty saved · this shipment</p>
                   <p className="mt-auto font-display text-[44px] font-extrabold leading-none tracking-[-0.04em] tabular sm:text-[56px]">{fmt(savedAnim)}</p>
-                  <div className="mt-4 flex h-10 items-end gap-1.5" aria-hidden="true">
-                    {[30, 46, 38, 60, 52, 74, 88].map((h, i) => (
-                      <span key={i} className="flex-1 rounded-sm bg-primary-foreground/25" style={{ height: `${h}%` }} />
+                  <div className="mt-4 flex h-12 items-end gap-2" aria-hidden="true">
+                    {[30, 46, 38, 60, 52, 74, 92].map((h, i, arr) => (
+                      <span
+                        key={i}
+                        className={i === arr.length - 1 ? 'w-2 rounded-full bg-primary-foreground/80' : 'w-2 rounded-full bg-primary-foreground/25'}
+                        style={{ height: `${h}%` }}
+                      />
                     ))}
                   </div>
                 </div>,
@@ -200,7 +205,7 @@ export const Glance = () => {
 
               {widget(
                 'ship',
-                'dark bg-device text-device-foreground',
+                'dark bg-device text-device-foreground [--sheen-a:0.14]',
                 'Shipment status',
                 <div className="flex h-full flex-col">
                   <div className="flex items-center justify-between">
