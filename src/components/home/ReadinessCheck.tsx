@@ -13,6 +13,12 @@ const STATUS = {
   CLEARED: { label: 'Cleared', color: 'hsl(var(--success))' },
 } as const;
 
+const LEGEND: { stamp: keyof typeof STATUS; range: string; copy: string }[] = [
+  { stamp: 'HOLD', range: '0–4', copy: 'Fundamentals missing. Fix before you ship.' },
+  { stamp: 'INSPECT', range: '6–8', copy: 'Basics in place. Close the gaps.' },
+  { stamp: 'CLEARED', range: '10–12', copy: 'Ready. A quick review, then go.' },
+];
+
 /** iOS-style switch: track 44×26, thumb 20, 18px travel on a spring. */
 const Toggle = ({ checked, onChange, labelledBy, describedBy }: { checked: boolean; onChange: (v: boolean) => void; labelledBy: string; describedBy: string }) => (
   <button
@@ -99,7 +105,7 @@ export const ReadinessCheck = () => {
   return (
     <section id="readiness" className="section">
       <div className="container">
-        <div className="grid-12 items-center gap-y-8">
+        <div className="grid-12 items-start gap-y-8">
           <div className="col-span-4 md:col-span-12 lg:col-span-6">
             <SectionHeading
               eyebrow="Readiness check"
@@ -116,6 +122,23 @@ export const ReadinessCheck = () => {
                   </li>
                 ))}
               </ul>
+              <div className="surface-1 mt-6 max-w-[420px] rounded-[20px] p-4">
+                <h3 className="type-title-sm font-sans">How to read your score</h3>
+                <ul className="mt-3 space-y-2.5">
+                  {LEGEND.map((l) => (
+                    <li key={l.stamp} className="flex items-center gap-3">
+                      <span
+                        className="type-label-sm inline-flex h-5 w-16 shrink-0 items-center justify-center rounded-md"
+                        style={{ color: STATUS[l.stamp].color, background: `color-mix(in srgb, ${STATUS[l.stamp].color} 14%, transparent)` }}
+                      >
+                        {STATUS[l.stamp].label}
+                      </span>
+                      <span className="type-mono-md tabular w-11 shrink-0">{l.range}</span>
+                      <span className="type-body-sm min-w-0 text-muted-foreground">{l.copy}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </SectionHeading>
           </div>
 

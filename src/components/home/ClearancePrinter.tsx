@@ -82,7 +82,7 @@ export const ClearancePrinter = ({ className }: { className?: string }) => {
   ];
 
   return (
-    <div className={cn('relative mx-auto h-[420px] w-full max-w-[328px] overflow-hidden rounded-3xl shadow-e4 sm:h-[520px] sm:max-w-[440px] sm:rounded-[36px]', className)}>
+    <div className={cn('relative mx-auto h-[400px] w-full max-w-[328px] overflow-hidden rounded-3xl shadow-e4 sm:h-[460px] sm:max-w-[400px] sm:rounded-[36px]', className)}>
       <MarketScene scene={SCENES.home} className="absolute inset-0" />
       {/* Inner rim: the SVG scene covers inset shadows on the root, so the polished edge sits on top. */}
       <span
@@ -92,7 +92,7 @@ export const ClearancePrinter = ({ className }: { className?: string }) => {
       />
 
       {/* Receipt (behind the head unit, feeding out of the slot) */}
-      <div className="absolute inset-x-0 top-[116px] mx-auto w-[232px] sm:top-[128px] sm:w-[280px]">
+      <div className="absolute inset-x-0 top-[108px] mx-auto w-[232px] sm:top-[120px] sm:w-[280px]">
         <div
           className="origin-top"
           style={{
@@ -103,7 +103,7 @@ export const ClearancePrinter = ({ className }: { className?: string }) => {
         >
           <div
             key={printKey}
-            className="receipt-edge relative bg-[#FFFDF8] px-4 pb-6 pt-4 text-[#1F1A16] shadow-[0_14px_22px_-12px_hsl(24_40%_10%/0.45)]"
+            className="receipt-edge relative bg-[#FFFDF8] px-3 pb-5 pt-3 sm:px-4 text-[#1F1A16] shadow-[0_14px_22px_-12px_hsl(24_40%_10%/0.45)]"
             style={{
               backgroundImage: 'linear-gradient(90deg, hsl(0 0% 0% / .05), transparent 12%, transparent 88%, hsl(0 0% 0% / .06))',
               animation: printing ? 'receipt-feed 990ms steps(9,end) both, receipt-settle 240ms cubic-bezier(0.34,1.2,0.64,1) 990ms both' : undefined,
@@ -114,17 +114,17 @@ export const ClearancePrinter = ({ className }: { className?: string }) => {
               <span className="type-mono-md font-semibold tracking-[0.18em]">~{SITE.name.toUpperCase()}</span>
               <span className="type-mono-sm text-[#7A7066]">No. 0412</span>
             </div>
-            <p className="type-mono-sm mt-1 text-[#7A7066]">Clearance receipt · {p.code}</p>
-            <div className="my-3 border-t border-dashed border-[#CFC7BB]" />
-            <dl className="space-y-1.5">
+            <p className="type-mono-sm mt-0.5 text-[#7A7066]">Clearance receipt · {p.code}</p>
+            <div className="my-2.5 border-t border-dashed border-[#CFC7BB]" />
+            <dl className="space-y-1">
               {rows.map(([k, v]) => (
-                <div key={k} className="flex justify-between gap-3">
+                <div key={k} className={cn('justify-between gap-3', k === 'TRADEMARK' ? 'hidden sm:flex' : 'flex')}>
                   <dt className="type-mono-sm pt-px text-[#7A7066]">{k}</dt>
                   <dd className="type-mono-md text-right">{v}</dd>
                 </div>
               ))}
             </dl>
-            <div className="my-3 border-t border-dashed border-[#CFC7BB]" />
+            <div className="my-2.5 border-t border-dashed border-[#CFC7BB]" />
             <div className="flex items-end justify-between">
               <div>
                 <p className="type-mono-sm text-[#7A7066]">Total duty</p>
@@ -132,15 +132,15 @@ export const ClearancePrinter = ({ className }: { className?: string }) => {
               </div>
               <p className="font-display text-[28px] font-extrabold leading-none tracking-[-0.03em]">{p.total}</p>
             </div>
-            <div className="barcode mx-auto mt-4 h-7 w-[120px]" aria-hidden="true" />
-            <p className="type-mono-sm mt-2 text-center text-[#7A7066]">Illustrative example · not advice</p>
+            <div className="barcode mx-auto mt-3 hidden h-5 w-[120px] sm:block" aria-hidden="true" />
+            <p className="type-mono-sm mt-2 text-center tracking-normal text-[#7A7066] sm:mt-1.5 sm:tracking-[0.04em]">Illustrative example · not advice</p>
           </div>
         </div>
       </div>
 
       {/* Head unit */}
       <div
-        className="absolute inset-x-0 top-6 z-10 mx-auto w-[272px] sm:top-7 sm:w-[340px]"
+        className="absolute inset-x-0 top-4 z-10 mx-auto w-[272px] sm:top-5 sm:w-[340px]"
         style={{ animation: printing && !reduced() ? 'head-nudge 110ms 9 both' : undefined }}
       >
         <div

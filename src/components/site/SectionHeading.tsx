@@ -19,14 +19,14 @@ interface SectionHeadingProps {
   children?: ReactNode;
 }
 
-/** Eyebrow → 16px → h2 (headline-lg, 24ch) → 16px → subhead (body-lg, 56ch). */
+/** Eyebrow → 10px → h2 (headline-lg, 28ch) → 10px → subhead (body-lg, 60ch). */
 export const SectionHeading = ({ eyebrow, title, subtitle, className, as: H = 'h2', children }: SectionHeadingProps) => (
   <Reveal className={className}>
     <Eyebrow>{eyebrow}</Eyebrow>
-    <H className={cn('mt-3', H === 'h1' ? 'type-display-md max-w-[18ch]' : 'type-headline-lg max-w-[24ch]')}>
+    <H className={cn('mt-2.5', H === 'h1' ? 'type-display-md max-w-[18ch]' : 'type-headline-lg max-w-[28ch]')}>
       {title}
     </H>
-    {subtitle && <p className="type-body-lg mt-3 max-w-[56ch] text-muted-foreground">{subtitle}</p>}
+    {subtitle && <p className="type-body-lg mt-2.5 max-w-[60ch] text-muted-foreground">{subtitle}</p>}
     {children}
   </Reveal>
 );

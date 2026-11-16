@@ -31,7 +31,7 @@ const StatBezel = ({ value, suffix, label }: { value: number; suffix: string; la
   };
   const numeral = (
     <>
-      <span className="type-display-md text-gradient tabular block">
+      <span className="type-headline-lg text-gradient tabular block">
         {value}
         {suffix}
       </span>
@@ -44,9 +44,9 @@ const StatBezel = ({ value, suffix, label }: { value: number; suffix: string; la
         ref={wellRef}
         onMouseMove={onMove}
         onMouseLeave={() => setLens(null)}
-        className="bezel-well pill relative flex h-24 flex-col justify-center overflow-hidden rounded-full px-7 lg:h-[120px] lg:px-8"
+        className="bezel-well pill relative flex h-24 flex-col justify-center overflow-hidden rounded-full px-6"
       >
-        <span className="type-display-md text-gradient tabular block">
+        <span className="type-headline-lg text-gradient tabular block">
           <CountUp value={value} suffix={suffix} />
         </span>
         <span className="type-body-sm mt-1 block text-muted-foreground">{label}</span>
@@ -63,7 +63,7 @@ const StatBezel = ({ value, suffix, label }: { value: number; suffix: string; la
             }}
           >
             <span
-              className="absolute flex flex-col justify-center px-7 lg:px-8"
+              className="absolute flex flex-col justify-center px-6"
               style={{
                 width: wellRef.current?.clientWidth,
                 height: wellRef.current?.clientHeight,
@@ -112,17 +112,18 @@ export const Proof = () => (
         ))}
       </dl>
 
-      <ul className="no-scrollbar -mx-4 mt-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6 md:mx-0 md:grid md:grid-cols-3 md:gap-5 md:overflow-visible md:px-0 xl:gap-6">
+      <ul className="no-scrollbar -mx-4 mt-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6 md:mx-0 md:grid md:grid-cols-3 md:gap-x-5 md:gap-y-0 md:overflow-visible md:px-0 xl:gap-x-6">
         {TESTIMONIALS.map((t, i) => (
-          <Reveal as="li" key={t.who} index={i} className="w-[84vw] shrink-0 snap-center md:w-auto">
-            <figure className="surface-1 card-hover flex h-full flex-col rounded-[20px] p-5">
+          <Reveal as="li" key={t.who} index={i} className="w-[84vw] shrink-0 snap-center md:row-span-3 md:grid md:w-auto md:grid-rows-subgrid">
+            {/* Subgrid rows keep quote marks, quotes and captions aligned across the three cards. */}
+            <figure className="surface-1 card-hover flex h-full flex-col rounded-[20px] p-5 md:row-span-3 md:grid md:grid-rows-subgrid">
               <Quote className="h-5 w-5 text-primary-ink" aria-hidden="true" />
               <blockquote className="type-body-lg mb-5 mt-3">{t.quote}</blockquote>
-              <figcaption className="mt-auto flex items-start gap-3 border-t border-outline-variant pt-4">
+              <figcaption className="mt-auto flex items-start gap-3 border-t border-outline-variant pt-4 md:mt-0">
                 <span className="type-label-md flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-tertiary-container text-tertiary-on-container">
                   {initials(t.who)}
                 </span>
-                <div className="min-h-[56px] min-w-0">
+                <div className="min-w-0">
                   <div className="type-label-lg">{t.who}</div>
                   <div className="type-label-sm text-muted-foreground">{t.route}</div>
                 </div>

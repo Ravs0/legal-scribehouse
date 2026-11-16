@@ -124,7 +124,7 @@ export const Markets = () => {
                 aria-label="ASEAN markets"
                 aria-orientation="vertical"
                 onKeyDown={onKeyDown}
-                className="no-scrollbar relative flex gap-1.5 overflow-x-auto lg:max-h-[452px] lg:flex-col lg:gap-0.5 lg:overflow-y-auto lg:overflow-x-visible"
+                className="no-scrollbar relative flex gap-1.5 overflow-x-auto lg:max-h-[420px] lg:flex-col lg:gap-0.5 lg:overflow-y-auto lg:overflow-x-visible"
               >
                 <span
                   aria-hidden="true"
@@ -176,7 +176,7 @@ export const Markets = () => {
                 aria-labelledby={`market-tab-${market.code}`}
                 className="relative overflow-hidden rounded-[20px] bg-black"
               >
-                <div className="relative aspect-[16/11] lg:aspect-auto lg:h-[452px]">
+                <div className="relative aspect-[16/11] lg:aspect-auto lg:h-[420px]">
                   <div key={market.code} className="absolute inset-0 animate-in fade-in duration-300">
                     {/* Desktop: lift the scene while the sheet is open so the landmark silhouette stays visible.
                         The wrapper is taller than the panel (132% x 0.76 > 100%) so no gap shows at the bottom. */}

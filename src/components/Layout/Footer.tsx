@@ -10,7 +10,7 @@ const linkClass = 'type-body-sm flex min-h-10 items-center text-muted-foreground
 const Footer = () => (
   <footer className="relative overflow-hidden border-t border-outline-variant bg-surface-low/80">
     <Contours className="absolute inset-0 h-full w-full" opacity={0.55} />
-    <div className="container relative pb-6 pt-12 md:pb-8 md:pt-16">
+    <div className="container relative pb-6 pt-10 md:pb-8 md:pt-12">
       <div className="grid-12 gap-y-10">
         <div className="col-span-4 md:col-span-12 lg:col-span-4">
           <Wordmark />
@@ -69,7 +69,7 @@ const Footer = () => (
         </div>
       </div>
 
-      <div className="mt-12 flex items-center justify-between border-t border-outline-variant pt-6">
+      <div className="mt-8 flex items-center justify-between border-t border-outline-variant pt-5">
         <p className="type-body-sm text-muted-foreground">
           © {new Date().getFullYear()} {SITE.name}
         </p>

@@ -131,7 +131,7 @@ export const Contact = () => {
               title="Tell us what you're shipping, and where."
               subtitle="We reply within one business day with next steps."
             />
-            <Reveal className="mt-10 hidden space-y-6 lg:block">
+            <Reveal className="mt-6 hidden space-y-6 lg:block">
               <ContactDetails rows={contactRows} />
               <NextSteps />
             </Reveal>
@@ -170,7 +170,7 @@ export const Contact = () => {
                   </Button>
                 </div>
               ) : (
-                <form noValidate onSubmit={handleSubmit(onSubmit)} className="grid gap-x-3 gap-y-4 sm:grid-cols-2">
+                <form noValidate onSubmit={handleSubmit(onSubmit)} className="grid gap-x-3 gap-y-3.5 sm:grid-cols-2">
                   <Field label="Name" htmlFor="enquiry-name" required error={errors.name?.message} errorId="name-error">
                     <Input id="enquiry-name" autoComplete="name" {...register('name')} {...a11y('name')} />
                   </Field>
@@ -244,7 +244,7 @@ export const Contact = () => {
                     errorId="message-error"
                     className="sm:col-span-2"
                   >
-                    <Textarea id="enquiry-message" rows={5} {...register('message')} {...a11y('message')} />
+                    <Textarea id="enquiry-message" rows={4} {...register('message')} {...a11y('message')} />
                   </Field>
 
                   {/* Honeypot: hidden from people, tempting to bots. */}
@@ -318,7 +318,7 @@ const ContactDetails = ({
 }: {
   rows: { icon: LucideIcon; label: string; value: string; href?: string }[];
 }) => (
-  <ul className="space-y-4">
+  <ul className="space-y-3">
     {rows.map((r) => (
       <li key={r.label} className="flex items-center gap-4">
         <IconContainer icon={r.icon} size="sm" />

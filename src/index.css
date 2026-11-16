@@ -256,10 +256,10 @@
 
 @layer components {
   /* ---------- Type roles: mobile < 768, tablet 768–1023, desktop ≥ 1024 ---------- */
-  .type-display-lg { @apply font-display; font-feature-settings: normal; font-size: 38px; line-height: 1.04; letter-spacing: -0.035em; font-weight: 800; }
-  .type-display-md { @apply font-display; font-feature-settings: normal; font-size: 32px; line-height: 1.08; letter-spacing: -0.03em; font-weight: 800; }
-  .type-headline-lg { @apply font-display; font-feature-settings: normal; font-size: 28px; line-height: 1.12; letter-spacing: -0.025em; font-weight: 700; }
-  .type-headline-md { @apply font-display; font-feature-settings: normal; font-size: 24px; line-height: 1.18; letter-spacing: -0.02em; font-weight: 700; }
+  .type-display-lg { @apply font-display; font-feature-settings: normal; font-size: 34px; line-height: 1.04; letter-spacing: -0.035em; font-weight: 800; }
+  .type-display-md { @apply font-display; font-feature-settings: normal; font-size: 30px; line-height: 1.08; letter-spacing: -0.03em; font-weight: 800; }
+  .type-headline-lg { @apply font-display; font-feature-settings: normal; font-size: 24px; line-height: 1.12; letter-spacing: -0.025em; font-weight: 700; }
+  .type-headline-md { @apply font-display; font-feature-settings: normal; font-size: 22px; line-height: 1.18; letter-spacing: -0.02em; font-weight: 700; }
   .type-headline-sm { @apply font-display; font-feature-settings: normal; font-size: 20px; line-height: 1.25; letter-spacing: -0.015em; font-weight: 700; }
   .type-title-lg { @apply font-display; font-feature-settings: normal; font-size: 18px; line-height: 1.3; letter-spacing: -0.01em; font-weight: 600; }
   .type-title-md { @apply font-sans; font-size: 16px; line-height: 1.4; letter-spacing: -0.011em; font-weight: 600; }
@@ -276,19 +276,19 @@
   .type-led { @apply font-mono; font-size: 20px; line-height: 24px; letter-spacing: 0.04em; font-weight: 500; }
 
   @media (min-width: 768px) {
-    .type-display-lg { font-size: 52px; }
-    .type-display-md { font-size: 40px; }
-    .type-headline-lg { font-size: 32px; }
-    .type-headline-md { font-size: 28px; }
+    .type-display-lg { font-size: 44px; }
+    .type-display-md { font-size: 36px; }
+    .type-headline-lg { font-size: 28px; }
+    .type-headline-md { font-size: 24px; }
     .type-headline-sm { font-size: 22px; }
     .type-title-lg { font-size: 19px; }
-    .type-body-lg { font-size: 17px; }
+    .type-body-lg { font-size: 16px; }
     .type-led { font-size: 22px; }
   }
   @media (min-width: 1024px) {
-    .type-display-lg { font-size: 64px; }
-    .type-display-md { font-size: 48px; }
-    .type-headline-lg { font-size: 38px; }
+    .type-display-lg { font-size: 52px; }
+    .type-display-md { font-size: 42px; }
+    .type-headline-lg { font-size: 32px; }
   }
 
   .tabular { font-variant-numeric: tabular-nums; font-feature-settings: "tnum", "cv11"; }
@@ -302,9 +302,9 @@
   }
 
   /* ---------- Layout ---------- */
-  .section { padding-block: 64px; }
-  @media (min-width: 768px) { .section { padding-block: 80px; } }
-  @media (min-width: 1280px) { .section { padding-block: 96px; } }
+  .section { padding-block: 40px; }
+  @media (min-width: 768px) { .section { padding-block: 56px; } }
+  @media (min-width: 1280px) { .section { padding-block: 64px; } }
 
   .grid-12 {
     display: grid;
@@ -316,8 +316,8 @@
   .stack-gap { gap: 16px; }
   @media (min-width: 768px) { .stack-gap { gap: 20px; } }
   @media (min-width: 1280px) { .stack-gap { gap: 24px; } }
-  .after-heading { margin-top: 28px; }
-  @media (min-width: 768px) { .after-heading { margin-top: 40px; } }
+  .after-heading { margin-top: 20px; }
+  @media (min-width: 768px) { .after-heading { margin-top: 28px; } }
 
   .panel-pad { padding: 20px; }
   @media (min-width: 768px) { .panel-pad { padding: 28px; } }

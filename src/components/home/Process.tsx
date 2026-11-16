@@ -1,4 +1,3 @@
-import { useEffect, useRef, useState } from 'react';
 import { Reveal } from '@/components/motion/Reveal';
 import { SectionHeading } from '@/components/site/SectionHeading';
 import { PIXEL, PixelIcon } from '@/components/site/PixelIcon';
@@ -11,75 +10,41 @@ const STEPS = [
   { icon: PIXEL.ship, title: 'Ship & support', meta: 'Ongoing', copy: 'On call for the first consignments and renewals.' },
 ];
 
-/** Fill fraction of the recessed track, linked to scroll position through the section. */
-function useScrollProgress(ref: React.RefObject<HTMLElement>) {
-  const [p, setP] = useState(0);
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return setP(1);
-    let raf = 0;
-    const update = () => {
-      raf = 0;
-      const el = ref.current;
-      if (!el) return;
-      const r = el.getBoundingClientRect();
-      const vh = window.innerHeight;
-      setP(Math.max(0, Math.min(1, (vh * 0.8 - r.top) / (r.height + vh * 0.3))));
-    };
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
-    };
-    update();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-      cancelAnimationFrame(raf);
-    };
-  }, [ref]);
-  return p;
-}
+export const Process = () => (
+  <section id="process" className="section">
+    <div className="container">
+      <div className="grid-12 items-start gap-y-0">
+        <SectionHeading
+          className="col-span-4 md:col-span-12 lg:col-span-4"
+          eyebrow="How it works"
+          title="From first call to first shipment in four steps."
+        />
 
-export const Process = () => {
-  const ref = useRef<HTMLOListElement>(null);
-  const progress = useScrollProgress(ref);
-
-  return (
-    <section id="process" className="section">
-      <div className="container">
-        <div className="grid-12">
-          <SectionHeading className="col-span-4 md:col-span-7" eyebrow="How it works" title="From first call to first shipment in four steps." />
-        </div>
-
-        <ol ref={ref} className="after-heading relative grid gap-8 pl-[60px] lg:grid-cols-4 lg:gap-6 lg:pl-0">
-          {/* Recessed track: vertical on mobile, horizontal on desktop, filled in dawn orange as you scroll. */}
-          <span aria-hidden="true" className="bezel-well absolute bottom-12 left-[21px] top-12 w-1.5 rounded-full lg:hidden">
-            <span className="absolute inset-x-0 top-0 rounded-full bg-primary" style={{ height: `${progress * 100}%` }} />
-          </span>
-          <span aria-hidden="true" className="bezel-well absolute left-[60px] right-[calc(25%-60px)] top-[57px] hidden h-1.5 rounded-full lg:block">
-            <span className="absolute inset-y-0 left-0 rounded-full bg-primary" style={{ width: `${progress * 100}%` }} />
-          </span>
-
+        <ol className="after-heading col-span-4 grid gap-4 sm:grid-cols-2 md:col-span-12 lg:col-span-8 lg:mt-0">
           {STEPS.map((s, i) => (
-            <Reveal as="li" key={s.title} index={i} className="relative">
-              <div className="bezel card-hover absolute -left-[60px] top-0 rounded-[18px] !p-1.5 lg:static lg:inline-block lg:rounded-[30px] lg:!p-3">
-                <div className="bezel-well flex h-[34px] w-[34px] items-center justify-center rounded-[12px] text-primary-ink lg:h-[96px] lg:w-[96px] lg:rounded-[18px]">
-                  <PixelIcon map={s.icon} cell={5} className="hidden lg:block" />
-                  <PixelIcon map={s.icon} cell={2} className="lg:hidden" />
+            <Reveal as="li" key={s.title} index={i}>
+              <article className="surface-1 card-hover flex h-full items-start gap-4 rounded-[20px] p-4">
+                {/* Bezel 64 (padding 8, radius 20) around a 48 well (radius 12). */}
+                <div className="bezel shrink-0 rounded-[20px] !p-2">
+                  <div className="bezel-well flex h-12 w-12 items-center justify-center rounded-[12px] text-primary-ink">
+                    <PixelIcon map={s.icon} cell={3} />
+                  </div>
                 </div>
-              </div>
-              <p className="type-mono-sm mt-0 text-primary-ink lg:mt-5">
-                {String(i + 1).padStart(2, '0')} · {s.meta}
-              </p>
-              <h3 className="type-title-lg mt-1.5">
-                <span className="sr-only">Step {i + 1}: </span>
-                {s.title}
-              </h3>
-              <p className="type-body-md mt-1.5 max-w-[30ch] text-muted-foreground">{s.copy}</p>
+                <div className="min-w-0">
+                  <p className="type-mono-sm text-primary-ink">
+                    {String(i + 1).padStart(2, '0')} · {s.meta}
+                  </p>
+                  <h3 className="type-title-md mt-1">
+                    <span className="sr-only">Step {i + 1}: </span>
+                    {s.title}
+                  </h3>
+                  <p className="type-body-sm mt-1 text-muted-foreground">{s.copy}</p>
+                </div>
+              </article>
             </Reveal>
           ))}
         </ol>
       </div>
-    </section>
-  );
-};
+    </div>
+  </section>
+);

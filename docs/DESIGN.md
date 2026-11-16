@@ -180,3 +180,35 @@ One satin material shared by every raised component (cards, buttons, chips, widg
 | Hero printer | stage 36 | head unit 20 / 14 (unchanged) |
 
 **Review note (design lead):** the squircle corner experiment (B) was reverted after review. At these radii it made cards read as boxy rather than pebble-soft, so standard round corners stay.
+
+## v3.3 Density pass
+
+Client feedback: too much empty space and an oversized hero headline. Tighter type and rhythm, and side columns that carry content instead of air.
+
+**1. Type scale** (mobile / ≥768 / ≥1024):
+
+| Role | Was | Now |
+|---|---|---|
+| `display-lg` | 38 / 52 / 64 | 34 / 44 / 52 |
+| `display-md` | 32 / 40 / 48 | 30 / 36 / 42 |
+| `headline-lg` | 28 / 32 / 38 | 24 / 28 / 32 |
+| `headline-md` | 24 / 28 | 22 / 24 |
+| `body-lg` | 16 / 17 | 16 / 16 |
+
+**2. Vertical rhythm.**
+
+- `.section` padding-block 40 / 56 (≥768) / 64 (≥1280), was 64 / 80 / 96. `.after-heading` 20 / 28, was 28 / 40.
+- `SectionHeading`: eyebrow → h2 and h2 → subtitle 10px (`mt-2.5`); h2 max 28ch, subtitle max 60ch.
+- Footer `pt-10 md:pt-12`; bottom row `mt-8 pt-5`.
+- Services grid gap 16 at all sizes; card title `mt-3`, footer `mt-3 pt-3`. Contact form `gap-y-3.5`, textarea 4 rows. Proof stat wells 96 high at all sizes, numerals `headline-lg`.
+
+**Structural changes**
+
+- **Hero:** 7 / 5 grid, h1 16ch, printer stage 400×460 (328×400 mobile) with a tighter receipt (head unit and receipt sit 8px higher; below 640 the receipt drops the trademark row and barcode so its torn edge stays ≥16px inside the stage). Trust text replaced by three `surface-1` stat pills. The **problems strip** (`#problems`) now lives inside the hero: one `surface-2` panel, three cells divided by `outline-variant` hairlines. The separate Problems section is gone.
+- **Glance:** two columns from 1024: heading, widget legend and the illustrative note on the left (4 cols), board on the right (8 cols). Below 1024 the legend is hidden.
+- **Process:** two columns from 1024: heading on the left (4 cols), 2×2 step cards on the right (bezel 64 / padding 8 / radius 20 around a 48 well). The scroll-filled track is removed.
+- **Readiness:** the left column gains a "How to read your score" card (Hold / Inspect / Cleared with score ranges); grid aligns to the top.
+- **FAQ:** "Still unsure?" consult card under the heading; accordion spans 8 columns from column 5.
+- **Insights:** the empty state is a slim strip with a "Browse insights" button; the header and mobile "All insights" buttons hide while there are no posts.
+- **Markets:** desktop list and scene height 420, was 452.
+- **Proof:** testimonials use subgrid rows from 768, so quote marks, quotes and caption rules line up whatever the name length.

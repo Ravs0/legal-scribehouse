@@ -22,6 +22,7 @@ export const InsightsTeaser = () => {
   }, [fetchContent]);
 
   const latest = content.filter((c) => !c.draft).slice(0, 3);
+  const empty = ready && latest.length === 0;
 
   const allButton = (className: string) => (
     <Button asChild variant="ghost" icon="trailing" className={className}>
@@ -40,7 +41,7 @@ export const InsightsTeaser = () => {
             eyebrow="Insights"
             title="Plain-English guides to ASEAN trade rules."
           />
-          <div className="col-span-4 hidden justify-end md:flex">{allButton('-mr-3')}</div>
+          {!empty && <div className="col-span-4 hidden justify-end md:flex">{allButton('-mr-3')}</div>}
         </div>
 
         {!ready ? (
@@ -56,12 +57,17 @@ export const InsightsTeaser = () => {
           </div>
         ) : latest.length === 0 ? (
           <Reveal className="after-heading">
-            <div className="surface-1 flex flex-col items-center rounded-[28px] px-6 py-12 text-center">
-              <IconContainer icon={BookOpen} className="h-12 w-12" />
-              <p className="type-headline-sm mt-5">First guides are on the way.</p>
-              <p className="type-body-md mt-2 max-w-[48ch] text-muted-foreground">
-                We're writing plain-English explainers on HS codes, rules of origin and distributor contracts.
-              </p>
+            <div className="surface-1 flex flex-col gap-3 rounded-[20px] p-4 sm:flex-row sm:items-center">
+              <IconContainer icon={BookOpen} size="sm" />
+              <div className="min-w-0 flex-1">
+                <p className="type-title-sm">First guides are on the way</p>
+                <p className="type-body-sm text-muted-foreground">
+                  We're writing plain-English explainers on HS codes, rules of origin and distributor contracts.
+                </p>
+              </div>
+              <Button asChild variant="outline" size="sm" className="self-start sm:self-auto">
+                <Link to="/insights">Browse insights</Link>
+              </Button>
             </div>
           </Reveal>
         ) : (
@@ -74,9 +80,11 @@ export const InsightsTeaser = () => {
           </ul>
         )}
 
-        <Button asChild variant="outline" className="mt-8 w-full md:hidden">
-          <Link to="/insights">All insights</Link>
-        </Button>
+        {!empty && (
+          <Button asChild variant="outline" className="mt-8 w-full md:hidden">
+            <Link to="/insights">All insights</Link>
+          </Button>
+        )}
       </div>
     </section>
   );

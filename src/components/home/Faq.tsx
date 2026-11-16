@@ -39,15 +39,19 @@ export const Faq = () => (
       <div className="grid-12 items-start gap-y-8">
         <div className="col-span-4 md:col-span-12 lg:sticky lg:top-[120px] lg:col-span-4">
           <SectionHeading eyebrow="FAQ" title="Questions we hear every week.">
-            <Button asChild variant="ghost" icon="trailing" className="-ml-3 mt-5">
-              <HashLink to="contact">
-                Ask us something else <ArrowRight aria-hidden="true" />
-              </HashLink>
-            </Button>
+            <div className="surface-2 mt-5 max-w-[340px] rounded-[20px] p-4">
+              <h3 className="type-title-sm font-sans">Still unsure?</h3>
+              <p className="type-body-sm mt-1 text-muted-foreground">A free 30-minute call answers most first-shipment questions.</p>
+              <Button asChild size="sm" icon="trailing" className="mt-3">
+                <HashLink to="contact">
+                  Book a consult <ArrowRight aria-hidden="true" />
+                </HashLink>
+              </Button>
+            </div>
           </SectionHeading>
         </div>
-        <Reveal className="col-span-4 md:col-span-12 lg:col-span-7 lg:col-start-6">
-          <AccordionPrimitive.Root type="single" collapsible className="space-y-2.5">
+        <Reveal className="col-span-4 md:col-span-12 lg:col-span-8 lg:col-start-5">
+          <AccordionPrimitive.Root type="single" collapsible className="space-y-2">
             {FAQS.map((f, i) => (
               <AccordionPrimitive.Item key={f.q} value={`faq-${i}`} className="faq-item surface-1 card-hover overflow-hidden rounded-2xl">
                 <AccordionPrimitive.Header>
