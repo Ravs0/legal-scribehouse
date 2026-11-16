@@ -60,10 +60,16 @@
 
     --tint: 24 40% 20%;
     --raise-hi: hsl(0 0% 100% / 0.8);
-    --e1: 0 0 0 1px hsl(var(--tint) / 0.05), 0 1px 1px hsl(var(--tint) / 0.06), 0 2px 4px -1px hsl(var(--tint) / 0.08);
-    --e2: 0 0 0 1px hsl(var(--tint) / 0.05), 0 1px 2px hsl(var(--tint) / 0.06), 0 6px 12px -4px hsl(var(--tint) / 0.12);
-    --e3: 0 0 0 1px hsl(var(--tint) / 0.05), 0 2px 4px hsl(var(--tint) / 0.06), 0 14px 28px -10px hsl(var(--tint) / 0.18);
-    --e4: 0 0 0 1px hsl(var(--tint) / 0.06), 0 4px 8px hsl(var(--tint) / 0.06), 0 28px 56px -18px hsl(var(--tint) / 0.26);
+    /* v3.2 edge polish: one three-part edge for every raised surface */
+    --edge-rim: inset 0 0 0 1px hsl(0 0% 100% / 0.75);
+    --edge-top: inset 0 1.5px 0.5px hsl(0 0% 100% / 0.95);
+    --edge-out: 0 0 0 0.5px hsl(24 40% 20% / 0.10);
+    --well-lip: inset 0 0 0 1px hsl(24 40% 20% / 0.10);
+    --well-catch: 0 1px 0 hsl(0 0% 100% / 0.9);
+    --e1: 0 1px 1px hsl(var(--tint) / 0.06), 0 2px 4px -1px hsl(var(--tint) / 0.08);
+    --e2: 0 1px 2px hsl(var(--tint) / 0.06), 0 6px 12px -4px hsl(var(--tint) / 0.12);
+    --e3: 0 2px 4px hsl(var(--tint) / 0.06), 0 14px 28px -10px hsl(var(--tint) / 0.18);
+    --e4: 0 4px 8px hsl(var(--tint) / 0.06), 0 28px 56px -18px hsl(var(--tint) / 0.26);
 
     --gradient-text: linear-gradient(90deg, #c2410c, #f26a1c);
     --bg-base: linear-gradient(180deg, #fbf7f1, #f5ece0);
@@ -78,10 +84,10 @@
     --nav-spec: 0.7;
     --nav-glare: 0.8;
     --nav-shadow: inset 0 1px 0.5px hsl(0 0% 100% / 0.9), inset 0 -8px 14px -10px hsl(0 0% 100% / 0.6),
-      inset 0 6px 16px -12px hsl(24 40% 20% / 0.14), 0 0 0 1px hsl(24 40% 20% / 0.06), 0 1px 2px hsl(24 40% 20% / 0.08),
+      inset 0 6px 16px -12px hsl(24 40% 20% / 0.14), 0 0 0 0.5px hsl(24 40% 20% / 0.12), 0 1px 2px hsl(24 40% 20% / 0.08),
       0 10px 24px -10px hsl(24 40% 20% / 0.18);
     --nav-shadow-scrolled: inset 0 1px 0.5px hsl(0 0% 100% / 0.9), inset 0 -8px 14px -10px hsl(0 0% 100% / 0.6),
-      inset 0 6px 16px -12px hsl(24 40% 20% / 0.14), 0 0 0 1px hsl(24 40% 20% / 0.06), 0 1px 2px hsl(24 40% 20% / 0.08),
+      inset 0 6px 16px -12px hsl(24 40% 20% / 0.14), 0 0 0 0.5px hsl(24 40% 20% / 0.12), 0 1px 2px hsl(24 40% 20% / 0.08),
       0 16px 36px -12px hsl(24 40% 20% / 0.24);
     --lens-fill: linear-gradient(180deg, hsl(0 0% 100% / 0.55), hsl(0 0% 100% / 0.18) 45%, hsl(0 0% 100% / 0.34));
     --lens-shadow: inset 0 0 0 1px hsl(0 0% 100% / 0.85), inset 0 1.5px 1px hsl(0 0% 100%), inset 0 -1.5px 1px hsl(0 0% 100% / 0.7),
@@ -89,10 +95,10 @@
       0 4px 6px -2px hsl(24 40% 20% / 0.14);
     --lens-spec: 0.9;
 
-    --bezel-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.9), inset 0 -1px 0 hsl(24 40% 20% / 0.1), 0 1px 2px hsl(24 40% 20% / 0.1),
+    --bezel-shadow: var(--edge-top), var(--edge-rim), inset 0 -1px 0 hsl(24 40% 20% / 0.1), var(--edge-out), 0 1px 2px hsl(24 40% 20% / 0.1),
       0 14px 28px -12px hsl(24 40% 20% / 0.28);
     --well-fill: hsl(var(--surface-container-high));
-    --well-shadow: inset 0 3px 8px hsl(24 40% 20% / 0.22), inset 0 0 0 1px hsl(24 40% 20% / 0.08), 0 1px 0 hsl(0 0% 100% / 0.9);
+    --well-shadow: inset 0 3px 8px hsl(24 40% 20% / 0.22), var(--well-lip), var(--well-catch);
 
     --legal-holding: 120 45% 25%;
     --legal-holding-bg: 120 45% 96%;
@@ -156,10 +162,15 @@
 
     --tint: 260 40% 2%;
     --raise-hi: hsl(0 0% 100% / 0.07);
-    --e1: 0 0 0 1px hsl(0 0% 100% / 0.05), 0 1px 2px hsl(var(--tint) / 0.5);
-    --e2: 0 0 0 1px hsl(0 0% 100% / 0.06), 0 6px 14px -4px hsl(var(--tint) / 0.6);
-    --e3: 0 0 0 1px hsl(0 0% 100% / 0.06), 0 16px 32px -10px hsl(var(--tint) / 0.7);
-    --e4: 0 0 0 1px hsl(0 0% 100% / 0.07), 0 32px 64px -18px hsl(var(--tint) / 0.8);
+    --edge-rim: inset 0 0 0 1px hsl(0 0% 100% / 0.07);
+    --edge-top: inset 0 1px 0.5px hsl(0 0% 100% / 0.14);
+    --edge-out: 0 0 0 0.5px hsl(0 0% 0% / 0.6);
+    --well-lip: inset 0 0 0 1px hsl(0 0% 0% / 0.6);
+    --well-catch: 0 1px 0 hsl(0 0% 100% / 0.06);
+    --e1: 0 1px 2px hsl(var(--tint) / 0.5);
+    --e2: 0 6px 14px -4px hsl(var(--tint) / 0.6);
+    --e3: 0 16px 32px -10px hsl(var(--tint) / 0.7);
+    --e4: 0 32px 64px -18px hsl(var(--tint) / 0.8);
 
     --gradient-text: linear-gradient(90deg, #ff9a4d, #ffc98a);
     --bg-base: linear-gradient(180deg, #110f16, #17121a);
@@ -174,10 +185,10 @@
     --nav-spec: 0.28;
     --nav-glare: 0.4;
     --nav-shadow: inset 0 1px 0.5px hsl(0 0% 100% / 0.22), inset 0 -8px 14px -10px hsl(0 0% 100% / 0.1),
-      inset 0 6px 16px -12px hsl(0 0% 0% / 0.5), 0 0 0 1px hsl(0 0% 100% / 0.06), 0 1px 2px hsl(260 40% 2% / 0.5),
+      inset 0 6px 16px -12px hsl(0 0% 0% / 0.5), 0 0 0 0.5px hsl(0 0% 0% / 0.6), 0 1px 2px hsl(260 40% 2% / 0.5),
       0 12px 28px -10px hsl(260 40% 2% / 0.6);
     --nav-shadow-scrolled: inset 0 1px 0.5px hsl(0 0% 100% / 0.22), inset 0 -8px 14px -10px hsl(0 0% 100% / 0.1),
-      inset 0 6px 16px -12px hsl(0 0% 0% / 0.5), 0 0 0 1px hsl(0 0% 100% / 0.06), 0 1px 2px hsl(260 40% 2% / 0.5),
+      inset 0 6px 16px -12px hsl(0 0% 0% / 0.5), 0 0 0 0.5px hsl(0 0% 0% / 0.6), 0 1px 2px hsl(260 40% 2% / 0.5),
       0 16px 36px -12px hsl(260 40% 2% / 0.7);
     --lens-fill: linear-gradient(180deg, hsl(0 0% 100% / 0.16), hsl(0 0% 100% / 0.04) 45%, hsl(0 0% 100% / 0.1));
     --lens-shadow: inset 0 0 0 1px hsl(0 0% 100% / 0.22), inset 0 1.5px 1px hsl(0 0% 100% / 0.45), inset 0 -1.5px 1px hsl(0 0% 100% / 0.18),
@@ -185,9 +196,9 @@
       0 4px 6px -2px hsl(0 0% 0% / 0.5);
     --lens-spec: 0.35;
 
-    --bezel-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.1), inset 0 -1px 0 hsl(0 0% 0% / 0.5), 0 14px 28px -12px hsl(260 40% 2% / 0.7);
+    --bezel-shadow: var(--edge-top), var(--edge-rim), inset 0 -1px 0 hsl(0 0% 0% / 0.5), var(--edge-out), 0 14px 28px -12px hsl(260 40% 2% / 0.7);
     --well-fill: #0c0a10;
-    --well-shadow: inset 0 3px 10px #000, inset 0 0 0 1px hsl(0 0% 0% / 0.6), 0 1px 0 hsl(0 0% 100% / 0.06);
+    --well-shadow: inset 0 3px 10px #000, var(--well-lip), var(--well-catch);
 
     --legal-holding: 120 45% 65%;
     --legal-holding-bg: 120 45% 15%;
@@ -330,11 +341,11 @@
   .bezel-well { background: var(--well-fill); box-shadow: var(--well-shadow); }
 
   /* ---------- Recessed fields ---------- */
-  .recessed { box-shadow: inset 0 1px 2px hsl(var(--tint) / 0.14); background-image: linear-gradient(to bottom, hsl(var(--tint) / 0.035), transparent 40%), var(--grain-fine); background-size: 100% 100%, 140px 140px; }
+  .recessed { box-shadow: inset 0 1px 2px hsl(var(--tint) / 0.14), var(--well-lip), var(--well-catch); transition: box-shadow 200ms, border-color 150ms; background-image: linear-gradient(to bottom, hsl(var(--tint) / 0.035), transparent 40%), var(--grain-fine); background-size: 100% 100%, 140px 140px; }
   .recessed:focus-visible,
   .recessed:focus,
   .recessed[data-state="open"] {
-    box-shadow: inset 0 1px 2px hsl(var(--tint) / 0.14), 0 0 0 4px hsl(var(--ring) / 0.18);
+    box-shadow: inset 0 1px 2px hsl(var(--tint) / 0.14), var(--well-lip), var(--well-catch), 0 0 0 4px hsl(var(--ring) / 0.18);
   }
 
   /* ---------- Buttons ---------- */
@@ -350,7 +361,7 @@
     .btn-lift:hover:not(:disabled) { transform: translateY(-1px); }
   }
   .btn-lift:active:not(:disabled) { transform: translateY(1px) scale(0.97); transition-duration: 90ms; }
-  .btn-filled:active:not(:disabled) { box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.35), inset 0 1px 3px hsl(18 85% 30% / 0.35); }
+  .btn-filled:active:not(:disabled) { box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.35), inset 0 0 0 1px hsl(0 0% 100% / 0.22), inset 0 1px 3px hsl(18 85% 30% / 0.35); }
 
   .press { transition: transform 260ms cubic-bezier(0.34, 1.2, 0.64, 1); }
   .press:active { transform: scale(0.97); transition-duration: 90ms; }
@@ -606,19 +617,20 @@
   }
 
   /* Convex shading + float */
-  .surface-1 { box-shadow: inset 0 1px 0 var(--raise-hi), inset 0 -10px 18px -14px hsl(var(--tint) / var(--shade-a)), var(--e1); }
-  .surface-2 { box-shadow: inset 0 1px 0 var(--raise-hi), inset 0 -12px 20px -14px hsl(var(--tint) / var(--shade-a)), var(--float-drop); }
-  .surface-3 { box-shadow: inset 0 1px 0 var(--raise-hi), inset 0 -14px 24px -16px hsl(var(--tint) / var(--shade-a)), var(--e3); }
-  .surface-4 { box-shadow: inset 0 1px 0 var(--raise-hi), inset 0 -14px 24px -16px hsl(var(--tint) / var(--shade-a)), var(--e4); }
+  .surface-1 { box-shadow: var(--edge-top), var(--edge-rim), inset 0 -10px 18px -14px hsl(var(--tint) / var(--shade-a)), var(--edge-out), var(--e1); }
+  .surface-2 { box-shadow: var(--edge-top), var(--edge-rim), inset 0 -12px 20px -14px hsl(var(--tint) / var(--shade-a)), var(--edge-out), var(--float-drop); }
+  .surface-3 { box-shadow: var(--edge-top), var(--edge-rim), inset 0 -14px 24px -16px hsl(var(--tint) / var(--shade-a)), var(--edge-out), var(--e3); }
+  .surface-4 { box-shadow: var(--edge-top), var(--edge-rim), inset 0 -14px 24px -16px hsl(var(--tint) / var(--shade-a)), var(--edge-out), var(--e4); }
+  .menu-surface { box-shadow: var(--edge-top), var(--edge-rim), var(--edge-out), var(--e3); }
   .btn-raised {
-    box-shadow: inset 0 1px 0 var(--raise-hi), inset 0 -6px 10px -8px hsl(var(--tint) / var(--shade-a)), 0 1px 2px hsl(var(--tint) / 0.1), 0 8px 16px -8px hsl(var(--tint) / 0.24);
+    box-shadow: var(--edge-top), var(--edge-rim), inset 0 -6px 10px -8px hsl(var(--tint) / var(--shade-a)), var(--edge-out), 0 1px 2px hsl(var(--tint) / 0.1), 0 8px 16px -8px hsl(var(--tint) / 0.24);
   }
   .btn-device {
-    box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.18), inset 0 -6px 10px -8px hsl(0 0% 0% / 0.6), 0 1px 2px hsl(var(--tint) / 0.4), 0 10px 18px -8px hsl(var(--tint) / 0.5);
+    box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.18), inset 0 0 0 1px hsl(0 0% 100% / 0.08), inset 0 -6px 10px -8px hsl(0 0% 0% / 0.6), 0 1px 2px hsl(var(--tint) / 0.4), 0 10px 18px -8px hsl(var(--tint) / 0.5);
   }
   .btn-filled {
-    box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.5), inset 0 -6px 10px -7px hsl(18 85% 30% / 0.45), 0 1px 2px hsl(18 85% 30% / 0.35),
-      0 10px 20px -8px hsl(21 90% 45% / 0.55);
+    box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.5), inset 0 0 0 1px hsl(0 0% 100% / 0.22), inset 0 -6px 10px -7px hsl(18 85% 30% / 0.45), 0 1px 2px hsl(18 85% 30% / 0.35),
+      0 8px 16px -8px hsl(21 90% 45% / 0.55);
   }
   .btn-lift {
     transition: transform 220ms cubic-bezier(0.34, 1.2, 0.64, 1), box-shadow 220ms cubic-bezier(0.2, 0, 0, 1), --lx 500ms cubic-bezier(0.2, 0, 0, 1),
@@ -627,11 +639,11 @@
   @media (hover: hover) {
     .btn-lift:hover:not(:disabled) { transform: translateY(-2px); }
     .btn-filled:hover:not(:disabled) {
-      box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.5), inset 0 -6px 10px -7px hsl(18 85% 30% / 0.45), 0 2px 4px hsl(18 85% 30% / 0.25),
-        0 18px 28px -10px hsl(21 90% 45% / 0.6);
+      box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.5), inset 0 0 0 1px hsl(0 0% 100% / 0.22), inset 0 -6px 10px -7px hsl(18 85% 30% / 0.45), 0 2px 4px hsl(18 85% 30% / 0.25),
+        0 14px 22px -10px hsl(21 90% 45% / 0.6);
     }
     .btn-raised:hover:not(:disabled) {
-      box-shadow: inset 0 1px 0 var(--raise-hi), inset 0 -6px 10px -8px hsl(var(--tint) / var(--shade-a)), 0 2px 4px hsl(var(--tint) / 0.08), 0 16px 24px -10px hsl(var(--tint) / 0.28);
+      box-shadow: var(--edge-top), var(--edge-rim), inset 0 -6px 10px -8px hsl(var(--tint) / var(--shade-a)), var(--edge-out), 0 2px 4px hsl(var(--tint) / 0.08), 0 16px 24px -10px hsl(var(--tint) / 0.28);
     }
   }
   .btn-lift:active:not(:disabled) { transform: translateY(1px) scale(0.96); transition-duration: 90ms; }
@@ -644,8 +656,12 @@
   @media (hover: hover) {
     .card-hover:hover {
       transform: translateY(-5px);
-      box-shadow: inset 0 1px 0 var(--raise-hi), inset 0 -12px 20px -14px hsl(var(--tint) / var(--shade-a)), var(--float-drop-hover);
+      box-shadow: var(--edge-top), var(--edge-rim), inset 0 -12px 20px -14px hsl(var(--tint) / var(--shade-a)), var(--edge-out), var(--float-drop-hover);
     }
+  }
+  /* FAQ: an open item rises to the surface-2 recipe (a data variant cannot apply a component class) */
+  .faq-item[data-state="open"] {
+    box-shadow: var(--edge-top), var(--edge-rim), inset 0 -12px 20px -14px hsl(var(--tint) / var(--shade-a)), var(--edge-out), var(--float-drop);
   }
   .card-hover:active { transform: translateY(-2px) scale(0.985); transition-duration: 120ms; }
   .surface-1,
@@ -694,3 +710,4 @@
 @media (prefers-reduced-motion: reduce) {
   .float-idle, .float-idle-b { animation: none !important; }
 }
+

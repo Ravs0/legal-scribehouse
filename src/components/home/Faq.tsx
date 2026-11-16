@@ -49,11 +49,11 @@ export const Faq = () => (
         <Reveal className="col-span-4 md:col-span-12 lg:col-span-7 lg:col-start-6">
           <AccordionPrimitive.Root type="single" collapsible className="space-y-2.5">
             {FAQS.map((f, i) => (
-              <AccordionPrimitive.Item key={f.q} value={`faq-${i}`} className="surface-1 card-hover overflow-hidden rounded-2xl data-[state=open]:surface-2">
+              <AccordionPrimitive.Item key={f.q} value={`faq-${i}`} className="faq-item surface-1 card-hover overflow-hidden rounded-2xl">
                 <AccordionPrimitive.Header>
-                  <AccordionPrimitive.Trigger className="state-layer type-title-md group flex min-h-14 w-full items-center justify-between gap-3 px-5 py-4 text-left">
+                  <AccordionPrimitive.Trigger className="state-layer type-title-md group flex min-h-14 w-full items-center justify-between gap-3 py-4 pl-5 pr-4 text-left">
                     {f.q}
-                    <span className="icon-well flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-muted-foreground">
+                    <span className="icon-well flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-muted-foreground">
                       <ChevronDown
                         className="h-4 w-4 transition-transform duration-300 group-data-[state=open]:rotate-180"
                         aria-hidden="true"

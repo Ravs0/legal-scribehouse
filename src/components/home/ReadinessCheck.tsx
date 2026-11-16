@@ -41,7 +41,7 @@ const Toggle = ({ checked, onChange, labelledBy, describedBy }: { checked: boole
 
 /** Header illustration: a crate on a pallet with a clearance tag in the verdict colour. */
 const CrateScene = ({ tag, score }: { tag: string; score: number }) => (
-  <div className="relative h-[168px] overflow-hidden rounded-[18px] bg-[#CFEBDD] dark:bg-[#17352E]">
+  <div className="relative h-[168px] overflow-hidden rounded-[16px] bg-[#CFEBDD] dark:bg-[#17352E]">
     <svg aria-hidden="true" viewBox="0 0 416 168" className="absolute inset-0 h-full w-full">
       <ellipse cx="208" cy="142" rx="96" ry="12" fill="#000" opacity="0.12" />
       {/* pallet */}

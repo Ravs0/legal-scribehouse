@@ -39,12 +39,12 @@ const StatBezel = ({ value, suffix, label }: { value: number; suffix: string; la
     </>
   );
   return (
-    <div className="bezel card-hover rounded-full">
+    <div className="bezel pill card-hover rounded-full">
       <div
         ref={wellRef}
         onMouseMove={onMove}
         onMouseLeave={() => setLens(null)}
-        className="bezel-well relative flex h-24 flex-col justify-center overflow-hidden rounded-full px-7 lg:h-[120px] lg:px-8"
+        className="bezel-well pill relative flex h-24 flex-col justify-center overflow-hidden rounded-full px-7 lg:h-[120px] lg:px-8"
       >
         <span className="type-display-md text-gradient tabular block">
           <CountUp value={value} suffix={suffix} />
@@ -117,12 +117,12 @@ export const Proof = () => (
           <Reveal as="li" key={t.who} index={i} className="w-[84vw] shrink-0 snap-center md:w-auto">
             <figure className="surface-1 card-hover flex h-full flex-col rounded-[20px] p-5">
               <Quote className="h-5 w-5 text-primary-ink" aria-hidden="true" />
-              <blockquote className="type-body-lg mt-3 flex-1">{t.quote}</blockquote>
-              <figcaption className="mt-5 flex items-center gap-3 border-t border-outline-variant pt-4">
+              <blockquote className="type-body-lg mb-5 mt-3">{t.quote}</blockquote>
+              <figcaption className="mt-auto flex items-start gap-3 border-t border-outline-variant pt-4">
                 <span className="type-label-md flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-tertiary-container text-tertiary-on-container">
                   {initials(t.who)}
                 </span>
-                <div className="min-w-0">
+                <div className="min-h-[56px] min-w-0">
                   <div className="type-label-lg">{t.who}</div>
                   <div className="type-label-sm text-muted-foreground">{t.route}</div>
                 </div>

@@ -107,8 +107,11 @@ export const Glance = () => {
         className={cn(
           'pebble absolute overflow-hidden transition-[left,top,width,height,transform,opacity,border-radius,box-shadow,--lx,--ly] [transition-duration:480ms] [transition-timing-function:cubic-bezier(0.32,0.72,0,1)]',
           surface,
-          isOpen ? 'z-[2] rounded-[44px] shadow-e4' : 'z-[1] rounded-[40px] [box-shadow:inset_0_1px_0_hsl(0_0%_100%/0.35),inset_0_-14px_22px_-16px_hsl(var(--tint)/var(--shade-a)),var(--float-drop)]',
-          !open && 'hover:-translate-y-1 hover:[box-shadow:inset_0_1px_0_hsl(0_0%_100%/0.35),inset_0_-14px_22px_-16px_hsl(var(--tint)/var(--shade-a)),var(--float-drop-hover)]',
+          // Concentric with the board well (44px radius, 16px / 20px padding): 28px mobile, 24px from sm.
+          isOpen
+            ? 'z-[2] rounded-[28px] sm:rounded-[24px] [box-shadow:var(--edge-top),var(--edge-rim),inset_0_-14px_22px_-16px_hsl(var(--tint)/var(--shade-a)),var(--edge-out),var(--e4)]'
+            : 'z-[1] rounded-[28px] sm:rounded-[24px] [box-shadow:var(--edge-top),var(--edge-rim),inset_0_-14px_22px_-16px_hsl(var(--tint)/var(--shade-a)),var(--edge-out),var(--float-drop)]',
+          !open && 'hover:-translate-y-1 hover:[box-shadow:var(--edge-top),var(--edge-rim),inset_0_-14px_22px_-16px_hsl(var(--tint)/var(--shade-a)),var(--edge-out),var(--float-drop-hover)]',
           dim && "scale-[0.96] opacity-[0.45]",
         )}
         style={rect(id)}

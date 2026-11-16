@@ -9,7 +9,7 @@ const stagger = (ms: number) => ({ animationDelay: `${ms}ms` });
 
 export const Hero = () => {
   return (
-    <section className="flex min-h-[calc(100svh-80px)] items-center pb-20 pt-8 lg:pt-10">
+    <section className="flex items-center pb-16 pt-10 lg:pb-24 lg:pt-16">
       <div className="container">
         <div className="grid-12 items-center gap-y-10">
           <div className="col-span-4 md:col-span-12 lg:col-span-6">

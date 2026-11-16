@@ -10,8 +10,8 @@ const TYPE_SCENE: Record<ContentItem['type'], string> = { post: 'SG', guide: 'VN
 
 /** Recessed well holding a dawn scene; stands in for post imagery. */
 export const GradientTile = ({ type, className }: { type: ContentItem['type']; className?: string }) => (
-  <div aria-hidden="true" className={cn('bezel-well overflow-hidden rounded-[14px] p-1', className)}>
-    <div className="h-full w-full overflow-hidden rounded-[10px]">
+  <div aria-hidden="true" className={cn('bezel-well overflow-hidden rounded-[10px] p-1', className)}>
+    <div className="h-full w-full overflow-hidden rounded-[6px]">
       <MarketScene scene={SCENES[TYPE_SCENE[type] ?? 'SG']} />
     </div>
   </div>

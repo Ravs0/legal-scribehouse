@@ -84,6 +84,12 @@ export const ClearancePrinter = ({ className }: { className?: string }) => {
   return (
     <div className={cn('relative mx-auto h-[420px] w-full max-w-[328px] overflow-hidden rounded-3xl shadow-e4 sm:h-[520px] sm:max-w-[440px] sm:rounded-[36px]', className)}>
       <MarketScene scene={SCENES.home} className="absolute inset-0" />
+      {/* Inner rim: the SVG scene covers inset shadows on the root, so the polished edge sits on top. */}
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-20 rounded-[inherit]"
+        style={{ boxShadow: 'inset 0 0 0 1px hsl(0 0% 100% / 0.35), inset 0 1.5px 0.5px hsl(0 0% 100% / 0.6)' }}
+      />
 
       {/* Receipt (behind the head unit, feeding out of the slot) */}
       <div className="absolute inset-x-0 top-[116px] mx-auto w-[232px] sm:top-[128px] sm:w-[280px]">
@@ -147,7 +153,7 @@ export const ClearancePrinter = ({ className }: { className?: string }) => {
           <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-1/2" style={{ background: 'linear-gradient(180deg, hsl(0 0% 100% / .14), transparent)' }} />
           <div className="relative flex h-6 items-center justify-between">
             <span className="type-mono-sm text-white/70">{SITE.name.toLowerCase()} · print</span>
-            <span className="h-1.5 w-1.5 rounded-full bg-success" style={{ animation: 'led-pulse 2400ms ease-in-out infinite', boxShadow: '0 0 6px hsl(var(--success))' }} aria-hidden="true" />
+            <span className="h-[6px] w-[6px] rounded-full bg-[#4ADE80]" style={{ animation: 'led-pulse 2400ms ease-in-out infinite', boxShadow: '0 0 6px #4ADE80' }} aria-hidden="true" />
           </div>
           <div className="relative mt-1 flex items-end justify-between gap-2">
             <div className="flex h-[44px] w-[124px] flex-col justify-center rounded-lg bg-[#0B0907] px-2.5 shadow-[inset_0_2px_6px_#000] sm:w-[148px]">

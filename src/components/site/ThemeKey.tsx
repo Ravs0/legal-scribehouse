@@ -61,15 +61,17 @@ export const ThemeKey = ({ className }: { className?: string }) => {
       aria-checked={dark}
       aria-label="Dark theme"
       onClick={() => setTheme(dark ? 'light' : 'dark')}
-      className={cn('group relative h-10 w-[72px] shrink-0 rounded-lg', className)}
+      className={cn('group relative h-10 w-[72px] shrink-0 rounded-[14px]', className)}
       style={{
         background: dark ? '#07060A' : '#0E0C0B',
-        boxShadow: `inset 0 2px 5px #000, 0 1px 0 ${dark ? 'hsl(0 0% 100% / 0.06)' : 'hsl(0 0% 100% / 0.5)'}`,
+        boxShadow: dark
+          ? 'inset 0 2px 5px #000, inset 0 0 0 1px hsl(0 0% 100% / 0.06), 0 1px 0 hsl(0 0% 100% / 0.08)'
+          : 'inset 0 2px 5px #000, inset 0 0 0 1px hsl(0 0% 100% / 0.06), 0 1px 0 hsl(0 0% 100% / 0.7), 0 0 0 0.5px hsl(24 40% 20% / 0.25)',
       }}
     >
       <span
         aria-hidden="true"
-        className="absolute left-1 top-1 flex h-8 w-8 items-center justify-center rounded-[9px] transition-transform [transition-duration:420ms] [transition-timing-function:cubic-bezier(0.34,1.2,0.64,1)] group-active:scale-[0.92]"
+        className="absolute left-1 top-1 flex h-8 w-8 items-center justify-center rounded-[10px] transition-transform [transition-duration:420ms] [transition-timing-function:cubic-bezier(0.34,1.2,0.64,1)] group-active:scale-[0.92]"
         style={{
           transform: `translateX(${dark ? 32 : 0}px)`,
           background: 'linear-gradient(180deg, #4A433D, #2A2522)',

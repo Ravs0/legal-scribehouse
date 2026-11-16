@@ -63,7 +63,7 @@ export const Process = () => {
           {STEPS.map((s, i) => (
             <Reveal as="li" key={s.title} index={i} className="relative">
               <div className="bezel card-hover absolute -left-[60px] top-0 rounded-[18px] !p-1.5 lg:static lg:inline-block lg:rounded-[30px] lg:!p-3">
-                <div className="bezel-well flex h-[34px] w-[34px] items-center justify-center rounded-[13px] text-primary-ink lg:h-[96px] lg:w-[96px] lg:rounded-[22px]">
+                <div className="bezel-well flex h-[34px] w-[34px] items-center justify-center rounded-[12px] text-primary-ink lg:h-[96px] lg:w-[96px] lg:rounded-[18px]">
                   <PixelIcon map={s.icon} cell={5} className="hidden lg:block" />
                   <PixelIcon map={s.icon} cell={2} className="lg:hidden" />
                 </div>

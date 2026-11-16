@@ -148,3 +148,35 @@ One satin material shared by every raised component (cards, buttons, chips, widg
 - [ ] **Proof** (`src/data/proof.ts`): sample data; replace, then set `PLACEHOLDER = false`.
 - [ ] **Illustrative figures** in the receipt printer and widgets: counsel to review.
 - [ ] **Name and contact details** (`src/config/site.ts`), **enquiry delivery** (`src/lib/enquiry.ts`), and **regulatory wording** (FAQ, footer, response-time promise).
+
+## v3.2 Edge polish
+
+**A. One edge for every raised surface.** Recipe: `var(--edge-top), var(--edge-rim), <underside inset shade>, var(--edge-out), <drop>` on `.surface-1…4`, `.menu-surface`, `.btn-raised`, `.card-hover:hover`, `.bezel`, the Glance widgets (rest, hover, open) and the open FAQ item (`.faq-item`). The `0 0 0 1px` ring is gone from `--e1…--e4`, so there is only one outer line.
+
+| Token | Light | Dark |
+|---|---|---|
+| `--edge-rim` | `inset 0 0 0 1px hsl(0 0% 100% / .75)` | `inset 0 0 0 1px hsl(0 0% 100% / .07)` |
+| `--edge-top` | `inset 0 1.5px 0.5px hsl(0 0% 100% / .95)` | `inset 0 1px 0.5px hsl(0 0% 100% / .14)` |
+| `--edge-out` | `0 0 0 0.5px hsl(24 40% 20% / .10)` | `0 0 0 0.5px hsl(0 0% 0% / .6)` |
+| `--well-lip` | `inset 0 0 0 1px hsl(24 40% 20% / .10)` | `inset 0 0 0 1px hsl(0 0% 0% / .6)` |
+| `--well-catch` | `0 1px 0 hsl(0 0% 100% / .9)` | `0 1px 0 hsl(0 0% 100% / .06)` |
+
+- Coloured buttons keep their own recipes and add an inner rim: filled `inset 0 0 0 1px hsl(0 0% 100% / .22)`, device `… / .08`. Filled drop: rest `0 8px 16px -8px`, hover `0 14px 22px -10px`.
+- Wells (`.icon-well`, `.bezel-well`, `.recessed`, unchecked checkbox) use the inset shade plus `--well-lip` and `--well-catch`.
+- Nav bar hairline: `0 0 0 0.5px hsl(24 40% 20% / .12)` light, `hsl(0 0% 0% / .6)` dark.
+
+**B. Continuous corners.** Inside `@supports (corner-shape: squircle)`, surfaces, menus, bezels, wells, fields and `.pebble` get `corner-shape: squircle`. Anything with `.rounded-full` or `.pill` is left out, so pills stay round.
+
+**C. Concentric radii** (inner = outer − padding):
+
+| Element | Outer / padding | Inner |
+|---|---|---|
+| Readiness card | 28 / 12 | illustration 16 |
+| Post card | 20 / 10 | thumbnail well 10, image 6 (well padding 4) |
+| Glance board | 44 / 20 (16 mobile) | widgets 24 (28 mobile), rest and open |
+| Markets device | 32 / 12 | scene panel 20; active row 14; detail sheet 14 |
+| Process bezel | 30 / 12 (18 / 6 mobile) | well 18 (12 mobile) |
+| Theme key | slot 14 / 4 | key 10 |
+| Hero printer | stage 36 | head unit 20 / 14 (unchanged) |
+
+**Review note (design lead):** the squircle corner experiment (B) was reverted after review. At these radii it made cards read as boxy rather than pebble-soft, so standard round corners stay.

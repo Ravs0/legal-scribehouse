@@ -86,7 +86,7 @@ export const Markets = () => {
         </div>
 
         <Reveal className="after-heading">
-          <div className="dark rounded-[32px] bg-device p-3 text-device-foreground shadow-e4 [box-shadow:inset_0_1px_0_hsl(0_0%_100%/0.08),var(--e4)]">
+          <div className="dark rounded-[32px] bg-device p-3 text-device-foreground shadow-e4 [box-shadow:inset_0_1px_0_hsl(0_0%_100%/0.08),var(--edge-out),var(--e4)]">
             {/* Top row */}
             <div className="flex h-11 items-center justify-between gap-3 px-1">
               <div className="no-scrollbar flex gap-1.5 overflow-x-auto">
@@ -133,7 +133,7 @@ export const Markets = () => {
                     top: 0,
                     height: surface.h,
                     transform: `translateY(${surface.y}px)`,
-                    boxShadow: 'inset 0 1px 0 hsl(0 0% 100% / .10), 0 6px 12px -6px #000',
+                    boxShadow: 'inset 0 1px 0 hsl(0 0% 100% / .10), inset 0 0 0 1px hsl(0 0% 100% / 0.07), 0 6px 12px -6px #000',
                     transition: surface.snap ? 'none' : 'transform 420ms cubic-bezier(0.34,1.2,0.64,1), height 420ms cubic-bezier(0.34,1.2,0.64,1)',
                   }}
                 />
@@ -174,11 +174,20 @@ export const Markets = () => {
                 id="market-panel"
                 role="tabpanel"
                 aria-labelledby={`market-tab-${market.code}`}
-                className="relative overflow-hidden rounded-[22px] bg-black"
+                className="relative overflow-hidden rounded-[20px] bg-black"
               >
                 <div className="relative aspect-[16/11] lg:aspect-auto lg:h-[452px]">
                   <div key={market.code} className="absolute inset-0 animate-in fade-in duration-300">
-                    <MarketScene scene={SCENES[market.code]} />
+                    {/* Desktop: lift the scene while the sheet is open so the landmark silhouette stays visible.
+                        The wrapper is taller than the panel (132% x 0.76 > 100%) so no gap shows at the bottom. */}
+                    <div
+                      className={cn(
+                        'absolute inset-x-0 top-0 h-full transition-transform [transition-duration:420ms] [transition-timing-function:cubic-bezier(0.32,0.72,0,1)] lg:h-[132%]',
+                        sheetOpen && 'lg:-translate-y-[24%]',
+                      )}
+                    >
+                      <MarketScene scene={SCENES[market.code]} />
+                    </div>
                   </div>
                   <span className="glass-chip type-mono-md absolute bottom-4 left-4 z-[2] inline-flex h-7 items-center gap-2 rounded-full px-2.5 text-white">
                     <span className="tabular">{String(index + 1).padStart(2, '0')} / 10</span>
@@ -200,7 +209,7 @@ export const Markets = () => {
                   <div
                     id="market-sheet"
                     className={cn(
-                      'absolute inset-x-3 bottom-3 z-[2] hidden rounded-[18px] bg-[#F9F5EF] p-5 text-[#1F1A16] shadow-[0_20px_40px_-12px_#000] transition-[transform,opacity] [transition-duration:420ms] [transition-timing-function:cubic-bezier(0.32,0.72,0,1)] lg:block',
+                      'absolute inset-x-3 bottom-3 z-[2] hidden rounded-[14px] bg-[#F9F5EF] p-5 text-[#1F1A16] shadow-[0_20px_40px_-12px_#000] transition-[transform,opacity] [transition-duration:420ms] [transition-timing-function:cubic-bezier(0.32,0.72,0,1)] lg:block',
                       sheetOpen ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-[110%] opacity-0',
                     )}
                   >
@@ -214,7 +223,7 @@ export const Markets = () => {
               <MarketDetail market={market} />
             </div>
 
-            <p className="type-body-sm mt-3 px-2 pb-1 text-white/50">
+            <p className="type-body-sm mt-3 px-3 pb-2 pt-1 text-white/50">
               General information only{MARKETS_REVIEWED ? `, as of ${MARKETS_REVIEWED}` : ''}. Rules change often and vary by product. Not legal advice.
               Timor-Leste, ASEAN's newest member: on request.
             </p>
@@ -261,7 +270,7 @@ const MarketDetail = ({ market }: { market: (typeof MARKETS)[number] }) => (
       </div>
       <div>
         <p className="type-eyebrow mb-2 text-[#8A7F73]">Agreements</p>
-        <div className="flex flex-wrap gap-1 sm:flex-col">
+        <div className="flex flex-wrap items-start gap-1 sm:flex-col">
           {market.agreements.map((a) => (
             <Badge key={a} variant="tertiary" className="bg-[#D5ECEB] text-[#0F5257]">
               {a}
