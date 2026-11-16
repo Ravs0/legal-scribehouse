@@ -86,7 +86,7 @@ export const Markets = () => {
         </div>
 
         <Reveal className="after-heading">
-          <div className="dark rounded-[32px] bg-device p-3 text-device-foreground shadow-e4 [box-shadow:inset_0_1px_0_hsl(0_0%_100%/0.08),var(--edge-out),var(--e4)]">
+          <div className="device-surface dark rounded-[32px] bg-device p-3 text-device-foreground">
             {/* Top row */}
             <div className="flex h-11 items-center justify-between gap-3 px-1">
               <div className="no-scrollbar flex gap-1.5 overflow-x-auto">
