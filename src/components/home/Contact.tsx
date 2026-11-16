@@ -127,7 +127,7 @@ export const Contact = () => {
           <div className="col-span-4 md:col-span-12 lg:col-span-5">
             {/* Confirm the response-time promise with the firm before launch. */}
             <SectionHeading
-              eyebrow="Book a consult"
+              eyebrow="Book a free call"
               title="Tell us what you're shipping, and where."
               subtitle="We reply within one business day with next steps."
             />

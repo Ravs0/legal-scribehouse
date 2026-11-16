@@ -81,7 +81,7 @@ export const Markets = () => {
             className="col-span-4 md:col-span-7"
             eyebrow="Where we work"
             title="Ten markets. Ten rulebooks."
-            subtitle="Pick a market to see who regulates it and what trips exporters up."
+            subtitle="Pick a country to see who regulates it and where exporters usually get stuck."
           />
         </div>
 

@@ -229,8 +229,6 @@
     @apply bg-background font-sans text-foreground antialiased;
     font-size: 15px;
     line-height: 1.6;
-    letter-spacing: -0.009em;
-    font-feature-settings: "cv11";
   }
   h1,
   h2,
@@ -256,21 +254,21 @@
 
 @layer components {
   /* ---------- Type roles: mobile < 768, tablet 768–1023, desktop ≥ 1024 ---------- */
-  .type-display-lg { @apply font-display; font-feature-settings: normal; font-size: 34px; line-height: 1.04; letter-spacing: -0.035em; font-weight: 800; }
-  .type-display-md { @apply font-display; font-feature-settings: normal; font-size: 30px; line-height: 1.08; letter-spacing: -0.03em; font-weight: 800; }
-  .type-headline-lg { @apply font-display; font-feature-settings: normal; font-size: 24px; line-height: 1.12; letter-spacing: -0.025em; font-weight: 700; }
-  .type-headline-md { @apply font-display; font-feature-settings: normal; font-size: 22px; line-height: 1.18; letter-spacing: -0.02em; font-weight: 700; }
-  .type-headline-sm { @apply font-display; font-feature-settings: normal; font-size: 20px; line-height: 1.25; letter-spacing: -0.015em; font-weight: 700; }
-  .type-title-lg { @apply font-display; font-feature-settings: normal; font-size: 18px; line-height: 1.3; letter-spacing: -0.01em; font-weight: 600; }
-  .type-title-md { @apply font-sans; font-size: 16px; line-height: 1.4; letter-spacing: -0.011em; font-weight: 600; }
-  .type-title-sm { @apply font-sans; font-size: 14px; line-height: 1.4; letter-spacing: -0.006em; font-weight: 600; }
-  .type-body-lg { @apply font-sans; font-size: 16px; line-height: 1.6; letter-spacing: -0.011em; font-weight: 400; }
-  .type-body-md { @apply font-sans; font-size: 15px; line-height: 1.6; letter-spacing: -0.009em; font-weight: 400; }
-  .type-body-sm { @apply font-sans; font-size: 13px; line-height: 1.5; letter-spacing: -0.003em; font-weight: 400; }
-  .type-label-lg { @apply font-sans; font-size: 14px; line-height: 20px; letter-spacing: -0.006em; font-weight: 600; }
+  .type-display-lg { @apply font-display; font-feature-settings: normal; font-optical-sizing: auto; font-size: 34px; line-height: 1.03; letter-spacing: -0.03em; font-weight: 600; }
+  .type-display-md { @apply font-display; font-feature-settings: normal; font-optical-sizing: auto; font-size: 30px; line-height: 1.06; letter-spacing: -0.028em; font-weight: 600; }
+  .type-headline-lg { @apply font-display; font-feature-settings: normal; font-optical-sizing: auto; font-size: 24px; line-height: 1.12; letter-spacing: -0.022em; font-weight: 600; }
+  .type-headline-md { @apply font-display; font-feature-settings: normal; font-optical-sizing: auto; font-size: 22px; line-height: 1.18; letter-spacing: -0.02em; font-weight: 600; }
+  .type-headline-sm { @apply font-display; font-feature-settings: normal; font-optical-sizing: auto; font-size: 20px; line-height: 1.25; letter-spacing: -0.015em; font-weight: 600; }
+  .type-title-lg { @apply font-display; font-feature-settings: normal; font-optical-sizing: auto; font-size: 18px; line-height: 1.3; letter-spacing: -0.01em; font-weight: 600; }
+  .type-title-md { @apply font-sans; font-size: 16px; line-height: 1.4; letter-spacing: 0; font-weight: 600; }
+  .type-title-sm { @apply font-sans; font-size: 14px; line-height: 1.4; letter-spacing: 0; font-weight: 600; }
+  .type-body-lg { @apply font-sans; font-size: 16px; line-height: 1.6; letter-spacing: 0; font-weight: 400; }
+  .type-body-md { @apply font-sans; font-size: 15px; line-height: 1.6; letter-spacing: 0; font-weight: 400; }
+  .type-body-sm { @apply font-sans; font-size: 13px; line-height: 1.5; letter-spacing: 0; font-weight: 400; }
+  .type-label-lg { @apply font-sans; font-size: 14px; line-height: 20px; letter-spacing: 0; font-weight: 600; }
   .type-label-md { @apply font-sans; font-size: 13px; line-height: 16px; letter-spacing: 0; font-weight: 600; }
-  .type-label-sm { @apply font-sans; font-size: 11px; line-height: 14px; letter-spacing: 0.01em; font-weight: 500; }
-  .type-eyebrow { @apply font-sans; font-size: 11px; line-height: 14px; letter-spacing: 0.09em; font-weight: 600; text-transform: uppercase; }
+  .type-label-sm { @apply font-sans; font-size: 11px; line-height: 14px; letter-spacing: 0; font-weight: 500; }
+  .type-eyebrow { @apply font-mono; font-size: 12px; line-height: 16px; letter-spacing: -0.01em; font-weight: 500; text-transform: none; }
   .type-mono-md { @apply font-mono; font-size: 12px; line-height: 16px; font-weight: 500; }
   .type-mono-sm { @apply font-mono; font-size: 10px; line-height: 14px; letter-spacing: 0.04em; font-weight: 500; text-transform: uppercase; }
   .type-led { @apply font-mono; font-size: 20px; line-height: 24px; letter-spacing: 0.04em; font-weight: 500; }
@@ -291,7 +289,7 @@
     .type-headline-lg { font-size: 32px; }
   }
 
-  .tabular { font-variant-numeric: tabular-nums; font-feature-settings: "tnum", "cv11"; }
+  .tabular { font-variant-numeric: tabular-nums; font-feature-settings: "tnum"; }
   .text-gradient {
     background-image: var(--gradient-text);
     -webkit-background-clip: text;
@@ -530,7 +528,7 @@
   .prose-tidewater table { display: block; overflow-x: auto; border: 1px solid hsl(var(--outline-variant)); border-radius: 14px; border-collapse: separate; border-spacing: 0; }
   .prose-tidewater th, .prose-tidewater td { padding: 10px 14px; border-bottom: 1px solid hsl(var(--outline-variant)); text-align: left; }
   .prose-tidewater th { @apply type-label-lg; }
-  .prose-tidewater code { font-family: "JetBrains Mono", ui-monospace, monospace; font-size: 0.88em; background: hsl(var(--muted)); border-radius: 6px; padding: 0.1em 0.35em; }
+  .prose-tidewater code { font-family: "Geist Mono", ui-monospace, monospace; font-size: 0.88em; background: hsl(var(--muted)); border-radius: 6px; padding: 0.1em 0.35em; }
   .prose-tidewater img { border-radius: 14px; }
 }
 

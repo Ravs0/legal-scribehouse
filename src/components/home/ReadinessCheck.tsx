@@ -110,7 +110,7 @@ export const ReadinessCheck = () => {
             <SectionHeading
               eyebrow="Readiness check"
               title="Is your product ready to ship?"
-              subtitle="Six switches. Twelve points. One honest answer."
+              subtitle="Flip six switches and see where you stand before the goods leave."
             >
               <ul className="mt-6 space-y-2.5">
                 {['Takes under a minute', 'No email needed', 'Your answers stay in your browser'].map((t) => (
@@ -193,7 +193,7 @@ export const ReadinessCheck = () => {
 
                 <div className="mt-4 grid grid-cols-2 gap-2">
                   <Button onClick={sendResult} className="px-3">
-                    Book a consult <ArrowRight aria-hidden="true" />
+                    Book a free call <ArrowRight aria-hidden="true" />
                   </Button>
                   <Button variant="outline" onClick={() => setOn(READINESS_QUESTIONS.map(() => true))}>
                     Mark all done

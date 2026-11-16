@@ -62,7 +62,7 @@ export const InsightsTeaser = () => {
               <div className="min-w-0 flex-1">
                 <p className="type-title-sm">First guides are on the way</p>
                 <p className="type-body-sm text-muted-foreground">
-                  We're writing plain-English explainers on HS codes, rules of origin and distributor contracts.
+                  We're writing explainers on HS codes, rules of origin and distributor contracts.
                 </p>
               </div>
               <Button asChild variant="outline" size="sm" className="self-start sm:self-auto">

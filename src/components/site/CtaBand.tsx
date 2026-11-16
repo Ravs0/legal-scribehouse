@@ -11,11 +11,11 @@ export const CtaBand = () => (
       <div className="relative">
         <h2 className="type-headline-md mx-auto max-w-[24ch]">Planning your first ASEAN shipment?</h2>
         <p className="type-body-lg mx-auto mt-3 max-w-[46ch] text-white/70">
-          A free 30-minute call is the fastest way to find out what you need, and what you don't.
+          A free 30-minute call is the quickest way to find out what you need and what you can skip.
         </p>
         <Button asChild size="lg" className="mt-7">
           <HashLink to="contact">
-            Book a consult <ArrowRight aria-hidden="true" />
+            Book a free call <ArrowRight aria-hidden="true" />
           </HashLink>
         </Button>
       </div>

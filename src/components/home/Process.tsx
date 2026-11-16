@@ -4,10 +4,10 @@ import { PIXEL, PixelIcon } from '@/components/site/PixelIcon';
 
 // Durations are placeholders until the firm confirms its service levels.
 const STEPS = [
-  { icon: PIXEL.handshake, title: 'Scoping call', meta: 'Free · 30 min', copy: "Your product, target market, and what's already in motion." },
-  { icon: PIXEL.document, title: 'Route plan', meta: '1–2 weeks', copy: 'A written plan: structure, registrations, duty position, risks, fixed fee.' },
-  { icon: PIXEL.stamp, title: 'Paperwork', meta: 'Fixed fee', copy: 'We draft, file and coordinate local counsel.' },
-  { icon: PIXEL.ship, title: 'Ship & support', meta: 'Ongoing', copy: 'On call for the first consignments and renewals.' },
+  { icon: PIXEL.handshake, title: 'Scoping call', meta: 'Free · 30 min', copy: "You tell us the product, the market and what's already under way." },
+  { icon: PIXEL.document, title: 'Route plan', meta: '1–2 weeks', copy: 'One document: structure, registrations, duty position, risks and a fixed fee.' },
+  { icon: PIXEL.stamp, title: 'Paperwork', meta: 'Fixed fee', copy: 'We draft, file and manage local counsel, so you deal with one firm.' },
+  { icon: PIXEL.ship, title: 'Ship & support', meta: 'Ongoing', copy: 'We stay on call for your first consignments, then handle renewals.' },
 ];
 
 export const Process = () => (
@@ -17,7 +17,7 @@ export const Process = () => (
         <SectionHeading
           className="col-span-4 md:col-span-12 lg:col-span-4"
           eyebrow="How it works"
-          title="From first call to first shipment in four steps."
+          title="Four steps from first call to first shipment."
         />
 
         <ol className="after-heading col-span-4 grid gap-4 sm:grid-cols-2 md:col-span-12 lg:col-span-8 lg:mt-0">

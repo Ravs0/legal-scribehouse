@@ -21,11 +21,11 @@ export const Wordmark = ({ withDescriptor = false }: { withDescriptor?: boolean 
   <span className="flex items-center gap-2">
     <span
       aria-hidden="true"
-      className="btn-filled flex h-[26px] w-[26px] items-center justify-center rounded-lg font-display text-[13px] font-extrabold text-primary-foreground"
+      className="btn-filled flex h-[26px] w-[26px] items-center justify-center rounded-lg font-display text-[13px] font-semibold text-primary-foreground"
     >
       {SITE.name[0]}
     </span>
-    <span className="font-display text-[17px] font-bold leading-none tracking-[-0.02em]">{SITE.name}</span>
+    <span className="font-display text-[17px] font-semibold leading-none tracking-[-0.02em]">{SITE.name}</span>
     {withDescriptor && <span className="type-label-sm hidden text-muted-foreground xl:inline">{SITE.descriptor}</span>}
   </span>
 );
@@ -183,7 +183,7 @@ const Header = () => {
             <ThemeKey />
             <Button asChild>
               <HashLink to="contact">
-                Book a consult <ArrowRight aria-hidden="true" />
+                Book a free call <ArrowRight aria-hidden="true" />
               </HashLink>
             </Button>
           </div>
@@ -201,7 +201,7 @@ const Header = () => {
           <div className="relative z-[1] flex items-center gap-2">
             <ThemeKey />
             <Button asChild size="sm" className="hidden min-[480px]:inline-flex">
-              <HashLink to="contact">Book a consult</HashLink>
+              <HashLink to="contact">Book a free call</HashLink>
             </Button>
             <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger asChild>
@@ -253,7 +253,7 @@ const Header = () => {
                 </nav>
                 <Button asChild size="lg" className="mt-5 w-full">
                   <HashLink to="contact" onClick={() => setOpen(false)}>
-                    Book a consult <ArrowRight aria-hidden="true" />
+                    Book a free call <ArrowRight aria-hidden="true" />
                   </HashLink>
                 </Button>
               </SheetContent>

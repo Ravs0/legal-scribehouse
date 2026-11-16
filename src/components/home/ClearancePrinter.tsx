@@ -130,7 +130,7 @@ export const ClearancePrinter = ({ className }: { className?: string }) => {
                 <p className="type-mono-sm text-[#7A7066]">Total duty</p>
                 <p className="type-mono-sm text-[#7A7066]">On A$48,000</p>
               </div>
-              <p className="font-display text-[28px] font-extrabold leading-none tracking-[-0.03em]">{p.total}</p>
+              <p className="font-display text-[28px] font-semibold leading-none tracking-[-0.03em]">{p.total}</p>
             </div>
             <div className="barcode mx-auto mt-3 hidden h-5 w-[120px] sm:block" aria-hidden="true" />
             <p className="type-mono-sm mt-2 text-center tracking-normal text-[#7A7066] sm:mt-1.5 sm:tracking-[0.04em]">Illustrative example · not advice</p>

@@ -212,3 +212,10 @@ Client feedback: too much empty space and an oversized hero headline. Tighter ty
 - **Insights:** the empty state is a slim strip with a "Browse insights" button; the header and mobile "All insights" buttons hide while there are no posts.
 - **Markets:** desktop list and scene height 420, was 452.
 - **Proof:** testimonials use subgrid rows from 768, so quote marks, quotes and caption rules line up whatever the name length.
+
+## v3.4 — type and copy pass
+
+- **Families:** display Bricolage Grotesque (variable, optical sizing on), body Instrument Sans, mono Geist Mono. Loaded from Google Fonts in `index.html`.
+- **Weights and tracking:** display and headline classes are weight 600 (was 800/700) with tracking −0.03em (display-lg) down to −0.015em (headline-sm). Body, title and label classes use tracking 0; the Inter-only `cv11` feature is gone.
+- **Eyebrow:** Geist Mono 12/16, weight 500, sentence case (no longer uppercase tracked caps). The orange dot stays.
+- **Copy:** hero headline "Export to Southeast Asia. Get it right the first time."; the call-to-action label is "Book a free call" everywhere; services, process, readiness verdicts and two FAQ answers rewritten to say what the client gets.

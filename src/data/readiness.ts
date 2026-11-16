@@ -82,13 +82,13 @@ export function verdictFor(score: number): ReadinessVerdict {
     return {
       stamp: 'HOLD',
       title: 'Hold at port.',
-      copy: 'A few fundamentals are missing. All fixable, and best fixed before you ship.',
+      copy: "Some fundamentals are missing. They can all be fixed, and it's cheaper to fix them before you ship.",
     };
   if (score <= 8)
     return {
       stamp: 'INSPECT',
       title: 'Nearly cleared.',
-      copy: 'You have the basics; the gaps are where disputes and delays usually start.',
+      copy: 'The basics are in place. The gaps left are where delays and disputes tend to start.',
     };
-  return { stamp: 'CLEARED', title: 'Ready to sail.', copy: 'A quick review to confirm, then go.' };
+  return { stamp: 'CLEARED', title: 'Ready to sail.', copy: "You've covered the main risks. A short review to confirm, then go." };
 }

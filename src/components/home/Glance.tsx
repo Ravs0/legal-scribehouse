@@ -153,7 +153,7 @@ export const Glance = () => {
             <SectionHeading
               eyebrow="Export at a glance"
               title="Your shipment, on one screen."
-              subtitle="The kind of dashboard you get with a route plan. Tap a widget to open it."
+              subtitle="A sample of the dashboard that comes with a route plan. Tap any widget to open it."
             />
             <Reveal className="hidden lg:block">
               <ul className="mt-5 space-y-3">
@@ -180,7 +180,7 @@ export const Glance = () => {
                   'Duty saved',
                   <div className="flex h-full flex-col">
                     <p className="type-mono-sm opacity-70">Duty saved · this shipment</p>
-                    <p className="mt-auto font-display text-[44px] font-extrabold leading-none tracking-[-0.04em] tabular sm:text-[56px]">{fmt(savedAnim)}</p>
+                    <p className="mt-auto font-display text-[44px] font-semibold leading-none tracking-[-0.04em] tabular sm:text-[56px]">{fmt(savedAnim)}</p>
                     <div className="mt-4 flex h-12 items-end gap-2" aria-hidden="true">
                       {[30, 46, 38, 60, 52, 74, 92].map((h, i, arr) => (
                         <span
@@ -193,7 +193,7 @@ export const Glance = () => {
                   </div>,
                   <div className="flex h-full flex-col">
                     <p className="type-mono-sm opacity-70">Duty saved with an FTA origin claim</p>
-                    <p className="mt-2 font-display text-[44px] font-extrabold leading-none tracking-[-0.04em] tabular sm:text-[56px]">{fmt(savedAnim)}</p>
+                    <p className="mt-2 font-display text-[44px] font-semibold leading-none tracking-[-0.04em] tabular sm:text-[56px]">{fmt(savedAnim)}</p>
                     <div role="radiogroup" aria-label="Shipment value" className="mt-4 inline-flex w-fit rounded-[10px] bg-primary-foreground/10 p-[3px]">
                       {SHIPMENT_SIZES.map((s, i) => (
                         <button
@@ -276,7 +276,7 @@ export const Glance = () => {
                   'Next deadline',
                   <div className="flex h-full flex-col">
                     <p className="type-mono-sm text-muted-foreground">Next deadline</p>
-                    <p className="mt-auto font-display text-[40px] font-extrabold leading-none tracking-[-0.04em] tabular">
+                    <p className="mt-auto font-display text-[40px] font-semibold leading-none tracking-[-0.04em] tabular">
                       12<span className="ml-1 font-sans text-[13px] font-semibold tracking-normal text-muted-foreground">days</span>
                     </p>
                     <p className="type-label-sm mt-1.5 text-muted-foreground">TM renewal · MY</p>

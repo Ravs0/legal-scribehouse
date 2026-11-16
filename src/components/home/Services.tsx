@@ -11,8 +11,8 @@ export const Services = () => (
         <SectionHeading
           className="col-span-4 md:col-span-7"
           eyebrow="What we do"
-          title="Six ways we clear your path."
-          subtitle="Take one piece of work, or let us run the whole route from structure to first shipment."
+          title="Six jobs we take off your desk."
+          subtitle="Hire us for one, or for the whole route from structure to first shipment."
         />
       </div>
       <ul className="after-heading grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

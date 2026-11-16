@@ -7,26 +7,26 @@ import { Reveal } from '@/components/motion/Reveal';
 import { ClearancePrinter } from '@/components/home/ClearancePrinter';
 
 const STATS = [
-  { n: '10', label: 'ASEAN markets' },
-  { n: '6', label: 'advisory services' },
-  { n: '2-min', label: 'readiness check' },
+  { n: '10', label: 'markets covered' },
+  { n: '6', label: 'fixed-scope services' },
+  { n: '30-min', label: 'free first call' },
 ];
 
 const PROBLEMS = [
   {
     icon: PackageX,
-    title: 'Held at the port',
-    copy: 'Goods held at the port because the HS code or permit was wrong.',
+    title: 'Stuck at the port',
+    copy: 'The HS code or permit was wrong, so the goods sit in a warehouse while storage fees add up.',
   },
   {
     icon: AlertTriangle,
-    title: 'Brand taken first',
-    copy: 'A distributor who registered your trademark before you did.',
+    title: 'Brand registered by someone else',
+    copy: 'A distributor filed your trademark before you did, and now holds it in that country.',
   },
   {
     icon: FileX,
     title: 'Duty overpaid',
-    copy: 'Paying full duty when a trade agreement would have cut it, if the origin paperwork had been right.',
+    copy: "A trade agreement would have cut the duty, but the origin paperwork wasn't in order.",
   },
 ];
 
@@ -39,26 +39,24 @@ export const Hero = () => {
         <div className="grid-12 items-center gap-y-8">
           <div className="col-span-4 md:col-span-12 lg:col-span-7">
             <div className="animate-fade-up" style={stagger(0)}>
-              <AssistChip icon={Sparkles}>Export legal advisory · ASEAN</AssistChip>
+              <AssistChip icon={Sparkles}>Export law for small brands · ASEAN</AssistChip>
             </div>
-            <h1 className="type-display-lg mt-4 max-w-[16ch] animate-fade-up" style={stagger(80)}>
-              Sell into Southeast Asia<span className="-ml-[0.07em]">.</span>{' '}
-              <span className="text-gradient">
-                Skip the legal surprises<span className="-ml-[0.07em]">.</span>
-              </span>
+            <h1 className="type-display-lg mt-4 max-w-[19.5ch] animate-fade-up" style={stagger(80)}>
+              Export to Southeast Asia.{' '}
+              <span className="text-gradient">Get it right the first time.</span>
             </h1>
             <p className="type-body-lg mt-4 max-w-[52ch] animate-fade-up text-muted-foreground" style={stagger(160)}>
-              Structure, contracts, customs and product registration, sorted before your first shipment leaves. Built
-              for small exporters, explained in plain English.
+              We sort out the structure, contracts, customs and product registration before your first shipment leaves,
+              and explain each step in plain English.
             </p>
             <div className="mt-6 flex animate-fade-up flex-col gap-3 sm:flex-row" style={stagger(240)}>
               <Button asChild size="lg" className="w-full sm:w-auto">
                 <HashLink to="contact">
-                  Book a consult <ArrowRight aria-hidden="true" />
+                  Book a free call <ArrowRight aria-hidden="true" />
                 </HashLink>
               </Button>
               <Button asChild size="lg" variant="outline" className="w-full sm:w-auto">
-                <HashLink to="readiness">Check my readiness</HashLink>
+                <HashLink to="readiness">Take the 2-minute check</HashLink>
               </Button>
             </div>
             <ul className="mt-6 flex animate-fade-up flex-wrap gap-2" style={stagger(320)}>
@@ -79,7 +77,7 @@ export const Hero = () => {
           <div id="problems" className="surface-2 rounded-[24px]">
             <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 px-4 pt-4 md:px-5">
               <Eyebrow>Why exports stall</Eyebrow>
-              <h2 className="type-label-sm font-sans text-muted-foreground">Three problems that stop a first shipment</h2>
+              <h2 className="type-label-sm font-sans text-muted-foreground">Three ways a first shipment goes wrong</h2>
             </div>
             <ul className="mt-1 grid divide-y divide-outline-variant md:grid-cols-3 md:divide-x md:divide-y-0">
               {PROBLEMS.map((p) => (

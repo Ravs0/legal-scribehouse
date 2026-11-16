@@ -9,7 +9,7 @@ import { Reveal } from '@/components/motion/Reveal';
 const FAQS = [
   {
     q: 'Do I need a local company to export?',
-    a: 'Usually not. Many exporters start with a distributor or an importer of record. It depends on the product and how much control you want, and we lay out the trade-offs in plain terms.',
+    a: 'Usually not. Most small exporters start with a distributor or an importer of record. The right choice depends on your product and how much control you want, and the route plan sets out the trade-offs.',
   },
   {
     q: 'How long does product registration take?',
@@ -29,7 +29,7 @@ const FAQS = [
   },
   {
     q: 'What does it cost?',
-    a: 'The first call is free. After that, work is scoped to a fixed fee wherever possible, so you know the number before we start.',
+    a: 'The first call is free. After that we quote a fixed fee for each piece of work wherever we can, so you know the number before we start.',
   },
 ];
 
@@ -41,10 +41,10 @@ export const Faq = () => (
           <SectionHeading eyebrow="FAQ" title="Questions we hear every week.">
             <div className="surface-2 mt-5 max-w-[340px] rounded-[20px] p-4">
               <h3 className="type-title-sm font-sans">Still unsure?</h3>
-              <p className="type-body-sm mt-1 text-muted-foreground">A free 30-minute call answers most first-shipment questions.</p>
+              <p className="type-body-sm mt-1 text-muted-foreground">Most first-shipment questions get answered in a free 30-minute call.</p>
               <Button asChild size="sm" icon="trailing" className="mt-3">
                 <HashLink to="contact">
-                  Book a consult <ArrowRight aria-hidden="true" />
+                  Book a free call <ArrowRight aria-hidden="true" />
                 </HashLink>
               </Button>
             </div>
