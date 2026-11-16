@@ -59,7 +59,7 @@ const StatBezel = ({ value, suffix, label }: { value: number; suffix: string; la
               height: LENS,
               left: lens.x - LENS / 2,
               top: lens.y - LENS / 2,
-              boxShadow: 'inset 0 0 0 1px hsl(0 0% 100% / .7), inset 0 -8px 12px -6px hsl(0 0% 100% / .5), 0 6px 14px -6px hsl(24 40% 20% / .35)',
+              boxShadow: 'inset 0 0 0 1px hsl(0 0% 100% / .7), inset 0 -8px 12px -6px hsl(0 0% 100% / .5), 0 6px 14px -6px hsl(160 30% 12% / .35)',
             }}
           >
             <span

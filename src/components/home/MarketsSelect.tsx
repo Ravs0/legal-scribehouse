@@ -76,7 +76,7 @@ export const MarketsSelect = ({ id, labelId, options, value, onChange, placehold
           aria-labelledby={`${labelId} ${valueId}`}
           className="press-soft group type-body-md recessed flex h-11 w-full items-center justify-between gap-2 rounded-[12px] px-3.5 text-left text-foreground focus:outline-none focus-visible:outline-none"
         >
-          <span ref={boxRef} id={valueId} className={cn('flex min-w-0 flex-1 items-center gap-1', !value.length && 'text-muted-foreground/70')}>
+          <span ref={boxRef} id={valueId} className={cn('flex min-w-0 flex-1 items-center gap-1', !value.length && 'text-muted-foreground')}>
             {value.length ? (
               <>
                 <span className="min-w-0 truncate">{value.slice(0, shown).join(', ')}</span>

@@ -47,7 +47,7 @@ const Toggle = ({ checked, onChange, labelledBy, describedBy }: { checked: boole
 
 /** Header illustration: a crate on a pallet with a clearance tag in the verdict colour. */
 const CrateScene = ({ tag, score }: { tag: string; score: number }) => (
-  <div className="relative h-[168px] overflow-hidden rounded-[16px] bg-[#CFEBDD] dark:bg-[#17352E]">
+  <div className="relative h-[168px] overflow-hidden rounded-[16px] bg-tertiary-container">
     <svg aria-hidden="true" viewBox="0 0 416 168" className="absolute inset-0 h-full w-full">
       <ellipse cx="208" cy="142" rx="96" ry="12" fill="#000" opacity="0.12" />
       {/* pallet */}
@@ -76,7 +76,7 @@ const CrateScene = ({ tag, score }: { tag: string; score: number }) => (
         </linearGradient>
       </defs>
     </svg>
-    <span className="type-mono-md tabular absolute right-3 top-3 inline-flex h-7 items-center rounded-full bg-white/80 px-2.5 text-[#1F1A16] shadow-e1">
+    <span className="type-mono-md tabular absolute right-3 top-3 inline-flex h-7 items-center rounded-full bg-white/80 px-2.5 text-paper-ink shadow-e1">
       {score} / {MAX_SCORE}
     </span>
   </div>

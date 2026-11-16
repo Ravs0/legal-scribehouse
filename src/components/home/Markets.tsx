@@ -116,7 +116,7 @@ export const Markets = () => {
                     }}
                     className={cn(
                       'press hit type-label-md relative h-[30px] shrink-0 rounded-full px-3 transition-colors',
-                      filter === f.id ? 'pebble btn-lift bg-[#F4EEE6] text-[#1F1A16] [--sheen-a:0.7]' : 'bg-white/[0.08] text-white/75 hover:bg-white/[0.12]',
+                      filter === f.id ? 'pebble btn-lift bg-paper text-paper-ink [--sheen-a:0.7]' : 'bg-white/[0.08] text-white/75 hover:bg-white/[0.12]',
                     )}
                   >
                     {f.label}
@@ -126,7 +126,7 @@ export const Markets = () => {
               <button
                 type="button"
                 onClick={askAbout}
-                className="pebble btn-lift hit type-label-md relative hidden h-[30px] shrink-0 items-center gap-1.5 rounded-full bg-[#F4EEE6] px-3 text-[#1F1A16] [--sheen-a:0.7] sm:inline-flex"
+                className="pebble btn-lift hit type-label-md relative hidden h-[30px] shrink-0 items-center gap-1.5 rounded-full bg-paper px-3 text-paper-ink [--sheen-a:0.7] sm:inline-flex"
               >
                 Ask about {market.name} <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
               </button>
@@ -172,7 +172,7 @@ export const Markets = () => {
                       className={cn(
                         'press hit group relative z-[1] flex shrink-0 snap-start items-center gap-3 rounded-full px-3.5 text-left transition-colors lg:h-16 lg:rounded-[14px] lg:px-4',
                         'h-9 lg:h-16',
-                        on ? 'bg-[#F4EEE6] text-[#1F1A16] lg:bg-transparent lg:text-[#F4EEE6]' : 'bg-white/[0.08] text-white/70 hover:text-white lg:bg-transparent',
+                        on ? 'bg-paper text-paper-ink lg:bg-transparent lg:text-paper' : 'bg-white/[0.08] text-white/70 hover:text-white lg:bg-transparent',
                       )}
                     >
                       <span className="min-w-0 flex-1">
@@ -229,7 +229,7 @@ export const Markets = () => {
                   <div
                     id="market-sheet"
                     className={cn(
-                      'absolute inset-x-3 bottom-3 z-[2] hidden rounded-[20px] bg-[#F9F5EF] p-6 text-[#1F1A16] shadow-[0_20px_40px_-12px_#000] transition-[transform,opacity] [transition-duration:420ms] [transition-timing-function:cubic-bezier(0.32,0.72,0,1)] lg:block',
+                      'absolute inset-x-3 bottom-3 z-[2] hidden rounded-[20px] bg-paper p-6 text-paper-ink shadow-[0_20px_40px_-12px_#000] transition-[transform,opacity] [transition-duration:420ms] [transition-timing-function:cubic-bezier(0.32,0.72,0,1)] lg:block',
                       sheetOpen ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-[110%] opacity-0',
                     )}
                   >
@@ -239,7 +239,7 @@ export const Markets = () => {
               </div>
             </div>
 
-            <div className="mt-3 rounded-[20px] bg-[#F9F5EF] p-5 text-[#1F1A16] md:p-6 lg:hidden">
+            <div className="mt-3 rounded-[20px] bg-paper p-5 text-paper-ink md:p-6 lg:hidden">
               <MarketDetail market={market} />
             </div>
 
@@ -260,39 +260,39 @@ const MarketDetail = ({ market }: { market: (typeof MARKETS)[number] }) => (
     <div className="flex items-start justify-between gap-3">
       <h3 className="type-title-lg">{market.name}</h3>
       {!MARKETS_REVIEWED && (
-        <span className="type-label-sm inline-flex h-5 shrink-0 items-center rounded-md bg-[#EDE5DA] px-2 text-[#5E554C]">Draft: under review</span>
+        <span className="type-label-sm inline-flex h-5 shrink-0 items-center rounded-md bg-paper-chip px-2 text-paper-muted">Draft: under review</span>
       )}
     </div>
-    <p className="type-body-sm mt-1 max-w-[60ch] text-[#5E554C]">{market.snapshot}</p>
+    <p className="type-body-sm mt-1 max-w-[60ch] text-paper-muted">{market.snapshot}</p>
     {/* v3.6: three even columns from 768px; labels use the sans eyebrow in the sheet's muted ink. */}
     <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
       <div>
-        <p className="type-eyebrow mb-2.5 text-[#6B6158]">Regulators</p>
+        <p className="type-eyebrow mb-2.5 text-paper-muted">Regulators</p>
         <div className="flex flex-wrap gap-1.5">
           {market.regulators.map((r) => (
-            <span key={r} className="type-label-sm inline-flex h-6 items-center gap-1 rounded-full bg-white px-2 shadow-[inset_0_1px_0_#fff,0_0_0_1px_hsl(24_40%_20%/0.09),0_1px_2px_hsl(24_40%_20%/0.08)]">
-              <Landmark className="h-3 w-3 shrink-0 text-[#B5410F]" aria-hidden="true" />
+            <span key={r} className="type-label-sm inline-flex h-6 items-center gap-1 rounded-full bg-white px-2 shadow-[inset_0_1px_0_#fff,0_0_0_1px_hsl(160_30%_12%/0.09),0_1px_2px_hsl(160_30%_12%/0.08)]">
+              <Landmark className="h-3 w-3 shrink-0 text-paper-accent" aria-hidden="true" />
               {r}
             </span>
           ))}
         </div>
       </div>
       <div>
-        <p className="type-eyebrow mb-2.5 text-[#6B6158]">Typical hurdles</p>
+        <p className="type-eyebrow mb-2.5 text-paper-muted">Typical hurdles</p>
         <ul className="grid gap-y-2">
           {market.hurdles.map((h) => (
             <li key={h} className="type-body-sm flex gap-2 leading-5">
-              <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-[#B5410F]" aria-hidden="true" />
+              <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-paper-accent" aria-hidden="true" />
               {h}
             </li>
           ))}
         </ul>
       </div>
       <div>
-        <p className="type-eyebrow mb-2.5 text-[#6B6158]">Agreements</p>
+        <p className="type-eyebrow mb-2.5 text-paper-muted">Agreements</p>
         <div className="flex flex-wrap items-start gap-1.5">
           {market.agreements.map((a) => (
-            <Badge key={a} variant="tertiary" className="bg-[#D5ECEB] text-[#0F5257]">
+            <Badge key={a} variant="tertiary" className="bg-paper-teal text-paper-teal-ink">
               {a}
             </Badge>
           ))}

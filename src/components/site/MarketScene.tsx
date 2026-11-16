@@ -3,6 +3,7 @@ import { CONTOUR_PATHS } from '@/lib/contours';
 import { cn } from '@/lib/utils';
 
 /**
+ * Horizon scenes (illustrations; their palettes are their own, except the hero backdrop which follows the theme).
  * Dawn horizon scenes. One SVG (640×452): sky gradient, sun + halo, far ridge, a landmark silhouette,
  * water with sun reflections, and a contour-textured foreground strip.
  */
@@ -14,6 +15,8 @@ export interface SceneConfig {
   /** `ink` is the solid front layer; `back` is the same hue at 55% opacity for the depth layer behind it. */
   landmark: (ink: string, back: string) => ReactNode;
   sand?: boolean;
+  /** Sand strip colour when `sand` is set. */
+  sandColor?: string;
 }
 
 const H = 300; // horizon
@@ -75,12 +78,14 @@ const crane = (x: number, h: number, jib: number, color: string) => {
 };
 
 export const SCENES: Record<string, SceneConfig> = {
+  // v3.8 Golden Hour backdrop for the hero printer: amber sky, cream horizon, deep-teal water, cream sand.
   home: {
-    sky: ['#F7B58A', '#FFD9B0', '#FFF1DC'],
-    sun: '#FFE7BF',
-    water: '#7FB3C2',
+    sky: ['#F4A62A', '#FBD27E', '#FCF1D4'],
+    sun: '#FFF3D2',
+    water: '#2F7A6C',
     sunX: 400,
     sand: true,
+    sandColor: '#F3DFAE',
     landmark: (ink) => <path d={`M0 ${H} Q120 ${H - 34} 240 ${H - 12} T520 ${H - 20} T640 ${H - 8} V${H} Z`} fill={ink} opacity="0.35" />,
   },
   SG: {
@@ -303,7 +308,7 @@ export const MarketScene = ({ scene, className }: { scene: SceneConfig; classNam
         ))}
       </g>
       {scene.sand ? (
-        <rect y="396" width="640" height="56" fill="#EAD6B8" />
+        <rect y="396" width="640" height="56" fill={scene.sandColor ?? '#EAD6B8'} />
       ) : (
         <g opacity="0.12" transform="translate(0 380) scale(0.8 0.12)">
           {CONTOUR_PATHS.map((p, i) => (

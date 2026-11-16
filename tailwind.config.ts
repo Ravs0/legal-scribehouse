@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 import plugin from "tailwindcss/plugin";
 
-/** "Tidewater Glass" tokens. See docs/DESIGN.md for the spec these values come from. */
+/** "Golden Hour" (v3.8) tokens on the Tidewater/Dawn Tactile system. See docs/DESIGN.md for the spec these values come from. */
 const role = (name: string) => `hsl(var(--${name}) / <alpha-value>)`;
 
 export default {
@@ -18,8 +18,8 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ['"Bricolage Grotesque"', '"Instrument Sans"', "system-ui", "sans-serif"],
-        sans: ['"Instrument Sans"', "system-ui", "-apple-system", '"Segoe UI"', "Roboto", "sans-serif"],
+        display: ['"Sora"', '"Manrope"', "system-ui", "sans-serif"],
+        sans: ['"Manrope"', "system-ui", "-apple-system", '"Segoe UI"', "Roboto", "sans-serif"],
         mono: ['"Geist Mono"', "ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
       },
       colors: {
@@ -37,6 +37,16 @@ export default {
         },
         device: { DEFAULT: role("device"), foreground: role("device-foreground") },
         bezel: role("bezel"),
+        paper: {
+          DEFAULT: role("paper"),
+          ink: role("paper-ink"),
+          muted: role("paper-muted"),
+          rule: role("paper-rule"),
+          chip: role("paper-chip"),
+          accent: role("paper-accent"),
+          teal: role("paper-teal"),
+          "teal-ink": role("paper-teal-ink"),
+        },
         led: role("led"),
         secondary: { DEFAULT: role("secondary"), foreground: role("secondary-foreground") },
         tertiary: {
