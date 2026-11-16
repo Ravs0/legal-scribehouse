@@ -804,3 +804,29 @@
   .header-cta,
   .header-cta-slot[data-shown="false"] .header-cta { transform: none; transition: opacity 200ms linear !important; }
 }
+
+/* v3.6 review: content scrolling under the header must not collide with the wordmark or the right-hand controls.
+   A page-coloured scrim sits behind the two outer thirds only, so the glass pill still shows what passes beneath it. */
+@media (min-width: 1024px) {
+  .header-scrim::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: 50%;
+    top: -12px;
+    width: 100vw;
+    height: calc(100% + 40px);
+    transform: translateX(-50%);
+    pointer-events: none;
+    background: hsl(var(--background) / 0.92);
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent), linear-gradient(to right, #000 26%, transparent 34%, transparent 66%, #000 74%);
+    mask-image: linear-gradient(to bottom, #000 55%, transparent), linear-gradient(to right, #000 26%, transparent 34%, transparent 66%, #000 74%);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+    opacity: 0;
+    transition: opacity 200ms;
+  }
+  .header-scrim[data-scrolled="true"]::before { opacity: 1; }
+}

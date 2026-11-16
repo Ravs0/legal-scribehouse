@@ -170,7 +170,7 @@ const Header = () => {
       >
         Skip to content
       </a>
-      <header className="container sticky top-2 z-50 md:top-3">
+      <header data-scrolled={scrolled} className="header-scrim container sticky top-2 z-50 md:top-3">
         {/* Desktop: wordmark · liquid-glass pill nav · actions */}
         {/* Three-column grid with equal outer tracks keeps the pill centred whatever the actions column does. */}
         <div className="hidden h-[68px] grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3 lg:grid xl:gap-6">
