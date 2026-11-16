@@ -44,7 +44,7 @@ const StatBezel = ({ value, suffix, label }: { value: number; suffix: string; la
         ref={wellRef}
         onMouseMove={onMove}
         onMouseLeave={() => setLens(null)}
-        className="bezel-well stat-well pill relative flex h-24 flex-col justify-center overflow-hidden rounded-full px-6"
+        className="bezel-well stat-well pill relative flex h-24 flex-col justify-center overflow-hidden rounded-full px-4 text-center sm:px-6 sm:text-left"
       >
         <span className="type-headline-lg tabular block font-semibold text-primary-ink">
           <CountUp value={value} suffix={suffix} />
@@ -101,7 +101,7 @@ export const Proof = () => (
         />
       </div>
 
-      <dl className="after-heading stack-gap grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4">
+      <dl className="after-heading stack-gap grid grid-cols-2 lg:grid-cols-4">
         {STATS.map((s, i) => (
           <Reveal key={s.label} index={i}>
             <dt className="sr-only">{s.label}</dt>

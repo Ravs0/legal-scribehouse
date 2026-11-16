@@ -7,11 +7,13 @@ export default {
   darkMode: ["class"],
   content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
   prefix: "",
+  // v3.7: hover styles only on devices that really hover (no sticky hover after a tap on phones).
+  future: { hoverOnlyWhenSupported: true },
   theme: {
     container: {
+      // v3.7: gutters and the 1280px content cap live in src/index.css (".container"), so they can use
+      // env(safe-area-inset-*) and one fluid rule instead of stepped max-widths.
       center: true,
-      padding: { DEFAULT: "16px", sm: "24px", md: "32px", lg: "40px", xl: "48px" },
-      screens: { "2xl": "1240px" },
     },
     extend: {
       fontFamily: {
@@ -140,11 +142,11 @@ export default {
         "aurora-4": { to: { transform: "translate(5vw, -3vh)" } },
       },
       animation: {
-        "accordion-down": "accordion-down 300ms cubic-bezier(0.2,0,0,1)",
-        "accordion-up": "accordion-up 300ms cubic-bezier(0.2,0,0,1)",
+        "accordion-down": "accordion-down 260ms cubic-bezier(0.2,0,0,1)",
+        "accordion-up": "accordion-up 200ms cubic-bezier(0.2,0,0,1)",
         "fade-up": "fade-up 500ms cubic-bezier(0.05,0.7,0.1,1) backwards",
         "rise-in": "rise-in 600ms cubic-bezier(0.05,0.7,0.1,1) backwards",
-        "page-in": "page-in 300ms cubic-bezier(0.05,0.7,0.1,1) backwards",
+        "page-in": "page-in 200ms cubic-bezier(0.2,0,0,1) backwards",
         "step-in": "step-in 300ms cubic-bezier(0.05,0.7,0.1,1) backwards",
         "panel-in": "panel-in 250ms cubic-bezier(0.05,0.7,0.1,1) backwards",
         "pulse-ring": "pulse-ring 1800ms cubic-bezier(0,0,0,1) infinite",

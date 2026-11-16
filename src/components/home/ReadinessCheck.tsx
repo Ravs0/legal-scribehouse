@@ -28,7 +28,7 @@ const Toggle = ({ checked, onChange, labelledBy, describedBy }: { checked: boole
     aria-labelledby={labelledBy}
     aria-describedby={describedBy}
     onClick={() => onChange(!checked)}
-    className="group relative h-[26px] w-11 shrink-0 rounded-full p-[3px] transition-colors duration-200"
+    className="press-soft hit group relative h-[26px] w-11 shrink-0 rounded-full p-[3px] transition-[background-color,transform] duration-200"
     style={{
       background: checked ? 'hsl(var(--success))' : 'hsl(var(--input) / 0.3)',
       backgroundImage: 'linear-gradient(to bottom, hsl(0 0% 0% / .10), transparent 60%)',
@@ -203,7 +203,7 @@ export const ReadinessCheck = () => {
                   <button
                     type="button"
                     onClick={() => setOn(READINESS_QUESTIONS.map(() => false))}
-                    className={cn('press type-label-md h-8 rounded-full px-2 text-primary-ink hover:bg-primary/10')}
+                    className={cn('press hit type-label-md relative h-8 rounded-full px-2 text-primary-ink hover:bg-primary/10')}
                   >
                     Reset
                   </button>

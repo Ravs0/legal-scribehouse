@@ -170,11 +170,11 @@ const Header = () => {
       >
         Skip to content
       </a>
-      <header data-scrolled={scrolled} className="header-scrim container sticky top-2 z-50 md:top-3">
+      <header data-scrolled={scrolled} className="header-scrim intro-header header-sticky container sticky z-50">
         {/* Desktop: wordmark · liquid-glass pill nav · actions */}
         {/* Three-column grid with equal outer tracks keeps the pill centred whatever the actions column does. */}
         <div className="hidden h-[68px] grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3 lg:grid xl:gap-6">
-          <Link to="/" aria-label={`${SITE.name} home`} className="press justify-self-start rounded-lg">
+          <Link to="/" aria-label={`${SITE.name} home`} className="press relative justify-self-start rounded-lg">
             <Wordmark withDescriptor />
           </Link>
 
@@ -241,7 +241,7 @@ const Header = () => {
           data-scrolled={scrolled}
           className="nav-glass flex h-[52px] items-center justify-between gap-2 rounded-full pl-4 pr-1.5 lg:hidden"
         >
-          <Link to="/" aria-label={`${SITE.name} home`} className="press relative z-[1] shrink-0 rounded-lg">
+          <Link to="/" aria-label={`${SITE.name} home`} className="press hit relative z-[1] shrink-0 rounded-lg">
             <Wordmark />
           </Link>
           <div className="relative z-[1] flex items-center">
@@ -257,12 +257,12 @@ const Header = () => {
             </div>
             <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="press-strong ml-2">
+                <Button variant="ghost" size="icon" className="press-strong hit ml-2">
                   <Menu />
                   <span className="sr-only">Open menu</span>
                 </Button>
               </SheetTrigger>
-              <SheetContent side="right" className="flex flex-col gap-0 p-5">
+              <SheetContent side="right" className="flex flex-col gap-0 p-5 pb-[max(20px,env(safe-area-inset-bottom))] pr-[max(20px,env(safe-area-inset-right))] pt-[max(20px,env(safe-area-inset-top))]">
                 <SheetTitle className="flex h-8 items-center">
                   <Wordmark />
                 </SheetTitle>
@@ -296,7 +296,7 @@ const Header = () => {
                   <ul>
                     {INSIGHT_LINKS.map((l) => (
                       <li key={l.to}>
-                        <Link to={l.to} onClick={() => setOpen(false)} className="state-layer press type-body-md flex h-10 items-center rounded-lg px-3 text-muted-foreground hover:text-foreground">
+                        <Link to={l.to} onClick={() => setOpen(false)} className="state-layer press type-body-md flex h-11 items-center rounded-lg px-3 text-muted-foreground hover:text-foreground">
                           {l.label}
                         </Link>
                       </li>

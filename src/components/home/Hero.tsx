@@ -1,4 +1,4 @@
-import { KeyboardEvent, useRef, useState } from 'react';
+import { CSSProperties, KeyboardEvent, useRef, useState } from 'react';
 import { AssistChip } from '@/components/ui/chip';
 import { Eyebrow } from '@/components/site/SectionHeading';
 import { Reveal } from '@/components/motion/Reveal';
@@ -33,7 +33,8 @@ const ROUTES = [
   { country: 'Vietnam', product: 'T-shirts' },
 ];
 
-const stagger = (ms: number) => ({ animationDelay: `${ms}ms` });
+// v3.7 first paint: hero items stagger in after the header (70ms steps, see .intro in index.css).
+const step = (i: number) => ({ '--i': i }) as CSSProperties;
 
 /** Segmented control that drives the hero printer (roving tabindex, arrow keys). */
 const RoutePicker = ({ value, onChange }: { value: number; onChange: (i: number) => void }) => {
@@ -69,7 +70,7 @@ const RoutePicker = ({ value, onChange }: { value: number; onChange: (i: number)
             tabIndex={on ? 0 : -1}
             onClick={() => onChange(i)}
             className={cn(
-              'type-label-md h-9 shrink-0 whitespace-nowrap rounded-full px-[14px] transition-[color,background-color,box-shadow] [transition-duration:200ms]',
+              'press hit type-label-md relative h-9 shrink-0 whitespace-nowrap rounded-full px-[14px] transition-[color,background-color,box-shadow,transform] [transition-duration:200ms]',
               on ? 'surface-1 text-foreground' : 'text-muted-foreground hover:text-foreground',
             )}
           >
@@ -88,27 +89,28 @@ export const Hero = () => {
     <section id="hero" className="pb-8 pt-6 lg:pb-12 lg:pt-10">
       <div className="container">
         <div className="grid-12 items-center gap-y-8">
-          <div className="col-span-4 md:col-span-12 lg:col-span-7">
-            <div className="animate-fade-up" style={stagger(0)}>
+          {/* 768–1023: text block capped at 640px, printer centred below it. */}
+          <div className="col-span-4 md:col-span-12 md:max-w-[640px] lg:col-span-7 lg:max-w-none">
+            <div className="intro" style={step(0)}>
               <AssistChip>Export law for small brands · ASEAN</AssistChip>
             </div>
-            <h1 className="type-display-lg mt-4 max-w-[19.5ch] animate-fade-up text-foreground lg:max-w-none" style={stagger(80)}>
+            <h1 className="intro type-display-lg mt-4 max-w-[19.5ch] text-foreground lg:max-w-none" style={step(1)}>
               Export to Southeast Asia.{' '}
               <br className="hidden lg:inline" />
               Get it right the first time.
             </h1>
-            <p className="type-body-lg mt-4 max-w-[52ch] animate-fade-up text-muted-foreground" style={stagger(160)}>
+            <p className="intro type-body-lg mt-4 max-w-[52ch] text-muted-foreground" style={step(2)}>
               We sort out the structure, contracts, customs and product registration before your first shipment leaves,
               and explain each step in plain English.
             </p>
-            <div className="mt-6 animate-fade-up" style={stagger(240)}>
+            <div className="intro mt-6" style={step(3)}>
               <p className="type-eyebrow text-muted-foreground">Try a route</p>
               <div className="mt-2">
                 <RoutePicker value={route} onChange={setRoute} />
               </div>
               <p className="type-body-sm mt-2.5 text-muted-foreground">Pick one and the printer shows the duty an origin claim would save.</p>
             </div>
-            <ul className="mt-5 flex animate-fade-up flex-wrap gap-2" style={stagger(320)}>
+            <ul className="intro mt-5 flex flex-wrap gap-2" style={step(4)}>
               {STATS.map((s) => (
                 <li key={s.label} className="surface-1 type-label-md inline-flex h-8 items-center gap-2 rounded-full px-3">
                   <span className="font-bold text-primary-ink tabular">{s.n}</span>
@@ -118,7 +120,9 @@ export const Hero = () => {
             </ul>
           </div>
           <div className="col-span-4 md:col-span-12 lg:col-span-5">
-            <ClearancePrinter className="float-idle lg:mr-0" selected={route} onSelect={setRoute} />
+            <div className="intro-printer">
+              <ClearancePrinter className="float-idle lg:mr-0" selected={route} onSelect={setRoute} />
+            </div>
           </div>
         </div>
 

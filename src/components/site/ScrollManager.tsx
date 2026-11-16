@@ -12,7 +12,8 @@ export const ScrollManager = () => {
 
   useEffect(() => {
     if (!hash) {
-      window.scrollTo(0, 0);
+      // Instant: the page container's 200ms fade covers the jump; a smooth scroll here would fight it.
+      window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
       return;
     }
     const id = decodeURIComponent(hash.slice(1));

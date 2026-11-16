@@ -104,7 +104,7 @@ export const Markets = () => {
           <div className="device-surface dark rounded-[32px] bg-device p-3 text-device-foreground">
             {/* Top row */}
             <div className="flex h-11 items-center justify-between gap-3 px-1">
-              <div className="no-scrollbar flex gap-1.5 overflow-x-auto">
+              <div className="no-scrollbar flex gap-1.5 overflow-x-auto py-[7px]">
                 {FILTERS.map((f) => (
                   <button
                     key={f.id}
@@ -115,7 +115,7 @@ export const Markets = () => {
                       if (!f.codes.includes(activeCode)) setActiveCode(f.codes[0]);
                     }}
                     className={cn(
-                      'press type-label-md h-[30px] shrink-0 rounded-full px-3 transition-colors',
+                      'press hit type-label-md relative h-[30px] shrink-0 rounded-full px-3 transition-colors',
                       filter === f.id ? 'pebble btn-lift bg-[#F4EEE6] text-[#1F1A16] [--sheen-a:0.7]' : 'bg-white/[0.08] text-white/75 hover:bg-white/[0.12]',
                     )}
                   >
@@ -126,7 +126,7 @@ export const Markets = () => {
               <button
                 type="button"
                 onClick={askAbout}
-                className="pebble btn-lift type-label-md hidden h-[30px] shrink-0 items-center gap-1.5 rounded-full bg-[#F4EEE6] px-3 text-[#1F1A16] [--sheen-a:0.7] sm:inline-flex"
+                className="pebble btn-lift hit type-label-md relative hidden h-[30px] shrink-0 items-center gap-1.5 rounded-full bg-[#F4EEE6] px-3 text-[#1F1A16] [--sheen-a:0.7] sm:inline-flex"
               >
                 Ask about {market.name} <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
               </button>
@@ -143,7 +143,7 @@ export const Markets = () => {
                 onScroll={onListScroll}
                 data-at-top={listEdge.top}
                 data-at-end={listEdge.end}
-                className="market-list-fade no-scrollbar relative flex gap-1.5 overflow-x-auto lg:max-h-[420px] lg:flex-col lg:gap-0.5 lg:overflow-y-auto lg:overflow-x-visible"
+                className="market-list-fade no-scrollbar relative flex snap-x snap-proximity scroll-px-1 gap-1.5 overflow-x-auto max-lg:py-1 lg:max-h-[420px] lg:snap-none lg:flex-col lg:gap-0.5 lg:overflow-y-auto lg:overflow-x-visible"
               >
                 <span
                   aria-hidden="true"
@@ -170,7 +170,7 @@ export const Markets = () => {
                       tabIndex={on ? 0 : -1}
                       onClick={() => select(m.code)}
                       className={cn(
-                        'press group relative z-[1] flex shrink-0 items-center gap-3 rounded-full px-3.5 text-left transition-colors lg:h-16 lg:rounded-[14px] lg:px-4',
+                        'press hit group relative z-[1] flex shrink-0 snap-start items-center gap-3 rounded-full px-3.5 text-left transition-colors lg:h-16 lg:rounded-[14px] lg:px-4',
                         'h-9 lg:h-16',
                         on ? 'bg-[#F4EEE6] text-[#1F1A16] lg:bg-transparent lg:text-[#F4EEE6]' : 'bg-white/[0.08] text-white/70 hover:text-white lg:bg-transparent',
                       )}
@@ -218,7 +218,7 @@ export const Markets = () => {
                     onClick={() => setSheetOpen((o) => !o)}
                     aria-expanded={sheetOpen}
                     aria-controls="market-sheet"
-                    className="glass-chip press absolute right-4 top-4 z-[3] flex h-8 w-8 items-center justify-center rounded-full text-white"
+                    className="glass-chip press hit absolute right-4 top-4 z-[3] flex h-8 w-8 items-center justify-center rounded-full text-white"
                   >
                     <ChevronDown className={cn('h-4 w-4 transition-transform duration-300', sheetOpen ? 'rotate-0' : 'rotate-180')} aria-hidden="true" />
                     <span className="sr-only">{sheetOpen ? 'Hide details' : 'Show details'}</span>

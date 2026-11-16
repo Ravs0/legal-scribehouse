@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { flushSync } from 'react-dom';
 import { useTheme } from 'next-themes';
 import { cn } from '@/lib/utils';
+import { prefersReducedMotion } from '@/lib/reveal';
 
 const SUN = [
   '00000100000',
@@ -50,6 +52,21 @@ export const ThemeKey = ({ className }: { className?: string }) => {
     prev.current = dark;
   }, [dark]);
 
+  // v3.7: the page cross-fades between themes in 200ms (View Transitions: opacity only, no layout animation).
+  // The class is applied inside the transition callback so the "new" snapshot is the new theme.
+  const toggle = () => {
+    const next = dark ? 'light' : 'dark';
+    const doc = document as Document & { startViewTransition?: (cb: () => void) => unknown };
+    if (!doc.startViewTransition || prefersReducedMotion()) return setTheme(next);
+    doc.startViewTransition(() => {
+      const root = document.documentElement;
+      root.classList.toggle('dark', next === 'dark');
+      root.classList.toggle('light', next === 'light');
+      root.style.colorScheme = next;
+      flushSync(() => setTheme(next));
+    });
+  };
+
   const map = dark ? MOON : SUN;
   const before = switching ? (dark ? SUN : MOON) : map;
   const color = dark ? '#BDEFFF' : '#FFD9A0';
@@ -60,8 +77,8 @@ export const ThemeKey = ({ className }: { className?: string }) => {
       role="switch"
       aria-checked={dark}
       aria-label="Dark theme"
-      onClick={() => setTheme(dark ? 'light' : 'dark')}
-      className={cn('group relative h-10 w-[72px] shrink-0 rounded-[14px]', className)}
+      onClick={toggle}
+      className={cn('hit group relative h-10 w-[72px] shrink-0 rounded-[14px]', className)}
       style={{
         background: dark ? '#07060A' : '#0E0C0B',
         boxShadow: dark

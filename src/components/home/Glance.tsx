@@ -155,8 +155,8 @@ export const Glance = () => {
               title="Your shipment, on one screen."
               subtitle="A sample of the dashboard that comes with a route plan. Tap any widget to open it."
             />
-            <Reveal className="hidden lg:block">
-              <ul className="mt-5 space-y-3">
+            <div className="hidden lg:block">
+              <Reveal as="ul" stagger className="mt-5 space-y-3">
                 {LEGEND.map((l) => (
                   <li key={l.name} className="flex items-start gap-3">
                     <span aria-hidden="true" className={cn('mt-[5px] h-2.5 w-2.5 shrink-0 rounded-[3px] shadow-[var(--edge-out)]', l.swatch)} />
@@ -166,9 +166,9 @@ export const Glance = () => {
                     </span>
                   </li>
                 ))}
-              </ul>
+              </Reveal>
               <p className="type-label-sm mt-5 text-muted-foreground">{NOTE}</p>
-            </Reveal>
+            </div>
           </div>
 
           <Reveal className="after-heading col-span-4 md:col-span-12 lg:col-span-8 lg:mt-0">

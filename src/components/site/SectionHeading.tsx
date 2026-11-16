@@ -21,7 +21,7 @@ interface SectionHeadingProps {
 
 /** Eyebrow → 10px → h2 (headline-lg, 28ch) → 10px → subhead (body-lg, 60ch). */
 export const SectionHeading = ({ eyebrow, title, subtitle, className, as: H = 'h2', children }: SectionHeadingProps) => (
-  <Reveal className={className}>
+  <Reveal stagger className={className}>
     <Eyebrow>{eyebrow}</Eyebrow>
     <H className={cn('mt-2.5', H === 'h1' ? 'type-display-md max-w-[18ch]' : 'type-headline-lg max-w-[28ch]')}>
       {title}

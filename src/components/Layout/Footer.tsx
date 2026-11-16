@@ -4,22 +4,24 @@ import { INSIGHT_LINKS, SECTIONS } from '@/config/nav';
 import { HashLink } from '@/components/site/HashLink';
 import { ThemeToggle, Wordmark } from './Header';
 import { Contours } from '@/components/site/Contours';
+import { Reveal } from '@/components/motion/Reveal';
 
-const linkClass = 'type-body-sm flex min-h-10 items-center text-muted-foreground transition-colors hover:text-foreground md:min-h-0 md:py-1';
+// v3.7: 44px rows on touch widths (<1024), compact list from 1024.
+const linkClass = 'type-body-sm flex min-h-11 items-center text-muted-foreground transition-colors hover:text-foreground lg:min-h-0 lg:py-1';
 
 const Footer = () => (
   <footer className="relative overflow-hidden border-t border-outline-variant bg-surface-low/80">
     <Contours className="absolute inset-0 h-full w-full" opacity={0.55} />
-    <div className="container relative pb-6 pt-10 md:pb-8 md:pt-12">
-      <div className="grid-12 gap-y-10">
+    <div className="footer-safe container relative pt-10 md:pt-12">
+      <Reveal stagger className="grid-12 gap-y-10">
         <div className="col-span-4 md:col-span-12 lg:col-span-4">
           <Wordmark />
           <p className="type-body-md mt-4 max-w-[36ch] text-muted-foreground">{SITE.tagline}</p>
-          <div className="mt-6 space-y-1">
-            <a href={`mailto:${SITE.email}`} className="type-label-lg block hover:text-primary-ink">
+          <div className="mt-4 lg:mt-6 lg:space-y-1">
+            <a href={`mailto:${SITE.email}`} className="type-label-lg flex min-h-11 items-center hover:text-primary-ink lg:block lg:min-h-0">
               {SITE.email}
             </a>
-            <a href={`tel:${SITE.phone.replace(/\s/g, '')}`} className="type-body-md block text-muted-foreground hover:text-primary-ink">
+            <a href={`tel:${SITE.phone.replace(/\s/g, '')}`} className="type-body-md flex min-h-11 items-center text-muted-foreground hover:text-primary-ink lg:block lg:min-h-0">
               {SITE.phone}
             </a>
           </div>
@@ -67,7 +69,7 @@ const Footer = () => (
             </p>
           </div>
         </div>
-      </div>
+      </Reveal>
 
       <div className="mt-8 flex items-center justify-between border-t border-outline-variant pt-5">
         <p className="type-body-sm text-muted-foreground">

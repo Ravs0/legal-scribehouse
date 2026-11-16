@@ -50,12 +50,13 @@ export const Faq = () => (
             </div>
           </SectionHeading>
         </div>
-        <Reveal className="col-span-4 md:col-span-12 lg:col-span-8 lg:col-start-5">
+        <div className="col-span-4 md:col-span-12 lg:col-span-8 lg:col-start-5">
           <AccordionPrimitive.Root type="single" collapsible className="space-y-2">
             {FAQS.map((f, i) => (
-              <AccordionPrimitive.Item key={f.q} value={`faq-${i}`} className="faq-item surface-1 card-hover overflow-hidden rounded-2xl">
+              <Reveal key={f.q}>
+              <AccordionPrimitive.Item value={`faq-${i}`} className="faq-item surface-1 card-hover overflow-hidden rounded-2xl">
                 <AccordionPrimitive.Header>
-                  <AccordionPrimitive.Trigger className="state-layer type-title-md group flex min-h-14 w-full items-center justify-between gap-3 py-4 pl-5 pr-4 text-left">
+                  <AccordionPrimitive.Trigger className="state-layer press-soft type-title-md group flex min-h-14 w-full items-center justify-between gap-3 py-4 pl-5 pr-4 text-left">
                     {f.q}
                     <span className="icon-well flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-muted-foreground">
                       <ChevronDown
@@ -65,13 +66,14 @@ export const Faq = () => (
                     </span>
                   </AccordionPrimitive.Trigger>
                 </AccordionPrimitive.Header>
-                <AccordionPrimitive.Content className="overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
+                <AccordionPrimitive.Content className="faq-content overflow-hidden data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down">
                   <p className="type-body-md max-w-[64ch] px-5 pb-5 text-muted-foreground">{f.a}</p>
                 </AccordionPrimitive.Content>
               </AccordionPrimitive.Item>
+              </Reveal>
             ))}
           </AccordionPrimitive.Root>
-        </Reveal>
+        </div>
       </div>
     </div>
   </section>

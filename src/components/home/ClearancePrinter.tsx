@@ -47,13 +47,13 @@ export const ClearancePrinter = ({ className, selected: selectedProp, onSelect }
     }, 40);
   };
 
-  // First print shortly after load.
+  // First print once the printer has scaled in (intro base 200ms + 140ms stagger + 700ms entrance).
   useEffect(() => {
     if (reduced()) return;
     later(() => {
       setPhase('print');
       setPrintKey((k) => k + 1);
-    }, 500);
+    }, 1000);
   }, []);
 
   const choose = (i: number) => {
@@ -189,7 +189,7 @@ export const ClearancePrinter = ({ className, selected: selectedProp, onSelect }
                     role="radio"
                     aria-checked={on}
                     onClick={() => choose(i)}
-                    className="type-mono-sm relative h-9 w-[40px] rounded-[10px] text-white/85 transition-[transform,box-shadow] duration-150 sm:w-[52px]"
+                    className="hit type-mono-sm relative h-9 w-[40px] rounded-[10px] text-white/85 transition-[transform,box-shadow] duration-150 sm:w-[52px]"
                     style={{
                       background: '#3A342F',
                       transform: on ? 'translateY(2px)' : undefined,

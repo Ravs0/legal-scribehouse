@@ -1,39 +1,23 @@
 import { RefObject, useEffect, useState } from 'react';
+import { observeOnce } from '@/lib/reveal';
 
 interface Options {
-  once?: boolean;
+  /** Share of the element (or of the viewport, for elements taller than it) that must be visible. Default 15%. */
   threshold?: number;
-  rootMargin?: string;
 }
 
-/** True once (or while) the element is on screen. Falls back to "visible" without IntersectionObserver. */
-export function useInView<T extends Element>(
-  ref: RefObject<T>,
-  { once = true, threshold = 0.2, rootMargin = '0px 0px -40px 0px' }: Options = {},
-) {
+/**
+ * True once the element has been on screen. Uses the shared reveal registry (IntersectionObserver plus a scroll
+ * check plus a timeout), so it also fires inside embedded iframes and never leaves content hidden.
+ */
+export function useInView<T extends Element>(ref: RefObject<T>, { threshold = 0.15 }: Options = {}) {
   const [inView, setInView] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
-    if (!el) return;
-    if (typeof IntersectionObserver === 'undefined') {
-      setInView(true);
-      return;
-    }
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setInView(true);
-          if (once) io.disconnect();
-        } else if (!once) {
-          setInView(false);
-        }
-      },
-      { threshold, rootMargin },
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [ref, once, threshold, rootMargin]);
+    if (!el || inView) return;
+    return observeOnce(el, () => setInView(true), threshold);
+  }, [ref, threshold, inView]);
 
   return inView;
 }

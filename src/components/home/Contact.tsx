@@ -5,12 +5,13 @@ import { z } from 'zod';
 import { toast } from 'sonner';
 import { AlertCircle, Check, Loader2, Mail, MapPin, Phone, Send, type LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { FilterChip, IconContainer } from '@/components/ui/chip';
+import { IconContainer } from '@/components/ui/chip';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { SectionHeading } from '@/components/site/SectionHeading';
 import { Reveal } from '@/components/motion/Reveal';
+import { MarketsSelect } from '@/components/home/MarketsSelect';
 import { SITE } from '@/config/site';
 import { MARKETS } from '@/data/markets';
 import { IS_PREVIEW, submitEnquiry, type Enquiry } from '@/lib/enquiry';
@@ -18,7 +19,7 @@ import { useEnquiryDraft } from '@/stores/enquiryDraft';
 
 const CATEGORIES = ['Food & beverage', 'Cosmetics & personal care', 'Medical devices', 'Consumer goods', 'Industrial', 'Other'];
 const STAGES = ['Exploring', 'Have a buyer', 'Already shipping', 'Have a problem'];
-const MARKET_CHOICES = [...MARKETS.map((m) => m.name), 'Not sure yet'];
+const MARKET_NAMES = MARKETS.map((m) => m.name);
 
 const schema = z.object({
   name: z.string().trim().min(1, 'Please tell us your name.'),
@@ -37,6 +38,7 @@ type FormValues = z.infer<typeof schema>;
 /** Static label above, control, then helper or error text 6px below. */
 const Field = ({
   label,
+  labelId,
   htmlFor,
   required,
   error,
@@ -45,6 +47,7 @@ const Field = ({
   children,
 }: {
   label: string;
+  labelId?: string;
   htmlFor?: string;
   required?: boolean;
   error?: string;
@@ -53,7 +56,7 @@ const Field = ({
   children: ReactNode;
 }) => (
   <div className={className}>
-    <label htmlFor={htmlFor} className="type-label-md mb-1.5 block text-foreground">
+    <label id={labelId} htmlFor={htmlFor} className="type-label-md mb-1.5 block text-foreground">
       {label}
       {required && <span className="text-destructive"> *</span>}
     </label>
@@ -79,7 +82,6 @@ export const Contact = () => {
     control,
     handleSubmit,
     setValue,
-    watch,
     reset,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
@@ -93,10 +95,6 @@ export const Contact = () => {
       setSent(false);
     }
   }, [draft.nonce, draft.message, setValue]);
-
-  const markets = watch('markets');
-  const toggleMarket = (m: string) =>
-    setValue('markets', markets.includes(m) ? markets.filter((x) => x !== m) : [...markets, m]);
 
   const onSubmit = async (values: FormValues) => {
     if (values.website) return;
@@ -130,7 +128,7 @@ export const Contact = () => {
               title="Tell us what you're shipping, and where."
               subtitle="We reply within one business day with next steps."
             />
-            <Reveal className="mt-6 hidden space-y-6 lg:block">
+            <Reveal stagger className="mt-6 hidden space-y-6 lg:block">
               <ContactDetails rows={contactRows} />
               <NextSteps />
             </Reveal>
@@ -183,16 +181,22 @@ export const Contact = () => {
                     <Input id="enquiry-origin" autoComplete="country-name" placeholder="Country" {...register('origin')} />
                   </Field>
 
-                  <fieldset className="sm:col-span-2">
-                    <legend className="type-label-md mb-2 text-foreground">Target markets</legend>
-                    <div className="flex flex-wrap gap-2">
-                      {MARKET_CHOICES.map((m) => (
-                        <FilterChip key={m} selected={markets.includes(m)} onClick={() => toggleMarket(m)}>
-                          {m}
-                        </FilterChip>
-                      ))}
-                    </div>
-                  </fieldset>
+                  {/* v3.7: target markets is a multi-select drop-down; same string[] value as the old chips. */}
+                  <Field label="Target markets" labelId="enquiry-markets-label" htmlFor="enquiry-markets">
+                    <Controller
+                      control={control}
+                      name="markets"
+                      render={({ field }) => (
+                        <MarketsSelect
+                          id="enquiry-markets"
+                          labelId="enquiry-markets-label"
+                          options={MARKET_NAMES}
+                          value={field.value ?? []}
+                          onChange={field.onChange}
+                        />
+                      )}
+                    />
+                  </Field>
 
                   <Field label="Product category" htmlFor="enquiry-category">
                     <Controller
@@ -296,10 +300,10 @@ export const Contact = () => {
             </div>
           </Reveal>
 
-          <div className="col-span-4 space-y-6 md:col-span-12 lg:hidden">
+          <Reveal stagger className="col-span-4 space-y-6 md:col-span-12 lg:hidden">
             <ContactDetails rows={contactRows} />
             <NextSteps />
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>
