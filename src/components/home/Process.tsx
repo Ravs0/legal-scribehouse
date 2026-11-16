@@ -1,13 +1,12 @@
 import { Reveal } from '@/components/motion/Reveal';
 import { SectionHeading } from '@/components/site/SectionHeading';
-import { PIXEL, PixelIcon } from '@/components/site/PixelIcon';
 
 // Durations are placeholders until the firm confirms its service levels.
 const STEPS = [
-  { icon: PIXEL.handshake, title: 'Scoping call', meta: 'Free · 30 min', copy: "You tell us the product, the market and what's already under way." },
-  { icon: PIXEL.document, title: 'Route plan', meta: '1–2 weeks', copy: 'One document: structure, registrations, duty position, risks and a fixed fee.' },
-  { icon: PIXEL.stamp, title: 'Paperwork', meta: 'Fixed fee', copy: 'We draft, file and manage local counsel, so you deal with one firm.' },
-  { icon: PIXEL.ship, title: 'Ship & support', meta: 'Ongoing', copy: 'We stay on call for your first consignments, then handle renewals.' },
+  { title: 'Scoping call', meta: 'Free · 30 min', copy: "You tell us the product, the market and what's already under way." },
+  { title: 'Route plan', meta: '1–2 weeks', copy: 'One document: structure, registrations, duty position, risks and a fixed fee.' },
+  { title: 'Paperwork', meta: 'Fixed fee', copy: 'We draft, file and manage local counsel, so you deal with one firm.' },
+  { title: 'Ship & support', meta: 'Ongoing', copy: 'We stay on call for your first consignments, then handle renewals.' },
 ];
 
 export const Process = () => (
@@ -26,14 +25,15 @@ export const Process = () => (
               <article className="surface-1 card-hover flex h-full items-start gap-4 rounded-[20px] p-4">
                 {/* Bezel 64 (padding 8, radius 20) around a 48 well (radius 12). */}
                 <div className="bezel shrink-0 rounded-[20px] !p-2">
-                  <div className="bezel-well flex h-12 w-12 items-center justify-center rounded-[12px] text-primary-ink">
-                    <PixelIcon map={s.icon} cell={3} />
+                  <div
+                    aria-hidden="true"
+                    className="bezel-well flex h-12 w-12 items-center justify-center rounded-[12px] font-mono text-[18px] font-semibold leading-none text-primary-ink tabular"
+                  >
+                    <span className="translate-y-[0.5px]">{String(i + 1).padStart(2, '0')}</span>
                   </div>
                 </div>
                 <div className="min-w-0">
-                  <p className="type-mono-sm text-primary-ink">
-                    {String(i + 1).padStart(2, '0')} · {s.meta}
-                  </p>
+                  <p className="type-mono-sm text-primary-ink">{s.meta}</p>
                   <h3 className="type-title-md mt-1">
                     <span className="sr-only">Step {i + 1}: </span>
                     {s.title}

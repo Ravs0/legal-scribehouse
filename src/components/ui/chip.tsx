@@ -51,17 +51,17 @@ const TONES = {
   success: 'text-success',
 };
 
-/** 44px (or 36px) recessed well holding a 20px (or 18px) icon. */
+/** 44px (or 36px) recessed well holding a 22px (or 18px) icon. */
 export const IconContainer = ({ icon: Icon, size = 'md', tone = 'primary', className }: IconContainerProps) => (
   <span
     aria-hidden="true"
     className={cn(
-      'icon-well inline-flex shrink-0 items-center justify-center',
+      'icon-well inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0',
       size === 'md' ? 'h-11 w-11 rounded-[12px]' : 'h-9 w-9 rounded-[10px]',
       TONES[tone],
       className,
     )}
   >
-    <Icon className={size === 'md' ? 'h-5 w-5' : 'h-[18px] w-[18px]'} strokeWidth={1.75} />
+    <Icon className={size === 'md' ? 'h-[22px] w-[22px]' : 'h-[18px] w-[18px]'} strokeWidth={2} />
   </span>
 );

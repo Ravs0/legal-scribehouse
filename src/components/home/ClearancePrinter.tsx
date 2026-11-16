@@ -13,9 +13,17 @@ const PRESETS = [
 const GLYPHS = '0123456789$,A';
 const reduced = () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+interface ClearancePrinterProps {
+  className?: string;
+  /** Controlled preset index; falls back to internal state when absent. */
+  selected?: number;
+  onSelect?: (index: number) => void;
+}
+
 /** Hero object: a glossy receipt printer that prints an illustrative clearance receipt per route. */
-export const ClearancePrinter = ({ className }: { className?: string }) => {
-  const [selected, setSelected] = useState(0);
+export const ClearancePrinter = ({ className, selected: selectedProp, onSelect }: ClearancePrinterProps) => {
+  const [internal, setInternal] = useState(0);
+  const selected = selectedProp ?? internal;
   const [shown, setShown] = useState(0);
   const [phase, setPhase] = useState<'idle' | 'retract' | 'print'>('idle');
   const [printKey, setPrintKey] = useState(0);
@@ -50,7 +58,16 @@ export const ClearancePrinter = ({ className }: { className?: string }) => {
 
   const choose = (i: number) => {
     if (i === selected) return;
-    setSelected(i);
+    if (selectedProp === undefined) setInternal(i);
+    onSelect?.(i);
+  };
+
+  // Run the retract → print sequence whenever the selection changes (device key or external control).
+  const prevSelected = useRef(selected);
+  useEffect(() => {
+    if (prevSelected.current === selected) return;
+    prevSelected.current = selected;
+    const i = selected;
     timers.current.forEach(clearTimeout);
     timers.current = [];
     if (reduced()) {
@@ -67,7 +84,7 @@ export const ClearancePrinter = ({ className }: { className?: string }) => {
         setPrintKey((k) => k + 1);
       }, 320);
     }, 260);
-  };
+  }, [selected]);
 
   const p = PRESETS[shown];
   const printing = phase === 'print';

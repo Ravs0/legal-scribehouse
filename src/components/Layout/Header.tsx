@@ -1,3 +1,4 @@
+import type * as React from 'react';
 import { PointerEvent as ReactPointerEvent, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { ArrowRight, ChevronDown, Menu } from 'lucide-react';
@@ -70,6 +71,33 @@ const Header = () => {
   );
   const inInsights = pathname.startsWith('/posts') || INSIGHT_LINKS.some((l) => pathname.startsWith(l.to));
   const activeKey = onHome ? spy : pathname === '/about' ? 'about' : inInsights ? 'insights' : null;
+
+  // Header CTA: hidden over the home hero, shown once the hero has scrolled away (always on other routes).
+  const [pastHero, setPastHero] = useState(!onHome);
+  useEffect(() => {
+    if (!onHome) {
+      setPastHero(true);
+      return;
+    }
+    const hero = document.getElementById('hero');
+    if (!hero || typeof IntersectionObserver === 'undefined') {
+      const onScroll = () => setPastHero(window.scrollY > 480);
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+      return () => window.removeEventListener('scroll', onScroll);
+    }
+    // The hero counts as passed once less than ~120px of it remains below the sticky header.
+    const io = new IntersectionObserver(([e]) => setPastHero(!e.isIntersecting), { rootMargin: '-96px 0px 0px 0px', threshold: 0 });
+    io.observe(hero);
+    return () => io.disconnect();
+  }, [onHome, pathname]);
+  const ctaHidden = !pastHero;
+  const ctaProps = {
+    'aria-hidden': ctaHidden || undefined,
+    inert: ctaHidden ? '' : undefined,
+    'data-shown': !ctaHidden,
+    className: 'header-cta',
+  } as unknown as React.HTMLAttributes<HTMLDivElement>;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -181,11 +209,13 @@ const Header = () => {
 
           <div className="flex shrink-0 items-center gap-3">
             <ThemeKey />
-            <Button asChild>
-              <HashLink to="contact">
-                Book a free call <ArrowRight aria-hidden="true" />
-              </HashLink>
-            </Button>
+            <div {...ctaProps}>
+              <Button asChild tabIndex={ctaHidden ? -1 : undefined}>
+                <HashLink to="contact">
+                  Book a free call <ArrowRight aria-hidden="true" />
+                </HashLink>
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -200,9 +230,11 @@ const Header = () => {
           </Link>
           <div className="relative z-[1] flex items-center gap-2">
             <ThemeKey />
-            <Button asChild size="sm" className="hidden min-[480px]:inline-flex">
-              <HashLink to="contact">Book a free call</HashLink>
-            </Button>
+            <div {...ctaProps} className="header-cta hidden min-[480px]:block">
+              <Button asChild size="sm" tabIndex={ctaHidden ? -1 : undefined}>
+                <HashLink to="contact">Book a free call</HashLink>
+              </Button>
+            </div>
             <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className="press-strong">

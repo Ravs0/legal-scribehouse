@@ -143,7 +143,7 @@ export const ReadinessCheck = () => {
           </div>
 
           <Reveal className="col-span-4 md:col-span-12 lg:col-span-5 lg:col-start-8">
-            <div className="surface-3 mx-auto w-full max-w-[440px] rounded-[28px] p-3 transition-transform duration-300 hover:-translate-y-1">
+            <div className="surface-3 mx-auto w-full max-w-[440px] lg:ml-auto lg:mr-0 rounded-[28px] p-3 transition-transform duration-300 hover:-translate-y-1">
               <CrateScene tag={status.color} score={score} />
               <div className="px-3 pb-1 pt-4">
                 <div className="flex items-center justify-between gap-3">
