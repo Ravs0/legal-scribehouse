@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
 
 /** "Tidewater Glass" tokens. See docs/DESIGN.md for the spec these values come from. */
 const role = (name: string) => `hsl(var(--${name}) / <alpha-value>)`;
@@ -161,5 +162,12 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+    require("tailwindcss-animate"),
+    // v3.7 variants (plugins, not `screens`, so the max-* breakpoint variants keep working):
+    // roomy = enough width and height for the full-size hero printer (landscape phones get the compact one).
+    plugin(({ addVariant }) => {
+      addVariant("roomy", "@media (min-width: 640px) and (min-height: 501px), (min-width: 640px) and (orientation: portrait)");
+    }),
+  ],
 } satisfies Config;

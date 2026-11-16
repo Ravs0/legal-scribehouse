@@ -247,3 +247,48 @@ Goal: every surface carries the finish of the orange primary button (crisp rim, 
 - **Scenes:** shared drawing rules in `MarketScene.tsx`: buildings via `block()` with 3px rounded tops, a back layer in the same hue at 55% (`${top}8c`) and 2–3 rows of 14% white window dots on front buildings; cranes / masts / finials are 3px round-cap strokes that meet at joints (`crane()` helper replaces the old crossing paths); sun halo is a two-stop radial (35% → 0); the dashed reflection is now three short strokes under the sun. The Brunei finial now sits on the dome (it floated before).
 - **Proof:** stat bezel padding 8, `.stat-well` inner lip (`inset 0 3px 8px`), numerals `headline-lg` 600 `text-primary-ink`, labels one line from 1280. Avatars are 40px `icon-well` circles with `type-label-md text-primary-ink` initials. "(placeholder)" removed from the names; the "Sample data" badge and `PLACEHOLDER = true` stay.
 - **Sweep:** Glance legend swatch for "Next deadline" drops its `border` for the `--edge-out` hairline (all swatches get it); testimonial captions centre on the avatar. Muted text contrast on the deeper ground: 5.8:1 page, 5.3:1 gradient bottom, 5.6:1 `surface-low`, 4.95:1 `surface-high`, 4.6:1 bezel.
+
+## v3.7 — markets drop-down, responsive pass, one motion system
+
+Colours, font families and section order are unchanged (a separate decision on those is pending).
+
+**1. Contact: "Target markets" drop-down** (`src/components/home/MarketsSelect.tsx`)
+
+- Replaces the 11 filter chips. The trigger is the select recipe exactly: `.recessed` well, 44 high, 12px radius, padding 0 14, `type-body-md`, 16px muted chevron that turns 180° while open, placeholder `Select markets` in `muted-foreground / 70%`, focus / open ring as the other fields.
+- With selections the trigger lists the names in market order, joined by ", ", on one line; names that don't fit collapse into a trailing count (`Malaysia, Vietnam +2`, measured with the trigger's font, re-measured on resize).
+- Menu: Radix dropdown-menu (`modal={false}`) on `.menu-surface`, width = trigger width, max height 320 (or the space available) with scroll. Items 40 high from 1024, 44 below (touch rule); `.check-well` box on the left, 12px to the label. Ticking keeps the menu open (`onSelect` prevented); Escape, Tab-out or an outside click closes it. Ten markets, a hairline separator, then `Not sure yet`, which is exclusive (choosing it clears the markets; choosing a market clears it).
+- Keyboard: Enter / Space / ↓ opens, arrows and typeahead move, Space / Enter ticks. The trigger is named by the field label plus its value text (`aria-labelledby`); the menu is labelled by the field label.
+- Same `markets: string[]` value as before in react-hook-form / zod, the enquiry draft and the mailto body.
+- Grid from 640: Name | Work email; Company | Exporting from; Target markets | Product category; Stage (left half); message, consent and submit full width. One column below 640.
+
+**2. Responsive rules**
+
+- **Viewports audited:** 320×640, 360×800, 390×844, 414×896, 844×390, 600×960, 768×1024, 820×1180, 1024×768, 1180×820, 1280×800, 1366×768, 1440×900, 1920×1080, 2560×1440 (Playwright: no horizontal scroll, nothing wider than the viewport, no clipped / overlapping text, no text outside its card or its own button, 44×44 targets below 1024, no orphaned heading words, popovers inside the viewport, drawer reachable, header on one line).
+- **Container** (`.container` in `index.css`): gutters 16 / 24 (≥640) / 32 (≥768) / 40 (≥1024) / 48 (≥1280); content capped at 1280 and centred. Gutters become `max(gutter, env(safe-area-inset-*))`.
+- **Fluid type:** display and headline roles (and title-lg, LED) use `clamp()` between their old mobile and desktop sizes, interpolated 360 → 1280px: display-lg 34→52, display-md 30→42, headline-lg 24→32, headline-md 22→24, headline-sm 20→22, title-lg 18→19. `.section` padding 40→64 the same way. Headline roles and h1–h3 `text-wrap: balance`, paragraphs `pretty`.
+- **Touch targets (<1024):** controls that are visually smaller than 44 (chips, pills, the switch, icon buttons, all `Button`s) get an invisible 44×44 hit area via `.hit::after` (element must be positioned); list rows (footer links, drawer insights links, select / menu items) are 44 high below 1024. Hover styles only apply on hover-capable pointers (`future.hoverOnlyWhenSupported`).
+- **Hero:** 768–1023 the text block is max 640 and the printer sits centred below it. Phone landscape (landscape, ≤500 high, 600–1023 wide): text 7 / printer 5 side by side, the printer uses its compact 328×400 size (`roomy:` variant = ≥640 wide and not a landscape phone), hero ≈ 1.9 screens at 844×390.
+- **Markets:** below 1024 the list is a horizontal snap row of country pills above the scene; the scene is 16/11 (16/9 from 768) and never taller than 70svh; the detail sits below with its full width for the snapshot (the draft badge moved next to the name).
+- **Proof stats:** 2×2 on phones (centred text below 640), 4 across from 1024. Readiness actions stack below 380. Glance deadline numeral 32 below 400.
+- **Safe areas:** `viewport-fit=cover`; the sticky header sits `8px / 12px + env(safe-area-inset-top)` down, the drawer pads for the top / right / bottom insets, the footer adds `env(safe-area-inset-bottom)`; anchor `scroll-margin-top` adds the top inset. App shell `min-height: 100dvh`.
+
+**3. Motion tokens and rules** (`:root` block at the end of `index.css`)
+
+| Token | Value | Used for |
+|---|---|---|
+| `--ease-out` | `cubic-bezier(0.2, 0, 0, 1)` | entrances, reveals, menus, page changes |
+| `--ease-spring` | `cubic-bezier(0.34, 1.2, 0.64, 1)` | press / hover feedback, switches, nav lens |
+| `--dur-short` | 150ms | menus and selects (scale .98→1 + fade) |
+| `--dur-medium` | 260ms | press release, FAQ answer fade, CTA slot |
+| `--dur-long` | 600ms | scroll reveals, hero items |
+| `--stagger` | 70ms | step between staggered items (max 6 steps) |
+
+- **First paint:** header fades / drops 12px (400ms); from 200ms the hero chip, h1, paragraph, route picker and stat pills rise 20px + fade (600ms, 70ms apart); the printer scales .96→1 + fades (700ms) and prints its first receipt at ~1s.
+- **Scroll reveals** (`Reveal`, `src/lib/reveal.ts`): once 15% of an element (or 15% of the viewport, for taller elements) is visible: opacity 0→1, translateY 24→0, 600ms `--ease-out`. Elements that enter in the same frame stagger 70ms in document order; `<Reveal stagger>` staggers its direct children (section headings: eyebrow, title, subtitle, extras). One shared IntersectionObserver (no rootMargin, so it behaves the same inside the artifact iframe) plus a passive rAF rect check on scroll plus a 1.5s fallback if the observer never answers. Already-passed elements count as seen.
+- **Never invisible:** hidden "before" states only exist under `html.motion-ok`, set in `main.tsx` when JS runs and reduced motion is off. All entrances are CSS animations with fill-mode `backwards` and individual `translate` / `scale` properties: nothing lingers afterwards and `.nav-glass` blur is never under a filling opacity animation.
+- **Scroll progress:** 2px `--primary` line fixed at the top (`.scroll-progress`), `transform: scaleX()` from a passive, rAF-throttled scroll listener, `will-change: transform`.
+- **Feedback:** buttons lift on hover (pointer devices) and squish on press with the spring; chips / pills / switches / select triggers / FAQ triggers / menu items use `.press` or `.press-soft` (scale on `:active`); cards keep `card-hover`. FAQ: Radix height 260ms open / 200ms close plus an answer fade. Mobile drawer and market detail sheet slide as before.
+- **Theme switch:** 200ms cross-fade of the whole page through the View Transitions API (opacity only); instant where unsupported or with reduced motion.
+- **Routes:** the page container fades and rises 8px in 200ms; scroll resets to the top instantly. In-page anchors scroll smoothly and land below the sticky header (`scroll-margin-top`).
+- **Reduced motion:** no `motion-ok`, so everything renders in its final state; the global rule cuts remaining animations and transitions to ~0; smooth scrolling is off.
+- **Deliberate exceptions to "transform / opacity only":** the FAQ accordion height and the Glance widget morph (left / top / width / height) still animate layout, as before.

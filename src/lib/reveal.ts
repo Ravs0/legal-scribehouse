@@ -17,6 +17,17 @@ let io: IntersectionObserver | null = null;
 let raf = 0;
 let listening = false;
 
+// Inside an iframe (the artifact preview) the frame may be sized to its content, so its own innerHeight says nothing
+// about what the visitor can see. There the observer (which clips to the top-level viewport) decides, and the
+// rect check only runs on real scroll events inside the frame.
+const inFrame = (() => {
+  try {
+    return window.self !== window.top;
+  } catch {
+    return true;
+  }
+})();
+
 const viewportH = () => window.innerHeight || document.documentElement.clientHeight;
 
 function seen(el: Element, ratio: number, rect: DOMRect = el.getBoundingClientRect()) {
@@ -47,17 +58,20 @@ function sweep() {
 const onScroll = () => {
   if (!raf) raf = requestAnimationFrame(sweep);
 };
+const onResize = () => {
+  if (!inFrame) onScroll();
+};
 function startListening() {
   if (listening) return;
   listening = true;
   window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll, { passive: true });
+  window.addEventListener('resize', onResize, { passive: true });
 }
 function stopListening() {
   if (!listening) return;
   listening = false;
   window.removeEventListener('scroll', onScroll);
-  window.removeEventListener('resize', onScroll);
+  window.removeEventListener('resize', onResize);
 }
 
 function getObserver() {
@@ -92,7 +106,7 @@ export function observeOnce(el: Element, cb: (order: number) => void, ratio = 0.
   }, 1500);
   obs?.observe(el);
   startListening();
-  onScroll(); // initial check on the next frame
+  onResize(); // initial rect check on the next frame (top-level window only)
   return () => {
     const e = pending.get(el);
     if (!e) return;

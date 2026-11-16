@@ -99,7 +99,7 @@ export const ClearancePrinter = ({ className, selected: selectedProp, onSelect }
   ];
 
   return (
-    <div className={cn('relative mx-auto h-[400px] w-full max-w-[328px] overflow-hidden rounded-3xl shadow-e4 sm:h-[460px] sm:max-w-[400px] sm:rounded-[36px]', className)}>
+    <div className={cn('relative mx-auto h-[400px] w-full max-w-[328px] overflow-hidden rounded-3xl shadow-e4 roomy:h-[460px] roomy:max-w-[400px] roomy:rounded-[36px]', className)}>
       <MarketScene scene={SCENES.home} className="absolute inset-0" />
       {/* Inner rim: the SVG scene covers inset shadows on the root, so the polished edge sits on top. */}
       <span
@@ -109,7 +109,7 @@ export const ClearancePrinter = ({ className, selected: selectedProp, onSelect }
       />
 
       {/* Receipt (behind the head unit, feeding out of the slot) */}
-      <div className="absolute inset-x-0 top-[108px] mx-auto w-[232px] sm:top-[120px] sm:w-[280px]">
+      <div className="absolute inset-x-0 top-[108px] mx-auto w-[232px] roomy:top-[120px] roomy:w-[280px]">
         <div
           className="origin-top"
           style={{
@@ -120,7 +120,7 @@ export const ClearancePrinter = ({ className, selected: selectedProp, onSelect }
         >
           <div
             key={printKey}
-            className="receipt-edge relative bg-[#FFFDF8] px-3 pb-5 pt-3 sm:px-4 text-[#1F1A16] shadow-[0_14px_22px_-12px_hsl(24_40%_10%/0.45)]"
+            className="receipt-edge relative bg-[#FFFDF8] px-3 pb-5 pt-3 roomy:px-4 text-[#1F1A16] shadow-[0_14px_22px_-12px_hsl(24_40%_10%/0.45)]"
             style={{
               backgroundImage: 'linear-gradient(90deg, hsl(0 0% 0% / .05), transparent 12%, transparent 88%, hsl(0 0% 0% / .06))',
               animation: printing ? 'receipt-feed 990ms steps(9,end) both, receipt-settle 240ms cubic-bezier(0.34,1.2,0.64,1) 990ms both' : undefined,
@@ -135,7 +135,7 @@ export const ClearancePrinter = ({ className, selected: selectedProp, onSelect }
             <div className="my-2.5 border-t border-dashed border-[#CFC7BB]" />
             <dl className="space-y-1">
               {rows.map(([k, v]) => (
-                <div key={k} className={cn('justify-between gap-3', k === 'TRADEMARK' ? 'hidden sm:flex' : 'flex')}>
+                <div key={k} className={cn('justify-between gap-3', k === 'TRADEMARK' ? 'hidden roomy:flex' : 'flex')}>
                   <dt className="type-mono-sm pt-px text-[#7A7066]">{k}</dt>
                   <dd className="type-mono-md text-right">{v}</dd>
                 </div>
@@ -149,15 +149,15 @@ export const ClearancePrinter = ({ className, selected: selectedProp, onSelect }
               </div>
               <p className="font-mono text-[24px] font-semibold leading-none tracking-[-0.02em] tabular">{p.total}</p>
             </div>
-            <div className="barcode mx-auto mt-3 hidden h-5 w-[120px] sm:block" aria-hidden="true" />
-            <p className="type-mono-sm mt-2 text-center tracking-normal text-[#7A7066] sm:mt-1.5 sm:tracking-[0.04em]">Illustrative example · not advice</p>
+            <div className="barcode mx-auto mt-3 hidden h-5 w-[120px] roomy:block" aria-hidden="true" />
+            <p className="type-mono-sm mt-2 text-center tracking-normal text-[#7A7066] roomy:mt-1.5 roomy:tracking-[0.04em]">Illustrative example · not advice</p>
           </div>
         </div>
       </div>
 
       {/* Head unit */}
       <div
-        className="absolute inset-x-0 top-4 z-10 mx-auto w-[272px] sm:top-5 sm:w-[340px]"
+        className="absolute inset-x-0 top-4 z-10 mx-auto w-[272px] roomy:top-5 roomy:w-[340px]"
         style={{ animation: printing && !reduced() ? 'head-nudge 110ms 9 both' : undefined }}
       >
         <div
@@ -173,7 +173,7 @@ export const ClearancePrinter = ({ className, selected: selectedProp, onSelect }
             <span className="h-[6px] w-[6px] rounded-full bg-[#4ADE80]" style={{ animation: 'led-pulse 2400ms ease-in-out infinite', boxShadow: '0 0 6px #4ADE80' }} aria-hidden="true" />
           </div>
           <div className="relative mt-1 flex items-end justify-between gap-2">
-            <div className="flex h-[44px] w-[124px] flex-col justify-center rounded-lg bg-[#0B0907] px-2.5 shadow-[inset_0_2px_6px_#000] sm:w-[148px]">
+            <div className="flex h-[44px] w-[124px] flex-col justify-center rounded-lg bg-[#0B0907] px-2.5 shadow-[inset_0_2px_6px_#000] roomy:w-[148px]">
               <span className="type-mono-sm text-[8px] text-white/40">Duty saved</span>
               <span className="type-led text-led tabular" style={{ textShadow: '0 0 8px hsl(32 100% 55% / .7)' }} aria-live="polite">
                 {led}
@@ -189,7 +189,7 @@ export const ClearancePrinter = ({ className, selected: selectedProp, onSelect }
                     role="radio"
                     aria-checked={on}
                     onClick={() => choose(i)}
-                    className="hit type-mono-sm relative h-9 w-[40px] rounded-[10px] text-white/85 transition-[transform,box-shadow] duration-150 sm:w-[52px]"
+                    className="hit type-mono-sm relative h-9 w-[40px] rounded-[10px] text-white/85 transition-[transform,box-shadow] duration-150 roomy:w-[52px]"
                     style={{
                       background: '#3A342F',
                       transform: on ? 'translateY(2px)' : undefined,
@@ -205,7 +205,7 @@ export const ClearancePrinter = ({ className, selected: selectedProp, onSelect }
           </div>
         </div>
         {/* Paper slot */}
-        <div aria-hidden="true" className="mx-auto -mt-[3px] h-1.5 w-[240px] rounded-[3px] bg-[#050404] sm:w-[300px]" />
+        <div aria-hidden="true" className="mx-auto -mt-[3px] h-1.5 w-[240px] rounded-[3px] bg-[#050404] roomy:w-[300px]" />
       </div>
     </div>
   );

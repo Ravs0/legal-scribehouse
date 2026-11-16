@@ -276,7 +276,7 @@ export const Glance = () => {
                   'Next deadline',
                   <div className="flex h-full flex-col">
                     <p className="type-mono-sm text-muted-foreground">Next deadline</p>
-                    <p className="mt-auto font-display text-[40px] font-semibold leading-none tracking-[-0.04em] tabular">
+                    <p className="mt-auto font-display text-[32px] font-semibold leading-none tracking-[-0.04em] tabular min-[400px]:text-[40px]">
                       12<span className="ml-1 font-sans text-[13px] font-semibold tracking-normal text-muted-foreground">days</span>
                     </p>
                     <p className="type-label-sm mt-1.5 text-muted-foreground">TM renewal · MY</p>

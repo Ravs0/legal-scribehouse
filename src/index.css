@@ -901,6 +901,13 @@
   }
 }
 
+/* Phone landscape: hero text and printer side by side so the hero stays within ~2 screens. */
+@media (orientation: landscape) and (max-height: 500px) and (min-width: 600px) and (max-width: 1023.98px) {
+  #hero { padding-top: 28px; }
+  #hero .hero-text { grid-column: span 7 / span 7; max-width: none; }
+  #hero .hero-art { grid-column: span 5 / span 5; }
+}
+
 /* Container: 16px gutters on phones, 24 from 640, 32 from 768, 40 from 1024, 48 from 1280; content never wider
    than 1280px and centred, so 1920/2560 screens don't strand a stretched layout. Gutters grow into the notch. */
 .container {

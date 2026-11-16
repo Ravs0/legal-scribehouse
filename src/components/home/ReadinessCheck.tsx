@@ -191,7 +191,8 @@ export const ReadinessCheck = () => {
                   )}
                 </p>
 
-                <div className="mt-4 grid grid-cols-2 gap-2">
+                {/* One column below 380px so "Book a free call" never spills out of its pill. */}
+                <div className="mt-4 grid grid-cols-1 gap-2 min-[380px]:grid-cols-2">
                   <Button onClick={sendResult} className="px-3">
                     Book a free call <ArrowRight aria-hidden="true" />
                   </Button>

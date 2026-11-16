@@ -195,7 +195,8 @@ export const Markets = () => {
                 aria-labelledby={`market-tab-${market.code}`}
                 className="relative overflow-hidden rounded-[20px] bg-black"
               >
-                <div className="relative aspect-[16/11] lg:aspect-auto lg:h-[420px]">
+                {/* v3.7: wider and capped at 70% of the screen height below 1024, so the scene never fills a landscape phone. */}
+                <div className="relative aspect-[16/11] max-h-[70svh] md:aspect-[16/9] lg:aspect-auto lg:h-[420px] lg:max-h-none">
                   <div key={market.code} className="absolute inset-0 animate-in fade-in duration-300">
                     {/* Desktop: lift the scene while the sheet is open so the landmark silhouette stays visible.
                         The wrapper is taller than the panel (132% x 0.76 > 100%) so no gap shows at the bottom. */}
@@ -255,15 +256,14 @@ export const Markets = () => {
 
 const MarketDetail = ({ market }: { market: (typeof MARKETS)[number] }) => (
   <div key={market.code} className="animate-in fade-in duration-300">
+    {/* v3.7: the badge sits beside the name, so the snapshot gets the full width on phones. */}
     <div className="flex items-start justify-between gap-3">
-      <div>
-        <h3 className="type-title-lg">{market.name}</h3>
-        <p className="type-body-sm mt-1 max-w-[60ch] text-[#5E554C]">{market.snapshot}</p>
-      </div>
+      <h3 className="type-title-lg">{market.name}</h3>
       {!MARKETS_REVIEWED && (
         <span className="type-label-sm inline-flex h-5 shrink-0 items-center rounded-md bg-[#EDE5DA] px-2 text-[#5E554C]">Draft: under review</span>
       )}
     </div>
+    <p className="type-body-sm mt-1 max-w-[60ch] text-[#5E554C]">{market.snapshot}</p>
     {/* v3.6: three even columns from 768px; labels use the sans eyebrow in the sheet's muted ink. */}
     <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
       <div>

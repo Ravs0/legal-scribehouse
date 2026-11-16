@@ -90,7 +90,7 @@ export const Hero = () => {
       <div className="container">
         <div className="grid-12 items-center gap-y-8">
           {/* 768–1023: text block capped at 640px, printer centred below it. */}
-          <div className="col-span-4 md:col-span-12 md:max-w-[640px] lg:col-span-7 lg:max-w-none">
+          <div className="col-span-4 md:col-span-12 md:max-w-[640px] lg:col-span-7 lg:max-w-none hero-text">
             <div className="intro" style={step(0)}>
               <AssistChip>Export law for small brands · ASEAN</AssistChip>
             </div>
@@ -119,7 +119,7 @@ export const Hero = () => {
               ))}
             </ul>
           </div>
-          <div className="col-span-4 md:col-span-12 lg:col-span-5">
+          <div className="col-span-4 md:col-span-12 lg:col-span-5 hero-art">
             <div className="intro-printer">
               <ClearancePrinter className="float-idle lg:mr-0" selected={route} onSelect={setRoute} />
             </div>
