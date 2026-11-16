@@ -1,4 +1,4 @@
-import { KeyboardEvent, useLayoutEffect, useRef, useState } from 'react';
+import { KeyboardEvent, UIEvent, useLayoutEffect, useRef, useState } from 'react';
 import { AlertCircle, ArrowRight, ChevronDown, Landmark } from 'lucide-react';
 import { MARKETS, MARKETS_REVIEWED } from '@/data/markets';
 import { Badge } from '@/components/ui/badge';
@@ -27,12 +27,27 @@ const FILTERS = [
   { id: 'maritime', label: 'Maritime', codes: MARITIME },
   { id: 'mekong', label: 'Mekong', codes: MEKONG },
 ];
-const firstSentence = (s: string) => s.split(/(?<=[.;])\s/)[0].replace(/[.;]$/, '');
 
 export const Markets = () => {
   const [filter, setFilter] = useState('all');
   const [activeCode, setActiveCode] = useState('SG');
   const [sheetOpen, setSheetOpen] = useState(true);
+  // Scroll edges of the desktop list drive its fade mask (top fade once scrolled, bottom fade until the end).
+  const [listEdge, setListEdge] = useState({ top: true, end: false });
+  const listRef = useRef<HTMLDivElement>(null);
+  const measureList = (el: HTMLDivElement | null) => {
+    if (!el) return;
+    const top = el.scrollTop <= 0;
+    const end = el.scrollTop + el.clientHeight >= el.scrollHeight - 1;
+    setListEdge((p) => (p.top === top && p.end === end ? p : { top, end }));
+  };
+  const onListScroll = (e: UIEvent<HTMLDivElement>) => measureList(e.currentTarget);
+  useLayoutEffect(() => {
+    measureList(listRef.current);
+    const onResize = () => measureList(listRef.current);
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, [filter]);
   const rows = useRef<Record<string, HTMLButtonElement | null>>({});
   const [surface, setSurface] = useState({ y: 0, h: 64, snap: true });
   const placed = useRef(false);
@@ -124,7 +139,11 @@ export const Markets = () => {
                 aria-label="ASEAN markets"
                 aria-orientation="vertical"
                 onKeyDown={onKeyDown}
-                className="no-scrollbar relative flex gap-1.5 overflow-x-auto lg:max-h-[420px] lg:flex-col lg:gap-0.5 lg:overflow-y-auto lg:overflow-x-visible"
+                ref={listRef}
+                onScroll={onListScroll}
+                data-at-top={listEdge.top}
+                data-at-end={listEdge.end}
+                className="market-list-fade no-scrollbar relative flex gap-1.5 overflow-x-auto lg:max-h-[420px] lg:flex-col lg:gap-0.5 lg:overflow-y-auto lg:overflow-x-visible"
               >
                 <span
                   aria-hidden="true"
@@ -158,7 +177,7 @@ export const Markets = () => {
                     >
                       <span className="min-w-0 flex-1">
                         <span className="type-label-md block whitespace-nowrap lg:type-title-md">{m.name}</span>
-                        <span className="type-body-sm hidden truncate text-white/55 lg:block">{firstSentence(m.snapshot)}</span>
+                        <span className="type-body-sm hidden text-white/55 lg:block">{m.tagline}</span>
                       </span>
                       <ArrowRight
                         aria-hidden="true"
@@ -209,7 +228,7 @@ export const Markets = () => {
                   <div
                     id="market-sheet"
                     className={cn(
-                      'absolute inset-x-3 bottom-3 z-[2] hidden rounded-[14px] bg-[#F9F5EF] p-5 text-[#1F1A16] shadow-[0_20px_40px_-12px_#000] transition-[transform,opacity] [transition-duration:420ms] [transition-timing-function:cubic-bezier(0.32,0.72,0,1)] lg:block',
+                      'absolute inset-x-3 bottom-3 z-[2] hidden rounded-[20px] bg-[#F9F5EF] p-6 text-[#1F1A16] shadow-[0_20px_40px_-12px_#000] transition-[transform,opacity] [transition-duration:420ms] [transition-timing-function:cubic-bezier(0.32,0.72,0,1)] lg:block',
                       sheetOpen ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-[110%] opacity-0',
                     )}
                   >
@@ -219,7 +238,7 @@ export const Markets = () => {
               </div>
             </div>
 
-            <div className="mt-3 rounded-[18px] bg-[#F9F5EF] p-4 text-[#1F1A16] lg:hidden">
+            <div className="mt-3 rounded-[20px] bg-[#F9F5EF] p-5 text-[#1F1A16] md:p-6 lg:hidden">
               <MarketDetail market={market} />
             </div>
 
@@ -245,32 +264,33 @@ const MarketDetail = ({ market }: { market: (typeof MARKETS)[number] }) => (
         <span className="type-label-sm inline-flex h-5 shrink-0 items-center rounded-md bg-[#EDE5DA] px-2 text-[#5E554C]">Draft: under review</span>
       )}
     </div>
-    <div className="mt-4 grid gap-4 sm:grid-cols-[1fr_1.4fr_auto]">
+    {/* v3.6: three even columns from 768px; labels use the sans eyebrow in the sheet's muted ink. */}
+    <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
       <div>
-        <p className="type-eyebrow mb-2 text-[#8A7F73]">Regulators</p>
+        <p className="type-eyebrow mb-2.5 text-[#6B6158]">Regulators</p>
         <div className="flex flex-wrap gap-1.5">
           {market.regulators.map((r) => (
-            <span key={r} className="type-label-sm inline-flex h-6 items-center gap-1 rounded-full bg-white px-2 shadow-[0_0_0_1px_hsl(24_40%_20%/0.08)]">
-              <Landmark className="h-3 w-3 text-[#B5410F]" aria-hidden="true" />
+            <span key={r} className="type-label-sm inline-flex h-6 items-center gap-1 rounded-full bg-white px-2 shadow-[inset_0_1px_0_#fff,0_0_0_1px_hsl(24_40%_20%/0.09),0_1px_2px_hsl(24_40%_20%/0.08)]">
+              <Landmark className="h-3 w-3 shrink-0 text-[#B5410F]" aria-hidden="true" />
               {r}
             </span>
           ))}
         </div>
       </div>
       <div>
-        <p className="type-eyebrow mb-2 text-[#8A7F73]">Typical hurdles</p>
-        <ul className="grid gap-x-4 gap-y-1 sm:grid-cols-2">
+        <p className="type-eyebrow mb-2.5 text-[#6B6158]">Typical hurdles</p>
+        <ul className="grid gap-y-2">
           {market.hurdles.map((h) => (
-            <li key={h} className="type-body-sm flex gap-1.5">
-              <AlertCircle className="mt-[3px] h-3.5 w-3.5 shrink-0 text-[#B5410F]" aria-hidden="true" />
+            <li key={h} className="type-body-sm flex gap-2 leading-5">
+              <AlertCircle className="mt-0.5 h-4 w-4 shrink-0 text-[#B5410F]" aria-hidden="true" />
               {h}
             </li>
           ))}
         </ul>
       </div>
       <div>
-        <p className="type-eyebrow mb-2 text-[#8A7F73]">Agreements</p>
-        <div className="flex flex-wrap items-start gap-1 sm:flex-col">
+        <p className="type-eyebrow mb-2.5 text-[#6B6158]">Agreements</p>
+        <div className="flex flex-wrap items-start gap-1.5">
           {market.agreements.map((a) => (
             <Badge key={a} variant="tertiary" className="bg-[#D5ECEB] text-[#0F5257]">
               {a}

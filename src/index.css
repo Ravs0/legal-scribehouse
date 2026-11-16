@@ -337,6 +337,9 @@
   /* ---------- Bezel window ---------- */
   .bezel { background: hsl(var(--bezel)); box-shadow: var(--bezel-shadow); padding: 12px; }
   .bezel-well { background: var(--well-fill); box-shadow: var(--well-shadow); }
+  /* v3.6 stat pills: the field recipe, one step deeper */
+  .stat-well { box-shadow: inset 0 3px 8px hsl(var(--tint) / 0.16), inset 0 0 0 1px hsl(var(--tint) / 0.12), 0 1px 0 hsl(0 0% 100% / 0.9); }
+  .dark .stat-well { box-shadow: inset 0 3px 8px hsl(0 0% 0% / 0.6), var(--well-lip), var(--well-catch); }
 
   /* ---------- Recessed fields (v3.6: borderless wells, crisp inner lip, two-step focus ring) ---------- */
   .recessed {
@@ -535,6 +538,18 @@
     -webkit-backdrop-filter: blur(16px) saturate(160%);
     backdrop-filter: blur(16px) saturate(160%);
     box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.4), inset 0 0 0 1px hsl(0 0% 100% / 0.22), 0 4px 10px -4px hsl(0 0% 0% / 0.3);
+  }
+
+  /* Markets list (desktop): 40px fade at the bottom, and at the top once scrolled. */
+  @media (min-width: 1024px) {
+    .market-list-fade {
+      --fade-top: 0px;
+      --fade-bottom: 40px;
+      -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 var(--fade-top), #000 calc(100% - var(--fade-bottom)), transparent 100%);
+      mask-image: linear-gradient(to bottom, transparent 0, #000 var(--fade-top), #000 calc(100% - var(--fade-bottom)), transparent 100%);
+    }
+    .market-list-fade[data-at-top="false"] { --fade-top: 40px; }
+    .market-list-fade[data-at-end="true"] { --fade-bottom: 0px; }
   }
 
   /* ---------- Scroll reveal ---------- */
@@ -765,7 +780,7 @@
 /* Header CTA (v3.6): the slot collapses to zero width while hidden so the theme key sits flush right;
  * it opens with the 0fr -> 1fr grid technique and only clips while collapsed or opening. */
 .header-cta-slot {
-  display: grid;
+  /* display comes from utilities (grid / hidden min-[480px]:grid) so the mobile breakpoint still applies */
   grid-template-columns: 1fr;
   margin-left: var(--cta-gap, 12px);
   transition: grid-template-columns 260ms cubic-bezier(0.34, 1.2, 0.64, 1), margin-left 260ms cubic-bezier(0.34, 1.2, 0.64, 1);

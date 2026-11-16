@@ -31,25 +31,25 @@ const StatBezel = ({ value, suffix, label }: { value: number; suffix: string; la
   };
   const numeral = (
     <>
-      <span className="type-headline-lg text-gradient tabular block">
+      <span className="type-headline-lg tabular block font-semibold text-primary-ink">
         {value}
         {suffix}
       </span>
-      <span className="type-body-sm mt-1 block text-muted-foreground">{label}</span>
+      <span className="type-body-sm mt-1 block text-muted-foreground xl:whitespace-nowrap">{label}</span>
     </>
   );
   return (
-    <div className="bezel pill card-hover rounded-full">
+    <div className="bezel pill card-hover rounded-full p-2">
       <div
         ref={wellRef}
         onMouseMove={onMove}
         onMouseLeave={() => setLens(null)}
-        className="bezel-well pill relative flex h-24 flex-col justify-center overflow-hidden rounded-full px-6"
+        className="bezel-well stat-well pill relative flex h-24 flex-col justify-center overflow-hidden rounded-full px-6"
       >
-        <span className="type-headline-lg text-gradient tabular block">
+        <span className="type-headline-lg tabular block font-semibold text-primary-ink">
           <CountUp value={value} suffix={suffix} />
         </span>
-        <span className="type-body-sm mt-1 block text-muted-foreground">{label}</span>
+        <span className="type-body-sm mt-1 block text-muted-foreground xl:whitespace-nowrap">{label}</span>
         {lens && (
           <span
             aria-hidden="true"
@@ -119,8 +119,8 @@ export const Proof = () => (
             <figure className="surface-1 card-hover flex h-full flex-col rounded-[20px] p-5 md:row-span-3 md:grid md:grid-rows-subgrid">
               <Quote className="h-5 w-5 text-primary-ink" aria-hidden="true" />
               <blockquote className="type-body-lg mb-5 mt-3">{t.quote}</blockquote>
-              <figcaption className="mt-auto flex items-start gap-3 border-t border-outline-variant pt-4 md:mt-0">
-                <span className="type-label-md flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-tertiary-container text-tertiary-on-container">
+              <figcaption className="mt-auto flex items-center gap-3 border-t border-outline-variant pt-4 md:mt-0">
+                <span className="icon-well type-label-md flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-primary-ink">
                   {initials(t.who)}
                 </span>
                 <div className="min-w-0">

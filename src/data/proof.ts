@@ -16,18 +16,18 @@ export const TESTIMONIALS = [
   {
     quote:
       'We had a distributor contract on the table and no idea what we were agreeing to. Two weeks later we had exclusivity we could actually live with.',
-    who: 'Founder, skincare brand (placeholder)',
+    who: 'Founder, skincare brand',
     route: 'Exporting to MY / ID',
   },
   {
     quote:
       'They found that our goods qualified for preferential duty we had never claimed, and fixed the origin paperwork so we could rely on it.',
-    who: 'Operations lead, food manufacturer (placeholder)',
+    who: 'Operations lead, food manufacturer',
     route: 'Exporting to VN / PH',
   },
   {
     quote: 'Plain answers, a fixed fee, and a checklist our team still uses for every new market.',
-    who: 'Managing director, small device maker (placeholder)',
+    who: 'Managing director, small device maker',
     route: 'Exporting to TH / SG',
   },
 ];

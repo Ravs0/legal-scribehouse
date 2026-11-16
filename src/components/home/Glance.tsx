@@ -39,7 +39,7 @@ const NOTE = 'Illustrative example · figures are not advice';
 const LEGEND = [
   { name: 'Duty saved', swatch: 'bg-primary', copy: 'Change the shipment value and watch the saving update.' },
   { name: 'Shipment status', swatch: 'bg-device', copy: 'Four checkpoints from structure to customs.' },
-  { name: 'Next deadline', swatch: 'border border-border bg-card', copy: 'Renewals and filings coming up.' },
+  { name: 'Next deadline', swatch: 'bg-card', copy: 'Renewals and filings coming up.' },
   { name: 'Market weather', swatch: 'bg-tertiary-container', copy: 'Where rules are shifting this quarter.' },
 ];
 
@@ -159,7 +159,7 @@ export const Glance = () => {
               <ul className="mt-5 space-y-3">
                 {LEGEND.map((l) => (
                   <li key={l.name} className="flex items-start gap-3">
-                    <span aria-hidden="true" className={cn('mt-[5px] h-2.5 w-2.5 shrink-0 rounded-[3px]', l.swatch)} />
+                    <span aria-hidden="true" className={cn('mt-[5px] h-2.5 w-2.5 shrink-0 rounded-[3px] shadow-[var(--edge-out)]', l.swatch)} />
                     <span className="min-w-0">
                       <span className="type-title-sm block">{l.name}</span>
                       <span className="type-body-sm block text-muted-foreground">{l.copy}</span>

@@ -102,7 +102,7 @@ export const Hero = () => {
               and explain each step in plain English.
             </p>
             <div className="mt-6 animate-fade-up" style={stagger(240)}>
-              <p className="type-mono-sm text-muted-foreground">Try a route</p>
+              <p className="type-eyebrow text-muted-foreground">Try a route</p>
               <div className="mt-2">
                 <RoutePicker value={route} onChange={setRoute} />
               </div>

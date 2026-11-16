@@ -58,7 +58,8 @@ function useGlare<T extends HTMLElement>() {
   };
 }
 
-const itemClass = 'nav-item type-label-lg inline-flex h-11 items-center rounded-full px-3.5 outline-none';
+// Tighter item padding below 1280px so the centred pill leaves room for the actions column.
+const itemClass = 'nav-item type-label-lg inline-flex h-11 items-center rounded-full px-2.5 outline-none xl:px-3.5';
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -92,11 +93,21 @@ const Header = () => {
     return () => io.disconnect();
   }, [onHome, pathname]);
   const ctaHidden = !pastHero;
-  const ctaProps = {
+  // The slot clips while collapsed and while opening; once open it stops clipping so the button's shadow shows.
+  const [ctaClip, setCtaClip] = useState(ctaHidden);
+  useEffect(() => {
+    if (ctaHidden) {
+      setCtaClip(true);
+      return;
+    }
+    const t = window.setTimeout(() => setCtaClip(false), 300);
+    return () => window.clearTimeout(t);
+  }, [ctaHidden]);
+  const slotProps = {
     'aria-hidden': ctaHidden || undefined,
     inert: ctaHidden ? '' : undefined,
     'data-shown': !ctaHidden,
-    className: 'header-cta',
+    'data-clip': ctaClip,
   } as unknown as React.HTMLAttributes<HTMLDivElement>;
 
   useEffect(() => {
@@ -161,8 +172,9 @@ const Header = () => {
       </a>
       <header className="container sticky top-2 z-50 md:top-3">
         {/* Desktop: wordmark · liquid-glass pill nav · actions */}
-        <div className="hidden h-[68px] items-center justify-between gap-6 lg:flex">
-          <Link to="/" aria-label={`${SITE.name} home`} className="press shrink-0 rounded-lg">
+        {/* Three-column grid with equal outer tracks keeps the pill centred whatever the actions column does. */}
+        <div className="hidden h-[68px] grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3 lg:grid xl:gap-6">
+          <Link to="/" aria-label={`${SITE.name} home`} className="press justify-self-start rounded-lg">
             <Wordmark withDescriptor />
           </Link>
 
@@ -207,14 +219,18 @@ const Header = () => {
             </nav>
           </div>
 
-          <div className="flex shrink-0 items-center gap-3">
+          <div className="flex items-center justify-self-end">
             <ThemeKey />
-            <div {...ctaProps}>
-              <Button asChild tabIndex={ctaHidden ? -1 : undefined}>
-                <HashLink to="contact">
-                  Book a free call <ArrowRight aria-hidden="true" />
-                </HashLink>
-              </Button>
+            <div {...slotProps} className="header-cta-slot grid [--cta-gap:12px]">
+              <div className="header-cta-clip">
+                <div className="header-cta w-max">
+                  <Button asChild tabIndex={ctaHidden ? -1 : undefined} className="h-9 px-3.5 type-label-md xl:h-10 xl:px-[18px] xl:type-label-lg">
+                    <HashLink to="contact">
+                      Book a free call <ArrowRight aria-hidden="true" className="hidden xl:block" />
+                    </HashLink>
+                  </Button>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -228,16 +244,20 @@ const Header = () => {
           <Link to="/" aria-label={`${SITE.name} home`} className="press relative z-[1] shrink-0 rounded-lg">
             <Wordmark />
           </Link>
-          <div className="relative z-[1] flex items-center gap-2">
+          <div className="relative z-[1] flex items-center">
             <ThemeKey />
-            <div {...ctaProps} className="header-cta hidden min-[480px]:block">
-              <Button asChild size="sm" tabIndex={ctaHidden ? -1 : undefined}>
-                <HashLink to="contact">Book a free call</HashLink>
-              </Button>
+            <div {...slotProps} className="header-cta-slot hidden [--cta-gap:8px] min-[480px]:grid">
+              <div className="header-cta-clip">
+                <div className="header-cta w-max">
+                  <Button asChild size="sm" tabIndex={ctaHidden ? -1 : undefined}>
+                    <HashLink to="contact">Book a free call</HashLink>
+                  </Button>
+                </div>
+              </div>
             </div>
             <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="press-strong">
+                <Button variant="ghost" size="icon" className="press-strong ml-2">
                   <Menu />
                   <span className="sr-only">Open menu</span>
                 </Button>
