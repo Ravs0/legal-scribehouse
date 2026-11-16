@@ -15,7 +15,6 @@ import { SITE } from '@/config/site';
 import { MARKETS } from '@/data/markets';
 import { IS_PREVIEW, submitEnquiry, type Enquiry } from '@/lib/enquiry';
 import { useEnquiryDraft } from '@/stores/enquiryDraft';
-import { cn } from '@/lib/utils';
 
 const CATEGORIES = ['Food & beverage', 'Cosmetics & personal care', 'Medical devices', 'Consumer goods', 'Industrial', 'Other'];
 const STAGES = ['Exploring', 'Have a buyer', 'Already shipping', 'Have a problem'];
@@ -254,7 +253,7 @@ export const Contact = () => {
                   </div>
 
                   <div className="sm:col-span-2">
-                    <label htmlFor={consentId} className="flex min-h-11 cursor-pointer items-start gap-3 py-2">
+                    <label htmlFor={consentId} className="flex min-h-11 cursor-pointer items-start gap-3 py-3">
                       <input
                         id={consentId}
                         type="checkbox"
@@ -262,17 +261,11 @@ export const Contact = () => {
                         {...register('consent')}
                         {...a11y('consent')}
                       />
-                      <span
-                        aria-hidden="true"
-                        className={cn(
-                          'mt-px flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-[5px] border-[1.5px] border-input bg-card text-primary-foreground transition-colors duration-150',
-                          'peer-checked:border-primary peer-checked:bg-primary peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ring',
-                          '[&>svg]:opacity-0 peer-checked:[&>svg]:opacity-100',
-                        )}
-                      >
-                        <Check className="h-3 w-3" strokeWidth={3} />
+                      {/* v3.6: a 20px well; checked it becomes the orange button. Text line-height 20px centres line one on the box. */}
+                      <span aria-hidden="true" className="check-well flex h-5 w-5 shrink-0 items-center justify-center rounded-[6px]">
+                        <Check className="h-3.5 w-3.5" strokeWidth={2.5} />
                       </span>
-                      <span className="type-body-sm">
+                      <span className="type-body-sm leading-5">
                         I understand this enquiry doesn't create an adviser–client relationship.
                       </span>
                     </label>
