@@ -89,8 +89,10 @@ export const Hero = () => {
     <section id="hero" className="pb-8 pt-6 lg:pb-12 lg:pt-10">
       <div className="container">
         <div className="grid-12 items-center gap-y-8">
-          {/* 768–1023: text block capped at 640px, printer centred below it. */}
-          <div className="col-span-4 md:col-span-12 md:max-w-[640px] lg:col-span-7 lg:max-w-none hero-text">
+          {/* v3.8 mirrored: from 1024 the printer takes the left 5 columns (flush with the container edge) and the text
+              the right 7. DOM order stays text first for phones, tablets and screen readers.
+              768–1023: text block capped at 640px, printer centred below it. */}
+          <div className="col-span-4 md:col-span-12 md:max-w-[640px] lg:order-2 lg:col-span-7 lg:max-w-none hero-text">
             <div className="intro" style={step(0)}>
               <AssistChip>Export law for small brands · ASEAN</AssistChip>
             </div>
@@ -119,9 +121,9 @@ export const Hero = () => {
               ))}
             </ul>
           </div>
-          <div className="col-span-4 md:col-span-12 lg:col-span-5 hero-art">
+          <div className="col-span-4 md:col-span-12 lg:order-1 lg:col-span-5 hero-art">
             <div className="intro-printer">
-              <ClearancePrinter className="float-idle lg:mr-0" selected={route} onSelect={setRoute} />
+              <ClearancePrinter className="float-idle lg:ml-0" selected={route} onSelect={setRoute} />
             </div>
           </div>
         </div>
@@ -132,18 +134,17 @@ export const Hero = () => {
               <Eyebrow>Why exports stall</Eyebrow>
               <h2 className="type-label-md text-muted-foreground">Three ways a first shipment goes wrong</h2>
             </div>
+            {/* v3.8 anatomy: a dot + title row; the body hangs from the title's left edge. */}
             <ul className="mt-1 grid divide-y divide-outline-variant md:grid-cols-3 md:divide-x md:divide-y-0">
               {PROBLEMS.map((p) => (
-                <li key={p.title} className="flex items-start gap-3 p-4 md:p-5">
+                <li key={p.title} className="grid grid-cols-[8px_minmax(0,1fr)] content-start items-center gap-x-3 p-4 md:p-5">
                   <span
                     aria-hidden="true"
-                    className="mt-[6px] h-2 w-2 shrink-0 rounded-full bg-destructive"
+                    className="h-2 w-2 rounded-full bg-destructive"
                     style={{ boxShadow: '0 0 0 3px hsl(var(--destructive) / .14)' }}
                   />
-                  <div className="min-w-0">
-                    <h3 className="type-title-sm">{p.title}</h3>
-                    <p className="type-body-sm mt-0.5 text-muted-foreground">{p.copy}</p>
-                  </div>
+                  <h3 className="type-title-sm">{p.title}</h3>
+                  <p className="type-body-sm col-start-2 mt-1 text-muted-foreground">{p.copy}</p>
                 </li>
               ))}
             </ul>

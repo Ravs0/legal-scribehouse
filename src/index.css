@@ -81,7 +81,7 @@
     --grain-blend: multiply;
     --contour: hsl(160 30% 20% / 0.14);
 
-    --nav-fill: hsl(48 80% 98% / 0.55);
+    --nav-fill: hsl(48 80% 98% / 0.72);
     --nav-spec: 0.7;
     --nav-glare: 0.8;
     --nav-shadow: inset 0 1px 0.5px hsl(0 0% 100% / 0.9), inset 0 -8px 14px -10px hsl(0 0% 100% / 0.6),
@@ -192,7 +192,7 @@
     --grain-blend: soft-light;
     --contour: hsl(44 40% 80% / 0.08);
 
-    --nav-fill: hsl(160 20% 60% / 0.1);
+    --nav-fill: hsl(160 16% 12% / 0.62);
     --nav-spec: 0.28;
     --nav-glare: 0.4;
     --nav-shadow: inset 0 1px 0.5px hsl(0 0% 100% / 0.22), inset 0 -8px 14px -10px hsl(0 0% 100% / 0.1),
@@ -277,7 +277,7 @@
 @layer components {
   /* ---------- Type roles (v3.7: display/headline sizes scale fluidly from 360px to 1280px, same min and max as the
      old 768/1024 steps, so there are no jumps) ---------- */
-  .type-display-lg { @apply font-display; font-feature-settings: normal; font-optical-sizing: auto; font-size: clamp(34px, 26.957px + 1.9565vw, 52px); line-height: 1.04; letter-spacing: -0.035em; font-weight: 600; }
+  .type-display-lg { @apply font-display; font-feature-settings: normal; font-optical-sizing: auto; font-size: clamp(34px, 28.522px + 1.5217vw, 48px); line-height: 1.04; letter-spacing: -0.035em; font-weight: 600; }
   .type-display-md { @apply font-display; font-feature-settings: normal; font-optical-sizing: auto; font-size: clamp(30px, 25.304px + 1.3043vw, 42px); line-height: 1.07; letter-spacing: -0.035em; font-weight: 600; }
   .type-headline-lg { @apply font-display; font-feature-settings: normal; font-optical-sizing: auto; font-size: clamp(24px, 20.870px + 0.8696vw, 32px); line-height: 1.14; letter-spacing: -0.03em; font-weight: 600; }
   .type-headline-md { @apply font-display; font-feature-settings: normal; font-optical-sizing: auto; font-size: clamp(22px, 21.217px + 0.2174vw, 24px); line-height: 1.2; letter-spacing: -0.025em; font-weight: 600; }
@@ -324,6 +324,27 @@
   @media (min-width: 1280px) { .stack-gap { gap: 24px; } }
   .after-heading { margin-top: 20px; }
   @media (min-width: 768px) { .after-heading { margin-top: 28px; } }
+
+  /* v3.8 card anatomy (see src/components/site/CardHeader.tsx). */
+  .card-shell { display: flex; flex-direction: column; padding: 20px; container-type: inline-size; }
+  .card-shell-lg { padding: 20px; }
+  @media (min-width: 768px) { .card-shell-lg { padding: 24px; } }
+  .card-head { display: grid; grid-template-columns: 40px minmax(0, 1fr) auto; column-gap: 12px; align-items: start; }
+  .card-well { display: inline-flex; width: 40px; height: 40px; align-items: center; justify-content: center; border-radius: 12px; flex-shrink: 0; }
+  .card-numeral { font-family: theme("fontFamily.mono"); font-size: 15px; line-height: 1; font-weight: 600; translate: 0 0.5px; }
+  /* First line of the title sits centred on the 40px well, so one- and two-line titles share a baseline. */
+  .card-title { margin-top: calc((40px - 1lh) / 2); min-width: 0; }
+  .card-meta { margin-top: 13px; white-space: nowrap; text-align: right; }
+  .card-body { margin-top: 12px; }
+  .card-foot { margin-top: auto; padding-top: 16px; border-top: 1px solid hsl(var(--outline-variant)); }
+  /* At least 16px between the body and the footer hairline in the tallest card of a row. */
+  .card-shell > :has(+ .card-foot) { margin-bottom: 16px; }
+  /* Narrow cards (four in a row at 1024px): the meta drops under the title instead of squeezing it. */
+  @container (max-width: 279px) {
+    .card-head { grid-template-columns: 40px minmax(0, 1fr); }
+    .card-title { font-size: 17px; }
+    .card-meta { grid-column: 2; margin-top: 2px; text-align: left; }
+  }
 
   .panel-pad { padding: 20px; }
   @media (min-width: 768px) { .panel-pad { padding: 28px; } }
@@ -804,32 +825,6 @@
   .header-cta-slot[data-shown="false"] .header-cta { transform: none; transition: opacity 200ms linear !important; }
 }
 
-/* v3.6 review: content scrolling under the header must not collide with the wordmark or the right-hand controls.
-   A page-coloured scrim sits behind the two outer thirds only, so the glass pill still shows what passes beneath it. */
-@media (min-width: 1024px) {
-  .header-scrim::before {
-    content: "";
-    position: absolute;
-    z-index: -1;
-    left: 50%;
-    top: -12px;
-    width: 100vw;
-    height: calc(100% + 40px);
-    transform: translateX(-50%);
-    pointer-events: none;
-    background: hsl(var(--background) / 0.92);
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    -webkit-mask-image: linear-gradient(to bottom, #000 55%, transparent), linear-gradient(to right, #000 26%, transparent 34%, transparent 66%, #000 74%);
-    mask-image: linear-gradient(to bottom, #000 55%, transparent), linear-gradient(to right, #000 26%, transparent 34%, transparent 66%, #000 74%);
-    -webkit-mask-composite: source-in;
-    mask-composite: intersect;
-    opacity: 0;
-    transition: opacity 200ms;
-  }
-  .header-scrim[data-scrolled="true"]::before { opacity: 1; }
-}
-
 /* ============================================================
  * v3.7 motion system (docs/DESIGN.md "v3.7"). One set of tokens for every animation.
  * Only opacity and transforms animate (individual `translate` / `scale` properties, so they compose with any
@@ -925,8 +920,9 @@
 /* Phone landscape: hero text and printer side by side so the hero stays within ~2 screens. */
 @media (orientation: landscape) and (max-height: 500px) and (min-width: 600px) and (max-width: 1023.98px) {
   #hero { padding-top: 28px; }
-  #hero .hero-text { grid-column: span 7 / span 7; max-width: none; }
-  #hero .hero-art { grid-column: span 5 / span 5; }
+  /* v3.8: mirrored like desktop, printer left and text right. */
+  #hero .hero-text { grid-column: span 7 / span 7; max-width: none; order: 2; }
+  #hero .hero-art { grid-column: span 5 / span 5; order: 1; }
 }
 
 /* Container: 16px gutters on phones, 24 from 640, 32 from 768, 40 from 1024, 48 from 1280; content never wider

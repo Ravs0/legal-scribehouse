@@ -9,14 +9,15 @@ import { InsightsTeaser } from '@/components/home/InsightsTeaser';
 import { Faq } from '@/components/home/Faq';
 import { Contact } from '@/components/home/Contact';
 
+// v3.8 order: what we do and how, then where, then the interactive tools, proof, reading, questions, contact.
 const Index = () => (
   <>
     <Hero />
-    <Markets />
     <Services />
-    <Glance />
     <Process />
+    <Markets />
     <ReadinessCheck />
+    <Glance />
     <Proof />
     <InsightsTeaser />
     <Faq />

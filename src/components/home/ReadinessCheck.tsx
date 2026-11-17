@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
-import { ArrowRight, Check } from 'lucide-react';
+import { ArrowRight, Check, Gauge } from 'lucide-react';
+import { CardHeader } from '@/components/site/CardHeader';
 import { Button } from '@/components/ui/button';
 import { SectionHeading } from '@/components/site/SectionHeading';
 import { Reveal } from '@/components/motion/Reveal';
@@ -105,45 +106,46 @@ export const ReadinessCheck = () => {
   return (
     <section id="readiness" className="section">
       <div className="container">
-        <div className="grid-12 items-start gap-y-8">
-          <div className="col-span-4 md:col-span-12 lg:col-span-6">
-            <SectionHeading
-              eyebrow="Readiness check"
-              title="Is your product ready to ship?"
-              subtitle="Flip six switches and see where you stand before the goods leave."
-            >
-              <ul className="mt-6 space-y-2.5">
-                {['Takes under a minute', 'No email needed', 'Your answers stay in your browser'].map((t) => (
-                  <li key={t} className="type-body-md flex items-center gap-2.5">
-                    <span className="flex h-5 w-5 items-center justify-center rounded-full bg-success/15 text-success">
-                      <Check className="h-3 w-3" strokeWidth={3} aria-hidden="true" />
+        <SectionHeading
+          eyebrow="Readiness check"
+          title="Is your product ready to ship?"
+          subtitle="Flip six switches and see where you stand before the goods leave."
+        />
+        {/* v3.8: two columns under the heading, 1040px wide in all, centred. The guide sits left of the panel and is
+            vertically centred on it; below 1024 the panel comes first. */}
+        <div className="after-heading mx-auto grid max-w-[1040px] items-center gap-8 lg:grid-cols-[minmax(0,1fr)_440px] lg:gap-12">
+          <Reveal stagger className="order-2 mx-auto w-full max-w-[440px] lg:order-1 lg:max-w-none">
+            <ul className="space-y-2.5">
+              {['Takes under a minute', 'No email needed', 'Your answers stay in your browser'].map((t) => (
+                <li key={t} className="type-body-md flex items-center gap-2.5">
+                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-success/15 text-success">
+                    <Check className="h-3 w-3" strokeWidth={3} aria-hidden="true" />
+                  </span>
+                  {t}
+                </li>
+              ))}
+            </ul>
+            <div className="surface-1 card-shell mt-6 rounded-[20px]">
+              <CardHeader icon={Gauge} title="How to read your score" />
+              <ul className="card-body space-y-2.5">
+                {LEGEND.map((l) => (
+                  <li key={l.stamp} className="flex items-center gap-3">
+                    <span
+                      className="type-label-sm inline-flex h-5 w-16 shrink-0 items-center justify-center rounded-md"
+                      style={{ color: STATUS[l.stamp].color, background: `color-mix(in srgb, ${STATUS[l.stamp].color} 14%, transparent)` }}
+                    >
+                      {STATUS[l.stamp].label}
                     </span>
-                    {t}
+                    <span className="type-mono-md tabular w-11 shrink-0">{l.range}</span>
+                    <span className="type-body-sm min-w-0 text-muted-foreground">{l.copy}</span>
                   </li>
                 ))}
               </ul>
-              <div className="surface-1 mt-6 max-w-[420px] rounded-[20px] p-4">
-                <h3 className="type-title-sm font-sans">How to read your score</h3>
-                <ul className="mt-3 space-y-2.5">
-                  {LEGEND.map((l) => (
-                    <li key={l.stamp} className="flex items-center gap-3">
-                      <span
-                        className="type-label-sm inline-flex h-5 w-16 shrink-0 items-center justify-center rounded-md"
-                        style={{ color: STATUS[l.stamp].color, background: `color-mix(in srgb, ${STATUS[l.stamp].color} 14%, transparent)` }}
-                      >
-                        {STATUS[l.stamp].label}
-                      </span>
-                      <span className="type-mono-md tabular w-11 shrink-0">{l.range}</span>
-                      <span className="type-body-sm min-w-0 text-muted-foreground">{l.copy}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </SectionHeading>
-          </div>
+            </div>
+          </Reveal>
 
-          <Reveal className="col-span-4 md:col-span-12 lg:col-span-5 lg:col-start-8">
-            <div className="surface-3 mx-auto w-full max-w-[440px] lg:ml-auto lg:mr-0 rounded-[28px] p-3 transition-transform duration-300 hover:-translate-y-1">
+          <Reveal className="order-1 lg:order-2">
+            <div className="surface-3 mx-auto w-full max-w-[440px] rounded-[28px] p-3 transition-transform duration-300 hover:-translate-y-1">
               <CrateScene tag={status.color} score={score} />
               <div className="px-3 pb-1 pt-4">
                 <div className="flex items-center justify-between gap-3">

@@ -1,5 +1,5 @@
 import { Compass, Handshake, Receipt, Users } from 'lucide-react';
-import { IconContainer } from '@/components/ui/chip';
+import { CardHeader } from '@/components/site/CardHeader';
 import { Badge } from '@/components/ui/badge';
 import { CountUp } from '@/components/motion/CountUp';
 import { Reveal } from '@/components/motion/Reveal';
@@ -29,21 +29,17 @@ const PRINCIPLES = [
 const About = () => (
   <>
     <section className="container pb-16 pt-12 md:pt-16">
-      <div className="grid-12">
-        <SectionHeading
-          as="h1"
-          className="col-span-4 md:col-span-8"
-          eyebrow="About"
-          title="Trade counsel sized for small exporters."
-          subtitle={`${SITE.name} helps small and growing product businesses sell into Southeast Asia, without a legal department.`}
-        />
-      </div>
+      <SectionHeading
+        as="h1"
+        eyebrow="About"
+        title="Trade counsel sized for small exporters."
+        subtitle={`${SITE.name} helps small and growing product businesses sell into Southeast Asia, without a legal department.`}
+      />
 
       <div className="grid-12 after-heading">
-        <Reveal className="surface-3 panel-pad col-span-4 rounded-[28px] md:col-span-12 lg:col-span-7">
-          <IconContainer icon={Users} />
-          <h2 className="type-headline-sm mt-6">Why we exist</h2>
-          <div className="type-body-lg mt-4 space-y-4 text-muted-foreground">
+        <Reveal className="surface-3 card-shell card-shell-lg col-span-4 rounded-[28px] md:col-span-12 lg:col-span-7">
+          <CardHeader as="h2" icon={Users} title="Why we exist" />
+          <div className="card-body type-body-lg space-y-4 text-muted-foreground">
             <p>
               Large companies have legal teams who know what a distributor agreement should say, which agency registers
               a cosmetic in Indonesia, and how to prove origin for a lower tariff. Small exporters usually find out the
@@ -78,10 +74,9 @@ const About = () => (
       <ul className="after-heading stack-gap grid md:grid-cols-3">
         {PRINCIPLES.map((p, i) => (
           <Reveal as="li" key={p.title} index={i}>
-            <article className="surface-1 card-hover card-pad h-full rounded-[20px]">
-              <IconContainer icon={p.icon} />
-              <h3 className="type-title-lg mt-4">{p.title}</h3>
-              <p className="type-body-md mt-2 text-muted-foreground">{p.copy}</p>
+            <article className="surface-1 card-hover card-shell h-full rounded-[20px]">
+              <CardHeader icon={p.icon} title={p.title} />
+              <p className="card-body type-body-md text-muted-foreground">{p.copy}</p>
             </article>
           </Reveal>
         ))}

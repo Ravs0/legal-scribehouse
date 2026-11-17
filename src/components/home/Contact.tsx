@@ -3,7 +3,8 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { toast } from 'sonner';
-import { AlertCircle, Check, Loader2, Mail, MapPin, Phone, Send, type LucideIcon } from 'lucide-react';
+import { AlertCircle, Check, ListChecks, Loader2, Mail, MapPin, Phone, Send, type LucideIcon } from 'lucide-react';
+import { CardHeader } from '@/components/site/CardHeader';
 import { Button } from '@/components/ui/button';
 import { IconContainer } from '@/components/ui/chip';
 import { Input } from '@/components/ui/input';
@@ -120,21 +121,20 @@ export const Contact = () => {
   return (
     <section id="contact" className="section">
       <div className="container">
-        <div className="grid-12 items-start gap-y-10">
-          <div className="col-span-4 md:col-span-12 lg:col-span-5">
-            {/* Confirm the response-time promise with the firm before launch. */}
-            <SectionHeading
-              eyebrow="Book a free call"
-              title="Tell us what you're shipping, and where."
-              subtitle="We reply within one business day with next steps."
-            />
-            <Reveal stagger className="mt-6 hidden space-y-6 lg:block">
-              <ContactDetails rows={contactRows} />
-              <NextSteps />
-            </Reveal>
-          </div>
+        {/* Confirm the response-time promise with the firm before launch. */}
+        <SectionHeading
+          eyebrow="Book a free call"
+          title="Tell us what you're shipping, and where."
+          subtitle="We reply within one business day with next steps."
+        />
+        {/* v3.8: details + next steps in the left 5 columns, the form in the right 7. Phones and tablets: form first. */}
+        <div className="after-heading grid-12 items-start gap-y-8">
+          <Reveal stagger className="order-2 col-span-4 space-y-6 md:col-span-12 lg:order-1 lg:col-span-5">
+            <ContactDetails rows={contactRows} />
+            <NextSteps />
+          </Reveal>
 
-          <Reveal className="col-span-4 md:col-span-12 lg:col-span-7">
+          <Reveal className="order-1 col-span-4 md:col-span-12 lg:order-2 lg:col-span-7">
             <div className="surface-3 panel-pad rounded-[28px]">
               {sent ? (
                 <div role="status" className="flex animate-step-in flex-col items-start py-4">
@@ -300,10 +300,6 @@ export const Contact = () => {
             </div>
           </Reveal>
 
-          <Reveal stagger className="col-span-4 space-y-6 md:col-span-12 lg:hidden">
-            <ContactDetails rows={contactRows} />
-            <NextSteps />
-          </Reveal>
         </div>
       </div>
     </section>
@@ -335,9 +331,9 @@ const ContactDetails = ({
 );
 
 const NextSteps = () => (
-  <div className="surface-1 rounded-[20px] p-5">
-    <h3 className="type-title-md font-sans">What happens next</h3>
-    <ol className="mt-4 space-y-3">
+  <div className="surface-1 card-shell rounded-[20px]">
+    <CardHeader icon={ListChecks} title="What happens next" />
+    <ol className="card-body space-y-3">
       {NEXT_STEPS.map((s, i) => (
         <li key={s} className="type-body-md flex items-start gap-3">
           <span className="type-label-sm flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary-container text-primary-on-container">

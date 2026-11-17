@@ -148,31 +148,15 @@ export const Glance = () => {
   return (
     <section id="glance" className="section">
       <div className="container">
-        <div className="grid-12 items-center gap-y-0">
-          <div className="col-span-4 md:col-span-12 lg:col-span-4">
-            <SectionHeading
-              eyebrow="Export at a glance"
-              title="Your shipment, on one screen."
-              subtitle="A sample of the dashboard that comes with a route plan. Tap any widget to open it."
-            />
-            <div className="hidden lg:block">
-              <Reveal as="ul" stagger className="mt-5 space-y-3">
-                {LEGEND.map((l) => (
-                  <li key={l.name} className="flex items-start gap-3">
-                    <span aria-hidden="true" className={cn('mt-[5px] h-2.5 w-2.5 shrink-0 rounded-[3px] shadow-[var(--edge-out)]', l.swatch)} />
-                    <span className="min-w-0">
-                      <span className="type-title-sm block">{l.name}</span>
-                      <span className="type-body-sm block text-muted-foreground">{l.copy}</span>
-                    </span>
-                  </li>
-                ))}
-              </Reveal>
-              <p className="type-label-sm mt-5 text-muted-foreground">{NOTE}</p>
-            </div>
-          </div>
+        <SectionHeading
+          eyebrow="Export at a glance"
+          title="Your shipment, on one screen."
+          subtitle="A sample of the dashboard that comes with a route plan. Tap any widget to open it."
+        />
 
-          <Reveal className="after-heading col-span-4 md:col-span-12 lg:col-span-8 lg:mt-0">
-            <div className="bezel-well mx-auto w-full max-w-[744px] rounded-[44px] p-4 sm:p-5 lg:mr-0 lg:ml-auto">
+        {/* v3.8: the board is centred (880px max) with the legend as a row of four under it. */}
+        <Reveal className="after-heading">
+            <div className="bezel-well mx-auto w-full max-w-[880px] rounded-[44px] p-4 sm:p-5">
               <div ref={boardRef} className="relative" style={{ height: boardHeight }}>
                 {widget(
                   'duty',
@@ -331,9 +315,17 @@ export const Glance = () => {
                 )}
               </div>
             </div>
-            <p className="type-label-sm mt-3 text-center text-muted-foreground lg:hidden">{NOTE}</p>
           </Reveal>
-        </div>
+        <Reveal as="ul" stagger className="mx-auto mt-6 grid max-w-[880px] grid-cols-2 gap-x-4 gap-y-5 md:mt-8 md:grid-cols-4 md:gap-x-6">
+          {LEGEND.map((l) => (
+            <li key={l.name} className="grid grid-cols-[10px_minmax(0,1fr)] content-start items-center gap-x-2.5">
+              <span aria-hidden="true" className={cn('h-2.5 w-2.5 rounded-[3px] shadow-[var(--edge-out)]', l.swatch)} />
+              <span className="type-title-sm">{l.name}</span>
+              <span className="type-body-sm col-start-2 mt-0.5 text-muted-foreground">{l.copy}</span>
+            </li>
+          ))}
+        </Reveal>
+        <p className="type-label-sm mt-5 text-center text-muted-foreground">{NOTE}</p>
       </div>
     </section>
   );

@@ -1,4 +1,5 @@
-import { ArrowRight, ChevronDown } from 'lucide-react';
+import { ArrowRight, ChevronDown, MessageCircleQuestion } from 'lucide-react';
+import { CardHeader } from '@/components/site/CardHeader';
 import * as AccordionPrimitive from '@radix-ui/react-accordion';
 import { Button } from '@/components/ui/button';
 import { HashLink } from '@/components/site/HashLink';
@@ -36,21 +37,9 @@ const FAQS = [
 export const Faq = () => (
   <section id="faq" className="section">
     <div className="container">
-      <div className="grid-12 items-start gap-y-8">
-        <div className="col-span-4 md:col-span-12 lg:sticky lg:top-[120px] lg:col-span-4">
-          <SectionHeading eyebrow="FAQ" title="Questions we hear every week.">
-            <div className="surface-2 mt-5 max-w-[340px] rounded-[20px] p-4">
-              <h3 className="type-title-sm font-sans">Still unsure?</h3>
-              <p className="type-body-sm mt-1 text-muted-foreground">Most first-shipment questions get answered in a free 30-minute call.</p>
-              <Button asChild size="sm" icon="trailing" className="mt-3">
-                <HashLink to="contact">
-                  Book a free call <ArrowRight aria-hidden="true" />
-                </HashLink>
-              </Button>
-            </div>
-          </SectionHeading>
-        </div>
-        <div className="col-span-4 md:col-span-12 lg:col-span-8 lg:col-start-5">
+      <SectionHeading eyebrow="FAQ" title="Questions we hear every week." />
+      {/* v3.8: the accordion is centred (800px max); "Still unsure?" is a slim row under it. */}
+      <div className="after-heading mx-auto max-w-[800px]">
           <AccordionPrimitive.Root type="single" collapsible className="space-y-2">
             {FAQS.map((f, i) => (
               <Reveal key={f.q}>
@@ -73,7 +62,19 @@ export const Faq = () => (
               </Reveal>
             ))}
           </AccordionPrimitive.Root>
-        </div>
+          <Reveal className="mt-6">
+            <div className="surface-2 card-shell rounded-[20px] sm:flex-row sm:items-center sm:gap-6">
+              <div className="min-w-0 flex-1">
+                <CardHeader icon={MessageCircleQuestion} title="Still unsure?" />
+                <p className="card-body type-body-md text-muted-foreground sm:ml-[52px]">Most first-shipment questions get answered in a free 30-minute call.</p>
+              </div>
+              <Button asChild icon="trailing" className="mt-4 self-start sm:mt-0 sm:self-center">
+                <HashLink to="contact">
+                  Book a free call <ArrowRight aria-hidden="true" />
+                </HashLink>
+              </Button>
+            </div>
+          </Reveal>
       </div>
     </div>
   </section>

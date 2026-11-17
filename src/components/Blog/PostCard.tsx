@@ -17,28 +17,27 @@ export const GradientTile = ({ type, className }: { type: ContentItem['type']; c
   </div>
 );
 
+/** v3.8 card anatomy: image, then title (+ arrow), body, and a pinned footer with the type badge and date. */
 export const PostCard = ({ post }: { post: ContentItem }) => {
   const meta = TYPE_META[post.type] ?? TYPE_META.post;
   return (
-    <Link
-      to={`/posts/${post.id}`}
-     
-      className="surface-1 card-hover group flex h-full flex-col rounded-[20px] p-2.5"
-    >
+    <Link to={`/posts/${post.id}`} className="surface-1 card-hover group flex h-full flex-col rounded-[20px] p-2.5">
       <GradientTile type={post.type} className="aspect-video" />
-      <div className="flex flex-1 flex-col px-2 pb-2 pt-4">
-        <Badge className="self-start">{meta.label}</Badge>
-        <h3 className="type-title-lg mt-2.5 line-clamp-3">{post.title}</h3>
-        <p className="type-body-sm mt-2 line-clamp-3 flex-1 text-muted-foreground">{post.summary}</p>
-        <div className="type-label-sm mt-4 flex items-center justify-between text-muted-foreground">
+      <div className="card-shell flex-1 !px-[10px] !pb-[10px] !pt-4">
+        <div className="flex items-start gap-3">
+          <h3 className="type-title-lg line-clamp-3 min-w-0 flex-1">{post.title}</h3>
+          <ArrowUpRight
+            className="mt-1 h-4 w-4 shrink-0 text-primary-ink transition-transform duration-short4 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+            aria-hidden="true"
+          />
+        </div>
+        <p className="card-body type-body-md line-clamp-3 text-muted-foreground">{post.summary}</p>
+        <div className="card-foot type-label-sm flex items-center justify-between gap-3 text-muted-foreground">
+          <Badge>{meta.label}</Badge>
           <span>
             <time dateTime={post.created_at}>{formatDate(post.created_at)}</time>
             {post.reading_time ? ` · ${post.reading_time} min read` : ''}
           </span>
-          <ArrowUpRight
-            className="h-4 w-4 text-primary-ink transition-transform duration-short4 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-            aria-hidden="true"
-          />
         </div>
       </div>
     </Link>

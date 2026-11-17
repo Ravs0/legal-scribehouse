@@ -84,22 +84,13 @@ const StatBezel = ({ value, suffix, label }: { value: number; suffix: string; la
 export const Proof = () => (
   <section id="proof" className="section">
     <div className="container">
-      <div className="grid-12">
-        <SectionHeading
-          className="col-span-4 md:col-span-7"
-          eyebrow="Results"
-          title={
-            <>
-              Small exporters, cleared to sell.
-              {PLACEHOLDER && (
-                <Badge variant="warning" className="ml-3 align-middle">
-                  Sample data
-                </Badge>
-              )}
-            </>
-          }
-        />
-      </div>
+      <SectionHeading eyebrow="Results" title="Small exporters, cleared to sell.">
+        {PLACEHOLDER && (
+          <Badge variant="warning" className="mt-3">
+            Sample data
+          </Badge>
+        )}
+      </SectionHeading>
 
       <dl className="after-heading stack-gap grid grid-cols-2 lg:grid-cols-4">
         {STATS.map((s, i) => (
@@ -119,7 +110,7 @@ export const Proof = () => (
             <figure className="surface-1 card-hover flex h-full flex-col rounded-[20px] p-5 md:row-span-3 md:grid md:grid-rows-subgrid">
               <Quote className="h-5 w-5 text-primary-ink" aria-hidden="true" />
               <blockquote className="type-body-lg mb-5 mt-3">{t.quote}</blockquote>
-              <figcaption className="mt-auto flex items-center gap-3 border-t border-outline-variant pt-4 md:mt-0">
+              <figcaption className="card-foot flex items-center gap-3 md:mt-0">
                 <span className="icon-well type-label-md flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-primary-ink">
                   {initials(t.who)}
                 </span>

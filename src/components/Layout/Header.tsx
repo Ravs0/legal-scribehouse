@@ -58,8 +58,8 @@ function useGlare<T extends HTMLElement>() {
   };
 }
 
-// Tighter item padding below 1280px so the centred pill leaves room for the actions column.
-const itemClass = 'nav-item type-label-lg inline-flex h-11 items-center rounded-full px-2.5 outline-none xl:px-3.5';
+// Tighter item padding below 1280px so the centred nav leaves room for the wordmark and actions inside the bar.
+const itemClass = 'nav-item type-label-lg inline-flex h-11 items-center rounded-full px-[7px] outline-none xl:px-3.5';
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -170,61 +170,65 @@ const Header = () => {
       >
         Skip to content
       </a>
-      <header data-scrolled={scrolled} className="header-scrim intro-header header-sticky container sticky z-50">
-        {/* Desktop: wordmark · liquid-glass pill nav · actions */}
-        {/* Three-column grid with equal outer tracks keeps the pill centred whatever the actions column does. */}
-        <div className="hidden h-[68px] grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-3 lg:grid xl:gap-6">
-          <Link to="/" aria-label={`${SITE.name} home`} className="press relative justify-self-start rounded-lg">
+      <header data-scrolled={scrolled} className="intro-header header-sticky container sticky z-50">
+        {/* Desktop (v3.8): one liquid-glass bar the width of the container. Wordmark left, nav centred, theme key and
+            CTA right. Equal outer tracks keep the nav centred; the CTA slot opens inside the right track, so nothing
+            else moves when it appears. */}
+        <div
+          {...glare}
+          data-scrolled={scrolled}
+          className="nav-glass hidden h-[60px] grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 rounded-full pl-5 pr-2 lg:grid xl:gap-4"
+        >
+          <Link to="/" aria-label={`${SITE.name} home`} className="press relative z-[1] justify-self-start rounded-lg">
             <Wordmark withDescriptor />
           </Link>
 
-          <div {...glare} data-scrolled={scrolled} className="nav-glass rounded-full p-1">
-            <nav ref={navRef} aria-label="Main" className="relative flex items-center gap-0.5">
-              <span
-                aria-hidden="true"
-                className="nav-lens h-11"
-                data-snap={lens.snap}
-                data-pressed={pressed}
-                style={{
-                  width: lens.w,
-                  transform: `translateX(${lens.x}px)`,
-                  opacity: lens.visible ? 1 : 0,
-                }}
-              >
-                <span key={lens.stretch} className="nav-lens__body" style={{ animation: lens.stretch ? 'lens-stretch 520ms cubic-bezier(0.2,0,0,1)' : 'none' }} />
-              </span>
-              {SECTIONS.map((s) => (
-                <HashLink key={s.id} to={s.id} ref={reg(s.id)} aria-current={activeKey === s.id ? 'true' : undefined} {...itemProps(s.id)}>
-                  {s.label}
-                </HashLink>
-              ))}
-              <DropdownMenu>
-                <DropdownMenuTrigger ref={reg('insights')} {...itemProps('insights')} className={cn(itemProps('insights').className, 'gap-1')}>
-                  Insights <ChevronDown className="h-3.5 w-3.5" aria-hidden="true" />
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="center" sideOffset={10} className="w-48">
-                  {INSIGHT_LINKS.map((l, i) => (
-                    <div key={l.to}>
-                      {i === 1 && <DropdownMenuSeparator />}
-                      <DropdownMenuItem asChild>
-                        <Link to={l.to}>{l.label}</Link>
-                      </DropdownMenuItem>
-                    </div>
-                  ))}
-                </DropdownMenuContent>
-              </DropdownMenu>
-              <Link to="/about" ref={reg('about')} aria-current={pathname === '/about' ? 'page' : undefined} {...itemProps('about')}>
-                About
-              </Link>
-            </nav>
-          </div>
+          {/* The bar's padding is 20px left / 8px right, so the nav moves 6px left to sit on the bar's true centre. */}
+          <nav ref={navRef} aria-label="Main" className="relative z-[1] flex items-center [translate:-6px_0] xl:gap-0.5">
+            <span
+              aria-hidden="true"
+              className="nav-lens h-11"
+              data-snap={lens.snap}
+              data-pressed={pressed}
+              style={{
+                width: lens.w,
+                transform: `translateX(${lens.x}px)`,
+                opacity: lens.visible ? 1 : 0,
+              }}
+            >
+              <span key={lens.stretch} className="nav-lens__body" style={{ animation: lens.stretch ? 'lens-stretch 520ms cubic-bezier(0.2,0,0,1)' : 'none' }} />
+            </span>
+            {SECTIONS.map((s) => (
+              <HashLink key={s.id} to={s.id} ref={reg(s.id)} aria-current={activeKey === s.id ? 'true' : undefined} {...itemProps(s.id)}>
+                {s.label}
+              </HashLink>
+            ))}
+            <DropdownMenu>
+              <DropdownMenuTrigger ref={reg('insights')} {...itemProps('insights')} className={cn(itemProps('insights').className, 'gap-1')}>
+                Insights <ChevronDown className="h-3.5 w-3.5" aria-hidden="true" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="center" sideOffset={12} className="w-48">
+                {INSIGHT_LINKS.map((l, i) => (
+                  <div key={l.to}>
+                    {i === 1 && <DropdownMenuSeparator />}
+                    <DropdownMenuItem asChild>
+                      <Link to={l.to}>{l.label}</Link>
+                    </DropdownMenuItem>
+                  </div>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+            <Link to="/about" ref={reg('about')} aria-current={pathname === '/about' ? 'page' : undefined} {...itemProps('about')}>
+              About
+            </Link>
+          </nav>
 
-          <div className="flex items-center justify-self-end">
+          <div className="relative z-[1] flex items-center justify-self-end">
             <ThemeKey />
-            <div {...slotProps} className="header-cta-slot grid [--cta-gap:12px]">
+            <div {...slotProps} className="header-cta-slot grid [--cta-gap:6px] xl:[--cta-gap:10px]">
               <div className="header-cta-clip">
                 <div className="header-cta w-max">
-                  <Button asChild tabIndex={ctaHidden ? -1 : undefined} className="h-9 px-3.5 type-label-md xl:h-10 xl:px-[18px] xl:type-label-lg">
+                  <Button asChild tabIndex={ctaHidden ? -1 : undefined} className="h-10 px-3 type-label-md xl:px-[18px] xl:type-label-lg">
                     <HashLink to="contact">
                       Book a free call <ArrowRight aria-hidden="true" className="hidden xl:block" />
                     </HashLink>

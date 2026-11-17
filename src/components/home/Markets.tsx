@@ -91,14 +91,11 @@ export const Markets = () => {
   return (
     <section id="markets" className="section">
       <div className="container">
-        <div className="grid-12">
-          <SectionHeading
-            className="col-span-4 md:col-span-7"
-            eyebrow="Where we work"
-            title="Ten markets. Ten rulebooks."
-            subtitle="Pick a country to see who regulates it and where exporters usually get stuck."
-          />
-        </div>
+        <SectionHeading
+          eyebrow="Where we work"
+          title="Ten markets. Ten rulebooks."
+          subtitle="Pick a country to see who regulates it and where exporters usually get stuck."
+        />
 
         <Reveal className="after-heading">
           <div className="device-surface dark rounded-[32px] bg-device p-3 text-device-foreground">

@@ -24,25 +24,10 @@ export const InsightsTeaser = () => {
   const latest = content.filter((c) => !c.draft).slice(0, 3);
   const empty = ready && latest.length === 0;
 
-  const allButton = (className: string) => (
-    <Button asChild variant="ghost" icon="trailing" className={className}>
-      <Link to="/insights">
-        All insights <ArrowRight aria-hidden="true" />
-      </Link>
-    </Button>
-  );
-
   return (
     <section id="insights" className="section">
       <div className="container">
-        <div className="grid-12 items-end">
-          <SectionHeading
-            className="col-span-4 md:col-span-8"
-            eyebrow="Insights"
-            title="Plain-English guides to ASEAN trade rules."
-          />
-          {!empty && <div className="col-span-4 hidden justify-end md:flex">{allButton('-mr-3')}</div>}
-        </div>
+        <SectionHeading eyebrow="Insights" title="Plain-English guides to ASEAN trade rules." />
 
         {!ready ? (
           <div className="after-heading stack-gap grid md:grid-cols-3" aria-busy="true" aria-label="Loading insights">
@@ -80,10 +65,15 @@ export const InsightsTeaser = () => {
           </ul>
         )}
 
+        {/* v3.8: one centred "All insights" link under the cards at every size. */}
         {!empty && (
-          <Button asChild variant="outline" className="mt-8 w-full md:hidden">
-            <Link to="/insights">All insights</Link>
-          </Button>
+          <div className="mt-8 flex justify-center">
+            <Button asChild variant="outline" icon="trailing" className="w-full sm:w-auto">
+              <Link to="/insights">
+                All insights <ArrowRight aria-hidden="true" />
+              </Link>
+            </Button>
+          </div>
         )}
       </div>
     </section>
