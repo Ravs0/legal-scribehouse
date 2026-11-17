@@ -92,7 +92,19 @@ const Header = () => {
     io.observe(hero);
     return () => io.disconnect();
   }, [onHome, pathname]);
-  const ctaHidden = !pastHero;
+  // v3.11: it also steps aside while the booking form itself fills the upper half of the screen.
+  const [atContact, setAtContact] = useState(false);
+  useEffect(() => {
+    const contact = onHome ? document.getElementById('contact') : null;
+    if (!contact || typeof IntersectionObserver === 'undefined') {
+      setAtContact(false);
+      return;
+    }
+    const io = new IntersectionObserver(([e]) => setAtContact(e.isIntersecting), { rootMargin: '0px 0px -50% 0px', threshold: 0 });
+    io.observe(contact);
+    return () => io.disconnect();
+  }, [onHome, pathname]);
+  const ctaHidden = !pastHero || atContact;
   // The slot clips while collapsed and while opening; once open it stops clipping so the button's shadow shows.
   const [ctaClip, setCtaClip] = useState(ctaHidden);
   useEffect(() => {

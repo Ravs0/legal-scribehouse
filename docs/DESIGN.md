@@ -425,3 +425,15 @@ the same block with display-md at 20ch. Extra content (e.g. Proof's "Sample data
 ## v3.10 Colours reverted to dawn-orange
 
 The Golden Hour palette (v3.8) is withdrawn. Colour tokens, shadows tints, the filled-button gradient, the theme key, the printer and the hero scene are back to the v3.7 dawn-orange values (sand ground hue 34, orange primary `21 90% 53%`, warm brown ink; dark theme on violet-black hue 258). Everything else from v3.8 and v3.9 stays: Sora + Manrope, the single glass bar, section order, mirrored hero, centred headings, card anatomy, readiness and contact layouts. The `--paper-*` tokens stay and now carry the v3.7 paper colours. The glass bar keeps its raised fill opacity (0.72 light, 0.62 dark) in the old hues.
+
+## v3.11 Refinement pass (reference research)
+
+Research (search only; reference sites could not be loaded from this environment) pointed at three things small clients look for on advisory sites: fee clarity, a clear hiring process and concrete proof. Changes:
+
+- Services: a "How pricing works" strip under the grid (fixed fee per job, no hourly billing, local counsel in the quote), same anatomy as the hero problems strip. The FAQ cost answer now says the same thing. Confirm these commitments before launch.
+- Proof: the four stat pebbles are one `surface-2` strip (4 cells ≥1024, 2×2 below) with hairline dividers; numbers top-aligned.
+- Hero stats: on phones (<640) one strip of three equal cells, numbers top-aligned; pills from 640.
+- Insights: with no published posts, three "In progress" guide cards in the shared card anatomy instead of a one-line notice; the "All insights" link always shows.
+- Contact: Stage is a full-width segmented choice (native radios, 2×2 on phones, 4 across from 640) so the row has no empty half.
+- Header CTA steps aside while the contact section fills the top half of the screen.
+- Footer: the duplicate theme switch is replaced by "Back to top".

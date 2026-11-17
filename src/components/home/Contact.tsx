@@ -215,26 +215,34 @@ export const Contact = () => {
                       )}
                     />
                   </Field>
-                  <Field label="Stage" htmlFor="enquiry-stage">
+                  {/* v3.11: Stage is a full-width segmented choice (native radios), so the row has no empty half. */}
+                  <fieldset className="sm:col-span-2">
+                    <legend className="type-label-md mb-1.5 block text-foreground">Where are you now?</legend>
                     <Controller
                       control={control}
                       name="stage"
                       render={({ field }) => (
-                        <Select value={field.value ?? ''} onValueChange={field.onChange}>
-                          <SelectTrigger id="enquiry-stage">
-                            <SelectValue placeholder="Where are you now?" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {STAGES.map((s) => (
-                              <SelectItem key={s} value={s}>
-                                {s}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                        <div className="recessed grid grid-cols-2 gap-1 rounded-[14px] p-1 [background-color:var(--well-fill)] sm:grid-cols-4 sm:rounded-full">
+                          {STAGES.map((st) => (
+                            <label key={st} className="relative">
+                              <input
+                                type="radio"
+                                name={field.name}
+                                value={st}
+                                checked={field.value === st}
+                                onChange={() => field.onChange(st)}
+                                onBlur={field.onBlur}
+                                className="peer sr-only"
+                              />
+                              <span className="press type-label-md flex h-9 cursor-pointer items-center justify-center whitespace-nowrap rounded-[10px] px-3 text-muted-foreground transition-[color,background-color,box-shadow] [transition-duration:200ms] hover:text-foreground peer-checked:surface-1 peer-checked:text-foreground peer-focus-visible:ring-2 peer-focus-visible:ring-ring sm:rounded-full">
+                                {st}
+                              </span>
+                            </label>
+                          ))}
+                        </div>
                       )}
                     />
-                  </Field>
+                  </fieldset>
 
                   <Field
                     label="What are you shipping, and where?"

@@ -30,7 +30,7 @@ const FAQS = [
   },
   {
     q: 'What does it cost?',
-    a: 'The first call is free. After that we quote a fixed fee for each piece of work wherever we can, so you know the number before we start.',
+    a: 'The first call is free. After it we quote a fixed fee for each job, in writing, before any work starts. There is no hourly billing, and local counsel is included in the quote where a market needs it.',
   },
 ];
 

@@ -2,7 +2,8 @@ import { Link } from 'react-router-dom';
 import { SITE } from '@/config/site';
 import { INSIGHT_LINKS, SECTIONS } from '@/config/nav';
 import { HashLink } from '@/components/site/HashLink';
-import { ThemeToggle, Wordmark } from './Header';
+import { ArrowUp } from 'lucide-react';
+import { Wordmark } from './Header';
 import { Contours } from '@/components/site/Contours';
 import { Reveal } from '@/components/motion/Reveal';
 
@@ -75,7 +76,9 @@ const Footer = () => (
         <p className="type-body-sm text-muted-foreground">
           © {new Date().getFullYear()} {SITE.name}
         </p>
-        <ThemeToggle />
+        <a href="#top" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); }} className="type-label-md inline-flex min-h-11 items-center gap-1.5 text-muted-foreground transition-colors hover:text-foreground lg:min-h-0">
+          Back to top <ArrowUp className="h-3.5 w-3.5" aria-hidden="true" />
+        </a>
       </div>
     </div>
   </footer>
