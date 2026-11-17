@@ -78,14 +78,14 @@ const crane = (x: number, h: number, jib: number, color: string) => {
 };
 
 export const SCENES: Record<string, SceneConfig> = {
-  // v3.8 Golden Hour backdrop for the hero printer: amber sky, cream horizon, deep-teal water, cream sand.
+  // Dawn backdrop for the hero printer: peach sky, pale horizon, blue-grey water, sand.
   home: {
-    sky: ['#F4A62A', '#FBD27E', '#FCF1D4'],
-    sun: '#FFF3D2',
-    water: '#2F7A6C',
+    sky: ['#F7B58A', '#FFD9B0', '#FFF1DC'],
+    sun: '#FFE7BF',
+    water: '#7FB3C2',
     sunX: 400,
     sand: true,
-    sandColor: '#F3DFAE',
+    sandColor: '#EAD6B8',
     landmark: (ink) => <path d={`M0 ${H} Q120 ${H - 34} 240 ${H - 12} T520 ${H - 20} T640 ${H - 8} V${H} Z`} fill={ink} opacity="0.35" />,
   },
   SG: {

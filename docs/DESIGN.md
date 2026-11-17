@@ -421,3 +421,7 @@ the same block with display-md at 20ch. Extra content (e.g. Proof's "Sample data
   three steps (24px numbered wells, one line each, chevrons between; column below 640; visually hidden h3 "What happens
   next"), the form card 20px below, then the three contact details (well + label + value) as a centred, evenly spaced
   row 20px under the form (stacked below 640). Detail links are blocks with `.hit` so they meet the 44px target on touch.
+
+## v3.10 Colours reverted to dawn-orange
+
+The Golden Hour palette (v3.8) is withdrawn. Colour tokens, shadows tints, the filled-button gradient, the theme key, the printer and the hero scene are back to the v3.7 dawn-orange values (sand ground hue 34, orange primary `21 90% 53%`, warm brown ink; dark theme on violet-black hue 258). Everything else from v3.8 and v3.9 stays: Sora + Manrope, the single glass bar, section order, mirrored hero, centred headings, card anatomy, readiness and contact layouts. The `--paper-*` tokens stay and now carry the v3.7 paper colours. The glass bar keeps its raised fill opacity (0.72 light, 0.62 dark) in the old hues.

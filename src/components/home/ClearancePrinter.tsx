@@ -120,7 +120,7 @@ export const ClearancePrinter = ({ className, selected: selectedProp, onSelect }
         >
           <div
             key={printKey}
-            className="receipt-edge relative bg-paper px-3 pb-5 pt-3 roomy:px-4 text-paper-ink shadow-[0_14px_22px_-12px_hsl(160_30%_8%/0.45)]"
+            className="receipt-edge relative bg-paper px-3 pb-5 pt-3 roomy:px-4 text-paper-ink shadow-[0_14px_22px_-12px_hsl(24_40%_10%/0.45)]"
             style={{
               backgroundImage: 'linear-gradient(90deg, hsl(0 0% 0% / .05), transparent 12%, transparent 88%, hsl(0 0% 0% / .06))',
               animation: printing ? 'receipt-feed 990ms steps(9,end) both, receipt-settle 240ms cubic-bezier(0.34,1.2,0.64,1) 990ms both' : undefined,
@@ -163,8 +163,8 @@ export const ClearancePrinter = ({ className, selected: selectedProp, onSelect }
         <div
           className="relative overflow-hidden rounded-[20px] rounded-b-[14px] px-3 pb-3 pt-2"
           style={{
-            background: 'linear-gradient(180deg, #1f2924, #0d1411)',
-            boxShadow: 'inset 0 1px 0 hsl(0 0% 100% / .18), inset 0 -2px 0 hsl(0 0% 0% / .6), 0 2px 0 #060a08, 0 18px 28px -10px hsl(160 30% 8% / .55)',
+            background: 'linear-gradient(180deg, #2B2622, #141110)',
+            boxShadow: 'inset 0 1px 0 hsl(0 0% 100% / .18), inset 0 -2px 0 hsl(0 0% 0% / .6), 0 2px 0 #0A0807, 0 18px 28px -10px hsl(24 40% 10% / .55)',
           }}
         >
           <span aria-hidden="true" className="pointer-events-none absolute inset-x-0 top-0 h-1/2" style={{ background: 'linear-gradient(180deg, hsl(0 0% 100% / .14), transparent)' }} />
@@ -173,9 +173,9 @@ export const ClearancePrinter = ({ className, selected: selectedProp, onSelect }
             <span className="h-[6px] w-[6px] rounded-full bg-[#4ADE80]" style={{ animation: 'led-pulse 2400ms ease-in-out infinite', boxShadow: '0 0 6px #4ADE80' }} aria-hidden="true" />
           </div>
           <div className="relative mt-1 flex items-end justify-between gap-2">
-            <div className="flex h-[44px] w-[124px] flex-col justify-center rounded-lg bg-[#060b09] px-2.5 shadow-[inset_0_2px_6px_#000] roomy:w-[148px]">
+            <div className="flex h-[44px] w-[124px] flex-col justify-center rounded-lg bg-[#0B0907] px-2.5 shadow-[inset_0_2px_6px_#000] roomy:w-[148px]">
               <span className="type-mono-sm text-[8px] text-white/40">Duty saved</span>
-              <span className="type-led text-led tabular" style={{ textShadow: '0 0 8px hsl(34 100% 55% / .7)' }} aria-live="polite">
+              <span className="type-led text-led tabular" style={{ textShadow: '0 0 8px hsl(32 100% 55% / .7)' }} aria-live="polite">
                 {led}
               </span>
             </div>
@@ -191,9 +191,9 @@ export const ClearancePrinter = ({ className, selected: selectedProp, onSelect }
                     onClick={() => choose(i)}
                     className="hit type-mono-sm relative h-9 w-[40px] rounded-[10px] text-white/85 transition-[transform,box-shadow] duration-150 roomy:w-[52px]"
                     style={{
-                      background: '#2b3631',
+                      background: '#3A342F',
                       transform: on ? 'translateY(2px)' : undefined,
-                      boxShadow: on ? 'inset 0 1px 0 hsl(0 0% 100% / .1), inset 0 2px 4px #000' : 'inset 0 1px 0 hsl(0 0% 100% / .16), 0 2px 0 #060a08',
+                      boxShadow: on ? 'inset 0 1px 0 hsl(0 0% 100% / .1), inset 0 2px 4px #000' : 'inset 0 1px 0 hsl(0 0% 100% / .16), 0 2px 0 #0A0807',
                     }}
                   >
                     {on && <span aria-hidden="true" className="absolute left-1/2 top-1 h-1 w-1 -translate-x-1/2 rounded-full bg-primary shadow-[0_0_6px_hsl(var(--primary))]" />}
@@ -205,7 +205,7 @@ export const ClearancePrinter = ({ className, selected: selectedProp, onSelect }
           </div>
         </div>
         {/* Paper slot */}
-        <div aria-hidden="true" className="mx-auto -mt-[3px] h-1.5 w-[240px] rounded-[3px] bg-[#030504] roomy:w-[300px]" />
+        <div aria-hidden="true" className="mx-auto -mt-[3px] h-1.5 w-[240px] rounded-[3px] bg-[#050404] roomy:w-[300px]" />
       </div>
     </div>
   );

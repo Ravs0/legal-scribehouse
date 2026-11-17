@@ -267,7 +267,7 @@ const MarketDetail = ({ market }: { market: (typeof MARKETS)[number] }) => (
         <p className="type-eyebrow mb-2.5 text-paper-muted">Regulators</p>
         <div className="flex flex-wrap gap-1.5">
           {market.regulators.map((r) => (
-            <span key={r} className="type-label-sm inline-flex h-6 items-center gap-1 rounded-full bg-white px-2 shadow-[inset_0_1px_0_#fff,0_0_0_1px_hsl(160_30%_12%/0.09),0_1px_2px_hsl(160_30%_12%/0.08)]">
+            <span key={r} className="type-label-sm inline-flex h-6 items-center gap-1 rounded-full bg-white px-2 shadow-[inset_0_1px_0_#fff,0_0_0_1px_hsl(24_40%_20%/0.09),0_1px_2px_hsl(24_40%_20%/0.08)]">
               <Landmark className="h-3 w-3 shrink-0 text-paper-accent" aria-hidden="true" />
               {r}
             </span>
