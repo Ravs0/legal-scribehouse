@@ -387,11 +387,10 @@ subtitle (`max-w-[56ch]`) → `.after-heading` → content at full container wid
 the same block with display-md at 20ch. Extra content (e.g. Proof's "Sample data" badge) is centred under the title.
 - Process: four cards in a row ≥1024, 2×2 at 640–1023, one column below.
 - Glance: board centred, max 880px; the legend is a 4-column row under it (2×2 on phones).
-- Readiness: two columns under the heading, 1040px max, centred: ticks + "How to read your score" (left, vertically
-  centred) and the 440px panel (right). <1024 the panel comes first.
+- Readiness: one centred 960px panel (v3.9, see below); the three ticks are a row under the subtitle.
 - FAQ: accordion centred, max 800px; "Still unsure?" is a slim row under it, the same 800px wide (text left, button
   right, stacked on phones).
-- Contact: left 5 columns details + "What happens next", right 7 the form (form first below 1024).
+- Contact: one 880px column (v3.9): steps strip, form, contact-details row.
 - Insights: a single centred "All insights" button under the cards at every size.
 
 ### Card anatomy (`src/components/site/CardHeader.tsx`, `.card-*` in index.css)
@@ -403,7 +402,22 @@ the same block with display-md at 20ch. Extra content (e.g. Proof's "Sample data
 - **Footer** (`CardFooter` / `.card-foot`): `margin-top: auto`, hairline above, 16px top padding; at least 16px between
   the body and the hairline. Rows of cards stretch to equal height, so footers align across a row.
 - Narrow cards (<280px, i.e. Process at 1024–1279): the meta drops under the title and the title steps down to 17px.
-- Applied to: Service cards, Process steps, "How to read your score", "What happens next", "Still unsure?", About
+- Applied to: Service cards, Process steps, "Still unsure?", About
   ("Why we exist" and the principle cards). Problems strip items: dot + title row, body hangs from the title's left edge.
   Testimonials: quote mark, quote, pinned `.card-foot` (avatar well + name + route) on the existing subgrid. Insight
   cards: image, title + arrow, body, pinned footer with the type badge and date.
+
+## v3.9 — no empty space beside tall cards
+- **Readiness** (`ReadinessCheck.tsx`): the ticks are one centred row of small items 16px under the subtitle (wraps on
+  phones). The check is ONE `surface-3` panel, max 960px, radius 28, padding 16 (12 below 1024), with a 12-column grid
+  (gap 24) at ≥1024. Left 5/12: crate well (10:7, about 4:3, cropped around the crate; score pill in its corner) →
+  title + verdict badge → helper → verdict / "Fix first" (min 40px so a two-line verdict does not shift the panel) →
+  score legend (hairline above; replaces the separate "How to read your score" card) → buttons + Reset row pinned with
+  `mt-auto`. Right 7/12: the six switch rows as a flex column, each `flex-1` (min 64px), hairline dividers. Both columns
+  stretch to the grid row, so they share a bottom edge; at 1440 each is 599px tall, rows ~100px. The crate is drawn
+  twice (strip crop `lg:hidden`, well crop `hidden lg:block`), each with its own gradient id. Below 1024 the column
+  wrappers are `display: contents` and `order-*` gives: illustration, title, switches, fix-first, legend, actions.
+- **Contact** (`Contact.tsx`): no side column. Under the heading, an 880px column: a slim `surface-1` strip of the
+  three steps (24px numbered wells, one line each, chevrons between; column below 640; visually hidden h3 "What happens
+  next"), the form card 20px below, then the three contact details (well + label + value) as a centred, evenly spaced
+  row 20px under the form (stacked below 640). Detail links are blocks with `.hit` so they meet the 44px target on touch.

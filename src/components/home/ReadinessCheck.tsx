@@ -1,6 +1,5 @@
-import { useMemo, useState } from 'react';
-import { ArrowRight, Check, Gauge } from 'lucide-react';
-import { CardHeader } from '@/components/site/CardHeader';
+import { useId, useMemo, useState } from 'react';
+import { ArrowRight, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { SectionHeading } from '@/components/site/SectionHeading';
 import { Reveal } from '@/components/motion/Reveal';
@@ -46,10 +45,12 @@ const Toggle = ({ checked, onChange, labelledBy, describedBy }: { checked: boole
   </button>
 );
 
-/** Header illustration: a crate on a pallet with a clearance tag in the verdict colour. */
-const CrateScene = ({ tag, score }: { tag: string; score: number }) => (
-  <div className="relative h-[168px] overflow-hidden rounded-[16px] bg-tertiary-container">
-    <svg aria-hidden="true" viewBox="0 0 416 168" className="absolute inset-0 h-full w-full">
+/** The crate artwork. Drawn twice with different crops (wide strip below 1024, near-4:3 well above); each copy owns its
+ *  gradient id so the hidden copy never breaks the visible one's fill. */
+const CrateArt = ({ tag, viewBox, className }: { tag: string; viewBox: string; className?: string }) => {
+  const shade = `crate-shade-${useId().replace(/:/g, '')}`;
+  return (
+    <svg aria-hidden="true" viewBox={viewBox} className={cn('absolute inset-0 h-full w-full', className)}>
       <ellipse cx="208" cy="142" rx="96" ry="12" fill="#000" opacity="0.12" />
       {/* pallet */}
       <rect x="134" y="124" width="148" height="10" rx="2" fill="#B98A5E" />
@@ -58,7 +59,7 @@ const CrateScene = ({ tag, score }: { tag: string; score: number }) => (
       <rect x="262" y="134" width="14" height="8" fill="#9C7149" />
       {/* crate */}
       <rect x="146" y="50" width="124" height="74" rx="4" fill="#E2B27F" />
-      <rect x="146" y="50" width="124" height="74" rx="4" fill="url(#crate-shade)" />
+      <rect x="146" y="50" width="124" height="74" rx="4" fill={`url(#${shade})`} />
       {[66, 84, 102].map((y) => (
         <rect key={y} x="146" y={y} width="124" height="2" fill="#C99561" />
       ))}
@@ -71,12 +72,21 @@ const CrateScene = ({ tag, score }: { tag: string; score: number }) => (
         <circle cx="295" cy="87" r="3" fill="#fff" opacity="0.8" />
       </g>
       <defs>
-        <linearGradient id="crate-shade" x1="0" x2="0" y1="0" y2="1">
+        <linearGradient id={shade} x1="0" x2="0" y1="0" y2="1">
           <stop offset="0" stopColor="#fff" stopOpacity="0.22" />
           <stop offset="1" stopColor="#000" stopOpacity="0.08" />
         </linearGradient>
       </defs>
     </svg>
+  );
+};
+
+/** Header illustration: a crate on a pallet with a clearance tag in the verdict colour. 168px strip below 1024; a 4:3
+ *  well filling the left column above, cropped around the crate so it reads larger. */
+const CrateScene = ({ tag, score }: { tag: string; score: number }) => (
+  <div className="relative h-[168px] overflow-hidden rounded-[16px] bg-tertiary-container lg:aspect-[10/7] lg:h-auto">
+    <CrateArt tag={tag} viewBox="0 0 416 168" className="lg:hidden" />
+    <CrateArt tag={tag} viewBox="82 4 280 196" className="hidden lg:block" />
     <span className="type-mono-md tabular absolute right-3 top-3 inline-flex h-7 items-center rounded-full bg-white/80 px-2.5 text-paper-ink shadow-e1">
       {score} / {MAX_SCORE}
     </span>
@@ -110,44 +120,32 @@ export const ReadinessCheck = () => {
           eyebrow="Readiness check"
           title="Is your product ready to ship?"
           subtitle="Flip six switches and see where you stand before the goods leave."
-        />
-        {/* v3.8: two columns under the heading, 1040px wide in all, centred. The guide sits left of the panel and is
-            vertically centred on it; below 1024 the panel comes first. */}
-        <div className="after-heading mx-auto grid max-w-[1040px] items-center gap-8 lg:grid-cols-[minmax(0,1fr)_440px] lg:gap-12">
-          <Reveal stagger className="order-2 mx-auto w-full max-w-[440px] lg:order-1 lg:max-w-none">
-            <ul className="space-y-2.5">
-              {['Takes under a minute', 'No email needed', 'Your answers stay in your browser'].map((t) => (
-                <li key={t} className="type-body-md flex items-center gap-2.5">
-                  <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-success/15 text-success">
-                    <Check className="h-3 w-3" strokeWidth={3} aria-hidden="true" />
-                  </span>
-                  {t}
-                </li>
-              ))}
-            </ul>
-            <div className="surface-1 card-shell mt-6 rounded-[20px]">
-              <CardHeader icon={Gauge} title="How to read your score" />
-              <ul className="card-body space-y-2.5">
-                {LEGEND.map((l) => (
-                  <li key={l.stamp} className="flex items-center gap-3">
-                    <span
-                      className="type-label-sm inline-flex h-5 w-16 shrink-0 items-center justify-center rounded-md"
-                      style={{ color: STATUS[l.stamp].color, background: `color-mix(in srgb, ${STATUS[l.stamp].color} 14%, transparent)` }}
-                    >
-                      {STATUS[l.stamp].label}
-                    </span>
-                    <span className="type-mono-md tabular w-11 shrink-0">{l.range}</span>
-                    <span className="type-body-sm min-w-0 text-muted-foreground">{l.copy}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Reveal>
+        >
+          {/* v3.9: the reassurances are one centred row under the subtitle (wraps on phones). */}
+          <ul className="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+            {['Takes under a minute', 'No email needed', 'Your answers stay in your browser'].map((t) => (
+              <li key={t} className="type-body-sm flex items-center gap-2 text-muted-foreground">
+                <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-success/15 text-success">
+                  <Check className="h-2.5 w-2.5" strokeWidth={3} aria-hidden="true" />
+                </span>
+                {t}
+              </li>
+            ))}
+          </ul>
+        </SectionHeading>
 
-          <Reveal className="order-1 lg:order-2">
-            <div className="surface-3 mx-auto w-full max-w-[440px] rounded-[28px] p-3 transition-transform duration-300 hover:-translate-y-1">
-              <CrateScene tag={status.color} score={score} />
-              <div className="px-3 pb-1 pt-4">
+        {/* v3.9: one centred panel. ≥1024 it splits 5/12 (illustration, verdict, legend, actions pinned to the bottom)
+            and 7/12 (the six switches, spread to the column height); both columns share the bottom edge. Below 1024
+            the column wrappers become display:contents and `order-*` restores the phone order:
+            illustration, title, switches, fix-first, legend, actions. */}
+        <Reveal className="after-heading">
+          <div className="surface-3 mx-auto flex w-full max-w-[440px] flex-col rounded-[28px] p-3 transition-transform duration-300 hover:-translate-y-1 lg:grid lg:max-w-[960px] lg:grid-cols-12 lg:gap-6 lg:p-4">
+            <div className="contents lg:col-span-5 lg:flex lg:flex-col">
+              <div className="order-1 lg:order-none">
+                <CrateScene tag={status.color} score={score} />
+              </div>
+
+              <div className="order-2 px-3 pt-4 lg:order-none lg:px-1">
                 <div className="flex items-center justify-between gap-3">
                   <h3 className="type-headline-sm">Export readiness</h3>
                   <span
@@ -159,42 +157,42 @@ export const ReadinessCheck = () => {
                   </span>
                 </div>
                 <p className="type-body-sm mt-0.5 text-muted-foreground">Flip on what's already done.</p>
+              </div>
 
-                <ul className="mt-3 divide-y divide-outline-variant">
-                  {READINESS_QUESTIONS.map((q, i) => (
-                    <li key={q.id} className="flex min-h-14 items-center justify-between gap-4 py-2">
-                      <div className="min-w-0">
-                        <p id={`rq-${q.id}`} className="type-title-sm">
-                          {q.label}
-                        </p>
-                        <p id={`rq-${q.id}-d`} className="type-body-sm text-muted-foreground">
-                          {q.sublabel}
-                        </p>
-                      </div>
-                      <Toggle
-                        checked={on[i]}
-                        onChange={(v) => setOn((prev) => prev.map((x, j) => (j === i ? v : x)))}
-                        labelledBy={`rq-${q.id}`}
-                        describedBy={`rq-${q.id}-d`}
-                      />
+              <p className="type-body-sm order-4 mt-3 min-h-[40px] px-3 text-muted-foreground lg:order-none lg:px-1">
+                {gaps.length ? (
+                  <>
+                    <span className="font-semibold text-foreground">Fix first:</span> {gaps[0].fix}.
+                  </>
+                ) : (
+                  <>
+                    <span className="font-semibold text-foreground">{verdict.title}</span> {verdict.copy}
+                  </>
+                )}
+              </p>
+
+              {/* The score legend (was the separate "How to read your score" card). */}
+              <div className="order-5 mx-3 mt-3 border-t border-outline-variant pt-3 lg:order-none lg:mx-1">
+                <p className="sr-only">How to read your score</p>
+                <ul className="space-y-2">
+                  {LEGEND.map((l) => (
+                    <li key={l.stamp} className="flex items-start gap-2.5">
+                      <span
+                        className="type-label-sm inline-flex h-5 w-16 shrink-0 items-center justify-center rounded-md"
+                        style={{ color: STATUS[l.stamp].color, background: `color-mix(in srgb, ${STATUS[l.stamp].color} 14%, transparent)` }}
+                      >
+                        {STATUS[l.stamp].label}
+                      </span>
+                      <span className="type-mono-md tabular w-12 shrink-0 leading-5">{l.range}</span>
+                      <span className="type-body-sm min-w-0 leading-5 text-muted-foreground [text-wrap:pretty]">{l.copy}</span>
                     </li>
                   ))}
                 </ul>
+              </div>
 
-                <p className="type-body-sm mt-3 min-h-[20px] text-muted-foreground">
-                  {gaps.length ? (
-                    <>
-                      <span className="font-semibold text-foreground">Fix first:</span> {gaps[0].fix}.
-                    </>
-                  ) : (
-                    <>
-                      <span className="font-semibold text-foreground">{verdict.title}</span> {verdict.copy}
-                    </>
-                  )}
-                </p>
-
+              <div className="order-6 px-3 pb-1 pt-4 lg:order-none lg:mt-auto lg:px-1 lg:pb-0 lg:pt-5">
                 {/* One column below 380px so "Book a free call" never spills out of its pill. */}
-                <div className="mt-4 grid grid-cols-1 gap-2 min-[380px]:grid-cols-2">
+                <div className="grid grid-cols-1 gap-2 min-[380px]:grid-cols-2">
                   <Button onClick={sendResult} className="px-3">
                     Book a free call <ArrowRight aria-hidden="true" />
                   </Button>
@@ -214,8 +212,31 @@ export const ReadinessCheck = () => {
                 </div>
               </div>
             </div>
-          </Reveal>
-        </div>
+
+            <div className="contents lg:col-span-7 lg:flex lg:flex-col">
+              <ul className="order-3 mt-3 divide-y divide-outline-variant px-3 lg:order-none lg:mt-0 lg:flex lg:flex-1 lg:flex-col lg:px-2">
+                {READINESS_QUESTIONS.map((q, i) => (
+                  <li key={q.id} className="flex min-h-14 items-center justify-between gap-4 py-2 lg:min-h-16 lg:flex-1">
+                    <div className="min-w-0">
+                      <p id={`rq-${q.id}`} className="type-title-sm">
+                        {q.label}
+                      </p>
+                      <p id={`rq-${q.id}-d`} className="type-body-sm text-muted-foreground">
+                        {q.sublabel}
+                      </p>
+                    </div>
+                    <Toggle
+                      checked={on[i]}
+                      onChange={(v) => setOn((prev) => prev.map((x, j) => (j === i ? v : x)))}
+                      labelledBy={`rq-${q.id}`}
+                      describedBy={`rq-${q.id}-d`}
+                    />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );

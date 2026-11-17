@@ -3,8 +3,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { toast } from 'sonner';
-import { AlertCircle, Check, ListChecks, Loader2, Mail, MapPin, Phone, Send, type LucideIcon } from 'lucide-react';
-import { CardHeader } from '@/components/site/CardHeader';
+import { AlertCircle, Check, ChevronRight, Loader2, Mail, MapPin, Phone, Send, type LucideIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { IconContainer } from '@/components/ui/chip';
 import { Input } from '@/components/ui/input';
@@ -127,14 +126,12 @@ export const Contact = () => {
           title="Tell us what you're shipping, and where."
           subtitle="We reply within one business day with next steps."
         />
-        {/* v3.8: details + next steps in the left 5 columns, the form in the right 7. Phones and tablets: form first. */}
-        <div className="after-heading grid-12 items-start gap-y-8">
-          <Reveal stagger className="order-2 col-span-4 space-y-6 md:col-span-12 lg:order-1 lg:col-span-5">
-            <ContactDetails rows={contactRows} />
-            <NextSteps />
-          </Reveal>
+        {/* v3.9: no side column. A slim "What happens next" strip, the form centred under it, then the contact
+            details as a centred row. All three share the 880px measure. */}
+        <div className="after-heading mx-auto max-w-[880px]">
+          <NextSteps />
 
-          <Reveal className="order-1 col-span-4 md:col-span-12 lg:order-2 lg:col-span-7">
+          <Reveal className="mt-5">
             <div className="surface-3 panel-pad rounded-[28px]">
               {sent ? (
                 <div role="status" className="flex animate-step-in flex-col items-start py-4">
@@ -300,25 +297,31 @@ export const Contact = () => {
             </div>
           </Reveal>
 
+          <ContactDetails rows={contactRows} />
         </div>
       </div>
     </section>
   );
 };
 
+/** v3.9: three details in an evenly spaced, centred row 20px under the form; stacked below 640px. */
 const ContactDetails = ({
   rows,
 }: {
   rows: { icon: LucideIcon; label: string; value: string; href?: string }[];
 }) => (
-  <ul className="space-y-3">
+  <Reveal
+    as="ul"
+    stagger
+    className="mt-5 flex flex-col items-center gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-evenly sm:gap-x-6"
+  >
     {rows.map((r) => (
-      <li key={r.label} className="flex items-center gap-4">
+      <li key={r.label} className="flex w-full max-w-[280px] items-center gap-3 sm:w-auto sm:max-w-none">
         <IconContainer icon={r.icon} size="sm" />
-        <div>
+        <div className="min-w-0 text-left">
           <p className="type-label-sm text-muted-foreground">{r.label}</p>
           {r.href ? (
-            <a href={r.href} className="type-title-sm hover:text-primary-ink">
+            <a href={r.href} className="hit type-title-sm relative block hover:text-primary-ink">
               {r.value}
             </a>
           ) : (
@@ -327,21 +330,27 @@ const ContactDetails = ({
         </div>
       </li>
     ))}
-  </ul>
+  </Reveal>
 );
 
+/** v3.9: a slim strip of the three steps (numbered well + one line), chevrons between; a column below 640px. */
 const NextSteps = () => (
-  <div className="surface-1 card-shell rounded-[20px]">
-    <CardHeader icon={ListChecks} title="What happens next" />
-    <ol className="card-body space-y-3">
-      {NEXT_STEPS.map((s, i) => (
-        <li key={s} className="type-body-md flex items-start gap-3">
-          <span className="type-label-sm flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-primary-container text-primary-on-container">
-            {i + 1}
-          </span>
-          {s}
-        </li>
-      ))}
-    </ol>
-  </div>
+  <Reveal>
+    <section aria-labelledby="next-steps-title" className="surface-1 rounded-[20px] px-4 py-3 sm:px-5">
+      <h3 id="next-steps-title" className="sr-only">
+        What happens next
+      </h3>
+      <ol className="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+        {NEXT_STEPS.map((s, i) => (
+          <li key={s} className="type-body-sm flex min-w-0 items-center gap-2.5 text-foreground sm:gap-3">
+            {i > 0 && <ChevronRight aria-hidden="true" className="hidden h-4 w-4 shrink-0 text-muted-foreground sm:block" />}
+            <span className="type-label-sm flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-container text-primary-on-container">
+              {i + 1}
+            </span>
+            <span className="min-w-0">{s}</span>
+          </li>
+        ))}
+      </ol>
+    </section>
+  </Reveal>
 );
