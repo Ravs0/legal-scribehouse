@@ -10,6 +10,8 @@ switch panel, bezelled windows, one glowing key. Glass survives only in the head
 
 ## 1. Palette "Dawn" (HSL)
 
+> **Superseded by v3.8 "Golden Hour"** (see the end of this file). The dawn-orange values below are kept for history only; `src/index.css` is the source of truth.
+
 | Token | Light | Dark |
 |---|---|---|
 | background / foreground | 36 50% 96% / 24 28% 10% | 258 20% 7% / 34 40% 94% |
@@ -31,6 +33,8 @@ Rules:
 - **Background:** static. Light is `#FBF7F1 → #F5ECE0` with three soft blobs (orange, rose, lagoon) and grain at .035. Dusk is `#110F16 → #17121A`.
 
 ## 2. Type and component size sheet
+
+> Fonts superseded in v3.8: Sora (display), Manrope (UI/body), Geist Mono. See "v3.8 — Golden Hour".
 
 **Fonts:** Plus Jakarta Sans (600/700/800) and Inter (400/500/600). JetBrains Mono 500 is used **only** for receipt
 text, LED readouts, glass-chip counters and widget unit labels.
@@ -66,6 +70,8 @@ text, LED readouts, glass-chip counters and widget unit labels.
 **States:** press scales to .97 (nav items and widgets to .92). Focus is a 2px ring with a 2px offset. Disabled is opacity .4.
 
 ## 3. Navigation: liquid-glass bar with a clear lens
+
+> Desktop layout superseded in v3.8: one glass bar spanning the container. See "v3.8 — Golden Hour".
 
 **Layout:** wordmark, then the centred glass pill nav, then the theme key and the "Book a consult" button.
 
@@ -292,3 +298,112 @@ Colours, font families and section order are unchanged (a separate decision on t
 - **Routes:** the page container fades and rises 8px in 200ms; scroll resets to the top instantly. In-page anchors scroll smoothly and land below the sticky header (`scroll-margin-top`).
 - **Reduced motion:** no `motion-ok`, so everything renders in its final state; the global rule cuts remaining animations and transitions to ~0; smooth scrolling is off.
 - **Deliberate exceptions to "transform / opacity only":** the FAQ accordion height and the Glance widget morph (left / top / width / height) still animate layout, as before.
+
+
+## v3.8 — Golden Hour
+
+The owner's new colour and type direction plus new placements. The material system (pebble finish, edges, wells, bezels,
+glass), the 1280px container, fluid type, the reveal system (`src/lib/reveal.ts`), motion tokens, 44px hit areas and the
+markets drop-down from v3.7 are unchanged. The dawn-orange palette (section 1) and the v3.6 header scrim are **superseded**.
+
+### Fonts
+- Google Fonts: `Sora:wght@400..800`, `Manrope:wght@400..800`, `Geist Mono:wght@400..600` (index.html and the artifact
+  `straitline.html`).
+- Tailwind `fontFamily`: display `"Sora"`, sans `"Manrope"`, mono `"Geist Mono"`, each with system fallbacks.
+- Display/headline weight 600. Tracking: display −0.035em, headline-lg −0.03em, headline-md/sm −0.025em, title-lg −0.015em.
+  Body Manrope 400/500; labels and titles stay at 600 (Manrope 600 reads firmly enough).
+- `type-display-lg` re-tuned to `clamp(34px, 28.522px + 1.5217vw, 48px)` (max 52 → 48, −7.7%): Sora is wider, and the
+  hero's second line wrapped at 1024px. No other clamp needed changing (the section h2 wraps that grew come from the new
+  24ch measure, which scales with the font, so a smaller size would not help).
+
+### Colour tokens (HSL, `src/index.css`)
+| Token | Light | Dark |
+|---|---|---|
+| background | 44 70% 92% | 160 22% 6% |
+| foreground (card/popover/secondary fg follow) | 160 24% 10% | 44 40% 94% |
+| card / popover | 48 80% 98% | 160 16% 10.5% / 10% |
+| primary (amber) | 34 96% 50% | 36 96% 56% |
+| primary-foreground | 160 30% 8% | 160 30% 8% |
+| primary-ink | 28 90% 32% | 38 95% 66% |
+| ring | 32 96% 44% | 36 96% 56% |
+| muted-foreground | 160 8% 34% | 44 10% 68% |
+| secondary / muted | 44 52% 89% / 44 46% 87.5% | 160 12% 15% / 160 12% 12.5% |
+| accent / accent-fg | 40 96% 88% / 28 90% 28% | 36 50% 16% / 40 100% 80% |
+| border / input / outline-variant | 44 30% 79% / 160 8% 46% / 44 28% 77% | 160 10% 20% / 160 8% 44% / 160 10% 18% |
+| surface-low / surface-high | 44 50% 88% / 44 38% 83.5% | 160 20% 8% / 160 12% 14% |
+| bezel | 44 40% 82% | 160 12% 13.5% |
+| primary-container / on- | 40 96% 85% / 28 85% 22% | 34 60% 18% / 40 100% 86% |
+| tertiary (deep teal-green) / container / on-container | 165 60% 24% / 165 40% 86% / 165 70% 13% | 165 55% 58% / 165 40% 14% / 165 60% 82% |
+| device / device-fg | 160 20% 8% / 44 40% 94% | 160 22% 4.5% / 44 40% 94% |
+| led | 34 100% 60% | 34 100% 60% |
+| tint (all shadows, edges, wells, float drops) | 160 30% 12% | 160 40% 2% |
+| bg-base | `#fbf4e1 → #f5e6c4` | `#0b1310 → #101a15` |
+| blobs | amber 38/.38, coral 18/.22, teal 165/.20 | amber 36/.16, teal 165/.14, amber 28/.10 |
+| nav-fill | 48 80% 98% / .72 | 160 16% 12% / .62 |
+
+- `.btn-filled`: `linear-gradient(180deg, hsl(40 98% 58%), hsl(30 95% 50%))`, inner/outer shadow hues 28–34; label in
+  `--primary-foreground`. The checked checkbox uses the same gradient with a primary-foreground tick.
+- **Paper tokens** for illustrations that stay light in both themes (receipt, market detail sheet, filter chips on the
+  device panel): `--paper` 48 90% 98.5%, `--paper-ink`, `--paper-muted`, `--paper-rule`, `--paper-chip`,
+  `--paper-accent` (28 90% 32%), `--paper-teal` / `--paper-teal-ink`. Tailwind: `bg-paper`, `text-paper-ink` etc.
+- The hero printer's backdrop scene (`SCENES.home`) is amber sky, cream horizon, deep-teal water and cream sand. The
+  printer head and keys are green-black; the ThemeKey glows amber (light) or mint (dark). Market and post scenes keep
+  their own illustration palettes.
+- Placeholders use full `muted-foreground` (no 70% alpha).
+
+**Contrast (WCAG, computed from the tokens):**
+
+| Pair | Light | Dark |
+|---|---|---|
+| foreground on background / card / surface-low / bezel | 14.97 / 16.44 / 13.72 / 12.05 | 16.93 / 15.10 / 16.14 / 13.81 |
+| muted-foreground on background / card / surface-low / bezel | 6.08 / 6.68 / 5.57 / 4.89 | 8.82 / 7.87 / 8.41 / 7.20 |
+| primary-ink on card | 5.94 | 10.10 |
+| button label on amber (gradient top / bottom) | 10.11 / 6.83 | same |
+| placeholder (muted-fg) on field (surface-low) | 5.57 | 8.41 |
+| paper-muted / paper-accent on paper | 6.73 / 5.99 | same |
+
+### Header
+- ≥1024: **one** `.nav-glass` bar the width of the container: 60px tall, radius full, padding 0 8px 0 20px. Grid
+  `minmax(0,1fr) auto minmax(0,1fr)`: wordmark left, nav centred (moved 6px left to cancel the asymmetric padding), right
+  track = ThemeKey then the 40px "Book a free call" button. The CTA keeps the collapsed-slot appear-on-scroll behaviour on
+  home; it opens inside the right track, so the nav never moves (measured stable at 1024–2560). Lens, stretch, spring and
+  scroll-spy are unchanged. Glare/specular cover the whole bar.
+- 1024–1279: nav items `px-[7px]` with no gap, CTA `px-3` label-md, CTA gap 6px; the descriptor shows from 1280.
+- The `.header-scrim` hack is gone; the bar (fill raised to 72% / 62%) is the backing.
+- <1024: the single glass bar + drawer are unchanged.
+
+### Section order and nav
+Hero (+ problems strip) → Services → Process → Markets → ReadinessCheck → Glance → Proof → InsightsTeaser → Faq → Contact.
+Nav: Services · How it works · Markets · Readiness check · Insights · About (scroll-spy follows page order).
+
+### Hero
+≥1024 mirrored: printer in the left 5 columns, flush with the container's left edge; text in the right 7, left-aligned,
+vertically centred on the printer. DOM order stays text first (`lg:order-*`). <1024 unchanged. The phone-landscape
+side-by-side rule is mirrored too (printer left).
+
+### Section headings
+`SectionHeading` is a centred block: eyebrow (dot + label) → 10px → h2 (headline-lg, `max-w-[24ch]`, balanced) → 10px →
+subtitle (`max-w-[56ch]`) → `.after-heading` → content at full container width. Page h1s (About, Insights, Authors) use
+the same block with display-md at 20ch. Extra content (e.g. Proof's "Sample data" badge) is centred under the title.
+- Process: four cards in a row ≥1024, 2×2 at 640–1023, one column below.
+- Glance: board centred, max 880px; the legend is a 4-column row under it (2×2 on phones).
+- Readiness: two columns under the heading, 1040px max, centred: ticks + "How to read your score" (left, vertically
+  centred) and the 440px panel (right). <1024 the panel comes first.
+- FAQ: accordion centred, max 800px; "Still unsure?" is a slim row under it, the same 800px wide (text left, button
+  right, stacked on phones).
+- Contact: left 5 columns details + "What happens next", right 7 the form (form first below 1024).
+- Insights: a single centred "All insights" button under the cards at every size.
+
+### Card anatomy (`src/components/site/CardHeader.tsx`, `.card-*` in index.css)
+- `.card-shell`: padding 20px (`.card-shell-lg` 24px from 768), flex column, `container-type: inline-size`.
+- **Header row** (`CardHeader`): 40px well (20px icon, or a mono numeral) + title (`type-title-lg`) + optional mono-small
+  meta right-aligned, 12px gaps. The title's **first line** is centred on the well (`margin-top: calc((40px - 1lh)/2)`),
+  so one- and two-line titles in a row share a first baseline.
+- **Body** (`.card-body`): 12px below, `type-body-md`, muted.
+- **Footer** (`CardFooter` / `.card-foot`): `margin-top: auto`, hairline above, 16px top padding; at least 16px between
+  the body and the hairline. Rows of cards stretch to equal height, so footers align across a row.
+- Narrow cards (<280px, i.e. Process at 1024–1279): the meta drops under the title and the title steps down to 17px.
+- Applied to: Service cards, Process steps, "How to read your score", "What happens next", "Still unsure?", About
+  ("Why we exist" and the principle cards). Problems strip items: dot + title row, body hangs from the title's left edge.
+  Testimonials: quote mark, quote, pinned `.card-foot` (avatar well + name + route) on the existing subgrid. Insight
+  cards: image, title + arrow, body, pinned footer with the type badge and date.
