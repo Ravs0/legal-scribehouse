@@ -112,11 +112,18 @@ export const Hero = () => {
               </div>
               <p className="type-body-sm mt-2.5 text-muted-foreground">Pick one and the printer shows the duty an origin claim would save.</p>
             </div>
-            <ul className="intro mt-5 flex flex-wrap gap-2" style={step(4)}>
+            {/* Phones: one strip of three equal cells (pills wrapped 2 + 1). From 640px: a row of pills. */}
+            <ul
+              className="intro surface-1 mt-5 grid grid-cols-3 divide-x divide-outline-variant rounded-[16px] sm:flex sm:flex-wrap sm:gap-2 sm:divide-x-0 sm:rounded-none sm:bg-transparent sm:shadow-none"
+              style={step(4)}
+            >
               {STATS.map((s) => (
-                <li key={s.label} className="surface-1 type-label-md inline-flex h-8 items-center gap-2 rounded-full px-3">
+                <li
+                  key={s.label}
+                  className="type-label-md flex flex-col items-center justify-start gap-0.5 px-1.5 py-3 text-center sm:surface-1 sm:h-8 sm:flex-row sm:gap-2 sm:rounded-full sm:px-3 sm:py-0"
+                >
                   <span className="font-bold text-primary-ink tabular">{s.n}</span>
-                  <span>{s.label}</span>
+                  <span className="text-muted-foreground sm:text-foreground">{s.label}</span>
                 </li>
               ))}
             </ul>

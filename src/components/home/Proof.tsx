@@ -1,4 +1,3 @@
-import { MouseEvent, useRef, useState } from 'react';
 import { Quote } from 'lucide-react';
 import { PLACEHOLDER, STATS, TESTIMONIALS } from '@/data/proof';
 import { Badge } from '@/components/ui/badge';
@@ -15,72 +14,6 @@ const initials = (who: string) =>
     .map((w) => w[0]?.toUpperCase())
     .join('');
 
-const LENS = 72;
-const ZOOM = 1.25;
-
-/** Pill bezel with a stat; a surface-3 magnifier follows the pointer on desktop. */
-const StatBezel = ({ value, suffix, label }: { value: number; suffix: string; label: string }) => {
-  const wellRef = useRef<HTMLDivElement>(null);
-  const [lens, setLens] = useState<{ x: number; y: number } | null>(null);
-  const canLens = () =>
-    window.matchMedia('(hover: hover) and (min-width: 1024px)').matches && !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const onMove = (e: MouseEvent<HTMLDivElement>) => {
-    if (!canLens() || !wellRef.current) return;
-    const r = wellRef.current.getBoundingClientRect();
-    setLens({ x: e.clientX - r.left, y: e.clientY - r.top });
-  };
-  const numeral = (
-    <>
-      <span className="type-headline-lg tabular block font-semibold text-primary-ink">
-        {value}
-        {suffix}
-      </span>
-      <span className="type-body-sm mt-1 block text-muted-foreground xl:whitespace-nowrap">{label}</span>
-    </>
-  );
-  return (
-    <div className="bezel pill card-hover rounded-full p-2">
-      <div
-        ref={wellRef}
-        onMouseMove={onMove}
-        onMouseLeave={() => setLens(null)}
-        className="bezel-well stat-well pill relative flex h-24 flex-col justify-center overflow-hidden rounded-full px-4 text-center sm:px-6 sm:text-left"
-      >
-        <span className="type-headline-lg tabular block font-semibold text-primary-ink">
-          <CountUp value={value} suffix={suffix} />
-        </span>
-        <span className="type-body-sm mt-1 block text-muted-foreground xl:whitespace-nowrap">{label}</span>
-        {lens && (
-          <span
-            aria-hidden="true"
-            className="pointer-events-none absolute overflow-hidden rounded-full bg-[var(--well-fill)]"
-            style={{
-              width: LENS,
-              height: LENS,
-              left: lens.x - LENS / 2,
-              top: lens.y - LENS / 2,
-              boxShadow: 'inset 0 0 0 1px hsl(0 0% 100% / .7), inset 0 -8px 12px -6px hsl(0 0% 100% / .5), 0 6px 14px -6px hsl(24 40% 20% / .35)',
-            }}
-          >
-            <span
-              className="absolute flex flex-col justify-center px-6"
-              style={{
-                width: wellRef.current?.clientWidth,
-                height: wellRef.current?.clientHeight,
-                transformOrigin: '0 0',
-                transform: `translate(${LENS / 2 - lens.x * ZOOM}px, ${LENS / 2 - lens.y * ZOOM}px) scale(${ZOOM})`,
-              }}
-            >
-              {numeral}
-            </span>
-            <span className="absolute inset-x-2 top-1 h-1/3 rounded-full bg-gradient-to-b from-white/50 to-transparent" />
-          </span>
-        )}
-      </div>
-    </div>
-  );
-};
-
 export const Proof = () => (
   <section id="proof" className="section">
     <div className="container">
@@ -92,18 +25,29 @@ export const Proof = () => (
         )}
       </SectionHeading>
 
-      <dl className="after-heading stack-gap grid grid-cols-2 lg:grid-cols-4">
-        {STATS.map((s, i) => (
-          <Reveal key={s.label} index={i}>
-            <dt className="sr-only">{s.label}</dt>
-            <dd>
-              <StatBezel value={s.value} suffix={s.suffix} label={s.label} />
-            </dd>
-          </Reveal>
-        ))}
-      </dl>
+      {/* v3.11: one stat strip (the same anatomy as the hero's problems strip) instead of four pebbles. */}
+      <Reveal className="after-heading">
+        <dl className="surface-2 grid grid-cols-2 rounded-[24px] lg:grid-cols-4">
+          {STATS.map((s, i) => (
+            <div
+              key={s.label}
+              className={[
+                'flex flex-col justify-start gap-1 px-5 py-5 md:px-6 md:py-6',
+                i % 2 === 1 ? 'border-l border-outline-variant' : '',
+                i >= 2 ? 'border-t border-outline-variant lg:border-t-0' : '',
+                i === 2 ? 'lg:border-l' : '',
+              ].join(' ')}
+            >
+              <dt className="type-body-sm text-muted-foreground">{s.label}</dt>
+              <dd className="order-first type-headline-lg tabular font-semibold text-primary-ink">
+                <CountUp value={s.value} suffix={s.suffix} />
+              </dd>
+            </div>
+          ))}
+        </dl>
+      </Reveal>
 
-      <ul className="no-scrollbar -mx-4 mt-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6 md:mx-0 md:grid md:grid-cols-3 md:gap-x-5 md:gap-y-0 md:overflow-visible md:px-0 xl:gap-x-6">
+      <ul className="no-scrollbar -mx-4 mt-4 md:mt-5 xl:mt-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6 md:mx-0 md:grid md:grid-cols-3 md:gap-x-5 md:gap-y-0 md:overflow-visible md:px-0 xl:gap-x-6">
         {TESTIMONIALS.map((t, i) => (
           <Reveal as="li" key={t.who} index={i} className="w-[84vw] shrink-0 snap-center md:row-span-3 md:grid md:w-auto md:grid-rows-subgrid">
             {/* Subgrid rows keep quote marks, quotes and captions aligned across the three cards. */}
