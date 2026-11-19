@@ -449,3 +449,15 @@ Feedback: "less corporate, finish is average". The tactile material (pebble shee
 - Section headings: left-aligned. Eyebrow is a 24px rule + label; title (28–44px) in the left 7 columns, subtitle in the right 5, over a full-width hairline.
 - Content sits on the 12-column grid: FAQ (help card left 4, accordion right 8), Contact (steps and details left 4, form right 8), Glance (legend left 4, board right 8), Readiness panel full width.
 - Rhythm: section padding 56–96px; tinted bands on How it works, Export at a glance and FAQ; a dark ink band on Results; the footer is ink.
+
+## v4.0 "Regional desk" (chosen from three trust-first mock-ups: A partner-led, B track record, C regional desk)
+
+The user picked C, asked to keep every interactive piece, and to use placeholders for people for now.
+
+- Default theme is dark, in warm ink (background `24 20% 7%`, cards `24 18% 9%`, hairlines `24 12% 16%`, text `34 38% 92%`, muted `30 12% 70%`). Light theme (corporate paper) stays available from the header.
+- Type: Newsreader 400 (serif) for the hero (`.type-hero`, 44–78px), section titles (32–52px) and stat figures (`.type-stat`); Manrope for everything else, with card titles in Manrope 700.
+- Hero: eyebrow of office cities, "One desk for all ten ASEAN markets.", two buttons (Book a free call, How we work), and a grid of the six main markets with who handles each (placeholder: "Local counsel · city"), then a four-cell promise row (1 contact · 10 markets · 1 day to a first answer · fixed fee). The header CTA stays hidden over the hero so the call button never shows twice.
+- New "Your desk" section (`src/components/home/Desk.tsx`, data in `src/data/team.ts`, `PLACEHOLDER = true` shows a "Sample people" badge). Portrait cards 4:5 from 640px; compact rows on phones.
+- The receipt printer, route picker and the three failure modes moved into their own "Try a route" section (`RouteDemo` in Hero.tsx), after Markets.
+- Page order: Hero, Our desk, Services, How it works, Markets, Try a route, Readiness check, At a glance, Results, Insights, FAQ, Contact. Nav adds "Our desk".
+- Before launch: real names, roles, admissions and photos; the real local partner firms per market; confirm the "1 day" and fixed-fee promises.

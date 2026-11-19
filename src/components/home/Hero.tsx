@@ -1,13 +1,29 @@
 import { CSSProperties, KeyboardEvent, useRef, useState } from 'react';
 import { Eyebrow } from '@/components/site/SectionHeading';
 import { Reveal } from '@/components/motion/Reveal';
+import { ArrowRight } from 'lucide-react';
 import { ClearancePrinter } from '@/components/home/ClearancePrinter';
+import { Button } from '@/components/ui/button';
+import { HashLink } from '@/components/site/HashLink';
+import { SectionHeading } from '@/components/site/SectionHeading';
 import { cn } from '@/lib/utils';
 
-const STATS = [
-  { n: '10', label: 'markets covered' },
-  { n: '6', label: 'fixed-scope services' },
-  { n: '30-min', label: 'free first call' },
+// v4.0 "Regional desk": the four promises under the hero. Confirm each with the firm before launch.
+const PROMISES = [
+  { n: '1', label: 'point of contact for every market' },
+  { n: '10', label: 'markets, local counsel vetted by us' },
+  { n: '1 day', label: 'to a first answer on any market question' },
+  { n: 'Fixed', label: 'fee per job, quoted before work starts' },
+];
+
+// Placeholder desk: where the work is done. Replace "Local counsel" lines with the real partner firms.
+const DESK = [
+  { code: 'SG · Hub', name: 'Singapore', note: 'Our office · contracts seat' },
+  { code: 'MY', name: 'Malaysia', note: 'Local counsel · Kuala Lumpur' },
+  { code: 'ID', name: 'Indonesia', note: 'Local counsel · Jakarta' },
+  { code: 'VN', name: 'Vietnam', note: 'Local counsel · Ho Chi Minh City' },
+  { code: 'TH', name: 'Thailand', note: 'Local counsel · Bangkok' },
+  { code: 'PH', name: 'Philippines', note: 'Local counsel · Manila' },
 ];
 
 const PROBLEMS = [
@@ -82,80 +98,101 @@ const RoutePicker = ({ value, onChange }: { value: number; onChange: (i: number)
   );
 };
 
-export const Hero = () => {
-  const [route, setRoute] = useState(0);
-  return (
-    <section id="hero" className="pb-8 pt-6 lg:pb-12 lg:pt-10">
-      <div className="container">
-        <div className="grid-12 items-center gap-y-8">
-          {/* v3.8 mirrored: from 1024 the printer takes the left 5 columns (flush with the container edge) and the text
-              the right 7. DOM order stays text first for phones, tablets and screen readers.
-              768–1023: text block capped at 640px, printer centred below it. */}
-          <div className="col-span-4 md:col-span-12 md:max-w-[640px] lg:order-2 lg:col-span-7 lg:max-w-none hero-text">
-            <div className="intro" style={step(0)}>
-              <Eyebrow>Export law for small brands · ASEAN</Eyebrow>
-            </div>
-            <h1 className="intro type-display-lg mt-4 max-w-[19.5ch] text-foreground lg:max-w-none" style={step(1)}>
-              Export to Southeast Asia.{' '}
-              <br className="hidden lg:inline" />
-              Get it right the first time.
-            </h1>
-            <p className="intro type-body-lg mt-4 max-w-[52ch] text-muted-foreground" style={step(2)}>
-              We sort out the structure, contracts, customs and product registration before your first shipment leaves,
-              and explain each step in plain English.
-            </p>
-            <div className="intro mt-6" style={step(3)}>
-              <p className="type-eyebrow text-muted-foreground">Try a route</p>
-              <div className="mt-2">
-                <RoutePicker value={route} onChange={setRoute} />
-              </div>
-              <p className="type-body-sm mt-2.5 text-muted-foreground">Pick one and the printer shows the duty an origin claim would save.</p>
-            </div>
-            {/* Phones: one strip of three equal cells (pills wrapped 2 + 1). From 640px: a row of pills. */}
-            <ul
-              className="intro surface-1 mt-5 grid grid-cols-3 divide-x divide-outline-variant rounded-[10px] sm:flex sm:flex-wrap sm:gap-2 sm:divide-x-0 sm:rounded-none sm:border-0 sm:bg-transparent sm:shadow-none"
-              style={step(4)}
-            >
-              {STATS.map((s) => (
-                <li
-                  key={s.label}
-                  className="type-label-md flex flex-col items-center justify-start gap-0.5 px-1.5 py-3 text-center sm:surface-1 sm:h-8 sm:flex-row sm:gap-2 sm:rounded-[8px] sm:px-3 sm:py-0"
-                >
-                  <span className="font-bold text-primary-ink tabular">{s.n}</span>
-                  <span className="text-muted-foreground sm:text-foreground">{s.label}</span>
-                </li>
-              ))}
-            </ul>
+export const Hero = () => (
+  <section id="hero" className="pb-14 pt-10 md:pb-20 lg:pt-20">
+    <div className="container">
+      <div className="grid-12 items-start gap-y-10">
+        <div className="col-span-4 md:col-span-12 lg:col-span-6">
+          <div className="intro" style={step(0)}>
+            <Eyebrow>Singapore · Kuala Lumpur · Jakarta · Ho Chi Minh City</Eyebrow>
           </div>
-          <div className="col-span-4 md:col-span-12 lg:order-1 lg:col-span-5 hero-art">
-            <div className="intro-printer">
-              <ClearancePrinter className="float-idle lg:ml-0" selected={route} onSelect={setRoute} />
-            </div>
+          <h1 className="intro type-hero mt-5 max-w-[14ch]" style={step(1)}>
+            One desk for all ten ASEAN markets.
+          </h1>
+          <p className="intro type-body-lg mt-6 max-w-[50ch] text-muted-foreground md:text-[19px] md:leading-[1.6]" style={step(2)}>
+            We run your export from Singapore and brief vetted local counsel in every market, so you deal with one firm,
+            one fee and one person who knows your file.
+          </p>
+          <div className="intro mt-8 flex flex-wrap gap-3" style={step(3)}>
+            <Button asChild size="lg" icon="trailing">
+              <HashLink to="contact">
+                Book a free call <ArrowRight aria-hidden="true" />
+              </HashLink>
+            </Button>
+            <Button asChild size="lg" variant="outline">
+              <HashLink to="process">How we work</HashLink>
+            </Button>
           </div>
         </div>
 
-        <Reveal className="mt-8 lg:mt-10">
-          <div id="problems" className="surface-2 rounded-[14px]">
-            <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-4 pt-4 md:px-5">
-              <Eyebrow>Why exports stall</Eyebrow>
-              <h2 className="type-label-md text-muted-foreground">Three ways a first shipment goes wrong</h2>
+        <div className="intro col-span-4 md:col-span-12 lg:col-span-6" style={step(4)}>
+          <ul aria-label="Where the work is done" className="grid grid-cols-2 overflow-hidden rounded-[10px] border border-border bg-border [gap:1px]">
+            {DESK.map((d) => (
+              <li key={d.name} className="bg-card px-4 py-4 md:px-5">
+                <p className="type-mono-sm text-muted-foreground">{d.code}</p>
+                <p className="type-title-md mt-1.5">{d.name}</p>
+                <p className="type-body-sm mt-0.5 text-muted-foreground">{d.note}</p>
+              </li>
+            ))}
+            <li className="type-body-sm col-span-2 bg-card px-4 py-3.5 text-muted-foreground md:px-5">
+              + Cambodia, Laos, Myanmar and Brunei through referral counsel
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <Reveal as="dl" stagger className="mt-14 grid grid-cols-2 border-t border-border md:mt-20 lg:grid-cols-4">
+        {PROMISES.map((p, i) => (
+          <div
+            key={p.label}
+            className={cn(
+              'flex flex-col py-6 pr-4 md:pr-6',
+              i % 2 === 1 && 'border-l border-border pl-4 md:pl-6',
+              i >= 2 && 'border-t border-border lg:border-t-0',
+              i === 2 && 'lg:border-l lg:pl-6',
+            )}
+          >
+            <dt className="type-body-sm order-2 mt-1 text-muted-foreground">{p.label}</dt>
+            <dd className="type-stat order-1">{p.n}</dd>
+          </div>
+        ))}
+      </Reveal>
+    </div>
+  </section>
+);
+
+/** v4.0: the receipt printer, route picker and the three failure modes, as their own section below Markets. */
+export const RouteDemo = () => {
+  const [route, setRoute] = useState(0);
+  return (
+    <section id="route" className="section band">
+      <div className="container">
+        <SectionHeading
+          eyebrow="Try a route"
+          title="What an origin claim is worth."
+          subtitle="Pick a route and the printer shows the duty a correct origin claim would save on a first consignment."
+        />
+        <div className="after-heading grid-12 items-center gap-y-10">
+          <div className="col-span-4 md:col-span-12 lg:col-span-6">
+            <p className="type-eyebrow text-muted-foreground">Example route</p>
+            <div className="mt-2">
+              <RoutePicker value={route} onChange={setRoute} />
             </div>
-            {/* v3.8 anatomy: a dot + title row; the body hangs from the title's left edge. */}
-            <ul className="mt-1 grid divide-y divide-outline-variant md:grid-cols-3 md:divide-x md:divide-y-0">
+            <h3 className="type-title-md mt-10">Three ways a first shipment goes wrong</h3>
+            <ul className="mt-3 divide-y divide-border border-y border-border">
               {PROBLEMS.map((p) => (
-                <li key={p.title} className="grid grid-cols-[8px_minmax(0,1fr)] content-start items-center gap-x-3 p-4 md:p-5">
-                  <span
-                    aria-hidden="true"
-                    className="h-2 w-2 rounded-full bg-destructive"
-                    style={{ boxShadow: '0 0 0 3px hsl(var(--destructive) / .14)' }}
-                  />
-                  <h3 className="type-title-sm">{p.title}</h3>
+                <li key={p.title} className="grid grid-cols-[8px_minmax(0,1fr)] content-start items-center gap-x-3 py-4">
+                  <span aria-hidden="true" className="h-2 w-2 rounded-full bg-primary" />
+                  <h4 className="type-title-sm">{p.title}</h4>
                   <p className="type-body-sm col-start-2 mt-1 text-muted-foreground">{p.copy}</p>
                 </li>
               ))}
             </ul>
           </div>
-        </Reveal>
+          <div className="col-span-4 md:col-span-12 lg:col-span-5 lg:col-start-8">
+            <ClearancePrinter selected={route} onSelect={setRoute} />
+          </div>
+        </div>
       </div>
     </section>
   );

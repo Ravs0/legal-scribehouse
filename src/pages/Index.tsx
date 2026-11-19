@@ -1,4 +1,5 @@
-import { Hero } from '@/components/home/Hero';
+import { Hero, RouteDemo } from '@/components/home/Hero';
+import { Desk } from '@/components/home/Desk';
 import { Markets } from '@/components/home/Markets';
 import { Services } from '@/components/home/Services';
 import { Glance } from '@/components/home/Glance';
@@ -9,13 +10,16 @@ import { InsightsTeaser } from '@/components/home/InsightsTeaser';
 import { Faq } from '@/components/home/Faq';
 import { Contact } from '@/components/home/Contact';
 
-// v3.8 order: what we do and how, then where, then the interactive tools, proof, reading, questions, contact.
+// v4.0 "Regional desk" order: the desk and its people first, then what we do and how, where, the interactive
+// tools, proof, reading, questions, contact.
 const Index = () => (
   <>
     <Hero />
+    <Desk />
     <Services />
     <Process />
     <Markets />
+    <RouteDemo />
     <ReadinessCheck />
     <Glance />
     <Proof />

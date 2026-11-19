@@ -1102,3 +1102,50 @@
   /* v3.12: section titles one step larger and tighter, as on firm sites. */
   .section-heading .type-headline-lg { font-size: clamp(28px, 21.739px + 1.7391vw, 44px); line-height: 1.08; letter-spacing: -0.035em; }
 }
+
+/* ============================================================
+ * v4.0 "Regional desk": warm ink by default, editorial serif headlines.
+ * Serif (Newsreader 400) for the hero, section titles and stat figures; Manrope for everything else.
+ * ============================================================ */
+.dark {
+  --bg-base: #15110e;
+  --background: 24 20% 7%;
+  --foreground: 34 38% 92%;
+  --card: 24 18% 9%;
+  --card-foreground: 34 38% 92%;
+  --popover: 24 18% 9.5%;
+  --popover-foreground: 34 38% 92%;
+  --secondary: 24 14% 13%;
+  --secondary-foreground: 34 38% 92%;
+  --muted: 24 14% 12%;
+  --muted-foreground: 30 12% 70%;
+  --border: 24 12% 16%;
+  --input: 24 10% 40%;
+  --outline-variant: 24 12% 16%;
+  --surface-container-low: 24 16% 11%;
+  --surface-container-high: 24 14% 14%;
+  --primary-ink: 24 100% 67%;
+  --accent: 22 50% 16%;
+  --bezel: 24 14% 12%;
+  --device: 24 22% 5%;
+  --tint: 24 30% 2%;
+  --well-fill: #120e0b;
+  --corp-line: hsl(24 12% 16%);
+  --corp-line-strong: hsl(24 12% 24%);
+  --corp-band: 24 18% 8.5%;
+  --corp-ink: 24 22% 4.5%;
+  --corp-ink-2: 24 18% 7%;
+}
+@layer components {
+  .type-hero { font-family: theme("fontFamily.serif"); font-weight: 400; font-size: clamp(44px, 30.696px + 3.6957vw, 78px); line-height: 1.0; letter-spacing: -0.025em; text-wrap: balance; }
+  .type-stat { font-family: theme("fontFamily.serif"); font-weight: 400; font-size: clamp(36px, 30.522px + 1.5217vw, 52px); line-height: 1.05; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+  .section-heading .type-headline-lg,
+  .type-display-lg,
+  .type-display-md { font-family: theme("fontFamily.serif"); font-weight: 400; letter-spacing: -0.02em; }
+  .section-heading .type-headline-lg { font-size: clamp(32px, 24.174px + 2.1739vw, 52px); line-height: 1.04; }
+  /* Card and item titles move to Manrope bold, as in the mock-up. */
+  .type-title-lg, .type-headline-sm, .type-headline-md { font-family: theme("fontFamily.sans"); font-weight: 700; letter-spacing: -0.01em; }
+  /* The Results stats read as figures in serif too. */
+  #proof dd { font-family: theme("fontFamily.serif"); font-weight: 400; letter-spacing: -0.02em; }
+  .dark .band-ink { --background: var(--corp-ink); --card: 24 18% 8%; }
+}

@@ -19,6 +19,7 @@ export default {
     extend: {
       fontFamily: {
         display: ['"Sora"', '"Manrope"', "system-ui", "sans-serif"],
+        serif: ['"Newsreader"', '"Iowan Old Style"', "Georgia", "serif"],
         sans: ['"Manrope"', "system-ui", "-apple-system", '"Segoe UI"', "Roboto", "sans-serif"],
         mono: ['"Geist Mono"', "ui-monospace", "SFMono-Regular", "Menlo", "monospace"],
       },
