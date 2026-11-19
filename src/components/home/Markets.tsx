@@ -92,6 +92,7 @@ export const Markets = () => {
     <section id="markets" className="section">
       <div className="container">
         <SectionHeading
+          index="04"
           eyebrow="Where we work"
           title="Ten markets. Ten rulebooks."
           subtitle="Pick a country to see who regulates it and where exporters usually get stuck."
@@ -112,7 +113,7 @@ export const Markets = () => {
                       if (!f.codes.includes(activeCode)) setActiveCode(f.codes[0]);
                     }}
                     className={cn(
-                      'press hit type-label-md relative h-[30px] shrink-0 rounded-[7px] px-3 transition-colors',
+                      'press hit type-label-md relative h-[30px] shrink-0 rounded-full px-3 transition-colors',
                       filter === f.id ? 'pebble btn-lift bg-paper text-paper-ink [--sheen-a:0.7]' : 'bg-white/[0.08] text-white/75 hover:bg-white/[0.12]',
                     )}
                   >
@@ -123,7 +124,7 @@ export const Markets = () => {
               <button
                 type="button"
                 onClick={askAbout}
-                className="pebble btn-lift hit type-label-md relative hidden h-[30px] shrink-0 items-center gap-1.5 rounded-[7px] bg-paper px-3 text-paper-ink [--sheen-a:0.7] sm:inline-flex"
+                className="pebble btn-lift hit type-label-md relative hidden h-[30px] shrink-0 items-center gap-1.5 rounded-full bg-paper px-3 text-paper-ink [--sheen-a:0.7] sm:inline-flex"
               >
                 Ask about {market.name} <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
               </button>
@@ -167,7 +168,7 @@ export const Markets = () => {
                       tabIndex={on ? 0 : -1}
                       onClick={() => select(m.code)}
                       className={cn(
-                        'press hit group relative z-[1] flex shrink-0 snap-start items-center gap-3 rounded-[8px] px-3.5 text-left transition-colors lg:h-16 lg:rounded-[10px] lg:px-4',
+                        'press hit group relative z-[1] flex shrink-0 snap-start items-center gap-3 rounded-full px-3.5 text-left transition-colors lg:h-16 lg:rounded-[10px] lg:px-4',
                         'h-9 lg:h-16',
                         on ? 'bg-paper text-paper-ink lg:bg-transparent lg:text-paper' : 'bg-white/[0.08] text-white/70 hover:text-white lg:bg-transparent',
                       )}

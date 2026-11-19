@@ -1,4 +1,4 @@
-import { CSSProperties, KeyboardEvent, useRef, useState } from 'react';
+import { CSSProperties, Fragment, KeyboardEvent, useEffect, useRef, useState } from 'react';
 import { Eyebrow } from '@/components/site/SectionHeading';
 import { Reveal } from '@/components/motion/Reveal';
 import { ArrowRight } from 'lucide-react';
@@ -7,11 +7,13 @@ import { Button } from '@/components/ui/button';
 import { HashLink } from '@/components/site/HashLink';
 import { SectionHeading } from '@/components/site/SectionHeading';
 import { cn } from '@/lib/utils';
+import { prefersReducedMotion } from '@/lib/reveal';
+import { CountUp } from '@/components/motion/CountUp';
 
 // v4.0 "Regional desk": the four promises under the hero. Confirm each with the firm before launch.
-const PROMISES = [
-  { n: '1', label: 'point of contact for every market' },
-  { n: '10', label: 'markets, local counsel vetted by us' },
+const PROMISES: { n: string; count?: number; label: string }[] = [
+  { n: '1', count: 1, label: 'point of contact for every market' },
+  { n: '10', count: 10, label: 'markets, local counsel vetted by us' },
   { n: '1 day', label: 'to a first answer on any market question' },
   { n: 'Fixed', label: 'fee per job, quoted before work starts' },
 ];
@@ -71,7 +73,7 @@ const RoutePicker = ({ value, onChange }: { value: number; onChange: (i: number)
       role="radiogroup"
       aria-label="Example route"
       onKeyDown={onKeyDown}
-      className="recessed inline-flex h-11 max-w-full items-center rounded-[10px] p-1 [background-color:var(--well-fill)]"
+      className="recessed inline-flex h-11 max-w-full items-center rounded-full p-1 [background-color:var(--well-fill)]"
     >
       {ROUTES.map((r, i) => {
         const on = i === value;
@@ -85,7 +87,7 @@ const RoutePicker = ({ value, onChange }: { value: number; onChange: (i: number)
             tabIndex={on ? 0 : -1}
             onClick={() => onChange(i)}
             className={cn(
-              'press hit type-label-md relative h-9 shrink-0 whitespace-nowrap rounded-[7px] px-[14px] transition-[color,background-color,box-shadow,transform] [transition-duration:200ms]',
+              'press hit type-label-md relative h-9 shrink-0 whitespace-nowrap rounded-full px-[14px] transition-[color,background-color,box-shadow,transform] [transition-duration:200ms]',
               on ? 'surface-1 text-foreground' : 'text-muted-foreground hover:text-foreground',
             )}
           >
@@ -98,7 +100,23 @@ const RoutePicker = ({ value, onChange }: { value: number; onChange: (i: number)
   );
 };
 
-export const Hero = () => (
+const HEADLINE = 'One desk for all ten ASEAN markets.';
+
+/** Cycles a highlight through the desk tiles (2.4s steps). Pauses on hover/focus; off with reduced motion. */
+const useDeskCycle = (n: number) => {
+  const [active, setActive] = useState(0);
+  const [paused, setPaused] = useState(false);
+  useEffect(() => {
+    if (paused || prefersReducedMotion()) return;
+    const t = window.setInterval(() => setActive((a) => (a + 1) % n), 2400);
+    return () => window.clearInterval(t);
+  }, [paused, n]);
+  return { active, setActive, pause: () => setPaused(true), resume: () => setPaused(false) };
+};
+
+export const Hero = () => {
+  const desk = useDeskCycle(DESK.length);
+  return (
   <section id="hero" className="pb-14 pt-10 md:pb-20 lg:pt-20">
     <div className="container">
       <div className="grid-12 items-start gap-y-10">
@@ -106,14 +124,21 @@ export const Hero = () => (
           <div className="intro" style={step(0)}>
             <Eyebrow>Singapore · Kuala Lumpur · Jakarta · Ho Chi Minh City</Eyebrow>
           </div>
-          <h1 className="intro type-hero mt-5 max-w-[14ch]" style={step(1)}>
-            One desk for all ten ASEAN markets.
+          {/* v4.1: each word rises out of its own line mask, 60ms apart. */}
+          <h1 className="hero-words type-hero mt-5 max-w-[14ch]" aria-label={HEADLINE}>
+            {HEADLINE.split(' ').map((w, i) => (
+              <Fragment key={i}>
+                <span aria-hidden="true" className="hw">
+                  <span style={{ '--w': i } as CSSProperties}>{w}</span>
+                </span>{' '}
+              </Fragment>
+            ))}
           </h1>
-          <p className="intro type-body-lg mt-6 max-w-[50ch] text-muted-foreground md:text-[19px] md:leading-[1.6]" style={step(2)}>
+          <p className="intro type-body-lg mt-6 max-w-[50ch] text-muted-foreground md:text-[19px] md:leading-[1.6]" style={step(4)}>
             We run your export from Singapore and brief vetted local counsel in every market, so you deal with one firm,
             one fee and one person who knows your file.
           </p>
-          <div className="intro mt-8 flex flex-wrap gap-3" style={step(3)}>
+          <div className="intro mt-8 flex flex-wrap gap-3" style={step(5)}>
             <Button asChild size="lg" icon="trailing">
               <HashLink to="contact">
                 Book a free call <ArrowRight aria-hidden="true" />
@@ -125,11 +150,26 @@ export const Hero = () => (
           </div>
         </div>
 
-        <div className="intro col-span-4 md:col-span-12 lg:col-span-6" style={step(4)}>
-          <ul aria-label="Where the work is done" className="grid grid-cols-2 overflow-hidden rounded-[10px] border border-border bg-border [gap:1px]">
-            {DESK.map((d) => (
-              <li key={d.name} className="bg-card px-4 py-4 md:px-5">
-                <p className="type-mono-sm text-muted-foreground">{d.code}</p>
+        <div className="intro col-span-4 md:col-span-12 lg:col-span-6" style={step(3)}>
+          <ul
+            aria-label="Where the work is done"
+            onPointerEnter={desk.pause}
+            onPointerLeave={desk.resume}
+            onFocus={desk.pause}
+            onBlur={desk.resume}
+            className="desk-grid surface-2 grid grid-cols-2 overflow-hidden rounded-[14px] bg-border [gap:1px]"
+          >
+            {DESK.map((d, i) => (
+              <li
+                key={d.name}
+                data-active={desk.active === i}
+                onPointerEnter={() => desk.setActive(i)}
+                className="desk-tile relative bg-card px-4 py-4 md:px-5"
+              >
+                <p className="type-mono-sm flex items-center gap-2 text-muted-foreground">
+                  {d.code}
+                  <span aria-hidden="true" className="desk-live h-1.5 w-1.5 rounded-full bg-primary" />
+                </p>
                 <p className="type-title-md mt-1.5">{d.name}</p>
                 <p className="type-body-sm mt-0.5 text-muted-foreground">{d.note}</p>
               </li>
@@ -153,13 +193,14 @@ export const Hero = () => (
             )}
           >
             <dt className="type-body-sm order-2 mt-1 text-muted-foreground">{p.label}</dt>
-            <dd className="type-stat order-1">{p.n}</dd>
+            <dd className="type-stat order-1 text-primary-ink">{p.count ? <CountUp value={p.count} durationMs={900} /> : p.n}</dd>
           </div>
         ))}
       </Reveal>
     </div>
   </section>
-);
+  );
+};
 
 /** v4.0: the receipt printer, route picker and the three failure modes, as their own section below Markets. */
 export const RouteDemo = () => {
@@ -168,6 +209,7 @@ export const RouteDemo = () => {
     <section id="route" className="section band">
       <div className="container">
         <SectionHeading
+          index="05"
           eyebrow="Try a route"
           title="What an origin claim is worth."
           subtitle="Pick a route and the printer shows the duty a correct origin claim would save on a first consignment."

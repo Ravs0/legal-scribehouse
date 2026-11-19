@@ -149,6 +149,7 @@ export const Glance = () => {
     <section id="glance" className="section band">
       <div className="container">
         <SectionHeading
+          index="07"
           eyebrow="Export at a glance"
           title="Your shipment, on one screen."
           subtitle="A sample of the dashboard that comes with a route plan. Tap any widget to open it."

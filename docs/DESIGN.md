@@ -461,3 +461,18 @@ The user picked C, asked to keep every interactive piece, and to use placeholder
 - The receipt printer, route picker and the three failure modes moved into their own "Try a route" section (`RouteDemo` in Hero.tsx), after Markets.
 - Page order: Hero, Our desk, Services, How it works, Markets, Try a route, Readiness check, At a glance, Results, Insights, FAQ, Contact. Nav adds "Our desk".
 - Before launch: real names, roles, admissions and photos; the real local partner firms per market; confirm the "1 day" and fixed-fee promises.
+
+## v4.1 Dawn colours and tactile buttons restored; editorial headings; motion
+
+Feedback: keep the previous colour theme and buttons; text placement must not feel generic; add animation.
+
+- Colours: the v3.11 dawn-orange set again (sand ground with blobs, orange primary, violet-black dark). Light is the default. The v4.0 warm-ink dark and the v3.12 flat ground are removed.
+- Buttons: the v3.11 pill buttons (gradient, bevel, sheen, lift), the glowing theme key, the orange wordmark tile, and pill segmented controls (route picker, stage, market filters).
+- Kept from v3.12/v4.0: hairline cards, the regional-desk hero, Our desk, serif headlines, the 12-column placements.
+- Section headings: editorial margin layout. A hairline across the top; from 1024px the serif section number (01–11) and label sit in columns 1–3, the title and subtitle hang from column 4. On phones the number and label share a row.
+- Motion (only under `html.motion-ok`; nothing moves with reduced motion):
+  - hero headline words rise out of line masks, 60ms apart;
+  - the desk grid cycles a highlight (orange edge bar, tint, live dot) every 2.4s, pausing on hover or focus;
+  - promise figures count up;
+  - each section's hairline draws in from the left, the number rises, then the title and subtitle follow;
+  - cards lift 3px on hover.

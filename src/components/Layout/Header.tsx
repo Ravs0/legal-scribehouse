@@ -22,7 +22,7 @@ export const Wordmark = ({ withDescriptor = false }: { withDescriptor?: boolean 
   <span className="flex items-center gap-2">
     <span
       aria-hidden="true"
-      className="flex h-7 w-7 items-center justify-center rounded-[7px] bg-foreground font-display text-[14px] font-semibold text-background"
+      className="btn-filled flex h-7 w-7 items-center justify-center rounded-lg font-display text-[14px] font-semibold text-primary-foreground"
     >
       {SITE.name[0]}
     </span>

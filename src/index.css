@@ -957,20 +957,16 @@
  * Colour hues are unchanged (dawn-orange); only the finish changes.
  * ============================================================ */
 :root {
-  --bg-base: #faf8f5;
-  --background: 36 33% 97%;
-  --corp-line: hsl(30 14% 86%);
+  --corp-line: hsl(32 24% 84%);
   --corp-line-strong: hsl(30 12% 78%);
   --corp-shadow-1: 0 1px 2px hsl(24 30% 20% / 0.04);
   --corp-shadow-2: 0 1px 2px hsl(24 30% 20% / 0.04), 0 8px 24px -12px hsl(24 30% 20% / 0.12);
   --corp-shadow-3: 0 1px 2px hsl(24 30% 20% / 0.05), 0 16px 40px -16px hsl(24 30% 20% / 0.18);
-  --corp-band: 36 30% 95%;
+  --corp-band: 36 44% 91.5%;
   --corp-ink: 24 16% 9%;
   --corp-ink-2: 24 10% 14%;
 }
 .dark {
-  --bg-base: #0f0e13;
-  --background: 255 16% 6.5%;
   --corp-line: hsl(258 8% 20%);
   --corp-line-strong: hsl(258 8% 28%);
   --corp-shadow-1: 0 1px 2px hsl(0 0% 0% / 0.4);
@@ -1006,23 +1002,6 @@
   /* Icon wells: a small bordered square, no inner shadow. */
   .icon-well, .card-well { background: hsl(var(--surface-container-low)); box-shadow: inset 0 0 0 1px var(--corp-line); }
   .card-well { border-radius: 8px; }
-
-  /* Buttons: solid fills, 8px corners, no bevel, no bounce. */
-  .btn-filled {
-    background-image: none;
-    background-color: hsl(var(--primary));
-    box-shadow: 0 1px 2px hsl(18 85% 30% / 0.25);
-  }
-  .btn-raised { background-image: none; background-color: hsl(var(--card)); box-shadow: inset 0 0 0 1px var(--corp-line-strong); }
-  .btn-device { background-image: none; box-shadow: none; }
-  .btn-lift { transition: background-color 150ms, box-shadow 150ms, color 150ms; }
-  @media (hover: hover) {
-    .btn-lift:hover:not(:disabled) { transform: none; }
-    .btn-filled:hover:not(:disabled) { background-color: hsl(21 90% 47%); box-shadow: 0 1px 2px hsl(18 85% 30% / 0.3); }
-    .btn-raised:hover:not(:disabled) { box-shadow: inset 0 0 0 1px hsl(var(--foreground) / 0.35); }
-  }
-  .btn-lift:active:not(:disabled) { transform: none; filter: brightness(0.96); }
-  .btn-filled:active:not(:disabled) { box-shadow: none; }
 
   /* Fields: white, 1px border, 8px corners; focus is a 2px primary ring with a soft halo. */
   .recessed {
@@ -1084,8 +1063,6 @@
   }
 }
 
-/* Background: flat paper, no blobs or grain. */
-.corp-bg-flat > * { display: none; }
 
 /* Header no longer floats, so anchors only clear the 68px bar. */
 @layer base { [id] { scroll-margin-top: calc(84px + env(safe-area-inset-top)); } }
@@ -1103,39 +1080,7 @@
   .section-heading .type-headline-lg { font-size: clamp(28px, 21.739px + 1.7391vw, 44px); line-height: 1.08; letter-spacing: -0.035em; }
 }
 
-/* ============================================================
- * v4.0 "Regional desk": warm ink by default, editorial serif headlines.
- * Serif (Newsreader 400) for the hero, section titles and stat figures; Manrope for everything else.
- * ============================================================ */
-.dark {
-  --bg-base: #15110e;
-  --background: 24 20% 7%;
-  --foreground: 34 38% 92%;
-  --card: 24 18% 9%;
-  --card-foreground: 34 38% 92%;
-  --popover: 24 18% 9.5%;
-  --popover-foreground: 34 38% 92%;
-  --secondary: 24 14% 13%;
-  --secondary-foreground: 34 38% 92%;
-  --muted: 24 14% 12%;
-  --muted-foreground: 30 12% 70%;
-  --border: 24 12% 16%;
-  --input: 24 10% 40%;
-  --outline-variant: 24 12% 16%;
-  --surface-container-low: 24 16% 11%;
-  --surface-container-high: 24 14% 14%;
-  --primary-ink: 24 100% 67%;
-  --accent: 22 50% 16%;
-  --bezel: 24 14% 12%;
-  --device: 24 22% 5%;
-  --tint: 24 30% 2%;
-  --well-fill: #120e0b;
-  --corp-line: hsl(24 12% 16%);
-  --corp-line-strong: hsl(24 12% 24%);
-  --corp-band: 24 18% 8.5%;
-  --corp-ink: 24 22% 4.5%;
-  --corp-ink-2: 24 18% 7%;
-}
+/* v4.0 type roles (serif hero, titles, figures). Colours are the v3.11 dawn-orange set. */
 @layer components {
   .type-hero { font-family: theme("fontFamily.serif"); font-weight: 400; font-size: clamp(44px, 30.696px + 3.6957vw, 78px); line-height: 1.0; letter-spacing: -0.025em; text-wrap: balance; }
   .type-stat { font-family: theme("fontFamily.serif"); font-weight: 400; font-size: clamp(36px, 30.522px + 1.5217vw, 52px); line-height: 1.05; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
@@ -1149,3 +1094,54 @@
   #proof dd { font-family: theme("fontFamily.serif"); font-weight: 400; letter-spacing: -0.02em; }
   .dark .band-ink { --background: var(--corp-ink); --card: 24 18% 8%; }
 }
+
+/* ============================================================
+ * v4.1 Editorial headings + motion. Colours and buttons are the v3.11 dawn-orange tactile set again.
+ * ============================================================ */
+@layer components {
+  /* Section number in the margin: serif, primary ink, sits on the eyebrow's baseline on phones. */
+  .sh-num { font-family: theme("fontFamily.serif"); font-weight: 400; font-size: clamp(30px, 24.522px + 1.5217vw, 44px); line-height: 1; letter-spacing: -0.02em; color: hsl(var(--primary-ink)); }
+  .section-heading .type-headline-lg { max-width: 20ch; }
+  @media (min-width: 1024px) {
+    .sh-margin { padding-top: 6px; }
+  }
+
+  /* Desk tiles: the active one gets a 2px orange bar on its left edge, a warm tint and a live dot. */
+  .desk-tile { transition: background-color 400ms var(--ease-out); }
+  .desk-tile::before {
+    content: ""; position: absolute; left: 0; top: 14px; bottom: 14px; width: 2px; border-radius: 2px;
+    background: hsl(var(--primary)); transform: scaleY(0); transform-origin: center; transition: transform 420ms var(--ease-spring);
+  }
+  .desk-tile[data-active="true"] { background-color: color-mix(in srgb, hsl(var(--primary)) 7%, hsl(var(--card))); }
+  .desk-tile[data-active="true"]::before { transform: scaleY(1); }
+  .desk-live { opacity: 0; transform: scale(0.4); transition: opacity 300ms, transform 300ms var(--ease-spring); }
+  .desk-tile[data-active="true"] .desk-live { opacity: 1; transform: none; box-shadow: 0 0 0 3px hsl(var(--primary) / 0.18); }
+  .desk-tile[data-active="true"] .type-mono-sm { color: hsl(var(--primary-ink)); }
+
+  /* Hero headline words sit in line masks. */
+  .hero-words .hw { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: 0.08em; margin-bottom: -0.08em; }
+  .hero-words .hw > span { display: inline-block; }
+}
+
+/* Motion (only when html.motion-ok: JS running and motion allowed). */
+.motion-ok .hero-words .hw > span {
+  animation: word-rise 900ms cubic-bezier(0.2, 0.7, 0, 1) backwards;
+  animation-delay: calc(var(--intro-base, 120ms) + 80ms + var(--w) * 60ms);
+}
+@keyframes word-rise { from { transform: translateY(105%); } to { transform: none; } }
+
+.sh-rule { transform-origin: left center; }
+.motion-ok .sh-draw[data-in="false"] .sh-rule { transform: scaleX(0); }
+.motion-ok .sh-draw[data-in="true"] .sh-rule { animation: rule-draw 1100ms cubic-bezier(0.65, 0, 0.35, 1) backwards; }
+.motion-ok .sh-draw[data-in="true"] .sh-num { animation: num-in 800ms cubic-bezier(0.2, 0.7, 0, 1) 120ms backwards; }
+.motion-ok .sh-draw[data-in="true"] .sh-body > :first-child { animation: title-in 800ms cubic-bezier(0.2, 0.7, 0, 1) 200ms backwards; }
+.motion-ok .sh-draw[data-in="true"] .sh-body > :nth-child(2) { animation: title-in 800ms cubic-bezier(0.2, 0.7, 0, 1) 300ms backwards; }
+@keyframes rule-draw { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@keyframes num-in { from { opacity: 0; transform: translateY(40%); } to { opacity: 1; transform: none; } }
+@keyframes title-in { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+
+/* Cards: the tactile lift on hover comes back with the dawn buttons. */
+@media (hover: hover) {
+  .card-hover:hover { transform: translateY(-3px); }
+}
+.card-hover { transition: transform 320ms var(--ease-spring), border-color 200ms, box-shadow 200ms; }

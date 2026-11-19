@@ -117,6 +117,7 @@ export const ReadinessCheck = () => {
     <section id="readiness" className="section">
       <div className="container">
         <SectionHeading
+          index="06"
           eyebrow="Readiness check"
           title="Is your product ready to ship?"
           subtitle="Flip six switches and see where you stand before the goods leave."

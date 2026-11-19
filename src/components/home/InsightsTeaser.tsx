@@ -49,7 +49,8 @@ export const InsightsTeaser = () => {
   return (
     <section id="insights" className="section">
       <div className="container">
-        <SectionHeading eyebrow="Insights" title="Plain-English guides to ASEAN trade rules." />
+        <SectionHeading index="09"
+          eyebrow="Insights" title="Plain-English guides to ASEAN trade rules." />
 
         {!ready ? (
           <div className="after-heading stack-gap grid md:grid-cols-3" aria-busy="true" aria-label="Loading insights">

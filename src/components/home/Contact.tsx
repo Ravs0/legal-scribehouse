@@ -122,6 +122,7 @@ export const Contact = () => {
       <div className="container">
         {/* Confirm the response-time promise with the firm before launch. */}
         <SectionHeading
+          index="11"
           eyebrow="Book a free call"
           title="Tell us what you're shipping, and where."
           subtitle="We reply within one business day with next steps."
@@ -227,7 +228,7 @@ export const Contact = () => {
                       control={control}
                       name="stage"
                       render={({ field }) => (
-                        <div className="recessed grid grid-cols-2 gap-1 rounded-[10px] p-1 [background-color:var(--well-fill)] sm:grid-cols-4 sm:rounded-[7px]">
+                        <div className="recessed grid grid-cols-2 gap-1 rounded-[10px] p-1 [background-color:var(--well-fill)] sm:grid-cols-4 sm:rounded-full">
                           {STAGES.map((st) => (
                             <label key={st} className="relative">
                               <input
@@ -239,7 +240,7 @@ export const Contact = () => {
                                 onBlur={field.onBlur}
                                 className="peer sr-only"
                               />
-                              <span className="press type-label-md flex h-9 cursor-pointer items-center justify-center whitespace-nowrap rounded-[10px] px-3 text-muted-foreground transition-[color,background-color,box-shadow] [transition-duration:200ms] hover:text-foreground peer-checked:surface-1 peer-checked:text-foreground peer-focus-visible:ring-2 peer-focus-visible:ring-ring sm:rounded-[7px]">
+                              <span className="press type-label-md flex h-9 cursor-pointer items-center justify-center whitespace-nowrap rounded-[10px] px-3 text-muted-foreground transition-[color,background-color,box-shadow] [transition-duration:200ms] hover:text-foreground peer-checked:surface-1 peer-checked:text-foreground peer-focus-visible:ring-2 peer-focus-visible:ring-ring sm:rounded-full">
                                 {st}
                               </span>
                             </label>

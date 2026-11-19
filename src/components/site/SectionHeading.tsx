@@ -16,24 +16,28 @@ interface SectionHeadingProps {
   className?: string;
   /** Heading level; sections use h2, page headers use h1. */
   as?: 'h1' | 'h2';
-  /** Extra content centred under the subtitle (e.g. a badge). */
+  /** Extra content under the subtitle (e.g. a badge). */
   children?: ReactNode;
+  /** Section number shown in the margin ("01"…). */
+  index?: string;
 }
 
 /**
- * v3.12 corporate finish: headings are left-aligned. From 1024px the title takes the left 7 columns and the subtitle
- * sits in the right 5, bottom-aligned with the title, over one hairline that runs the full container width.
- * Eyebrow (rule + label) → 12px → h2 → subtitle. Content follows `.after-heading`.
+ * v4.1 editorial margin heading. A hairline runs the full width and draws in from the left when the heading enters.
+ * From 1024px: the margin (columns 1–3) holds the serif section number and the label; the title and subtitle hang
+ * from column 4. Below 1024px: number and label share one row above the title.
  */
-export const SectionHeading = ({ eyebrow, title, subtitle, className, as: H = 'h2', children }: SectionHeadingProps) => (
-  <Reveal stagger className={cn('section-heading grid-12 items-end border-b border-border pb-6 md:pb-8', className)}>
-    <div className="col-span-4 md:col-span-12 lg:col-span-7">
+export const SectionHeading = ({ eyebrow, title, subtitle, className, as: H = 'h2', children, index }: SectionHeadingProps) => (
+  <Reveal className={cn('section-heading sh-draw relative grid-12 pt-5 md:pt-6', className)}>
+    <span aria-hidden="true" className="sh-rule absolute inset-x-0 top-0 h-px bg-border" />
+    <div className="sh-margin col-span-4 flex items-baseline gap-3 md:col-span-12 lg:col-span-3 lg:flex-col lg:gap-2">
+      {index && <span className="sh-num tabular">{index}</span>}
       <Eyebrow>{eyebrow}</Eyebrow>
-      <H className={cn('mt-3', H === 'h1' ? 'type-display-md max-w-[20ch]' : 'type-headline-lg max-w-[22ch]')}>{title}</H>
+    </div>
+    <div className="sh-body col-span-4 md:col-span-12 lg:col-span-9 lg:col-start-4">
+      <H className={cn('mt-3 lg:mt-0', H === 'h1' ? 'type-display-md max-w-[20ch]' : 'type-headline-lg max-w-[20ch]')}>{title}</H>
+      {subtitle && <p className="type-body-lg mt-4 max-w-[54ch] text-muted-foreground">{subtitle}</p>}
       {children}
     </div>
-    {subtitle && (
-      <p className="type-body-lg col-span-4 max-w-[52ch] text-muted-foreground md:col-span-12 lg:col-span-5 lg:pb-1">{subtitle}</p>
-    )}
   </Reveal>
 );

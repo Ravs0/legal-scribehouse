@@ -16,7 +16,8 @@ export const Desk = () => (
   <section id="desk" className="section">
     <div className="container">
       <SectionHeading
-        eyebrow="Your desk"
+        index="01"
+          eyebrow="Your desk"
         title="The people on your file."
         subtitle="A small team of lawyers in Singapore and Kuala Lumpur. The person on your first call stays on your file."
       >

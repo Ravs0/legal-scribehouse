@@ -17,7 +17,8 @@ const initials = (who: string) =>
 export const Proof = () => (
   <section id="proof" className="section band-ink">
     <div className="container">
-      <SectionHeading eyebrow="Results" title="Small exporters, cleared to sell.">
+      <SectionHeading index="08"
+          eyebrow="Results" title="Small exporters, cleared to sell.">
         {PLACEHOLDER && (
           <Badge variant="warning" className="mt-3">
             Sample data

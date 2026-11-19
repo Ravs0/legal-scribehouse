@@ -37,7 +37,8 @@ const FAQS = [
 export const Faq = () => (
   <section id="faq" className="section band">
     <div className="container">
-      <SectionHeading eyebrow="FAQ" title="Questions we hear every week." />
+      <SectionHeading index="10"
+          eyebrow="FAQ" title="Questions we hear every week." />
       {/* v3.12: on the grid. Accordion in the right 8 columns; "Still unsure?" in the left 4, sticky, from 1024px. */}
       <div className="after-heading grid-12 items-start">
         <div className="col-span-4 md:col-span-12 lg:order-2 lg:col-span-8">

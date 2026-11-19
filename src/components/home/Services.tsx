@@ -16,7 +16,8 @@ export const Services = () => (
   <section id="services" className="section">
     <div className="container">
       <SectionHeading
-        eyebrow="What we do"
+        index="02"
+          eyebrow="What we do"
         title="Six jobs we take off your desk."
         subtitle="Hire us for one, or for the whole route from structure to first shipment."
       />

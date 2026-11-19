@@ -13,7 +13,8 @@ const STEPS = [
 export const Process = () => (
   <section id="process" className="section band">
     <div className="container">
-      <SectionHeading eyebrow="How it works" title="Four steps from first call to first shipment." />
+      <SectionHeading index="03"
+          eyebrow="How it works" title="Four steps from first call to first shipment." />
 
       {/* v3.8: one row of four from 1024, 2×2 from 640, one column on phones. */}
       <ol className="after-heading stack-gap grid sm:grid-cols-2 lg:grid-cols-4">
