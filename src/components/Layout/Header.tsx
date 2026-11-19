@@ -22,12 +22,14 @@ export const Wordmark = ({ withDescriptor = false }: { withDescriptor?: boolean 
   <span className="flex items-center gap-2">
     <span
       aria-hidden="true"
-      className="btn-filled flex h-[26px] w-[26px] items-center justify-center rounded-lg font-display text-[13px] font-semibold text-primary-foreground"
+      className="flex h-7 w-7 items-center justify-center rounded-[7px] bg-foreground font-display text-[14px] font-semibold text-background"
     >
       {SITE.name[0]}
     </span>
     <span className="font-display text-[17px] font-semibold leading-none tracking-[-0.02em]">{SITE.name}</span>
-    {withDescriptor && <span className="type-label-sm hidden text-muted-foreground xl:inline">{SITE.descriptor}</span>}
+    {withDescriptor && (
+      <span className="type-label-md hidden border-l border-border pl-2.5 font-medium text-muted-foreground xl:inline">{SITE.descriptor}</span>
+    )}
   </span>
 );
 
@@ -59,7 +61,7 @@ function useGlare<T extends HTMLElement>() {
 }
 
 // Tighter item padding below 1280px so the centred nav leaves room for the wordmark and actions inside the bar.
-const itemClass = 'nav-item type-label-lg inline-flex h-11 items-center rounded-full px-[7px] outline-none xl:px-3.5';
+const itemClass = 'nav-item type-label-lg inline-flex h-full items-center px-[7px] outline-none xl:px-3';
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -182,24 +184,24 @@ const Header = () => {
       >
         Skip to content
       </a>
-      <header data-scrolled={scrolled} className="intro-header header-sticky container sticky z-50">
+      <header data-scrolled={scrolled} className="intro-header corp-header sticky top-0 z-50">
+        <div className="container">
         {/* Desktop (v3.8): one liquid-glass bar the width of the container. Wordmark left, nav centred, theme key and
             CTA right. Equal outer tracks keep the nav centred; the CTA slot opens inside the right track, so nothing
             else moves when it appears. */}
         <div
           {...glare}
           data-scrolled={scrolled}
-          className="nav-glass hidden h-[60px] grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 rounded-full pl-5 pr-2 lg:grid xl:gap-4"
+          className="hidden h-[68px] grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 lg:grid xl:gap-4"
         >
           <Link to="/" aria-label={`${SITE.name} home`} className="press relative z-[1] justify-self-start rounded-lg">
             <Wordmark withDescriptor />
           </Link>
 
-          {/* The bar's padding is 20px left / 8px right, so the nav moves 6px left to sit on the bar's true centre. */}
-          <nav ref={navRef} aria-label="Main" className="relative z-[1] flex items-center [translate:-6px_0] xl:gap-0.5">
+          <nav ref={navRef} aria-label="Main" className="relative z-[1] flex h-full items-center xl:gap-1">
             <span
               aria-hidden="true"
-              className="nav-lens h-11"
+              className="nav-lens corp-underline"
               data-snap={lens.snap}
               data-pressed={pressed}
               style={{
@@ -237,7 +239,7 @@ const Header = () => {
 
           <div className="relative z-[1] flex items-center justify-self-end">
             <ThemeKey />
-            <div {...slotProps} className="header-cta-slot grid [--cta-gap:6px] xl:[--cta-gap:10px]">
+            <div {...slotProps} className="header-cta-slot grid [--cta-gap:8px] xl:[--cta-gap:12px]">
               <div className="header-cta-clip">
                 <div className="header-cta w-max">
                   <Button asChild tabIndex={ctaHidden ? -1 : undefined} className="h-10 px-3 type-label-md xl:px-[18px] xl:type-label-lg">
@@ -255,7 +257,7 @@ const Header = () => {
         <div
           {...mobileGlare}
           data-scrolled={scrolled}
-          className="nav-glass flex h-[52px] items-center justify-between gap-2 rounded-full pl-4 pr-1.5 lg:hidden"
+          className="flex h-[60px] items-center justify-between gap-2 lg:hidden"
         >
           <Link to="/" aria-label={`${SITE.name} home`} className="press hit relative z-[1] shrink-0 rounded-lg">
             <Wordmark />
@@ -290,8 +292,8 @@ const Header = () => {
                           to={s.id}
                           onClick={() => setOpen(false)}
                           className={cn(
-                            'state-layer press type-title-md flex h-[52px] items-center rounded-[14px] px-3',
-                            activeKey === s.id && 'surface-1',
+                            'state-layer type-title-md flex h-[52px] items-center rounded-[8px] px-3',
+                            activeKey === s.id && 'bg-foreground/[0.05] text-foreground',
                           )}
                         >
                           {s.label}
@@ -302,7 +304,7 @@ const Header = () => {
                       <Link
                         to="/about"
                         onClick={() => setOpen(false)}
-                        className={cn('state-layer press type-title-md flex h-[52px] items-center rounded-[14px] px-3', pathname === '/about' && 'surface-1')}
+                        className={cn('state-layer type-title-md flex h-[52px] items-center rounded-[8px] px-3', pathname === '/about' && 'bg-foreground/[0.05] text-foreground')}
                       >
                         About
                       </Link>
@@ -327,6 +329,7 @@ const Header = () => {
               </SheetContent>
             </Sheet>
           </div>
+        </div>
         </div>
       </header>
     </>

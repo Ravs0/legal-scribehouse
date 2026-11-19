@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
  */
 const buttonVariants = cva(
   [
-    "btn-lift hit relative inline-flex shrink-0 select-none items-center justify-center whitespace-nowrap rounded-full",
+    "btn-lift hit relative inline-flex shrink-0 select-none items-center justify-center whitespace-nowrap rounded-[8px]",
     "disabled:pointer-events-none disabled:opacity-40",
     "[&_svg]:pointer-events-none [&_svg]:shrink-0",
   ].join(" "),

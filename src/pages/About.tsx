@@ -37,7 +37,7 @@ const About = () => (
       />
 
       <div className="grid-12 after-heading">
-        <Reveal className="surface-3 card-shell card-shell-lg col-span-4 rounded-[28px] md:col-span-12 lg:col-span-7">
+        <Reveal className="surface-3 card-shell card-shell-lg col-span-4 rounded-[14px] md:col-span-12 lg:col-span-7">
           <CardHeader as="h2" icon={Users} title="Why we exist" />
           <div className="card-body type-body-lg space-y-4 text-muted-foreground">
             <p>
@@ -53,7 +53,7 @@ const About = () => (
         </Reveal>
         <div className="stack-gap col-span-4 grid grid-cols-2 md:col-span-12 lg:col-span-5">
           {STATS.map((s, i) => (
-            <Reveal key={s.label} index={i} className="surface-1 flex flex-col justify-center rounded-[20px] p-5">
+            <Reveal key={s.label} index={i} className="surface-1 flex flex-col justify-center rounded-[12px] p-5">
               <span className="type-display-md text-gradient tabular">
                 <CountUp value={s.value} suffix={s.suffix} />
               </span>
@@ -74,7 +74,7 @@ const About = () => (
       <ul className="after-heading stack-gap grid md:grid-cols-3">
         {PRINCIPLES.map((p, i) => (
           <Reveal as="li" key={p.title} index={i}>
-            <article className="surface-1 card-hover card-shell h-full rounded-[20px]">
+            <article className="surface-1 card-hover card-shell h-full rounded-[12px]">
               <CardHeader icon={p.icon} title={p.title} />
               <p className="card-body type-body-md text-muted-foreground">{p.copy}</p>
             </article>

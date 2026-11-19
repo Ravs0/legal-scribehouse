@@ -15,7 +15,7 @@ const initials = (who: string) =>
     .join('');
 
 export const Proof = () => (
-  <section id="proof" className="section">
+  <section id="proof" className="section band-ink">
     <div className="container">
       <SectionHeading eyebrow="Results" title="Small exporters, cleared to sell.">
         {PLACEHOLDER && (
@@ -27,7 +27,7 @@ export const Proof = () => (
 
       {/* v3.11: one stat strip (the same anatomy as the hero's problems strip) instead of four pebbles. */}
       <Reveal className="after-heading">
-        <dl className="surface-2 grid grid-cols-2 rounded-[24px] lg:grid-cols-4">
+        <dl className="surface-2 grid grid-cols-2 rounded-[14px] lg:grid-cols-4">
           {STATS.map((s, i) => (
             <div
               key={s.label}
@@ -51,7 +51,7 @@ export const Proof = () => (
         {TESTIMONIALS.map((t, i) => (
           <Reveal as="li" key={t.who} index={i} className="w-[84vw] shrink-0 snap-center md:row-span-3 md:grid md:w-auto md:grid-rows-subgrid">
             {/* Subgrid rows keep quote marks, quotes and captions aligned across the three cards. */}
-            <figure className="surface-1 card-hover flex h-full flex-col rounded-[20px] p-5 md:row-span-3 md:grid md:grid-rows-subgrid">
+            <figure className="surface-1 card-hover flex h-full flex-col rounded-[12px] p-5 md:row-span-3 md:grid md:grid-rows-subgrid">
               <Quote className="h-5 w-5 text-primary-ink" aria-hidden="true" />
               <blockquote className="type-body-lg mb-5 mt-3">{t.quote}</blockquote>
               <figcaption className="card-foot flex items-center gap-3 md:mt-0">

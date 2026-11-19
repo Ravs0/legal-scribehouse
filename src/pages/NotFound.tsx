@@ -5,8 +5,8 @@ import { Contours } from '@/components/site/Contours';
 
 const NotFound = () => (
   <div className="container relative flex min-h-[70svh] flex-col items-center justify-center py-16 text-center">
-    <div aria-hidden="true" className="bezel absolute inset-x-4 inset-y-8 -z-0 rounded-[36px] opacity-70 md:inset-x-16">
-      <div className="bezel-well relative h-full w-full overflow-hidden rounded-[24px]">
+    <div aria-hidden="true" className="bezel absolute inset-x-4 inset-y-8 -z-0 rounded-[16px] opacity-70 md:inset-x-16">
+      <div className="bezel-well relative h-full w-full overflow-hidden rounded-[14px]">
         <Contours className="absolute inset-0 h-full w-full" />
         <span className="absolute left-[58%] top-[34%] flex h-4 w-4 items-center justify-center rounded-full bg-primary shadow-[0_0_0_6px_hsl(var(--primary)/0.2)]" />
       </div>

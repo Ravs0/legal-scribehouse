@@ -126,13 +126,18 @@ export const Contact = () => {
           title="Tell us what you're shipping, and where."
           subtitle="We reply within one business day with next steps."
         />
-        {/* v3.9: no side column. A slim "What happens next" strip, the form centred under it, then the contact
-            details as a centred row. All three share the 880px measure. */}
-        <div className="after-heading mx-auto max-w-[880px]">
-          <NextSteps />
+        {/* v3.12: on the grid. "What happens next" and the contact details in the left 4 columns, the form in the
+            right 8, from 1024px. Below that: steps, form, details. */}
+        <div className="after-heading grid-12 items-start">
+          <div className="col-span-4 md:col-span-12 lg:col-span-4">
+            <NextSteps />
+            <div className="hidden lg:block">
+              <ContactDetails rows={contactRows} />
+            </div>
+          </div>
 
-          <Reveal className="mt-5">
-            <div className="surface-3 panel-pad rounded-[28px]">
+          <Reveal className="col-span-4 md:col-span-12 lg:col-span-8">
+            <div className="surface-3 panel-pad rounded-[14px]">
               {sent ? (
                 <div role="status" className="flex animate-step-in flex-col items-start py-4">
                   <IconContainer icon={Check} tone="success" className="h-12 w-12" />
@@ -222,7 +227,7 @@ export const Contact = () => {
                       control={control}
                       name="stage"
                       render={({ field }) => (
-                        <div className="recessed grid grid-cols-2 gap-1 rounded-[14px] p-1 [background-color:var(--well-fill)] sm:grid-cols-4 sm:rounded-full">
+                        <div className="recessed grid grid-cols-2 gap-1 rounded-[10px] p-1 [background-color:var(--well-fill)] sm:grid-cols-4 sm:rounded-[7px]">
                           {STAGES.map((st) => (
                             <label key={st} className="relative">
                               <input
@@ -234,7 +239,7 @@ export const Contact = () => {
                                 onBlur={field.onBlur}
                                 className="peer sr-only"
                               />
-                              <span className="press type-label-md flex h-9 cursor-pointer items-center justify-center whitespace-nowrap rounded-[10px] px-3 text-muted-foreground transition-[color,background-color,box-shadow] [transition-duration:200ms] hover:text-foreground peer-checked:surface-1 peer-checked:text-foreground peer-focus-visible:ring-2 peer-focus-visible:ring-ring sm:rounded-full">
+                              <span className="press type-label-md flex h-9 cursor-pointer items-center justify-center whitespace-nowrap rounded-[10px] px-3 text-muted-foreground transition-[color,background-color,box-shadow] [transition-duration:200ms] hover:text-foreground peer-checked:surface-1 peer-checked:text-foreground peer-focus-visible:ring-2 peer-focus-visible:ring-ring sm:rounded-[7px]">
                                 {st}
                               </span>
                             </label>
@@ -305,26 +310,24 @@ export const Contact = () => {
             </div>
           </Reveal>
 
-          <ContactDetails rows={contactRows} />
+          <div className="col-span-4 md:col-span-12 lg:hidden">
+            <ContactDetails rows={contactRows} />
+          </div>
         </div>
       </div>
     </section>
   );
 };
 
-/** v3.9: three details in an evenly spaced, centred row 20px under the form; stacked below 640px. */
+/** v3.12: the contact details as a stacked list with hairlines (left column from 1024px; under the form below). */
 const ContactDetails = ({
   rows,
 }: {
   rows: { icon: LucideIcon; label: string; value: string; href?: string }[];
 }) => (
-  <Reveal
-    as="ul"
-    stagger
-    className="mt-5 flex flex-col items-center gap-4 sm:flex-row sm:flex-wrap sm:items-center sm:justify-evenly sm:gap-x-6"
-  >
+  <Reveal as="ul" stagger className="mt-8 divide-y divide-border border-y border-border">
     {rows.map((r) => (
-      <li key={r.label} className="flex w-full max-w-[280px] items-center gap-3 sm:w-auto sm:max-w-none">
+      <li key={r.label} className="flex items-center gap-3 py-3.5">
         <IconContainer icon={r.icon} size="sm" />
         <div className="min-w-0 text-left">
           <p className="type-label-sm text-muted-foreground">{r.label}</p>
@@ -341,21 +344,20 @@ const ContactDetails = ({
   </Reveal>
 );
 
-/** v3.9: a slim strip of the three steps (numbered well + one line), chevrons between; a column below 640px. */
+/** v3.12: "What happens next" as a numbered vertical list with a connecting rule. */
 const NextSteps = () => (
   <Reveal>
-    <section aria-labelledby="next-steps-title" className="surface-1 rounded-[20px] px-4 py-3 sm:px-5">
-      <h3 id="next-steps-title" className="sr-only">
+    <section aria-labelledby="next-steps-title">
+      <h3 id="next-steps-title" className="type-title-md">
         What happens next
       </h3>
-      <ol className="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+      <ol className="relative mt-4 space-y-5 before:absolute before:bottom-3 before:left-[13px] before:top-3 before:w-px before:bg-border">
         {NEXT_STEPS.map((s, i) => (
-          <li key={s} className="type-body-sm flex min-w-0 items-center gap-2.5 text-foreground sm:gap-3">
-            {i > 0 && <ChevronRight aria-hidden="true" className="hidden h-4 w-4 shrink-0 text-muted-foreground sm:block" />}
-            <span className="type-label-sm flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary-container text-primary-on-container">
+          <li key={s} className="relative flex items-start gap-3.5">
+            <span className="type-label-md relative flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px] border border-border bg-card text-primary-ink tabular">
               {i + 1}
             </span>
-            <span className="min-w-0">{s}</span>
+            <span className="type-body-md pt-0.5 text-foreground">{s}</span>
           </li>
         ))}
       </ol>

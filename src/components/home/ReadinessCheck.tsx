@@ -84,7 +84,7 @@ const CrateArt = ({ tag, viewBox, className }: { tag: string; viewBox: string; c
 /** Header illustration: a crate on a pallet with a clearance tag in the verdict colour. 168px strip below 1024; a 4:3
  *  well filling the left column above, cropped around the crate so it reads larger. */
 const CrateScene = ({ tag, score }: { tag: string; score: number }) => (
-  <div className="relative h-[168px] overflow-hidden rounded-[16px] bg-tertiary-container lg:aspect-[10/7] lg:h-auto">
+  <div className="relative h-[168px] overflow-hidden rounded-[10px] bg-tertiary-container lg:aspect-[10/7] lg:h-auto">
     <CrateArt tag={tag} viewBox="0 0 416 168" className="lg:hidden" />
     <CrateArt tag={tag} viewBox="82 4 280 196" className="hidden lg:block" />
     <span className="type-mono-md tabular absolute right-3 top-3 inline-flex h-7 items-center rounded-full bg-white/80 px-2.5 text-paper-ink shadow-e1">
@@ -122,7 +122,7 @@ export const ReadinessCheck = () => {
           subtitle="Flip six switches and see where you stand before the goods leave."
         >
           {/* v3.9: the reassurances are one centred row under the subtitle (wraps on phones). */}
-          <ul className="mt-4 flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+          <ul className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2">
             {['Takes under a minute', 'No email needed', 'Your answers stay in your browser'].map((t) => (
               <li key={t} className="type-body-sm flex items-center gap-2 text-muted-foreground">
                 <span className="flex h-4 w-4 shrink-0 items-center justify-center rounded-full bg-success/15 text-success">
@@ -139,7 +139,7 @@ export const ReadinessCheck = () => {
             the column wrappers become display:contents and `order-*` restores the phone order:
             illustration, title, switches, fix-first, legend, actions. */}
         <Reveal className="after-heading">
-          <div className="surface-3 mx-auto flex w-full max-w-[440px] flex-col rounded-[28px] p-3 transition-transform duration-300 hover:-translate-y-1 lg:grid lg:max-w-[960px] lg:grid-cols-12 lg:gap-6 lg:p-4">
+          <div className="surface-3 flex w-full flex-col rounded-[14px] p-3 md:p-4 lg:grid lg:grid-cols-12 lg:gap-8 lg:p-5">
             <div className="contents lg:col-span-5 lg:flex lg:flex-col">
               <div className="order-1 lg:order-none">
                 <CrateScene tag={status.color} score={score} />

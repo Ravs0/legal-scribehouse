@@ -950,3 +950,155 @@
   ::view-transition-old(root),
   ::view-transition-new(root) { animation-duration: 120ms; }
 }
+
+/* ============================================================
+ * v3.12 Corporate finish. Supersedes the pebble / glass / bevel material.
+ * Flat paper ground, 1px borders, quiet two-step shadows, 8–12px radii, no sheen, no grain, no lift.
+ * Colour hues are unchanged (dawn-orange); only the finish changes.
+ * ============================================================ */
+:root {
+  --bg-base: #faf8f5;
+  --background: 36 33% 97%;
+  --corp-line: hsl(30 14% 86%);
+  --corp-line-strong: hsl(30 12% 78%);
+  --corp-shadow-1: 0 1px 2px hsl(24 30% 20% / 0.04);
+  --corp-shadow-2: 0 1px 2px hsl(24 30% 20% / 0.04), 0 8px 24px -12px hsl(24 30% 20% / 0.12);
+  --corp-shadow-3: 0 1px 2px hsl(24 30% 20% / 0.05), 0 16px 40px -16px hsl(24 30% 20% / 0.18);
+  --corp-band: 36 30% 95%;
+  --corp-ink: 24 16% 9%;
+  --corp-ink-2: 24 10% 14%;
+}
+.dark {
+  --bg-base: #0f0e13;
+  --background: 255 16% 6.5%;
+  --corp-line: hsl(258 8% 20%);
+  --corp-line-strong: hsl(258 8% 28%);
+  --corp-shadow-1: 0 1px 2px hsl(0 0% 0% / 0.4);
+  --corp-shadow-2: 0 1px 2px hsl(0 0% 0% / 0.4), 0 10px 28px -12px hsl(0 0% 0% / 0.6);
+  --corp-shadow-3: 0 1px 2px hsl(0 0% 0% / 0.4), 0 18px 44px -16px hsl(0 0% 0% / 0.7);
+  --corp-band: 258 14% 9%;
+  --corp-ink: 258 18% 5%;
+  --corp-ink-2: 258 12% 9%;
+}
+
+@layer components {
+  /* Surfaces: flat card, hairline border, quiet shadow. */
+  .surface-1, .surface-2, .surface-3, .surface-4, .menu-surface, .pebble, .bezel {
+    background-image: none;
+    background-color: hsl(var(--card));
+    border: 1px solid var(--corp-line);
+  }
+  .surface-1 { box-shadow: var(--corp-shadow-1); }
+  .surface-2 { box-shadow: var(--corp-shadow-2); }
+  .surface-3, .surface-4 { box-shadow: var(--corp-shadow-2); }
+  .menu-surface { box-shadow: var(--corp-shadow-3); }
+  .bezel { padding: 10px; box-shadow: var(--corp-shadow-1); background-color: hsl(var(--surface-container-low)); }
+  .bezel-well, .stat-well, .dark .stat-well { box-shadow: inset 0 0 0 1px var(--corp-line); background: hsl(var(--card)); }
+  .faq-item[data-state="open"] { box-shadow: var(--corp-shadow-2); border-color: var(--corp-line-strong); }
+
+  /* Hover: no lift. The border firms up and the shadow deepens slightly. */
+  .card-hover, .surface-1, .surface-2, .surface-3, .surface-4, .pebble { transition: border-color 200ms, box-shadow 200ms; transform: none; }
+  @media (hover: hover) {
+    .card-hover:hover { transform: none; border-color: var(--corp-line-strong); box-shadow: var(--corp-shadow-2); }
+  }
+  .card-hover:active { transform: none; }
+
+  /* Icon wells: a small bordered square, no inner shadow. */
+  .icon-well, .card-well { background: hsl(var(--surface-container-low)); box-shadow: inset 0 0 0 1px var(--corp-line); }
+  .card-well { border-radius: 8px; }
+
+  /* Buttons: solid fills, 8px corners, no bevel, no bounce. */
+  .btn-filled {
+    background-image: none;
+    background-color: hsl(var(--primary));
+    box-shadow: 0 1px 2px hsl(18 85% 30% / 0.25);
+  }
+  .btn-raised { background-image: none; background-color: hsl(var(--card)); box-shadow: inset 0 0 0 1px var(--corp-line-strong); }
+  .btn-device { background-image: none; box-shadow: none; }
+  .btn-lift { transition: background-color 150ms, box-shadow 150ms, color 150ms; }
+  @media (hover: hover) {
+    .btn-lift:hover:not(:disabled) { transform: none; }
+    .btn-filled:hover:not(:disabled) { background-color: hsl(21 90% 47%); box-shadow: 0 1px 2px hsl(18 85% 30% / 0.3); }
+    .btn-raised:hover:not(:disabled) { box-shadow: inset 0 0 0 1px hsl(var(--foreground) / 0.35); }
+  }
+  .btn-lift:active:not(:disabled) { transform: none; filter: brightness(0.96); }
+  .btn-filled:active:not(:disabled) { box-shadow: none; }
+
+  /* Fields: white, 1px border, 8px corners; focus is a 2px primary ring with a soft halo. */
+  .recessed {
+    --field-depth: 0 0 #0000;
+    --field-lip: inset 0 0 0 1px var(--corp-line-strong);
+    --field-lip-hover: inset 0 0 0 1px hsl(var(--foreground) / 0.35);
+    --field-catch: 0 1px 1px hsl(24 30% 20% / 0.03);
+    background-color: hsl(var(--card));
+    background-image: none;
+  }
+  .dark .recessed {
+    --field-depth: 0 0 #0000;
+    --field-lip: inset 0 0 0 1px var(--corp-line-strong);
+    --field-lip-hover: inset 0 0 0 1px hsl(0 0% 100% / 0.3);
+    --field-catch: 0 0 #0000;
+    background-color: hsl(var(--card));
+  }
+  .check-well, .dark .check-well { background-color: hsl(var(--card)); box-shadow: inset 0 0 0 1px var(--corp-line-strong); border-radius: 5px; }
+  .check-well[data-state="checked"], .peer:checked + .check-well { background-image: none; background-color: hsl(var(--primary)); box-shadow: none; }
+
+  /* Dark device panels keep their ink but lose the lit rim. */
+  .device-surface { box-shadow: var(--corp-shadow-3); }
+
+  /* Header: a full-width solid bar with a hairline; the active section is a 2px underline. */
+  .corp-header {
+    background: hsl(var(--background) / 0.86);
+    -webkit-backdrop-filter: saturate(160%) blur(14px);
+    backdrop-filter: saturate(160%) blur(14px);
+    border-bottom: 1px solid transparent;
+    padding-top: env(safe-area-inset-top);
+    transition: border-color 200ms, background-color 200ms;
+  }
+  .corp-header[data-scrolled="true"] { border-bottom-color: var(--corp-line); background: hsl(var(--background) / 0.94); }
+  .nav-lens.corp-underline { top: auto; bottom: -1px; height: 2px; }
+  .corp-underline .nav-lens__body { border-radius: 0; background: hsl(var(--primary)); box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; animation: none !important; transform: none !important; }
+  .corp-underline .nav-lens__body::before { display: none; }
+  .nav-item { transform: none !important; }
+
+  /* Full-width section bands for rhythm. */
+  .band { background: hsl(var(--corp-band)); border-block: 1px solid var(--corp-line); }
+  .band-ink {
+    background: hsl(var(--corp-ink));
+    color: hsl(36 30% 94%);
+    --foreground: 36 30% 94%;
+    --muted-foreground: 32 10% 68%;
+    --card: 24 10% 13%;
+    --card-foreground: 36 30% 94%;
+    --surface-container-low: 24 10% 16%;
+    --border: 24 8% 22%;
+    --outline-variant: 24 8% 22%;
+    --primary-ink: 26 100% 70%;
+    --background: var(--corp-ink);
+    --secondary: 24 10% 16%;
+    --well-fill: hsl(24 10% 16%);
+    --corp-line: hsl(24 8% 22%);
+    --corp-line-strong: hsl(24 8% 30%);
+    --corp-shadow-1: none;
+    --corp-shadow-2: 0 12px 28px -14px hsl(0 0% 0% / 0.6);
+  }
+}
+
+/* Background: flat paper, no blobs or grain. */
+.corp-bg-flat > * { display: none; }
+
+/* Header no longer floats, so anchors only clear the 68px bar. */
+@layer base { [id] { scroll-margin-top: calc(84px + env(safe-area-inset-top)); } }
+@layer components {
+  .section { padding-block: clamp(56px, 40.348px + 4.3478vw, 96px); }
+  .after-heading { margin-top: 28px; }
+  @media (min-width: 768px) { .after-heading { margin-top: 40px; } }
+  /* Headings inside the ink band take the light rule colour. */
+  .band-ink .section-heading { border-color: var(--corp-line); }
+  .band-ink .text-primary-ink { color: hsl(26 100% 70%); }
+}
+
+@layer components {
+  /* v3.12: section titles one step larger and tighter, as on firm sites. */
+  .section-heading .type-headline-lg { font-size: clamp(28px, 21.739px + 1.7391vw, 44px); line-height: 1.08; letter-spacing: -0.035em; }
+}

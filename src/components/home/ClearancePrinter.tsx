@@ -99,7 +99,7 @@ export const ClearancePrinter = ({ className, selected: selectedProp, onSelect }
   ];
 
   return (
-    <div className={cn('relative mx-auto h-[400px] w-full max-w-[328px] overflow-hidden rounded-3xl shadow-e4 roomy:h-[460px] roomy:max-w-[400px] roomy:rounded-[36px]', className)}>
+    <div className={cn('relative mx-auto h-[400px] w-full max-w-[328px] overflow-hidden rounded-[14px] shadow-e4 roomy:h-[460px] roomy:max-w-[400px] roomy:rounded-[16px]', className)}>
       <MarketScene scene={SCENES.home} className="absolute inset-0" />
       {/* Inner rim: the SVG scene covers inset shadows on the root, so the polished edge sits on top. */}
       <span
@@ -161,7 +161,7 @@ export const ClearancePrinter = ({ className, selected: selectedProp, onSelect }
         style={{ animation: printing && !reduced() ? 'head-nudge 110ms 9 both' : undefined }}
       >
         <div
-          className="relative overflow-hidden rounded-[20px] rounded-b-[14px] px-3 pb-3 pt-2"
+          className="relative overflow-hidden rounded-[12px] rounded-b-[14px] px-3 pb-3 pt-2"
           style={{
             background: 'linear-gradient(180deg, #2B2622, #141110)',
             boxShadow: 'inset 0 1px 0 hsl(0 0% 100% / .18), inset 0 -2px 0 hsl(0 0% 0% / .6), 0 2px 0 #0A0807, 0 18px 28px -10px hsl(24 40% 10% / .55)',

@@ -437,3 +437,15 @@ Research (search only; reference sites could not be loaded from this environment
 - Contact: Stage is a full-width segmented choice (native radios, 2×2 on phones, 4 across from 640) so the row has no empty half.
 - Header CTA steps aside while the contact section fills the top half of the screen.
 - Footer: the duplicate theme switch is replaced by "Back to top".
+
+## v3.12 Corporate finish
+
+Feedback: "less corporate, finish is average". The tactile material (pebble sheen, bevels, glass, blobs, grain, lift-on-hover, toy theme key) is retired; colours (dawn-orange) and section order stay. The override layer is the "v3.12 Corporate finish" block at the end of `src/index.css`.
+
+- Ground: flat paper `#faf8f5` (dark `#0f0e13`); `--background` matches it. No blobs or grain.
+- Surfaces: card fill, 1px `--corp-line` border, quiet shadows (`--corp-shadow-1/2/3`). Hover firms the border; nothing moves.
+- Radii: buttons and fields 8px, cards 12px, large panels 14px, segmented controls 10px outer / 7px inner. Pills only for dots and avatars.
+- Header: full-width solid bar (68px desktop, 60px mobile) with a hairline once scrolled; active section is a 2px primary underline; theme is a 36px bordered icon button; wordmark is an ink square.
+- Section headings: left-aligned. Eyebrow is a 24px rule + label; title (28–44px) in the left 7 columns, subtitle in the right 5, over a full-width hairline.
+- Content sits on the 12-column grid: FAQ (help card left 4, accordion right 8), Contact (steps and details left 4, form right 8), Glance (legend left 4, board right 8), Readiness panel full width.
+- Rhythm: section padding 56–96px; tinted bands on How it works, Export at a glance and FAQ; a dark ink band on Results; the footer is ink.

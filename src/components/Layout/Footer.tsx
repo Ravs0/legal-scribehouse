@@ -4,16 +4,14 @@ import { INSIGHT_LINKS, SECTIONS } from '@/config/nav';
 import { HashLink } from '@/components/site/HashLink';
 import { ArrowUp } from 'lucide-react';
 import { Wordmark } from './Header';
-import { Contours } from '@/components/site/Contours';
 import { Reveal } from '@/components/motion/Reveal';
 
 // v3.7: 44px rows on touch widths (<1024), compact list from 1024.
 const linkClass = 'type-body-sm flex min-h-11 items-center text-muted-foreground transition-colors hover:text-foreground lg:min-h-0 lg:py-1';
 
 const Footer = () => (
-  <footer className="relative overflow-hidden border-t border-outline-variant bg-surface-low/80">
-    <Contours className="absolute inset-0 h-full w-full" opacity={0.55} />
-    <div className="footer-safe container relative pt-10 md:pt-12">
+  <footer className="band-ink relative overflow-hidden">
+    <div className="footer-safe container relative pt-14 md:pt-20">
       <Reveal stagger className="grid-12 gap-y-10">
         <div className="col-span-4 md:col-span-12 lg:col-span-4">
           <Wordmark />
@@ -61,7 +59,7 @@ const Footer = () => (
 
         {/* Disclaimer wording depends on the firm's regulatory status; confirm before launch. */}
         <div className="col-span-4 md:col-span-6 lg:col-span-3">
-          <div className="surface-1 rounded-[20px] p-4">
+          <div className="rounded-[10px] border border-border p-4">
             <h2 className="type-label-md font-sans text-foreground">Disclaimer</h2>
             <p className="type-body-sm mt-2 text-muted-foreground">
               Information on this site is general in nature and is not legal advice. Contacting us does not create an
@@ -72,7 +70,7 @@ const Footer = () => (
         </div>
       </Reveal>
 
-      <div className="mt-8 flex items-center justify-between border-t border-outline-variant pt-5">
+      <div className="mt-12 flex items-center justify-between border-t border-border pt-5 md:mt-16">
         <p className="type-body-sm text-muted-foreground">
           © {new Date().getFullYear()} {SITE.name}
         </p>

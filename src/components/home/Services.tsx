@@ -23,7 +23,7 @@ export const Services = () => (
       <ul className="after-heading stack-gap grid sm:grid-cols-2 lg:grid-cols-3">
         {SERVICES.map((s, i) => (
           <Reveal as="li" key={s.id} index={i}>
-            <article className="surface-1 card-hover card-shell h-full rounded-[20px]">
+            <article className="surface-1 card-hover card-shell h-full rounded-[12px]">
               <CardHeader icon={s.icon} title={s.title} />
               <p className="card-body type-body-md text-muted-foreground">{s.copy}</p>
               <CardFooter className="flex flex-wrap items-center gap-2">
@@ -35,7 +35,7 @@ export const Services = () => (
         ))}
       </ul>
       <Reveal className="mt-4 md:mt-5 xl:mt-6">
-        <div className="surface-2 rounded-[24px]">
+        <div className="surface-2 rounded-[14px]">
           <p className="type-label-md px-4 pt-4 text-muted-foreground md:px-5">How pricing works</p>
           <ul className="mt-1 grid divide-y divide-outline-variant md:grid-cols-3 md:divide-x md:divide-y-0">
             {TERMS.map((t) => (

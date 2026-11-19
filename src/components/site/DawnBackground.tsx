@@ -9,7 +9,7 @@ const BLOBS = [
 ];
 
 export const DawnBackground = () => (
-  <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10 overflow-hidden" style={{ background: 'var(--bg-base)' }}>
+  <div aria-hidden="true" className="corp-bg-flat pointer-events-none fixed inset-0 -z-10 overflow-hidden" style={{ background: 'var(--bg-base)' }}>
     {BLOBS.map((b) => (
       <div
         key={b.v}

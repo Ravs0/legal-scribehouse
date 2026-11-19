@@ -21,7 +21,7 @@ export const GradientTile = ({ type, className }: { type: ContentItem['type']; c
 export const PostCard = ({ post }: { post: ContentItem }) => {
   const meta = TYPE_META[post.type] ?? TYPE_META.post;
   return (
-    <Link to={`/posts/${post.id}`} className="surface-1 card-hover group flex h-full flex-col rounded-[20px] p-2.5">
+    <Link to={`/posts/${post.id}`} className="surface-1 card-hover group flex h-full flex-col rounded-[12px] p-2.5">
       <GradientTile type={post.type} className="aspect-video" />
       <div className="card-shell flex-1 !px-[10px] !pb-[10px] !pt-4">
         <div className="flex items-start gap-3">

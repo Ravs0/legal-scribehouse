@@ -57,7 +57,7 @@ export const IconContainer = ({ icon: Icon, size = 'md', tone = 'primary', class
     aria-hidden="true"
     className={cn(
       'icon-well inline-flex shrink-0 items-center justify-center [&_svg]:shrink-0',
-      size === 'md' ? 'h-11 w-11 rounded-[12px]' : 'h-9 w-9 rounded-[10px]',
+      size === 'md' ? 'h-11 w-11 rounded-[8px]' : 'h-9 w-9 rounded-[10px]',
       TONES[tone],
       className,
     )}

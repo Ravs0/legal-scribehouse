@@ -54,7 +54,7 @@ export const InsightsTeaser = () => {
         {!ready ? (
           <div className="after-heading stack-gap grid md:grid-cols-3" aria-busy="true" aria-label="Loading insights">
             {[0, 1, 2].map((i) => (
-              <div key={i} className="surface-1 space-y-3 rounded-[20px] p-2.5">
+              <div key={i} className="surface-1 space-y-3 rounded-[12px] p-2.5">
                 <Skeleton className="aspect-video w-full rounded-md" />
                 <Skeleton className="h-6 w-20 rounded-full" />
                 <Skeleton className="h-6 w-5/6" />
@@ -66,7 +66,7 @@ export const InsightsTeaser = () => {
           <ul className="after-heading stack-gap grid md:grid-cols-3">
             {UPCOMING.map((g, i) => (
               <Reveal as="li" key={g.title} index={i}>
-                <article className="surface-1 card-shell h-full rounded-[20px]">
+                <article className="surface-1 card-shell h-full rounded-[12px]">
                   <CardHeader icon={g.icon} title={g.title} meta={g.meta} />
                   <p className="card-body type-body-md text-muted-foreground">{g.copy}</p>
                   <CardFooter className="flex items-center justify-between gap-2">

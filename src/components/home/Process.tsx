@@ -11,7 +11,7 @@ const STEPS = [
 ];
 
 export const Process = () => (
-  <section id="process" className="section">
+  <section id="process" className="section band">
     <div className="container">
       <SectionHeading eyebrow="How it works" title="Four steps from first call to first shipment." />
 
@@ -19,7 +19,7 @@ export const Process = () => (
       <ol className="after-heading stack-gap grid sm:grid-cols-2 lg:grid-cols-4">
         {STEPS.map((s, i) => (
           <Reveal as="li" key={s.title} index={i}>
-            <article className="surface-1 card-hover card-shell h-full rounded-[20px]">
+            <article className="surface-1 card-hover card-shell h-full rounded-[12px]">
               <CardHeader
                 numeral={String(i + 1).padStart(2, '0')}
                 meta={s.meta}

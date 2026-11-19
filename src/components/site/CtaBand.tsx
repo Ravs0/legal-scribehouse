@@ -6,7 +6,7 @@ import { Contours } from '@/components/site/Contours';
 /** Closing call-to-action on inner pages: a dark device panel over contour lines. */
 export const CtaBand = () => (
   <section className="container pb-16 md:pb-24">
-    <div className="dark relative overflow-hidden rounded-[28px] device-surface bg-device px-6 py-10 text-center text-device-foreground md:px-12 md:py-14">
+    <div className="dark relative overflow-hidden rounded-[14px] device-surface bg-device px-6 py-10 text-center text-device-foreground md:px-12 md:py-14">
       <Contours className="absolute inset-0 h-full w-full" />
       <div className="relative">
         <h2 className="type-headline-md mx-auto max-w-[24ch]">Planning your first ASEAN shipment?</h2>

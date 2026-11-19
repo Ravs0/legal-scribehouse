@@ -98,7 +98,7 @@ export const Markets = () => {
         />
 
         <Reveal className="after-heading">
-          <div className="device-surface dark rounded-[32px] bg-device p-3 text-device-foreground">
+          <div className="device-surface dark rounded-[16px] bg-device p-3 text-device-foreground">
             {/* Top row */}
             <div className="flex h-11 items-center justify-between gap-3 px-1">
               <div className="no-scrollbar flex gap-1.5 overflow-x-auto py-[7px]">
@@ -112,7 +112,7 @@ export const Markets = () => {
                       if (!f.codes.includes(activeCode)) setActiveCode(f.codes[0]);
                     }}
                     className={cn(
-                      'press hit type-label-md relative h-[30px] shrink-0 rounded-full px-3 transition-colors',
+                      'press hit type-label-md relative h-[30px] shrink-0 rounded-[7px] px-3 transition-colors',
                       filter === f.id ? 'pebble btn-lift bg-paper text-paper-ink [--sheen-a:0.7]' : 'bg-white/[0.08] text-white/75 hover:bg-white/[0.12]',
                     )}
                   >
@@ -123,7 +123,7 @@ export const Markets = () => {
               <button
                 type="button"
                 onClick={askAbout}
-                className="pebble btn-lift hit type-label-md relative hidden h-[30px] shrink-0 items-center gap-1.5 rounded-full bg-paper px-3 text-paper-ink [--sheen-a:0.7] sm:inline-flex"
+                className="pebble btn-lift hit type-label-md relative hidden h-[30px] shrink-0 items-center gap-1.5 rounded-[7px] bg-paper px-3 text-paper-ink [--sheen-a:0.7] sm:inline-flex"
               >
                 Ask about {market.name} <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
               </button>
@@ -144,7 +144,7 @@ export const Markets = () => {
               >
                 <span
                   aria-hidden="true"
-                  className="pebble absolute inset-x-0 hidden rounded-[14px] bg-white/[0.08] [--sheen-a:0.12] lg:block"
+                  className="pebble absolute inset-x-0 hidden rounded-[10px] bg-white/[0.08] [--sheen-a:0.12] lg:block"
                   style={{
                     top: 0,
                     height: surface.h,
@@ -167,7 +167,7 @@ export const Markets = () => {
                       tabIndex={on ? 0 : -1}
                       onClick={() => select(m.code)}
                       className={cn(
-                        'press hit group relative z-[1] flex shrink-0 snap-start items-center gap-3 rounded-full px-3.5 text-left transition-colors lg:h-16 lg:rounded-[14px] lg:px-4',
+                        'press hit group relative z-[1] flex shrink-0 snap-start items-center gap-3 rounded-[8px] px-3.5 text-left transition-colors lg:h-16 lg:rounded-[10px] lg:px-4',
                         'h-9 lg:h-16',
                         on ? 'bg-paper text-paper-ink lg:bg-transparent lg:text-paper' : 'bg-white/[0.08] text-white/70 hover:text-white lg:bg-transparent',
                       )}
@@ -190,7 +190,7 @@ export const Markets = () => {
                 id="market-panel"
                 role="tabpanel"
                 aria-labelledby={`market-tab-${market.code}`}
-                className="relative overflow-hidden rounded-[20px] bg-black"
+                className="relative overflow-hidden rounded-[12px] bg-black"
               >
                 {/* v3.7: wider and capped at 70% of the screen height below 1024, so the scene never fills a landscape phone. */}
                 <div className="relative aspect-[16/11] max-h-[70svh] md:aspect-[16/9] lg:aspect-auto lg:h-[420px] lg:max-h-none">
@@ -226,7 +226,7 @@ export const Markets = () => {
                   <div
                     id="market-sheet"
                     className={cn(
-                      'absolute inset-x-3 bottom-3 z-[2] hidden rounded-[20px] bg-paper p-6 text-paper-ink shadow-[0_20px_40px_-12px_#000] transition-[transform,opacity] [transition-duration:420ms] [transition-timing-function:cubic-bezier(0.32,0.72,0,1)] lg:block',
+                      'absolute inset-x-3 bottom-3 z-[2] hidden rounded-[12px] bg-paper p-6 text-paper-ink shadow-[0_20px_40px_-12px_#000] transition-[transform,opacity] [transition-duration:420ms] [transition-timing-function:cubic-bezier(0.32,0.72,0,1)] lg:block',
                       sheetOpen ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-[110%] opacity-0',
                     )}
                   >
@@ -236,7 +236,7 @@ export const Markets = () => {
               </div>
             </div>
 
-            <div className="mt-3 rounded-[20px] bg-paper p-5 text-paper-ink md:p-6 lg:hidden">
+            <div className="mt-3 rounded-[12px] bg-paper p-5 text-paper-ink md:p-6 lg:hidden">
               <MarketDetail market={market} />
             </div>
 
@@ -267,7 +267,7 @@ const MarketDetail = ({ market }: { market: (typeof MARKETS)[number] }) => (
         <p className="type-eyebrow mb-2.5 text-paper-muted">Regulators</p>
         <div className="flex flex-wrap gap-1.5">
           {market.regulators.map((r) => (
-            <span key={r} className="type-label-sm inline-flex h-6 items-center gap-1 rounded-full bg-white px-2 shadow-[inset_0_1px_0_#fff,0_0_0_1px_hsl(24_40%_20%/0.09),0_1px_2px_hsl(24_40%_20%/0.08)]">
+            <span key={r} className="type-label-sm inline-flex h-6 items-center gap-1 rounded-[5px] bg-white px-2 shadow-[inset_0_1px_0_#fff,0_0_0_1px_hsl(24_40%_20%/0.09),0_1px_2px_hsl(24_40%_20%/0.08)]">
               <Landmark className="h-3 w-3 shrink-0 text-paper-accent" aria-hidden="true" />
               {r}
             </span>

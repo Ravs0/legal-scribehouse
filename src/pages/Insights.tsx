@@ -105,7 +105,7 @@ export const InsightsListing = ({
         {!ready ? (
           <div className="stack-gap grid sm:grid-cols-2 lg:grid-cols-3">
             {Array.from({ length: 6 }).map((_, i) => (
-              <div key={i} className="surface-1 space-y-3 rounded-[20px] p-2.5">
+              <div key={i} className="surface-1 space-y-3 rounded-[12px] p-2.5">
                 <Skeleton className="aspect-video w-full rounded-md" />
                 <Skeleton className="h-6 w-20 rounded-full" />
                 <Skeleton className="h-6 w-5/6" />
@@ -114,7 +114,7 @@ export const InsightsListing = ({
             ))}
           </div>
         ) : filtered.length === 0 ? (
-          <div className="surface-1 flex flex-col items-center rounded-[28px] px-6 py-16 text-center">
+          <div className="surface-1 flex flex-col items-center rounded-[14px] px-6 py-16 text-center">
             <IconContainer icon={SearchX} className="h-14 w-14" />
             <p className="type-headline-sm mt-5">{query ? 'No matches found.' : 'Nothing published here yet.'}</p>
             <p className="type-body-md mt-2 max-w-[48ch] text-muted-foreground">
@@ -136,7 +136,7 @@ export const InsightsListing = ({
           <>
             {featured && (
               <Reveal className="mb-6 xl:mb-8">
-                <Link to={`/posts/${featured.id}`} className="surface-2 card-hover grid-12 items-center rounded-[28px] p-2.5 md:p-3">
+                <Link to={`/posts/${featured.id}`} className="surface-2 card-hover grid-12 items-center rounded-[14px] p-2.5 md:p-3">
                   <div className="order-2 col-span-4 p-3 md:order-1 md:col-span-7 md:p-6">
                     <Badge>{TYPE_META[featured.type]?.label ?? 'Analysis'} · Featured</Badge>
                     <h2 className="type-headline-md mt-4">{featured.title}</h2>

@@ -134,7 +134,7 @@ const PostDetail = () => {
 
           {toc.length > 1 && (
             <aside className="hidden xl:col-span-2 xl:col-start-11 xl:row-start-1 xl:block">
-              <nav aria-label="On this page" className="surface-1 sticky top-[120px] rounded-[20px] p-4">
+              <nav aria-label="On this page" className="surface-1 sticky top-[120px] rounded-[12px] p-4">
                 <p className="type-label-md text-muted-foreground">On this page</p>
                 <ul className="mt-3 space-y-1">
                   {toc.map((t) => (

@@ -1,5 +1,4 @@
 import { CSSProperties, KeyboardEvent, useRef, useState } from 'react';
-import { AssistChip } from '@/components/ui/chip';
 import { Eyebrow } from '@/components/site/SectionHeading';
 import { Reveal } from '@/components/motion/Reveal';
 import { ClearancePrinter } from '@/components/home/ClearancePrinter';
@@ -56,7 +55,7 @@ const RoutePicker = ({ value, onChange }: { value: number; onChange: (i: number)
       role="radiogroup"
       aria-label="Example route"
       onKeyDown={onKeyDown}
-      className="recessed inline-flex h-11 max-w-full items-center rounded-full p-1 [background-color:var(--well-fill)]"
+      className="recessed inline-flex h-11 max-w-full items-center rounded-[10px] p-1 [background-color:var(--well-fill)]"
     >
       {ROUTES.map((r, i) => {
         const on = i === value;
@@ -70,7 +69,7 @@ const RoutePicker = ({ value, onChange }: { value: number; onChange: (i: number)
             tabIndex={on ? 0 : -1}
             onClick={() => onChange(i)}
             className={cn(
-              'press hit type-label-md relative h-9 shrink-0 whitespace-nowrap rounded-full px-[14px] transition-[color,background-color,box-shadow,transform] [transition-duration:200ms]',
+              'press hit type-label-md relative h-9 shrink-0 whitespace-nowrap rounded-[7px] px-[14px] transition-[color,background-color,box-shadow,transform] [transition-duration:200ms]',
               on ? 'surface-1 text-foreground' : 'text-muted-foreground hover:text-foreground',
             )}
           >
@@ -94,7 +93,7 @@ export const Hero = () => {
               768–1023: text block capped at 640px, printer centred below it. */}
           <div className="col-span-4 md:col-span-12 md:max-w-[640px] lg:order-2 lg:col-span-7 lg:max-w-none hero-text">
             <div className="intro" style={step(0)}>
-              <AssistChip>Export law for small brands · ASEAN</AssistChip>
+              <Eyebrow>Export law for small brands · ASEAN</Eyebrow>
             </div>
             <h1 className="intro type-display-lg mt-4 max-w-[19.5ch] text-foreground lg:max-w-none" style={step(1)}>
               Export to Southeast Asia.{' '}
@@ -114,13 +113,13 @@ export const Hero = () => {
             </div>
             {/* Phones: one strip of three equal cells (pills wrapped 2 + 1). From 640px: a row of pills. */}
             <ul
-              className="intro surface-1 mt-5 grid grid-cols-3 divide-x divide-outline-variant rounded-[16px] sm:flex sm:flex-wrap sm:gap-2 sm:divide-x-0 sm:rounded-none sm:bg-transparent sm:shadow-none"
+              className="intro surface-1 mt-5 grid grid-cols-3 divide-x divide-outline-variant rounded-[10px] sm:flex sm:flex-wrap sm:gap-2 sm:divide-x-0 sm:rounded-none sm:border-0 sm:bg-transparent sm:shadow-none"
               style={step(4)}
             >
               {STATS.map((s) => (
                 <li
                   key={s.label}
-                  className="type-label-md flex flex-col items-center justify-start gap-0.5 px-1.5 py-3 text-center sm:surface-1 sm:h-8 sm:flex-row sm:gap-2 sm:rounded-full sm:px-3 sm:py-0"
+                  className="type-label-md flex flex-col items-center justify-start gap-0.5 px-1.5 py-3 text-center sm:surface-1 sm:h-8 sm:flex-row sm:gap-2 sm:rounded-[8px] sm:px-3 sm:py-0"
                 >
                   <span className="font-bold text-primary-ink tabular">{s.n}</span>
                   <span className="text-muted-foreground sm:text-foreground">{s.label}</span>
@@ -136,7 +135,7 @@ export const Hero = () => {
         </div>
 
         <Reveal className="mt-8 lg:mt-10">
-          <div id="problems" className="surface-2 rounded-[24px]">
+          <div id="problems" className="surface-2 rounded-[14px]">
             <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-4 pt-4 md:px-5">
               <Eyebrow>Why exports stall</Eyebrow>
               <h2 className="type-label-md text-muted-foreground">Three ways a first shipment goes wrong</h2>

@@ -117,8 +117,8 @@ export const Glance = () => {
           surface,
           // Concentric with the board well (44px radius, 16px / 20px padding): 28px mobile, 24px from sm.
           isOpen
-            ? 'z-[2] rounded-[28px] sm:rounded-[24px] [box-shadow:var(--edge-top),var(--edge-rim),inset_0_-14px_22px_-16px_hsl(var(--tint)/var(--shade-a)),var(--edge-out),var(--e4)]'
-            : 'z-[1] rounded-[28px] sm:rounded-[24px] [box-shadow:var(--edge-top),var(--edge-rim),inset_0_-14px_22px_-16px_hsl(var(--tint)/var(--shade-a)),var(--edge-out),var(--float-drop)]',
+            ? 'z-[2] rounded-[14px] sm:rounded-[14px] [box-shadow:var(--edge-top),var(--edge-rim),inset_0_-14px_22px_-16px_hsl(var(--tint)/var(--shade-a)),var(--edge-out),var(--e4)]'
+            : 'z-[1] rounded-[14px] sm:rounded-[14px] [box-shadow:var(--edge-top),var(--edge-rim),inset_0_-14px_22px_-16px_hsl(var(--tint)/var(--shade-a)),var(--edge-out),var(--float-drop)]',
           !open && 'hover:-translate-y-1 hover:[box-shadow:var(--edge-top),var(--edge-rim),inset_0_-14px_22px_-16px_hsl(var(--tint)/var(--shade-a)),var(--edge-out),var(--float-drop-hover)]',
           dim && "scale-[0.96] opacity-[0.45]",
         )}
@@ -146,7 +146,7 @@ export const Glance = () => {
   };
 
   return (
-    <section id="glance" className="section">
+    <section id="glance" className="section band">
       <div className="container">
         <SectionHeading
           eyebrow="Export at a glance"
@@ -154,9 +154,10 @@ export const Glance = () => {
           subtitle="A sample of the dashboard that comes with a route plan. Tap any widget to open it."
         />
 
-        {/* v3.8: the board is centred (880px max) with the legend as a row of four under it. */}
-        <Reveal className="after-heading">
-            <div className="bezel-well mx-auto w-full max-w-[880px] rounded-[44px] p-4 sm:p-5">
+        {/* v3.12: on the grid. The legend is a list in the left 4 columns, the board in the right 8, from 1024px. */}
+        <div className="after-heading grid-12 items-start">
+        <Reveal className="col-span-4 md:col-span-12 lg:order-2 lg:col-span-8">
+            <div className="bezel-well w-full rounded-[12px] p-4 sm:p-5">
               <div ref={boardRef} className="relative" style={{ height: boardHeight }}>
                 {widget(
                   'duty',
@@ -316,16 +317,17 @@ export const Glance = () => {
               </div>
             </div>
           </Reveal>
-        <Reveal as="ul" stagger className="mx-auto mt-6 grid max-w-[880px] grid-cols-2 gap-x-4 gap-y-5 md:mt-8 md:grid-cols-4 md:gap-x-6">
+        <Reveal as="ul" stagger className="col-span-4 grid grid-cols-2 gap-x-4 gap-y-5 md:col-span-12 md:grid-cols-4 md:gap-x-6 lg:order-1 lg:col-span-4 lg:grid-cols-1 lg:gap-0 lg:divide-y lg:divide-border lg:border-y lg:border-border">
           {LEGEND.map((l) => (
-            <li key={l.name} className="grid grid-cols-[10px_minmax(0,1fr)] content-start items-center gap-x-2.5">
+            <li key={l.name} className="grid grid-cols-[10px_minmax(0,1fr)] content-start items-center gap-x-2.5 lg:py-4">
               <span aria-hidden="true" className={cn('h-2.5 w-2.5 rounded-[3px] shadow-[var(--edge-out)]', l.swatch)} />
               <span className="type-title-sm">{l.name}</span>
               <span className="type-body-sm col-start-2 mt-0.5 text-muted-foreground">{l.copy}</span>
             </li>
           ))}
         </Reveal>
-        <p className="type-label-sm mt-5 text-center text-muted-foreground">{NOTE}</p>
+        </div>
+        <p className="type-label-sm mt-5 text-muted-foreground lg:text-right">{NOTE}</p>
       </div>
     </section>
   );
