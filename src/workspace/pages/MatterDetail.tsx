@@ -58,7 +58,7 @@ export const Timeline = ({ matterId, people, asClient }: { matterId: string; peo
               <button
                 type="button"
                 onClick={() => setVisibility((v) => (v === 'internal' ? 'client' : 'internal'))}
-                className={cn('type-label-md inline-flex h-9 items-center gap-1.5 rounded-[8px] border px-3', visibility === 'client' ? 'border-tertiary/40 bg-tertiary/10 text-tertiary' : 'border-border text-muted-foreground')}
+                className={cn('btn-raised btn-lift type-label-md inline-flex h-9 items-center gap-1.5 rounded-full bg-card px-3.5', visibility === 'client' ? 'text-tertiary' : 'text-muted-foreground')}
                 aria-pressed={visibility === 'client'}
               >
                 {visibility === 'client' ? <Eye className="h-4 w-4" aria-hidden="true" /> : <EyeOff className="h-4 w-4" aria-hidden="true" />}
@@ -181,7 +181,7 @@ const TaskCard = ({ task: t, people, canWork, onStatus, onShare }: { task: Task;
           {COLUMNS.map((c) => <option key={c} value={c}>{TASK_LABEL[c]}</option>)}
         </NativeSelect>
         <button type="button" onClick={onShare} aria-pressed={t.client_visible} title={t.client_visible ? 'Hide from client' : 'Show to client as a milestone'}
-          className={cn('inline-flex h-8 w-8 items-center justify-center rounded-[8px] border', t.client_visible ? 'border-tertiary/40 text-tertiary' : 'border-border text-muted-foreground')}>
+          className={cn('btn-raised btn-lift inline-flex h-8 w-8 items-center justify-center rounded-full bg-card', t.client_visible ? 'text-tertiary' : 'text-muted-foreground')}>
           {t.client_visible ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
           <span className="sr-only">{t.client_visible ? 'Hide from client' : 'Show to client'}</span>
         </button>

@@ -40,7 +40,7 @@ export const ArticleList = () => {
       <div className="flex flex-wrap gap-1.5">
         {(['', 'draft', 'in_review', 'published', 'archived'] as const).map((s) => (
           <button key={s || 'all'} onClick={() => setStatus(s)} aria-pressed={status === s}
-            className={cn('type-label-md h-8 rounded-full px-3', status === s ? 'bg-primary text-primary-foreground' : 'border border-border text-muted-foreground hover:text-foreground')}>
+            className={cn('type-label-md h-8 rounded-full px-3', status === s ? 'btn-filled btn-lift text-primary-foreground' : 'btn-raised btn-lift bg-card text-muted-foreground hover:text-foreground')}>
             {s ? ARTICLE_LABEL[s] : 'All'} <span className="tabular opacity-70">{s ? (list.data ?? []).filter((a) => a.status === s).length : (list.data ?? []).length}</span>
           </button>
         ))}
@@ -76,7 +76,7 @@ const Chips = ({ options, value, onChange, label, format = (s: string) => s }: {
         const on = value.includes(o);
         return (
           <button key={o} type="button" aria-pressed={on} onClick={() => onChange(on ? value.filter((x) => x !== o) : [...value, o])}
-            className={cn('type-label-sm h-7 rounded-full px-2.5', on ? 'bg-primary text-primary-foreground' : 'border border-border text-muted-foreground hover:text-foreground')}>
+            className={cn('type-label-sm h-7 rounded-full px-2.5', on ? 'btn-filled btn-lift text-primary-foreground' : 'btn-raised btn-lift bg-card text-muted-foreground hover:text-foreground')}>
             {format(o)}
           </button>
         );

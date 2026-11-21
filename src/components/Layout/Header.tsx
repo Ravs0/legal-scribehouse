@@ -338,7 +338,7 @@ const Header = () => {
                     ))}
                   </ul>
                 </nav>
-                <Link to="/login" onClick={() => setOpen(false)} className="type-label-lg mt-5 flex h-11 items-center justify-center rounded-full border border-border text-muted-foreground hover:text-foreground">
+                <Link to="/login" onClick={() => setOpen(false)} className="btn-raised btn-lift type-label-lg mt-5 flex h-11 items-center justify-center rounded-full bg-card text-foreground">
                   Client & team sign-in
                 </Link>
                 <Button asChild size="lg" className="mt-3 w-full">

@@ -180,7 +180,7 @@ export const Glance = () => {
                   <div className="flex h-full flex-col">
                     <p className="type-mono-sm opacity-70">Duty saved with an FTA origin claim</p>
                     <p className="mt-2 font-display text-[44px] font-semibold leading-none tracking-[-0.04em] tabular sm:text-[56px]">{fmt(savedAnim)}</p>
-                    <div role="radiogroup" aria-label="Shipment value" className="mt-4 inline-flex w-fit rounded-[10px] bg-primary-foreground/10 p-[3px]">
+                    <div role="radiogroup" aria-label="Shipment value" className="mt-4 inline-flex w-fit gap-0.5 rounded-full bg-primary-foreground/10 p-[3px]">
                       {SHIPMENT_SIZES.map((s, i) => (
                         <button
                           key={s}
@@ -188,7 +188,7 @@ export const Glance = () => {
                           role="radio"
                           aria-checked={size === i}
                           onClick={() => setSize(i)}
-                          className={cn('type-label-md h-[30px] rounded-[7px] px-3.5 transition-colors', size === i ? 'bg-primary-foreground text-primary' : 'text-primary-foreground/80')}
+                          className={cn('btn-lift type-label-md h-[30px] rounded-full px-3.5', size === i ? 'btn-raised bg-card text-foreground' : 'text-primary-foreground/80 hover:text-primary-foreground')}
                         >
                           A${s / 1000}k
                         </button>

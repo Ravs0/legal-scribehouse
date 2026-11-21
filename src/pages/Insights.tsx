@@ -170,7 +170,7 @@ export const InsightsListing = ({
                     onClick={() => setPage(i)}
                     className={cn(
                       'press type-label-md relative h-9 w-9 rounded-full',
-                      i === page ? 'btn-device bg-device text-device-foreground' : 'text-foreground hover:bg-secondary',
+                      i === page ? 'btn-filled btn-lift text-primary-foreground' : 'btn-raised btn-lift bg-card text-foreground',
                     )}
                   >
                     {i + 1}

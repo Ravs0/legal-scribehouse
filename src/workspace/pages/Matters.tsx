@@ -73,7 +73,7 @@ export const NewMatterDialog = ({ open, onOpenChange, defaults }: { open: boolea
                 const on = form.markets.includes(c);
                 return (
                   <button key={c} type="button" aria-pressed={on} onClick={() => set('markets', on ? form.markets.filter((x) => x !== c) : [...form.markets, c])}
-                    className={`type-label-sm h-7 rounded-full px-2.5 ${on ? 'bg-primary text-primary-foreground' : 'border border-border text-muted-foreground hover:text-foreground'}`}>
+                    className={`type-label-sm h-7 rounded-full px-2.5 ${on ? 'btn-filled btn-lift text-primary-foreground' : 'btn-raised btn-lift bg-card text-muted-foreground hover:text-foreground'}`}>
                     {MARKET_NAME[c]}
                   </button>
                 );

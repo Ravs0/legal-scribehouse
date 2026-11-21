@@ -18,10 +18,12 @@ interface ClearancePrinterProps {
   /** Controlled preset index; falls back to internal state when absent. */
   selected?: number;
   onSelect?: (index: number) => void;
+  /** v5.3: no painted backdrop card; the device stands on its own (the hero scene supplies the room). */
+  bare?: boolean;
 }
 
 /** Hero object: a glossy receipt printer that prints an illustrative clearance receipt per route. */
-export const ClearancePrinter = ({ className, selected: selectedProp, onSelect }: ClearancePrinterProps) => {
+export const ClearancePrinter = ({ className, selected: selectedProp, onSelect, bare = false }: ClearancePrinterProps) => {
   const [internal, setInternal] = useState(0);
   const selected = selectedProp ?? internal;
   const [shown, setShown] = useState(0);
@@ -99,14 +101,22 @@ export const ClearancePrinter = ({ className, selected: selectedProp, onSelect }
   ];
 
   return (
-    <div className={cn('relative mx-auto h-[400px] w-full max-w-[328px] overflow-hidden rounded-[14px] shadow-e4 roomy:h-[460px] roomy:max-w-[400px] roomy:rounded-[16px]', className)}>
-      <MarketScene scene={SCENES.home} className="absolute inset-0" />
+    <div
+      className={cn(
+        'relative mx-auto h-[400px] w-full max-w-[328px] overflow-hidden roomy:h-[460px] roomy:max-w-[400px]',
+        !bare && 'rounded-[14px] shadow-e4 roomy:rounded-[16px]',
+        className,
+      )}
+    >
+      {!bare && <MarketScene scene={SCENES.home} className="absolute inset-0" />}
       {/* Inner rim: the SVG scene covers inset shadows on the root, so the polished edge sits on top. */}
-      <span
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 z-20 rounded-[inherit]"
-        style={{ boxShadow: 'inset 0 0 0 1px hsl(0 0% 100% / 0.35), inset 0 1.5px 0.5px hsl(0 0% 100% / 0.6)' }}
-      />
+      {!bare && (
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 z-20 rounded-[inherit]"
+          style={{ boxShadow: 'inset 0 0 0 1px hsl(0 0% 100% / 0.35), inset 0 1.5px 0.5px hsl(0 0% 100% / 0.6)' }}
+        />
+      )}
 
       {/* Receipt (behind the head unit, feeding out of the slot) */}
       <div className="absolute inset-x-0 top-[108px] mx-auto w-[232px] roomy:top-[120px] roomy:w-[280px]">

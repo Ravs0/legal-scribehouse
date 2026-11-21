@@ -6,7 +6,7 @@ interface FilterChipProps extends Omit<React.ButtonHTMLAttributes<HTMLButtonElem
   selected: boolean;
 }
 
-/** Filter chip: 30px, pill. Selected = dark device pill with a check. */
+/** Filter chip: 30px pill in the tactile button finish. Selected = the orange filled pill with a check. */
 export const FilterChip = React.forwardRef<HTMLButtonElement, FilterChipProps>(({ selected, className, children, ...props }, ref) => (
   <button
     ref={ref}
@@ -14,7 +14,7 @@ export const FilterChip = React.forwardRef<HTMLButtonElement, FilterChipProps>((
     aria-pressed={selected}
     className={cn(
       'press type-label-md inline-flex h-[30px] shrink-0 items-center gap-1.5 rounded-full px-3 transition-colors duration-150',
-      selected ? 'btn-device bg-device pl-2.5 text-device-foreground' : 'btn-raised bg-card text-foreground hover:bg-secondary',
+      selected ? 'btn-filled btn-lift pl-2.5 text-primary-foreground' : 'btn-raised btn-lift bg-card text-foreground',
       className,
     )}
     {...props}

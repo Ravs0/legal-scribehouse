@@ -83,7 +83,7 @@ const Enquiries = () => {
       <div className="flex flex-wrap gap-1.5" role="tablist" aria-label="Filter enquiries">
         {FILTERS.map((f) => (
           <button key={f.id} role="tab" aria-selected={filter === f.id} onClick={() => setFilter(f.id)}
-            className={cn('type-label-md h-8 rounded-full px-3', filter === f.id ? 'bg-primary text-primary-foreground' : 'border border-border text-muted-foreground hover:text-foreground')}>
+            className={cn('type-label-md h-8 rounded-full px-3', filter === f.id ? 'btn-filled btn-lift text-primary-foreground' : 'btn-raised btn-lift bg-card text-muted-foreground hover:text-foreground')}>
             {f.label}
           </button>
         ))}

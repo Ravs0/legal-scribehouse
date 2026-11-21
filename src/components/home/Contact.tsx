@@ -236,7 +236,7 @@ export const Contact = () => {
                                 onBlur={field.onBlur}
                                 className="peer sr-only"
                               />
-                              <span className="press type-label-md flex h-9 cursor-pointer items-center justify-center whitespace-nowrap rounded-[10px] px-3 text-muted-foreground transition-[color,background-color,box-shadow] [transition-duration:200ms] hover:text-foreground peer-checked:surface-1 peer-checked:text-foreground peer-focus-visible:ring-2 peer-focus-visible:ring-ring sm:rounded-full">
+                              <span className="press type-label-md flex h-9 cursor-pointer items-center justify-center whitespace-nowrap rounded-[10px] px-3 text-muted-foreground transition-[color,background-color,box-shadow] [transition-duration:200ms] hover:text-foreground peer-checked:btn-raised peer-checked:bg-card peer-checked:text-foreground peer-focus-visible:ring-2 peer-focus-visible:ring-ring sm:rounded-full">
                                 {st}
                               </span>
                             </label>

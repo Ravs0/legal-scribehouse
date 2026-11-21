@@ -507,3 +507,31 @@ beat, full-bleed colour scenes, typewriter-mono "file" markers, a travelling dot
 - Reduced motion: a static stacked version. Screen readers: a plain text list.
 - The header shows the current home section as a mono marker (`§ services`) next to the wordmark from 1280px; the
   header button also steps aside while the story is pinned.
+
+## v5.3 Hero rebuilt as a room (after human-md.ai); one button finish everywhere
+
+Kept from before: the calculator (ClearancePrinter, now with a `bare` mode without its painted card) and the tactile
+pill button finish. Everything else in the hero is new (`src/components/home/HeroStage.tsx`).
+
+- **The room.** A full-bleed orange wall (with grain), a sand floor (28% of the height) and an orange skirting line.
+  Fixed scene colours in both themes.
+- **The word.** A giant **Cleared** (Sora 800, up to 232px, cream) with a teal dot, then *to sell.* in Newsreader italic.
+  On phones and tablets the word never breaks; "to sell." takes the next line.
+- **The set.** The calculator stands in front of the word, like the figure in front of "HUMAN.md". Crates
+  (FRAGILE, MEL → PKG) sit mid-floor, and a teal shipping container and a potted palm sit on the right. The
+  calculator is zoomed to 0.86 and set lower at 1024–1365px so "to sell." still reads.
+- **The copy.** A mono `§ export law for small brands · asean` marker, a serif lede, "try a route →" with the route
+  picker (selected key is a raised pill), and two tactile buttons.
+- **The floor.** Three mono notes that type themselves, a scroll pill, and a live Singapore clock with a "desk open"
+  dot.
+- **Motion** (only when allowed):
+  - letters drop in with a spring, the dot pops, and the serif slides in;
+  - props rise in and the container slides in from the right;
+  - the palm sways and the notes type;
+  - the scene shifts with the mouse (each prop by its own depth) and drifts as you scroll.
+- **One button finish everywhere:**
+  - "on" states are the orange filled pill (`btn-filled`), "off" states the raised cream pill (`btn-raised`), both
+    with `btn-lift`;
+  - this covers workspace filters and chips, the insights filter chips and pagination, the dashboard
+    shipment-size toggle, the contact "stage" choice, the timeline visibility switch, the task "show to client"
+    toggle and the mobile sign-in link.
