@@ -23,3 +23,6 @@ dist-ssr
 *.sln
 *.sw?
 dist-artifact
+
+# Sub-agent working copies (never commit)
+.claude/worktrees/
