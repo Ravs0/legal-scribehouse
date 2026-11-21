@@ -535,3 +535,22 @@ pill button finish. Everything else in the hero is new (`src/components/home/Her
   - this covers workspace filters and chips, the insights filter chips and pagination, the dashboard
     shipment-size toggle, the contact "stage" choice, the timeline visibility switch, the task "show to client"
     toggle and the mobile sign-in link.
+
+## v5.4 Hero finish pass
+
+Feedback: the idea is right, the finish isn't. Fixes:
+- **Lit props** (`src/components/home/heroProps.tsx`), all lit from the upper left:
+  - crates in three-quarter view with plank shading, grain, corner battens, nails and a painted stencil;
+  - a 20ft container with a door end in perspective, corrugated ribs, rails, corner castings and its markings in view;
+  - a plant with two-tone veined leaves and a glazed pot.
+- **Grounding.** The calculator rests on two stacked crates and its receipt drapes down their front. Every object has
+  a soft shadow thrown up-right onto the wall and a contact shadow on the floor. Objects stand at different depths:
+  container behind, crates in the middle, plant in front.
+- **Room light.** Window light across the wall (soft-light), a vignette, a shadow where wall meets floor (the orange
+  skirting line is gone), a lit floor, and a soft cast shadow on the giant word.
+- **Composition.**
+  - The Singapore clock moves to the top row beside the section marker, and the scroll pill is centred.
+  - The container's label sits on its visible half.
+  - Mid-size desktops zoom the set to 0.8, so "to sell." stays clear.
+  - The tablet/phone set is shorter, so there's no empty band.
+- **Motion.** The bottom crate rises, the top crate drops onto it, and the shadows fade in after them.

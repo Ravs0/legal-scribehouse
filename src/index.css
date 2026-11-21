@@ -1183,13 +1183,15 @@
 .hero-wall::after { content: ""; position: absolute; inset: 0; background-image: var(--grain-fine); background-size: 140px 140px; opacity: 0.7; mix-blend-mode: multiply; }
 .hero-floor {
   height: var(--floor);
-  background: linear-gradient(180deg, #E9D3B2 0%, #EAD6B8 40%, #E2C9A4 100%);
-  box-shadow: 0 -1px 0 #F4E4CC, 0 -14px 24px -16px rgb(80 30 5 / 0.35);
+  background:
+    radial-gradient(90% 120% at 50% 0%, rgb(255 248 236 / 0.55), transparent 70%),
+    linear-gradient(180deg, #E8D0AC 0%, #EBD7B9 30%, #E0C49D 100%);
 }
-/* Skirting board where wall meets floor */
-.hero-floor::before { content: ""; position: absolute; inset-inline: 0; top: -10px; height: 10px; background: linear-gradient(180deg, #F08A4B, #D9581F); }
+/* Where the wall meets the floor: a soft shadow on the wall and a contact line on the floor (no painted skirting). */
+.hero-floor::before { content: ""; position: absolute; inset-inline: 0; top: -46px; height: 46px; background: linear-gradient(180deg, transparent, rgb(120 36 0 / 0.2)); pointer-events: none; }
+.hero-floor::after { content: ""; position: absolute; inset-inline: 0; top: 0; height: 26px; background: linear-gradient(180deg, rgb(90 40 10 / 0.22), transparent); pointer-events: none; }
 
-.hero-title { font-family: theme("fontFamily.display"); font-weight: 800; color: #FFF4E6; font-size: clamp(84px, 15vw, 232px); line-height: 0.84; letter-spacing: -0.055em; }
+.hero-title { font-family: theme("fontFamily.display"); font-weight: 800; color: #FFF4E6; text-shadow: 0 0.012em 0 rgb(255 255 255 / 0.25), 0.03em 0.05em 0.09em rgb(110 34 0 / 0.28); font-size: clamp(84px, 15vw, 232px); line-height: 0.84; letter-spacing: -0.055em; }
 .hero-word { white-space: nowrap; }
 @media (max-width: 1023px) { .hero-title { font-size: clamp(72px, 21vw, 168px); } .hero-serif { margin-top: 0.1em; } }
 @media (min-width: 1024px) { .hero-title { white-space: nowrap; } }
@@ -1197,29 +1199,43 @@
 .hero-serif { font-family: theme("fontFamily.serif"); font-weight: 400; font-style: italic; letter-spacing: -0.02em; font-size: 0.66em; color: #2A1206; }
 .hero-lede { font-family: theme("fontFamily.serif"); font-size: clamp(20px, 17.4px + 0.7vw, 26px); line-height: 1.3; letter-spacing: -0.01em; color: #2A1206; }
 
-/* Props (positions are for the desktop room; phones get the compact set below) */
-.prop { transform: translate(calc(var(--px, 0) * var(--k, 0) * 1px), calc(var(--py, 0) * var(--k, 0) * 0.6px - var(--sy, 0) * var(--d, 0) * 0.12px)); transition: transform 400ms cubic-bezier(0.2, 0.7, 0, 1); }
-.prop-calc { left: 50%; bottom: calc(var(--floor) - 128px); width: 328px; margin-left: -164px; }
-.prop-crates { width: 140px; height: 134px; left: 2%; bottom: calc(var(--floor) - 116px); }
-.prop-container { width: 190px; height: 154px; right: -64px; bottom: calc(var(--floor) - 118px); }
-.prop-palm { display: none; }
-.calc-shadow { bottom: -8px; width: 240px; height: 18px; margin-left: -120px; background: radial-gradient(closest-side, rgb(40 15 0 / 0.28), transparent); }
-.hero-set { --floor: 140px; }
+/* v5.4 set: lit objects, wall and floor shadows, objects at different depths. */
+.prop { transform: translate(calc(var(--px, 0) * var(--k, 0) * 1px), calc(var(--py, 0) * var(--k, 0) * 0.6px - var(--sy, 0) * var(--d, 0) * 0.12px)); transition: transform 500ms cubic-bezier(0.2, 0.7, 0, 1); }
+.wall-shadow { position: absolute; inset: 6% -2% 4% 8%; border-radius: 18px; background: rgb(110 34 0 / 0.34); filter: blur(26px); transform: translate(34px, -10px); }
+.floor-shadow { position: absolute; left: 4%; right: -6%; bottom: -14px; height: 30px; border-radius: 50%; background: radial-gradient(closest-side, rgb(50 18 0 / 0.42), rgb(50 18 0 / 0.12) 60%, transparent); filter: blur(2px); }
+
+/* Phones and tablets: the cluster centred on the floor, the container peeking from behind on the left, the plant in front. */
+.hero-set { height: 430px; }
+.set-cluster { width: 380px; height: 426px; left: 50%; bottom: 40px; margin-left: -190px; zoom: 0.78; }
+.crate { width: 380px; height: 230px; left: 0; }
+.crate-low { bottom: 0; }
+.crate-high { bottom: 196px; }
+.set-calc { width: 400px; height: 460px; left: -32px; bottom: 38px; }
+.set-container { width: 440px; height: 236px; left: -150px; bottom: 150px; }
+.set-plant { width: 150px; height: 240px; right: -20px; bottom: 18px; }
+.set-container .wall-shadow { transform: translate(24px, -8px); opacity: 0.8; }
 @media (min-width: 640px) {
-  .hero-set { --floor: 150px; }
-  .prop-calc { width: 400px; margin-left: -200px; bottom: 24px; }
-  .prop-crates { width: 190px; height: 182px; left: 3%; bottom: 20px; }
-  .prop-container { width: 250px; height: 200px; right: -70px; bottom: 18px; }
-  .prop-palm { display: block; width: 110px; height: 184px; right: 150px; bottom: 16px; }
+  .hero-set { height: 470px; }
+  .set-cluster { zoom: 0.9; }
+  .set-container { left: -60px; width: 520px; height: 279px; bottom: 170px; }
+  .set-plant { right: 24px; width: 170px; height: 272px; }
 }
 @media (min-width: 1024px) {
-  .hero-set { --floor: 28%; }
-  .prop-calc { left: auto; right: 12vw; margin-left: 0; bottom: calc(var(--floor) - 104px); }
-  .prop-crates { width: 250px; height: 240px; left: 41%; bottom: calc(var(--floor) - 18px); }
-  .prop-container { width: 360px; height: 290px; right: -150px; bottom: calc(var(--floor) - 20px); }
-  .prop-palm { width: 150px; height: 250px; right: 1.5vw; bottom: calc(var(--floor) - 16px); }
+  .hero-set { height: auto; }
+  .set-cluster { left: auto; right: 9vw; bottom: 56px; margin-left: 0; zoom: 1; }
+  .set-container { left: auto; right: calc(9vw + 300px); bottom: 150px; width: 440px; height: 236px; }
+  .set-plant { right: 2vw; bottom: 26px; }
 }
-@media (min-width: 1280px) { .prop-crates { left: 42%; } }
+@media (min-width: 1024px) and (max-width: 1365px) {
+  .set-cluster { zoom: 0.8; }
+  .set-container { zoom: 0.85; }
+  .set-plant { zoom: 0.85; }
+}
+
+/* Window light across the wall, and a soft vignette over the room. */
+.hero-light { top: -12%; left: 6%; width: 48%; height: 86%; background: linear-gradient(180deg, rgb(255 236 205 / 0.42), rgb(255 236 205 / 0) 72%); transform: skewX(-20deg); filter: blur(36px); mix-blend-mode: soft-light; }
+.hero-vignette { background: radial-gradient(120% 90% at 40% 40%, transparent 55%, rgb(70 20 0 / 0.2)); }
+
 .palm-sway { animation: palm-sway 5.5s ease-in-out infinite alternate; }
 @keyframes palm-sway { from { transform: rotate(-2.5deg); } to { transform: rotate(2.5deg); } }
 
@@ -1237,7 +1253,7 @@
 @keyframes serif-in { from { opacity: 0; transform: translateX(0.25em); } to { opacity: 1; transform: none; } }
 .motion-ok .prop > svg { animation: prop-in 900ms cubic-bezier(0.34, 1.3, 0.64, 1) backwards; animation-delay: calc(380ms + var(--d, 0) * 700ms); }
 @keyframes prop-in { from { opacity: 0; transform: translateY(46px) scale(0.96); } to { opacity: 1; transform: none; } }
-.motion-ok .prop-container > svg { animation-name: container-in; animation-duration: 1100ms; animation-timing-function: cubic-bezier(0.2, 0.7, 0, 1); }
+.motion-ok .set-container > svg { animation-name: container-in; animation-duration: 1100ms; animation-timing-function: cubic-bezier(0.2, 0.7, 0, 1); }
 @keyframes container-in { from { opacity: 0; transform: translateX(80px); } to { opacity: 1; transform: none; } }
 .motion-ok .typed { animation: type-on calc(var(--n) * 38ms) steps(var(--n)) backwards; animation-delay: calc(1300ms + var(--t) * 900ms); }
 @keyframes type-on { from { width: 0; } }
@@ -1245,8 +1261,8 @@
   .palm-sway, .scroll-pill { animation: none; }
   .prop { transition: none; transform: none; }
 }
-/* Mid-size desktops: a slightly smaller calculator, set lower, so "to sell." still reads behind it. */
-@media (min-width: 1024px) and (max-width: 1365px) {
-  .prop-calc .intro-printer { zoom: 0.86; }
-  .prop-calc { bottom: calc(var(--floor) - 120px); right: 8vw; }
-}
+.motion-ok .crate-low { animation: prop-in 900ms cubic-bezier(0.34, 1.3, 0.64, 1) 420ms backwards; }
+.motion-ok .crate-high { animation: crate-drop 900ms cubic-bezier(0.34, 1.25, 0.64, 1) 620ms backwards; }
+@keyframes crate-drop { from { opacity: 0; transform: translateY(-60px); } to { opacity: 1; transform: none; } }
+.motion-ok .set-cluster .wall-shadow, .motion-ok .set-cluster .floor-shadow { animation: shadow-in 900ms ease-out 500ms backwards; }
+@keyframes shadow-in { from { opacity: 0; } }

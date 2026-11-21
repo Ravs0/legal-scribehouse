@@ -3,6 +3,7 @@ import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { HashLink } from '@/components/site/HashLink';
 import { ClearancePrinter } from '@/components/home/ClearancePrinter';
+import { Crate, Plant, ShippingContainer } from '@/components/home/heroProps';
 import { cn } from '@/lib/utils';
 import { prefersReducedMotion } from '@/lib/reveal';
 
@@ -62,58 +63,6 @@ const RoutePicker = ({ value, onChange }: { value: number; onChange: (i: number)
   );
 };
 
-/* ---------- Props (flat illustration with soft shading) ---------- */
-const Crates = () => (
-  <svg viewBox="0 0 260 250" className="h-full w-full" aria-hidden="true">
-    <ellipse cx="130" cy="242" rx="122" ry="8" fill="#000" opacity=".12" />
-    {/* bottom crate */}
-    <rect x="12" y="128" width="236" height="112" rx="4" fill="#C98F5A" />
-    {[150, 176, 202].map((y) => <rect key={y} x="12" y={y} width="236" height="3" fill="#A9733F" />)}
-    <path d="M18 134 L242 234 M242 134 L18 234" stroke="#B37C47" strokeWidth="7" />
-    <rect x="12" y="128" width="236" height="112" rx="4" fill="none" stroke="#8E5E31" strokeWidth="4" />
-    <text x="130" y="196" textAnchor="middle" fontFamily="Geist Mono, monospace" fontSize="15" fontWeight="600" fill="#5E3B1C" letterSpacing="2">MEL → PKG</text>
-    {/* top crate */}
-    <rect x="44" y="40" width="172" height="90" rx="4" fill="#D29C68" />
-    {[62, 84, 106].map((y) => <rect key={y} x="44" y={y} width="172" height="3" fill="#B07A48" />)}
-    <rect x="44" y="40" width="172" height="90" rx="4" fill="none" stroke="#8E5E31" strokeWidth="4" />
-    <text x="130" y="94" textAnchor="middle" fontFamily="Sora, sans-serif" fontSize="17" fontWeight="800" fill="#B4300F" letterSpacing="3">FRAGILE</text>
-    {/* parcel */}
-    <rect x="98" y="4" width="70" height="38" rx="3" fill="#E7C9A0" />
-    <rect x="128" y="4" width="10" height="38" fill="#F26A1C" />
-    <rect x="98" y="4" width="70" height="38" rx="3" fill="none" stroke="#B8925F" strokeWidth="2.5" />
-  </svg>
-);
-
-const Container = () => (
-  <svg viewBox="0 0 360 290" className="h-full w-full" aria-hidden="true">
-    <ellipse cx="180" cy="282" rx="176" ry="8" fill="#000" opacity=".14" />
-    <rect x="4" y="10" width="352" height="268" rx="6" fill="#0F4C52" />
-    <rect x="4" y="10" width="352" height="18" rx="6" fill="#14606A" />
-    {Array.from({ length: 13 }, (_, i) => <rect key={i} x={20 + i * 26} y="34" width="10" height="236" rx="2" fill="#0B3D42" />)}
-    <rect x="170" y="30" width="4" height="244" fill="#082F33" />
-    {[100, 218].map((x) => <rect key={x} x={x} y="40" width="6" height="226" rx="3" fill="#C9D8D6" opacity=".55" />)}
-    <rect x="186" y="46" width="132" height="46" rx="4" fill="#0B3D42" />
-    <text x="252" y="67" textAnchor="middle" fontFamily="Geist Mono, monospace" fontSize="14" fontWeight="600" fill="#F4EEE6" letterSpacing="2">STRT 040412</text>
-    <text x="252" y="84" textAnchor="middle" fontFamily="Geist Mono, monospace" fontSize="10" fill="#A9C9C8" letterSpacing="1.5">22G1 · MAX 30,480 KG</text>
-  </svg>
-);
-
-const Palm = () => (
-  <svg viewBox="0 0 180 300" className="h-full w-full" aria-hidden="true">
-    <ellipse cx="90" cy="293" rx="60" ry="6" fill="#000" opacity=".12" />
-    <g className="palm-sway" style={{ transformOrigin: '90px 200px' }}>
-      <path d="M90 205 C 86 150, 92 110, 96 70" stroke="#3E6B3A" strokeWidth="6" fill="none" strokeLinecap="round" />
-      <path d="M96 72 C 60 40, 20 52, 4 86 C 40 70, 70 72, 96 80 Z" fill="#2F6B4F" />
-      <path d="M96 72 C 130 36, 168 48, 178 84 C 146 68, 120 72, 96 80 Z" fill="#3E8A64" />
-      <path d="M96 74 C 84 30, 104 4, 124 0 C 112 30, 108 52, 98 80 Z" fill="#357A58" />
-      <path d="M94 90 C 60 96, 34 126, 30 160 C 52 128, 74 112, 96 100 Z" fill="#3E8A64" />
-      <path d="M98 92 C 132 98, 156 128, 160 160 C 138 130, 118 112, 96 102 Z" fill="#2F6B4F" />
-    </g>
-    <path d="M48 200 H132 L120 292 H60 Z" fill="#C4622D" />
-    <rect x="42" y="196" width="96" height="16" rx="4" fill="#D97A43" />
-  </svg>
-);
-
 /** Singapore time, ticking. */
 const useClock = () => {
   const fmt = () => new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Singapore', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).format(new Date());
@@ -165,11 +114,18 @@ export const Hero = () => {
 
       {/* Title and copy */}
       <div className="container relative z-[2] pt-8 md:pt-12 lg:pt-10">
-        <p className="intro type-mono-md flex items-center gap-2 text-[#2A1206]/80" style={step(0)}>
-          <span>§ export law for small brands</span>
-          <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[#0F4C52]" />
-          <span>asean</span>
-        </p>
+        <div className="intro flex flex-wrap items-center justify-between gap-x-6 gap-y-1" style={step(0)}>
+          <p className="type-mono-md flex items-center gap-2 text-[#2A1206]/80">
+            <span>§ export law for small brands</span>
+            <span aria-hidden="true" className="h-1.5 w-1.5 rounded-full bg-[#0F4C52]" />
+            <span>asean</span>
+          </p>
+          <p className="type-mono-md text-[#2A1206]/80">
+            <span className="tabular" aria-label={`Singapore time ${clock}`}>sgt {clock}</span>
+            <span aria-hidden="true" className="mx-2 inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[#1E7A52] align-middle" />
+            desk open
+          </p>
+        </div>
         <h1 className="hero-title mt-2" aria-label="Cleared to sell in Southeast Asia">
           <span aria-hidden="true" className="hero-word inline-block">
             {'Cleared'.split('').map((ch, i) => (
@@ -204,22 +160,38 @@ export const Hero = () => {
         </div>
       </div>
 
-      {/* The set: props on the floor, the calculator in front of the title */}
-      <div className="hero-set relative z-[1] h-[470px] sm:h-[520px] lg:absolute lg:inset-0 lg:z-[2] lg:h-auto lg:pointer-events-none">
-        <div className="prop prop-palm absolute" style={{ '--d': 0.6, '--k': 10 } as CSSProperties}><Palm /></div>
-        <div className="prop prop-crates absolute" style={{ '--d': 0.4, '--k': 18 } as CSSProperties}><Crates /></div>
-        <div className="prop prop-container absolute" style={{ '--d': 0.8, '--k': 8 } as CSSProperties}><Container /></div>
-        <div className="prop prop-calc absolute lg:pointer-events-auto" style={{ '--d': 0.2, '--k': 26 } as CSSProperties}>
-          <div className="intro-printer">
-            <ClearancePrinter bare className="float-idle" selected={route} onSelect={setRoute} />
+      {/* Light and air: window light on the wall, a soft vignette over the whole room. */}
+      <div aria-hidden="true" className="hero-light pointer-events-none absolute" />
+      <div aria-hidden="true" className="hero-vignette pointer-events-none absolute inset-0 z-[1]" />
+
+      {/* The set. Light comes from the upper left, so every object throws a soft shadow up-right onto the wall and
+          sits on a contact shadow on the floor. The calculator rests on two crates; its receipt drapes down their front. */}
+      <div className="hero-set relative z-[2] lg:absolute lg:inset-0 lg:pointer-events-none">
+        <div className="prop set-container absolute" style={{ '--d': 0.8, '--k': 8 } as CSSProperties}>
+          <span aria-hidden="true" className="wall-shadow" />
+          <ShippingContainer className="relative h-full w-full" />
+          <span aria-hidden="true" className="floor-shadow" />
+        </div>
+        <div className="prop set-cluster absolute" style={{ '--d': 0.3, '--k': 18 } as CSSProperties}>
+          <span aria-hidden="true" className="wall-shadow" />
+          <span aria-hidden="true" className="floor-shadow" />
+          <Crate id="crate-a" label="FRAGILE" sub="MEL → PKG" className="crate crate-low absolute" />
+          <Crate id="crate-b" sub="NO. 0412 · THIS WAY UP" className="crate crate-high absolute" />
+          <div className="set-calc absolute lg:pointer-events-auto">
+            <div className="intro-printer">
+              <ClearancePrinter bare selected={route} onSelect={setRoute} />
+            </div>
           </div>
-          <span aria-hidden="true" className="calc-shadow absolute left-1/2" />
+        </div>
+        <div className="prop set-plant absolute" style={{ '--d': 0.15, '--k': 30 } as CSSProperties}>
+          <span aria-hidden="true" className="floor-shadow" />
+          <Plant className="relative h-full w-full" />
         </div>
       </div>
 
       {/* Floor notes, clock and scroll pill */}
       <div className="hero-notes relative z-[3] lg:absolute lg:inset-x-0 lg:bottom-0">
-        <div className="container flex flex-col gap-4 pb-6 pt-5 lg:flex-row lg:items-end lg:justify-between lg:pb-6 lg:pt-0">
+        <div className="container grid gap-4 pb-6 pt-5 lg:grid-cols-3 lg:items-end lg:pb-6 lg:pt-0">
           <ul className="space-y-1">
             {NOTES.map((n, i) => (
               <li key={n} className="type-mono-sm flex items-center gap-2 text-[#3B2A1C]">
@@ -228,14 +200,9 @@ export const Hero = () => {
               </li>
             ))}
           </ul>
-          <span className="scroll-pill type-mono-sm hidden self-center rounded-full bg-[#1F1A16] px-3 py-1.5 text-[#F4EEE6] lg:inline-block" aria-hidden="true">
+          <span className="scroll-pill type-mono-sm hidden justify-self-center rounded-full bg-[#1F1A16] px-3 py-1.5 text-[#F4EEE6] lg:inline-block" aria-hidden="true">
             scroll ↓
           </span>
-          <p className="type-mono-sm text-[#3B2A1C] lg:text-right">
-            <span className="tabular" aria-label={`Singapore time ${clock}`}>sgt {clock}</span>
-            <span aria-hidden="true" className="mx-2 inline-block h-1.5 w-1.5 animate-pulse rounded-full bg-[#2FA36B] align-middle" />
-            desk open
-          </p>
         </div>
       </div>
     </section>
