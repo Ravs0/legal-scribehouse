@@ -1145,3 +1145,25 @@
   .card-hover:hover { transform: translateY(-3px); }
 }
 .card-hover { transition: transform 320ms var(--ease-spring), border-color 200ms, box-shadow 200ms; }
+
+/* ============================================================
+ * v5.2 Scroll story (after human-md.ai): pinned stage, lines step in, one giant word per beat.
+ * ============================================================ */
+.story-stage { transition: background-color 700ms var(--ease-out), color 700ms var(--ease-out); }
+.story-copy { font-family: theme("fontFamily.serif"); font-weight: 400; font-size: clamp(28px, 18.5px + 2.6vw, 56px); line-height: 1.12; letter-spacing: -0.02em; max-width: 22ch; }
+.story-line { transition: opacity 500ms var(--ease-out), transform 600ms cubic-bezier(0.2, 0.7, 0, 1); }
+.story-line[data-on="false"] { opacity: 0; transform: translateY(0.35em); }
+.story-word {
+  font-family: theme("fontFamily.display"); font-weight: 800; line-height: 0.86; letter-spacing: -0.055em;
+  font-size: clamp(84px, 21vw, 300px); padding-bottom: 0.04em; will-change: transform;
+}
+.story-mask { padding-bottom: 0.02em; }
+.story-tail { transition: opacity 500ms var(--ease-out), transform 600ms var(--ease-out); }
+.story-tail[data-on="false"] { opacity: 0; transform: translateY(8px); }
+.story-hint { transition: opacity 400ms; }
+.story-hint[data-on="false"] { opacity: 0; }
+.story-dot { animation: story-dot 1.6s ease-in-out infinite; }
+@keyframes story-dot { 0%, 100% { transform: translateY(0); opacity: 1; } 50% { transform: translateY(-4px); opacity: 0.6; } }
+@media (prefers-reduced-motion: reduce) { .story-dot { animation: none; } }
+.motion-ok .section-marker { animation: marker-in 420ms var(--ease-out) backwards; }
+@keyframes marker-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }

@@ -490,3 +490,20 @@ The receipt printer and route picker return to the hero, printer on the left as 
 picker and the two buttons sit on the right. The desk grid becomes a full-width strip under the hero (six markets in one
 row from 1024px, with the cycling highlight), followed by the four promises. The "Try a route" section becomes
 "Why exports stall": the three failure modes as numbered cards.
+
+## v5.2 Scroll story and file markers (inspiration: human-md.ai)
+
+What we took from human-md.ai: copy that builds line by line as you scroll inside a pinned stage, one giant word per
+beat, full-bleed colour scenes, typewriter-mono "file" markers, a travelling dot, and a mono "scroll" pill.
+
+- `src/components/home/ScrollStory.tsx`, straight after the hero (`#route`). Three beats:
+  - sand, "…stuck at the **PORT.**";
+  - deep teal, "…owns your **BRAND.**";
+  - orange, "…still pay the full **DUTY.**".
+
+  It closes on ink: "We close all three before the goods leave." with the call button. Lines step in at scroll
+  thresholds; the giant word (Sora 800, up to 300px) is scrubbed by scroll out of a mask. A mono `§ 00 why exports
+  stall` marker, a beat counter (01 / 03), a pulsing orange dot, and a scroll pill with a progress rail.
+- Reduced motion: a static stacked version. Screen readers: a plain text list.
+- The header shows the current home section as a mono marker (`§ services`) next to the wordmark from 1280px; the
+  header button also steps aside while the story is pinned.

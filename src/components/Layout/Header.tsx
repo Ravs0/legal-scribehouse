@@ -74,6 +74,7 @@ const Header = () => {
   );
   const inInsights = pathname.startsWith('/posts') || INSIGHT_LINKS.some((l) => pathname.startsWith(l.to));
   const activeKey = onHome ? spy : pathname === '/about' ? 'about' : inInsights ? 'insights' : null;
+  const sectionLabel = onHome ? SECTIONS.find((x) => x.id === spy)?.label ?? null : null;
 
   // Header CTA: hidden over the home hero, shown once the hero has scrolled away (always on other routes).
   const [pastHero, setPastHero] = useState(!onHome);
@@ -97,13 +98,21 @@ const Header = () => {
   // v3.11: it also steps aside while the booking form itself fills the upper half of the screen.
   const [atContact, setAtContact] = useState(false);
   useEffect(() => {
-    const contact = onHome ? document.getElementById('contact') : null;
-    if (!contact || typeof IntersectionObserver === 'undefined') {
+    // v5.2: also while the scroll story is pinned, since its closing beat carries the same button.
+    const targets = onHome ? (['contact', 'route'].map((id) => document.getElementById(id)).filter(Boolean) as HTMLElement[]) : [];
+    if (!targets.length || typeof IntersectionObserver === 'undefined') {
       setAtContact(false);
       return;
     }
-    const io = new IntersectionObserver(([e]) => setAtContact(e.isIntersecting), { rootMargin: '0px 0px -50% 0px', threshold: 0 });
-    io.observe(contact);
+    const seen = new Map<Element, boolean>();
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => seen.set(e.target, e.isIntersecting));
+        setAtContact([...seen.values()].some(Boolean));
+      },
+      { rootMargin: '0px 0px -50% 0px', threshold: 0 },
+    );
+    targets.forEach((t) => io.observe(t));
     return () => io.disconnect();
   }, [onHome, pathname]);
   const ctaHidden = !pastHero || atContact;
@@ -194,9 +203,17 @@ const Header = () => {
           data-scrolled={scrolled}
           className="hidden h-[68px] grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 lg:grid xl:gap-4"
         >
-          <Link to="/" aria-label={`${SITE.name} home`} className="press relative z-[1] justify-self-start rounded-lg">
-            <Wordmark withDescriptor />
-          </Link>
+          <div className="relative z-[1] flex min-w-0 items-center gap-3 justify-self-start">
+            <Link to="/" aria-label={`${SITE.name} home`} className="press rounded-lg">
+              <Wordmark withDescriptor={!sectionLabel} />
+            </Link>
+            {/* v5.2: the section you're in, as a mono file marker (after human-md.ai). */}
+            {sectionLabel && (
+              <span key={sectionLabel} aria-hidden="true" className="type-mono-sm section-marker hidden truncate border-l border-border pl-3 text-muted-foreground xl:inline">
+                § {sectionLabel.toLowerCase()}
+              </span>
+            )}
+          </div>
 
           <nav ref={navRef} aria-label="Main" className="relative z-[1] flex h-full items-center xl:gap-1">
             <span
