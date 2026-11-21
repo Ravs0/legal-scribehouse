@@ -14,7 +14,8 @@ import { Reveal } from '@/components/motion/Reveal';
 import { MarketsSelect } from '@/components/home/MarketsSelect';
 import { SITE } from '@/config/site';
 import { MARKETS } from '@/data/markets';
-import { IS_PREVIEW, submitEnquiry, type Enquiry } from '@/lib/enquiry';
+import { IS_DEMO_INBOX, submitEnquiry, type Enquiry } from '@/lib/enquiry';
+import { Link } from 'react-router-dom';
 import { useEnquiryDraft } from '@/stores/enquiryDraft';
 
 const CATEGORIES = ['Food & beverage', 'Cosmetics & personal care', 'Medical devices', 'Consumer goods', 'Industrial', 'Other'];
@@ -98,9 +99,9 @@ export const Contact = () => {
 
   const onSubmit = async (values: FormValues) => {
     if (values.website) return;
-    await submitEnquiry(values as Enquiry);
+    const how = await submitEnquiry(values as Enquiry);
     setSent(true);
-    if (!IS_PREVIEW)
+    if (how === 'email')
       toast.success('Enquiry ready to send', {
         description: `Your email app should have opened. If not, write to ${SITE.email}.`,
       });
@@ -142,21 +143,16 @@ export const Contact = () => {
               {sent ? (
                 <div role="status" className="flex animate-step-in flex-col items-start py-4">
                   <IconContainer icon={Check} tone="success" className="h-12 w-12" />
-                  <p className="type-headline-sm mt-6">{IS_PREVIEW ? 'This is a preview of the form.' : "Thanks, we've got it."}</p>
-                  {IS_PREVIEW ? (
-                    <p className="type-body-md mt-2 max-w-[52ch] text-muted-foreground">
-                      Enquiries aren't sent from this preview link. On the live site this opens a prefilled email to{' '}
-                      <span className="select-all font-semibold text-foreground">{SITE.email}</span>.
-                    </p>
-                  ) : (
-                    <p className="type-body-md mt-2 max-w-[52ch] text-muted-foreground">
-                    Your email app should have opened with everything filled in. Hit send there and we'll reply within
-                    one business day. Nothing opened? Write to{' '}
-                    <a className="text-primary-ink underline underline-offset-[3px]" href={`mailto:${SITE.email}`}>
-                      {SITE.email}
-                    </a>
-                    .
+                  <p className="type-headline-sm mt-6">Thanks, we've got it.</p>
+                  <p className="type-body-md mt-2 max-w-[52ch] text-muted-foreground">
+                    We'll reply within one business day with next steps. Anything urgent? Write to{' '}
+                    <a className="text-primary-ink underline underline-offset-[3px]" href={`mailto:${SITE.email}`}>{SITE.email}</a>.
                   </p>
+                  {IS_DEMO_INBOX && (
+                    <p className="type-body-sm mt-4 max-w-[52ch] rounded-[10px] bg-primary/10 px-3 py-2 text-primary-ink">
+                      Demo: your enquiry is in this browser's workspace inbox.{' '}
+                      <Link to="/login?next=/workspace/enquiries" className="font-semibold underline underline-offset-2">Open the workspace</Link>
+                    </p>
                   )}
                   <Button
                     variant="outline"

@@ -321,7 +321,10 @@ const Header = () => {
                     ))}
                   </ul>
                 </nav>
-                <Button asChild size="lg" className="mt-5 w-full">
+                <Link to="/login" onClick={() => setOpen(false)} className="type-label-lg mt-5 flex h-11 items-center justify-center rounded-full border border-border text-muted-foreground hover:text-foreground">
+                  Client & team sign-in
+                </Link>
+                <Button asChild size="lg" className="mt-3 w-full">
                   <HashLink to="contact" onClick={() => setOpen(false)}>
                     Book a free call <ArrowRight aria-hidden="true" />
                   </HashLink>

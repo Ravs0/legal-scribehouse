@@ -476,3 +476,10 @@ Feedback: keep the previous colour theme and buttons; text placement must not fe
   - promise figures count up;
   - each section's hairline draws in from the left, the number rises, then the title and subtitle follow;
   - cards lift 3px on hover.
+
+## v5.0 Workspace, client portal, public pages, database
+
+See `docs/WORKSPACE.md` for the internal system, access levels, database structure and how to go live.
+New public pages: /services and /services/:slug, /markets and /markets/:code, /team, /privacy, /terms, /disclaimer;
+articles now live at /insights/:slug and are written in the workspace. The footer gains a "Firm" column with these
+and the client & team sign-in.

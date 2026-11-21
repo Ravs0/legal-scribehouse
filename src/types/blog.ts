@@ -22,6 +22,8 @@ export interface ContentItem {
   published_at?: string;
   created_at: string;
   updated_at: string;
+  slug?: string;
+  markets?: string[];
 }
 
 export interface LegalCategory {
@@ -31,14 +33,12 @@ export interface LegalCategory {
   description?: string;
 }
 
+// Topics for an ASEAN export practice (they match the workspace article editor).
 export const LEGAL_CATEGORIES: LegalCategory[] = [
-  { id: 'company-law', name: 'Company Law', slug: 'company-law' },
-  { id: 'securities-sebi', name: 'Securities/SEBI', slug: 'securities-sebi' },
-  { id: 'competition', name: 'Competition', slug: 'competition' },
-  { id: 'ibc-bankruptcy', name: 'IBC/Bankruptcy', slug: 'ibc-bankruptcy' },
-  { id: 'arbitration', name: 'Arbitration', slug: 'arbitration' },
-  { id: 'tax', name: 'Tax', slug: 'tax' },
-  { id: 'tech-privacy', name: 'Tech/Privacy', slug: 'tech-privacy' },
-  { id: 'esg', name: 'ESG', slug: 'esg' },
-  { id: 'international-law', name: 'International Law', slug: 'international-law' },
+  { id: 'market-entry', name: 'Market entry', slug: 'market-entry' },
+  { id: 'contracts', name: 'Contracts', slug: 'contracts' },
+  { id: 'customs-ftas', name: 'Customs & FTAs', slug: 'customs-ftas' },
+  { id: 'product-registration', name: 'Product registration', slug: 'product-registration' },
+  { id: 'trademarks-ip', name: 'Trademarks & IP', slug: 'trademarks-ip' },
+  { id: 'disputes', name: 'Disputes & payment risk', slug: 'disputes' },
 ];

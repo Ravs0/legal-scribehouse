@@ -11,18 +11,31 @@ export interface Enquiry {
   message: string;
 }
 
-/**
- * Sends a consultation enquiry.
- *
- * TODO(before launch): there is no enquiries backend yet. This opens the visitor's mail
- * client with a prefilled email to SITE.email. Swap the body of this function for a real
- * endpoint (form service, Supabase edge function, CRM webhook) when one exists.
- */
-export const IS_PREVIEW = Boolean(import.meta.env.VITE_ARTIFACT);
+import { BACKEND, repo } from '@/workspace/data';
 
-export async function submitEnquiry(e: Enquiry): Promise<void> {
-  // Hosted previews cannot open mail apps; the form shows a preview notice instead.
-  if (IS_PREVIEW) return;
+export const IS_PREVIEW = Boolean(import.meta.env.VITE_ARTIFACT);
+/** Demo backend: the enquiry lands in this browser's workspace inbox (try /workspace/enquiries). */
+export const IS_DEMO_INBOX = BACKEND === 'demo';
+
+/**
+ * Sends a consultation enquiry to the enquiries table (Supabase), or to the demo inbox in this browser.
+ * If the database call fails, falls back to opening a prefilled email so the enquiry is never lost.
+ */
+export async function submitEnquiry(e: Enquiry): Promise<'stored' | 'email'> {
+  try {
+    await repo.submitEnquiry({
+      name: e.name, email: e.email, company: e.company || undefined, origin: e.origin || undefined, markets: e.markets ?? [],
+      category: e.category || undefined, stage: e.stage || undefined, message: e.message,
+    });
+    return 'stored';
+  } catch {
+    if (IS_PREVIEW) return 'stored';
+    openMail(e);
+    return 'email';
+  }
+}
+
+function openMail(e: Enquiry) {
   const subject = `Consult request: ${e.company || e.name}`;
   const body = [
     `Name: ${e.name}`,

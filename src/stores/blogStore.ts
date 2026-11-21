@@ -1,7 +1,17 @@
 import { create } from 'zustand';
 import { ContentItem, Author } from '@/types/blog';
 import { supabase } from '@/integrations/supabase/client';
-import { sampleContent, sampleAuthors } from '@/data/sampleContent';
+import { sampleAuthors } from '@/data/sampleContent';
+import { repo } from '@/workspace/data';
+import { STARTER_ARTICLES } from '@/workspace/data/articles';
+import type { Article } from '@/workspace/types';
+
+/** Workspace articles in the shape the public insights pages use. */
+const toItem = (a: Article): ContentItem => ({
+  id: a.id, title: a.title, summary: a.summary, content: a.content, type: a.type, categories: a.categories, tags: a.tags,
+  authors: a.authors, draft: a.status !== 'published', reading_time: a.reading_time, published_at: a.published_at,
+  created_at: a.published_at ?? a.created_at, updated_at: a.updated_at, slug: a.slug, markets: a.markets,
+});
 
 interface BlogStore {
   content: ContentItem[];
@@ -90,23 +100,25 @@ export const useBlogStore = create<BlogStore>((set, get) => ({
   fetchContent: async () => {
     set({ loading: true });
     try {
-      const { data, error } = await supabase
-        .from('content')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      set({ content: (data || []) as ContentItem[] });
+      // Published articles from whichever backend the workspace uses (demo or Supabase).
+      const items = (await repo.listPublishedArticles()).map(toItem);
+      set({ content: items });
     } catch (error) {
       console.error('Error fetching content:', error);
-      // Fallback to sample data if fetch fails
-      set({ content: sampleContent });
+      // Backend unreachable: show the starter articles so the site never looks empty.
+      set({ content: STARTER_ARTICLES.filter((a) => a.status === 'published').map(toItem) });
     } finally {
       set({ loading: false });
     }
   },
 
   fetchAuthors: async () => {
+    // Demo backend: bylines come from the demo team.
+    if (repo.mode === 'demo' && repo.demoPeople) {
+      const now = new Date().toISOString();
+      set({ authors: repo.demoPeople().filter((p) => p.role !== 'client').map((p) => ({ id: p.id, name: p.name, email: '', bio: p.title, created_at: now, updated_at: now })) });
+      return;
+    }
     set({ loading: true });
     try {
       // Use the secure function to get authors without email addresses

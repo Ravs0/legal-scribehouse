@@ -9,6 +9,7 @@ import { PostCard } from '@/components/Blog/PostCard';
 import { formatDate, TYPE_META } from '@/lib/insights';
 import { CtaBand } from '@/components/site/CtaBand';
 import { useInsights } from '@/hooks/useInsights';
+import { renderArticle } from '@/lib/markdown';
 
 interface TocItem {
   id: string;
@@ -31,10 +32,11 @@ function withToc(html: string): { html: string; toc: TocItem[] } {
 const PostDetail = () => {
   const { id } = useParams();
   const { items, authors, ready } = useInsights();
-  const post = items.find((p) => p.id === id);
+  const post = items.find((p) => p.id === id || p.slug === id);
   const [activeId, setActiveId] = useState<string | null>(null);
 
-  const { html, toc } = useMemo(() => withToc(post?.content ?? ''), [post?.content]);
+  // Bodies are Markdown (or legacy HTML); renderArticle escapes and sanitises both before they reach the page.
+  const { html, toc } = useMemo(() => withToc(renderArticle(post?.content ?? '')), [post?.content]);
   const related = useMemo(
     () => (post ? items.filter((p) => p.id !== post.id && p.type === post.type).slice(0, 3) : []),
     [items, post],

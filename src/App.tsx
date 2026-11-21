@@ -28,7 +28,39 @@ import CategoryPage from "./pages/CategoryPage";
 import PostDetail from "./pages/PostDetail";
 import NotFound from "./pages/NotFound";
 
-const queryClient = new QueryClient();
+// Public pages added for v5.
+import ServicesPage, { ServiceDetail } from "./pages/Services";
+import MarketsPage, { MarketDetail } from "./pages/MarketsPage";
+import TeamPage from "./pages/TeamPage";
+import LegalPage from "./pages/Legal";
+import { Outlet } from "react-router-dom";
+import { lazy, Suspense } from "react";
+
+// The workspace and portal load on demand, so public visitors never download them.
+const Login = lazy(() => import("./workspace/pages/Login"));
+const WorkspaceRoutes = lazy(() => import("./workspace/routes"));
+
+const queryClient = new QueryClient({ defaultOptions: { queries: { refetchOnWindowFocus: false, retry: 1 } } });
+
+/** Public site chrome: background, header, footer, page transition. */
+const SiteChrome = () => (
+  <>
+    <DawnBackground />
+    <PebbleLight />
+    <ScrollProgress />
+    <div className="relative flex min-h-screen min-h-dvh flex-col">
+      <Header />
+      <main id="main" className="flex-1">
+        <PageTransition>
+          <Outlet />
+        </PageTransition>
+      </main>
+      <Footer />
+    </div>
+  </>
+);
+
+const Loading = () => <div className="grid min-h-dvh place-items-center text-muted-foreground">Loading…</div>;
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
@@ -38,16 +70,23 @@ const App = () => (
         <Sonner position="bottom-right" />
         <Router>
           <ScrollManager />
-          <DawnBackground />
-          <PebbleLight />
-          <ScrollProgress />
-          <div className="relative flex min-h-screen min-h-dvh flex-col">
-            <Header />
-            <main id="main" className="flex-1">
-              <PageTransition>
-              <Routes>
+          <Suspense fallback={<Loading />}>
+            <Routes>
+              <Route path="/login" element={<Login />} />
+              <Route path="/workspace/*" element={<WorkspaceRoutes area="workspace" />} />
+              <Route path="/portal/*" element={<WorkspaceRoutes area="portal" />} />
+              <Route element={<SiteChrome />}>
                 <Route path="/" element={<Index />} />
+                <Route path="/services" element={<ServicesPage />} />
+                <Route path="/services/:slug" element={<ServiceDetail />} />
+                <Route path="/markets" element={<MarketsPage />} />
+                <Route path="/markets/:code" element={<MarketDetail />} />
+                <Route path="/team" element={<TeamPage />} />
+                <Route path="/privacy" element={<LegalPage doc="privacy" />} />
+                <Route path="/terms" element={<LegalPage doc="terms" />} />
+                <Route path="/disclaimer" element={<LegalPage doc="disclaimer" />} />
                 <Route path="/insights" element={<Insights />} />
+                <Route path="/insights/:id" element={<PostDetail />} />
                 <Route path="/posts" element={<Posts />} />
                 <Route path="/cases" element={<Cases />} />
                 <Route path="/statutes" element={<Statutes />} />
@@ -63,11 +102,9 @@ const App = () => (
                 <Route path="/briefing/:id" element={<PostDetail />} />
                 {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
                 <Route path="*" element={<NotFound />} />
-              </Routes>
-              </PageTransition>
-            </main>
-            <Footer />
-          </div>
+              </Route>
+            </Routes>
+          </Suspense>
         </Router>
       </TooltipProvider>
     </ThemeProvider>

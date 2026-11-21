@@ -13,7 +13,7 @@ const Footer = () => (
   <footer className="band-ink relative overflow-hidden">
     <div className="footer-safe container relative pt-14 md:pt-20">
       <Reveal stagger className="grid-12 gap-y-10">
-        <div className="col-span-4 md:col-span-12 lg:col-span-4">
+        <div className="col-span-4 md:col-span-12 lg:col-span-3">
           <Wordmark />
           <p className="type-body-md mt-4 max-w-[36ch] text-muted-foreground">{SITE.tagline}</p>
           <div className="mt-4 lg:mt-6 lg:space-y-1">
@@ -26,7 +26,7 @@ const Footer = () => (
           </div>
         </div>
 
-        <nav aria-label="Explore" className="col-span-2 md:col-span-3 lg:col-span-2 lg:col-start-6">
+        <nav aria-label="Explore" className="col-span-2 md:col-span-3 lg:col-span-2">
           <h2 className="type-label-md mb-3 font-sans text-foreground">Explore</h2>
           <ul>
             {SECTIONS.map((s) => (
@@ -57,8 +57,27 @@ const Footer = () => (
           </ul>
         </nav>
 
+        <nav aria-label="Firm" className="col-span-2 md:col-span-3 lg:col-span-2">
+          <h2 className="type-label-md mb-3 font-sans text-foreground">Firm</h2>
+          <ul>
+            {[
+              ['/services', 'Services'],
+              ['/markets', 'Markets'],
+              ['/team', 'Team'],
+              ['/login', 'Client & team sign-in'],
+              ['/privacy', 'Privacy'],
+              ['/terms', 'Terms'],
+              ['/disclaimer', 'Disclaimer'],
+            ].map(([to, label]) => (
+              <li key={to}>
+                <Link to={to} className={linkClass}>{label}</Link>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
         {/* Disclaimer wording depends on the firm's regulatory status; confirm before launch. */}
-        <div className="col-span-4 md:col-span-6 lg:col-span-3">
+        <div className="col-span-4 md:col-span-3 lg:col-span-3">
           <div className="rounded-[10px] border border-border p-4">
             <h2 className="type-label-md font-sans text-foreground">Disclaimer</h2>
             <p className="type-body-sm mt-2 text-muted-foreground">

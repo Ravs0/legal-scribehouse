@@ -16,7 +16,8 @@ export default defineConfig(({ mode }) => ({
         base: "./",
         build: {
           outDir: "dist-artifact",
-          rollupOptions: { output: { entryFileNames: "assets/app.js", assetFileNames: "assets/[name][extname]" } },
+          // One file: the hosted preview publishes app.js and index.css only, so lazy routes are inlined here.
+          rollupOptions: { output: { entryFileNames: "assets/app.js", assetFileNames: "assets/[name][extname]", inlineDynamicImports: true } },
         },
       }
     : {}),

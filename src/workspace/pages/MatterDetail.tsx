@@ -1,0 +1,398 @@
+import { FormEvent, useRef, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { ArrowLeft, Eye, EyeOff, FileText, Lock, Paperclip, Plus, Send, Upload, Users } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Textarea } from '@/components/ui/textarea';
+import { cn } from '@/lib/utils';
+import { can, canWorkMatter, isFeeEarner } from '../access';
+import { repo } from '../data';
+import {
+  MARKET_NAME, SERVICE_LABEL, STAGE_LABEL, STAGES, type MatterMember, type MemberRole, type Person, type Task, type TaskStatus,
+  type UpdateKind, type Visibility,
+} from '../types';
+import {
+  Avatar, DueLabel, Empty, fmtAgo, fmtDate, fmtMoney, NativeSelect, Panel, StageBadge, TASK_LABEL, TaskBadge, useAction, useFees, useMe, usePeople,
+} from '../components/kit';
+
+const KIND_LABEL: Record<UpdateKind, string> = { note: 'Note', filing: 'Filing', authority: 'Authority', stage: 'Stage', client_message: 'Client message' };
+
+/* ---------- Timeline (used by the workspace and the portal) ---------- */
+export const Timeline = ({ matterId, people, asClient }: { matterId: string; people: Person[]; asClient?: boolean }) => {
+  const me = useMe();
+  const act = useAction();
+  const updates = useQuery({ queryKey: ['updates', matterId], queryFn: () => repo.listUpdates(matterId, 200) });
+  const [body, setBody] = useState('');
+  const [kind, setKind] = useState<UpdateKind>('note');
+  const [visibility, setVisibility] = useState<Visibility>('internal');
+  const who = (id: string) => people.find((p) => p.id === id);
+
+  const post = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!body.trim()) return;
+    const ok = await act(() => repo.postUpdate({ matter_id: matterId, body: body.trim(), kind: asClient ? 'client_message' : kind, visibility: asClient ? 'client' : visibility }), asClient ? 'Message sent' : 'Update posted');
+    if (ok) setBody('');
+  };
+
+  return (
+    <div className="space-y-4">
+      <form onSubmit={post} className="surface-1 rounded-[12px] p-3">
+        <label htmlFor={`post-${matterId}`} className="sr-only">{asClient ? 'Message the team' : 'Post a work update'}</label>
+        <Textarea
+          id={`post-${matterId}`}
+          rows={3}
+          value={body}
+          onChange={(e) => setBody(e.target.value)}
+          placeholder={asClient ? 'Write to the team working on this matter…' : 'What happened? Filing made, authority replied, client chased…'}
+          className="min-h-20"
+        />
+        <div className="mt-2 flex flex-wrap items-center justify-between gap-2">
+          {!asClient ? (
+            <div className="flex flex-wrap items-center gap-2">
+              <NativeSelect aria-label="Kind" value={kind} onChange={(e) => setKind(e.target.value as UpdateKind)}>
+                {(['note', 'filing', 'authority'] as UpdateKind[]).map((k) => <option key={k} value={k}>{KIND_LABEL[k]}</option>)}
+              </NativeSelect>
+              <button
+                type="button"
+                onClick={() => setVisibility((v) => (v === 'internal' ? 'client' : 'internal'))}
+                className={cn('type-label-md inline-flex h-9 items-center gap-1.5 rounded-[8px] border px-3', visibility === 'client' ? 'border-tertiary/40 bg-tertiary/10 text-tertiary' : 'border-border text-muted-foreground')}
+                aria-pressed={visibility === 'client'}
+              >
+                {visibility === 'client' ? <Eye className="h-4 w-4" aria-hidden="true" /> : <EyeOff className="h-4 w-4" aria-hidden="true" />}
+                {visibility === 'client' ? 'Client can see this' : 'Internal only'}
+              </button>
+            </div>
+          ) : (
+            <span className="type-label-sm text-muted-foreground">Your message goes to the team on this matter.</span>
+          )}
+          <Button type="submit" size="sm" icon="trailing" disabled={!body.trim()}>
+            {asClient ? 'Send' : 'Post update'} <Send />
+          </Button>
+        </div>
+      </form>
+
+      {(updates.data ?? []).length === 0 ? (
+        <Empty>No updates yet.</Empty>
+      ) : (
+        <ol className="relative space-y-1 before:absolute before:bottom-4 before:left-[15px] before:top-4 before:w-px before:bg-border">
+          {(updates.data ?? []).map((u) => {
+            const p = who(u.author_id);
+            const mine = u.author_id === me.id;
+            return (
+              <li key={u.id} className="relative flex gap-3 py-2">
+                <Avatar name={p?.name ?? '?'} className={cn('relative z-[1] h-8 w-8 ring-4 ring-background', p?.role === 'client' && 'text-tertiary')} />
+                <div className={cn('min-w-0 flex-1 rounded-[10px] border px-3.5 py-2.5', u.visibility === 'internal' ? 'border-dashed border-border bg-transparent' : 'border-border bg-card')}>
+                  <p className="type-label-sm flex flex-wrap items-center gap-x-2 gap-y-1 text-muted-foreground">
+                    <span className="font-semibold text-foreground">{mine ? 'You' : (p?.name ?? 'Someone')}</span>
+                    <span>{fmtAgo(u.created_at)}</span>
+                    {!asClient && <Badge variant={u.kind === 'client_message' ? 'tertiary' : 'secondary'}>{KIND_LABEL[u.kind]}</Badge>}
+                    {!asClient && (u.visibility === 'internal'
+                      ? <span className="inline-flex items-center gap-1"><Lock className="h-3 w-3" aria-hidden="true" />Internal</span>
+                      : <span className="inline-flex items-center gap-1 text-tertiary"><Eye className="h-3 w-3" aria-hidden="true" />Shared</span>)}
+                  </p>
+                  <p className="type-body-md mt-1 whitespace-pre-line">{u.body}</p>
+                </div>
+              </li>
+            );
+          })}
+        </ol>
+      )}
+    </div>
+  );
+};
+
+/* ---------- Tasks ---------- */
+const COLUMNS: TaskStatus[] = ['todo', 'doing', 'blocked', 'done'];
+
+const Tasks = ({ matterId, people, canWork }: { matterId: string; people: Person[]; canWork: boolean }) => {
+  const act = useAction();
+  const tasks = useQuery({ queryKey: ['tasks', matterId], queryFn: () => repo.listTasks({ matterId }) });
+  const [title, setTitle] = useState('');
+  const [assignee, setAssignee] = useState('');
+  const [due, setDue] = useState('');
+  const [shared, setShared] = useState(false);
+  const staff = people.filter((p) => isFeeEarner(p.role));
+
+  const add = async (e: FormEvent) => {
+    e.preventDefault();
+    if (!title.trim()) return;
+    const ok = await act(() => repo.createTask({ matter_id: matterId, title: title.trim(), status: 'todo', priority: 'normal', assignee_id: assignee || undefined, due_date: due || undefined, client_visible: shared }), 'Task added');
+    if (ok) {
+      setTitle('');
+      setDue('');
+      setShared(false);
+    }
+  };
+
+  return (
+    <div className="space-y-4">
+      {canWork && (
+        <form onSubmit={add} className="surface-1 flex flex-wrap items-center gap-2 rounded-[12px] p-3">
+          <Input aria-label="New task" placeholder="Add a task…" value={title} onChange={(e) => setTitle(e.target.value)} className="h-9 min-w-[200px] flex-1" />
+          <NativeSelect aria-label="Assignee" value={assignee} onChange={(e) => setAssignee(e.target.value)}>
+            <option value="">Unassigned</option>
+            {staff.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}
+          </NativeSelect>
+          <Input aria-label="Due date" type="date" value={due} onChange={(e) => setDue(e.target.value)} className="h-9 w-[150px]" />
+          <label className="type-label-md inline-flex h-9 items-center gap-2 px-1 text-muted-foreground">
+            <input type="checkbox" checked={shared} onChange={(e) => setShared(e.target.checked)} className="accent-[hsl(var(--primary))]" />
+            Client milestone
+          </label>
+          <Button type="submit" size="sm" icon="leading" disabled={!title.trim()}><Plus /> Add</Button>
+        </form>
+      )}
+      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        {COLUMNS.map((col) => {
+          const list = (tasks.data ?? []).filter((t) => t.status === col);
+          return (
+            <section key={col} className="rounded-[12px] border border-border bg-foreground/[0.02] p-2" aria-label={TASK_LABEL[col]}>
+              <h3 className="type-label-md flex items-center justify-between px-2 py-1.5">
+                {TASK_LABEL[col]} <span className="tabular text-muted-foreground">{list.length}</span>
+              </h3>
+              <ul className="space-y-2">
+                {list.map((t) => (
+                  <TaskCard key={t.id} task={t} people={people} canWork={canWork} onStatus={(s) => act(() => repo.updateTask(t.id, { status: s }))} onShare={() => act(() => repo.updateTask(t.id, { client_visible: !t.client_visible }))} />
+                ))}
+                {list.length === 0 && <li className="type-label-sm px-2 py-3 text-muted-foreground">Nothing here.</li>}
+              </ul>
+            </section>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
+const TaskCard = ({ task: t, people, canWork, onStatus, onShare }: { task: Task; people: Person[]; canWork: boolean; onStatus: (s: TaskStatus) => void; onShare: () => void }) => (
+  <li className="surface-1 rounded-[10px] p-3">
+    <p className={cn('type-body-sm', t.status === 'done' && 'text-muted-foreground line-through')}>{t.title}</p>
+    <div className="mt-2 flex flex-wrap items-center gap-x-2 gap-y-1">
+      <span className="type-label-sm"><DueLabel date={t.due_date} done={t.status === 'done'} /></span>
+      {t.priority === 'high' && <Badge variant="destructive">High</Badge>}
+      {t.client_visible && <Badge variant="tertiary">Milestone</Badge>}
+      <span className="type-label-sm ml-auto text-muted-foreground">{people.find((p) => p.id === t.assignee_id)?.name.split(' ')[0] ?? 'Unassigned'}</span>
+    </div>
+    {canWork && (
+      <div className="mt-2 flex items-center gap-1.5 border-t border-border pt-2">
+        <NativeSelect aria-label={`Status of ${t.title}`} value={t.status} onChange={(e) => onStatus(e.target.value as TaskStatus)} className="h-8 flex-1 text-[12px]">
+          {COLUMNS.map((c) => <option key={c} value={c}>{TASK_LABEL[c]}</option>)}
+        </NativeSelect>
+        <button type="button" onClick={onShare} aria-pressed={t.client_visible} title={t.client_visible ? 'Hide from client' : 'Show to client as a milestone'}
+          className={cn('inline-flex h-8 w-8 items-center justify-center rounded-[8px] border', t.client_visible ? 'border-tertiary/40 text-tertiary' : 'border-border text-muted-foreground')}>
+          {t.client_visible ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+          <span className="sr-only">{t.client_visible ? 'Hide from client' : 'Show to client'}</span>
+        </button>
+      </div>
+    )}
+  </li>
+);
+
+/* ---------- Documents ---------- */
+export const Documents = ({ matterId, people, canUpload, asClient }: { matterId: string; people: Person[]; canUpload: boolean; asClient?: boolean }) => {
+  const act = useAction();
+  const docs = useQuery({ queryKey: ['documents', matterId], queryFn: () => repo.listDocuments(matterId) });
+  const input = useRef<HTMLInputElement>(null);
+  const [visibility, setVisibility] = useState<Visibility>(asClient ? 'client' : 'internal');
+  const open = async (id: string) => {
+    const d = docs.data?.find((x) => x.id === id);
+    if (!d) return;
+    const url = await repo.documentUrl(d);
+    if (url) window.open(url, '_blank', 'noopener');
+    else act(async () => { throw new Error('Demo mode keeps file names only; connect Supabase storage to open files.'); });
+  };
+  return (
+    <Panel
+      title="Documents"
+      action={canUpload && (
+        <div className="flex items-center gap-2">
+          {!asClient && (
+            <NativeSelect aria-label="Who can see the upload" value={visibility} onChange={(e) => setVisibility(e.target.value as Visibility)} className="h-8">
+              <option value="internal">Internal</option>
+              <option value="client">Share with client</option>
+            </NativeSelect>
+          )}
+          <input ref={input} type="file" className="sr-only" onChange={(e) => {
+            const f = e.target.files?.[0];
+            if (f) void act(() => repo.addDocument(matterId, f, visibility), 'Uploaded');
+            e.target.value = '';
+          }} />
+          <Button size="sm" variant="outline" icon="leading" onClick={() => input.current?.click()}><Upload /> Upload</Button>
+        </div>
+      )}
+    >
+      {(docs.data ?? []).length === 0 ? (
+        <Empty>No documents yet.</Empty>
+      ) : (
+        <ul className="divide-y divide-border">
+          {(docs.data ?? []).map((d) => (
+            <li key={d.id} className="flex items-center gap-3 px-4 py-3">
+              <FileText className="h-5 w-5 shrink-0 text-muted-foreground" aria-hidden="true" />
+              <button type="button" onClick={() => open(d.id)} className="type-label-lg min-w-0 flex-1 truncate text-left hover:text-primary-ink">{d.name}</button>
+              {!asClient && (d.visibility === 'client' ? <Badge variant="tertiary">Shared</Badge> : <Badge variant="secondary">Internal</Badge>)}
+              <span className="type-label-sm hidden text-muted-foreground sm:inline">{people.find((p) => p.id === d.uploaded_by)?.name.split(' ')[0]} · {fmtDate(d.created_at)}</span>
+            </li>
+          ))}
+        </ul>
+      )}
+    </Panel>
+  );
+};
+
+/* ---------- Team ---------- */
+const Team = ({ matterId, members, people, canStaff }: { matterId: string; members: MatterMember[]; people: Person[]; canStaff: boolean }) => {
+  const act = useAction();
+  const [draft, setDraft] = useState<MatterMember[] | null>(null);
+  const list = draft ?? members;
+  const staff = people.filter((p) => isFeeEarner(p.role));
+  return (
+    <Panel title="People on this matter" action={canStaff && (draft
+      ? <div className="flex gap-2"><Button size="sm" variant="outline" onClick={() => setDraft(null)}>Cancel</Button><Button size="sm" onClick={async () => { await act(() => repo.setMembers(matterId, list), 'Team updated'); setDraft(null); }}>Save</Button></div>
+      : <Button size="sm" variant="outline" icon="leading" onClick={() => setDraft(members)}><Users /> Edit</Button>)}>
+      <ul className="divide-y divide-border">
+        {(draft ? staff : staff.filter((p) => list.some((m) => m.user_id === p.id))).map((p) => {
+          const m = list.find((x) => x.user_id === p.id);
+          return (
+            <li key={p.id} className="flex items-center gap-3 px-4 py-3">
+              <Avatar name={p.name} className="h-8 w-8" />
+              <div className="min-w-0 flex-1">
+                <p className="type-label-lg">{p.name}</p>
+                <p className="type-label-sm text-muted-foreground">{p.title}</p>
+              </div>
+              {draft ? (
+                <NativeSelect aria-label={`${p.name} on this matter`} value={m?.role_on_matter ?? ''} onChange={(e) => {
+                  const v = e.target.value as MemberRole | '';
+                  setDraft(v ? [...list.filter((x) => x.user_id !== p.id), { matter_id: matterId, user_id: p.id, role_on_matter: v }] : list.filter((x) => x.user_id !== p.id));
+                }}>
+                  <option value="">Not on matter</option>
+                  <option value="lead">Lead</option>
+                  <option value="member">Member</option>
+                  <option value="viewer">Viewer (read only)</option>
+                </NativeSelect>
+              ) : (
+                <Badge variant={m?.role_on_matter === 'lead' ? 'default' : 'secondary'}>{m?.role_on_matter === 'lead' ? 'Lead' : m?.role_on_matter === 'viewer' ? 'Viewer' : 'Member'}</Badge>
+              )}
+            </li>
+          );
+        })}
+        {!draft && list.length === 0 && <Empty>No one staffed yet.</Empty>}
+      </ul>
+    </Panel>
+  );
+};
+
+/* ---------- Page ---------- */
+const MatterDetail = () => {
+  const { id = '' } = useParams();
+  const me = useMe();
+  const act = useAction();
+  const people = usePeople();
+  const fees = useFees();
+  const bundle = useQuery({ queryKey: ['matter', id], queryFn: () => repo.getMatter(id) });
+  const tasks = useQuery({ queryKey: ['tasks', id], queryFn: () => repo.listTasks({ matterId: id }) });
+  const [feeDraft, setFeeDraft] = useState<string | null>(null);
+
+  if (bundle.isLoading) return <Empty>Loading…</Empty>;
+  if (!bundle.data) {
+    return (
+      <div className="space-y-4">
+        <Link to="/workspace/matters" className="type-label-md inline-flex items-center gap-1 text-muted-foreground"><ArrowLeft className="h-4 w-4" /> Matters</Link>
+        <Panel><Empty>This matter doesn't exist, or you aren't staffed on it.</Empty></Panel>
+      </div>
+    );
+  }
+  const { matter: m, client, members } = bundle.data;
+  const all = people.data ?? [];
+  const work = canWorkMatter(me, { matter: m, members });
+  const fee = fees.data?.find((f) => f.matter_id === m.id);
+  const t = tasks.data ?? [];
+  const done = t.filter((x) => x.status === 'done').length;
+  const pct = t.length ? Math.round((done / t.length) * 100) : 0;
+
+  return (
+    <div className="space-y-6">
+      <Link to="/workspace/matters" className="type-label-md inline-flex items-center gap-1 text-muted-foreground hover:text-foreground"><ArrowLeft className="h-4 w-4" /> Matters</Link>
+
+      <div className="flex flex-wrap items-start justify-between gap-4 border-b border-border pb-5">
+        <div className="min-w-0">
+          <p className="type-mono-md text-muted-foreground">{m.reference} · {client?.name}</p>
+          <h1 className="type-headline-md mt-1">{m.title}</h1>
+          <p className="type-body-sm mt-1 text-muted-foreground">{SERVICE_LABEL[m.service]} · {m.markets.map((c) => MARKET_NAME[c] ?? c).join(', ') || 'No markets'}</p>
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          {work ? (
+            <NativeSelect aria-label="Stage" value={m.stage} onChange={(e) => act(() => repo.updateMatter(m.id, { stage: e.target.value as typeof m.stage }), 'Stage updated')} className="h-10">
+              {STAGES.map((s) => <option key={s} value={s}>{STAGE_LABEL[s]}</option>)}
+            </NativeSelect>
+          ) : (
+            <StageBadge stage={m.stage} />
+          )}
+        </div>
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px]">
+        <Tabs defaultValue="timeline" className="min-w-0">
+          <TabsList>
+            <TabsTrigger value="timeline">Timeline</TabsTrigger>
+            <TabsTrigger value="tasks">Tasks <span className="ml-1.5 tabular text-muted-foreground">{t.length - done}</span></TabsTrigger>
+            <TabsTrigger value="documents"><Paperclip className="mr-1 h-3.5 w-3.5" aria-hidden="true" />Documents</TabsTrigger>
+          </TabsList>
+          <TabsContent value="timeline" className="mt-4"><Timeline matterId={m.id} people={all} /></TabsContent>
+          <TabsContent value="tasks" className="mt-4"><Tasks matterId={m.id} people={all} canWork={work} /></TabsContent>
+          <TabsContent value="documents" className="mt-4"><Documents matterId={m.id} people={all} canUpload={work} /></TabsContent>
+        </Tabs>
+
+        <aside className="space-y-4">
+          <Panel title="Summary">
+            <dl className="type-body-sm divide-y divide-border">
+              <div className="px-4 py-3">
+                <dt className="type-label-sm text-muted-foreground">Progress</dt>
+                <dd className="mt-1.5">
+                  <div className="h-1.5 overflow-hidden rounded-full bg-foreground/10"><div className="h-full rounded-full bg-primary transition-[width] duration-500" style={{ width: `${pct}%` }} /></div>
+                  <p className="type-label-sm mt-1 text-muted-foreground">{done} of {t.length} tasks done</p>
+                </dd>
+              </div>
+              <div className="flex justify-between px-4 py-3"><dt className="text-muted-foreground">Opened</dt><dd>{fmtDate(m.opened_at)}</dd></div>
+              <div className="flex justify-between px-4 py-3"><dt className="text-muted-foreground">Due</dt><dd><DueLabel date={m.due_date} done={m.stage === 'completed' || m.stage === 'closed'} /></dd></div>
+              <div className="flex justify-between px-4 py-3"><dt className="text-muted-foreground">Lead</dt><dd>{all.find((p) => p.id === m.lead_id)?.name ?? '—'}</dd></div>
+              {can.seeFees(me) && (
+                <div className="px-4 py-3">
+                  <div className="flex items-center justify-between">
+                    <dt className="text-muted-foreground">Fixed fee</dt>
+                    <dd>
+                      {feeDraft === null ? (
+                        <button type="button" className="tabular hover:text-primary-ink" onClick={() => setFeeDraft(String(fee?.fee_amount ?? ''))}>{fmtMoney(fee?.fee_amount, fee?.fee_currency)}</button>
+                      ) : (
+                        <form className="flex items-center gap-1" onSubmit={async (e) => { e.preventDefault(); await act(() => repo.setFee(m.id, feeDraft ? Number(feeDraft) : null, m.fee_currency), 'Fee saved'); setFeeDraft(null); }}>
+                          <Input aria-label="Fee" type="number" min="0" value={feeDraft} onChange={(e) => setFeeDraft(e.target.value)} className="h-8 w-24" autoFocus />
+                          <Button size="sm" type="submit">Save</Button>
+                        </form>
+                      )}
+                    </dd>
+                  </div>
+                  <p className="type-label-sm mt-1 text-muted-foreground">Partners and the client only.</p>
+                </div>
+              )}
+            </dl>
+            {m.summary && <p className="type-body-sm border-t border-border px-4 py-3 text-muted-foreground">{m.summary}</p>}
+          </Panel>
+          <Team matterId={m.id} members={members} people={all} canStaff={can.staffMatter(me)} />
+          {client && (
+            <Panel title="Client">
+              <div className="type-body-sm space-y-1 px-4 py-3">
+                <p className="type-label-lg">{client.name}</p>
+                <p className="text-muted-foreground">{[client.industry, client.country].filter(Boolean).join(' · ')}</p>
+                {client.contact_name && <p>{client.contact_name}{client.contact_email && <> · <a className="text-primary-ink" href={`mailto:${client.contact_email}`}>{client.contact_email}</a></>}</p>}
+                {client.notes && <p className="mt-2 rounded-[8px] bg-warning/10 px-2.5 py-2 text-warning"><Lock className="mr-1 inline h-3 w-3" aria-hidden="true" />{client.notes}</p>}
+              </div>
+            </Panel>
+          )}
+        </aside>
+      </div>
+    </div>
+  );
+};
+
+export default MatterDetail;
