@@ -61,7 +61,7 @@ function useGlare<T extends HTMLElement>() {
 }
 
 // Tighter item padding below 1280px so the centred nav leaves room for the wordmark and actions inside the bar.
-const itemClass = 'nav-item type-label-lg inline-flex h-full items-center px-[7px] outline-none xl:px-3';
+const itemClass = 'nav-item type-label-lg inline-flex items-center px-[9px] outline-none xl:px-3.5';
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -218,7 +218,7 @@ const Header = () => {
           <nav ref={navRef} aria-label="Main" className="relative z-[1] flex h-full items-center xl:gap-1">
             <span
               aria-hidden="true"
-              className="nav-lens corp-underline"
+              className="nav-lens nav-pill"
               data-snap={lens.snap}
               data-pressed={pressed}
               style={{
