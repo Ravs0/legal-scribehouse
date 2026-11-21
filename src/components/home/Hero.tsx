@@ -116,16 +116,18 @@ const useDeskCycle = (n: number) => {
 
 export const Hero = () => {
   const desk = useDeskCycle(DESK.length);
+  const [route, setRoute] = useState(0);
   return (
-  <section id="hero" className="pb-14 pt-10 md:pb-20 lg:pt-20">
+  <section id="hero" className="pb-4 pt-8 md:pb-6 lg:pt-14">
     <div className="container">
-      <div className="grid-12 items-start gap-y-10">
-        <div className="col-span-4 md:col-span-12 lg:col-span-6">
+      {/* v5.1: the printer is back in the hero, on the left (the layout chosen in v3.8). Text and the route picker on
+          the right. DOM order stays text first for phones and screen readers. */}
+      <div className="grid-12 items-center gap-y-10">
+        <div className="col-span-4 md:col-span-12 md:max-w-[680px] lg:order-2 lg:col-span-7 lg:max-w-none lg:pl-6">
           <div className="intro" style={step(0)}>
             <Eyebrow>Singapore · Kuala Lumpur · Jakarta · Ho Chi Minh City</Eyebrow>
           </div>
-          {/* v4.1: each word rises out of its own line mask, 60ms apart. */}
-          <h1 className="hero-words type-hero mt-5 max-w-[14ch]" aria-label={HEADLINE}>
+          <h1 className="hero-words type-hero mt-5 max-w-[15ch]" aria-label={HEADLINE}>
             {HEADLINE.split(' ').map((w, i) => (
               <Fragment key={i}>
                 <span aria-hidden="true" className="hw">
@@ -134,11 +136,18 @@ export const Hero = () => {
               </Fragment>
             ))}
           </h1>
-          <p className="intro type-body-lg mt-6 max-w-[50ch] text-muted-foreground md:text-[19px] md:leading-[1.6]" style={step(4)}>
+          <p className="intro type-body-lg mt-6 max-w-[52ch] text-muted-foreground md:text-[19px] md:leading-[1.6]" style={step(4)}>
             We run your export from Singapore and brief vetted local counsel in every market, so you deal with one firm,
             one fee and one person who knows your file.
           </p>
-          <div className="intro mt-8 flex flex-wrap gap-3" style={step(5)}>
+          <div className="intro mt-7" style={step(5)}>
+            <p className="type-eyebrow text-muted-foreground">Try a route</p>
+            <div className="mt-2">
+              <RoutePicker value={route} onChange={setRoute} />
+            </div>
+            <p className="type-body-sm mt-2.5 text-muted-foreground">Pick one and the printer shows the duty an origin claim would save.</p>
+          </div>
+          <div className="intro mt-7 flex flex-wrap gap-3" style={step(6)}>
             <Button asChild size="lg" icon="trailing">
               <HashLink to="contact">
                 Book a free call <ArrowRight aria-hidden="true" />
@@ -149,39 +158,41 @@ export const Hero = () => {
             </Button>
           </div>
         </div>
-
-        <div className="intro col-span-4 md:col-span-12 lg:col-span-6" style={step(3)}>
-          <ul
-            aria-label="Where the work is done"
-            onPointerEnter={desk.pause}
-            onPointerLeave={desk.resume}
-            onFocus={desk.pause}
-            onBlur={desk.resume}
-            className="desk-grid surface-2 grid grid-cols-2 overflow-hidden rounded-[14px] bg-border [gap:1px]"
-          >
-            {DESK.map((d, i) => (
-              <li
-                key={d.name}
-                data-active={desk.active === i}
-                onPointerEnter={() => desk.setActive(i)}
-                className="desk-tile relative bg-card px-4 py-4 md:px-5"
-              >
-                <p className="type-mono-sm flex items-center gap-2 text-muted-foreground">
-                  {d.code}
-                  <span aria-hidden="true" className="desk-live h-1.5 w-1.5 rounded-full bg-primary" />
-                </p>
-                <p className="type-title-md mt-1.5">{d.name}</p>
-                <p className="type-body-sm mt-0.5 text-muted-foreground">{d.note}</p>
-              </li>
-            ))}
-            <li className="type-body-sm col-span-2 bg-card px-4 py-3.5 text-muted-foreground md:px-5">
-              + Cambodia, Laos, Myanmar and Brunei through referral counsel
-            </li>
-          </ul>
+        <div className="col-span-4 md:col-span-12 lg:order-1 lg:col-span-5">
+          <div className="intro-printer">
+            <ClearancePrinter className="float-idle lg:ml-0" selected={route} onSelect={setRoute} />
+          </div>
         </div>
       </div>
 
-      <Reveal as="dl" stagger className="mt-14 grid grid-cols-2 border-t border-border md:mt-20 lg:grid-cols-4">
+      {/* The desk: who handles each market. One row of six from 1024px; the highlight cycles every 2.4s. */}
+      <Reveal className="mt-14 md:mt-16">
+        <p className="type-label-md mb-3 text-muted-foreground">Where the work is done</p>
+        <ul
+          aria-label="Where the work is done"
+          onPointerEnter={desk.pause}
+          onPointerLeave={desk.resume}
+          onFocus={desk.pause}
+          onBlur={desk.resume}
+          className="desk-grid surface-2 grid grid-cols-2 overflow-hidden rounded-[14px] bg-border [gap:1px] md:grid-cols-3 lg:grid-cols-6"
+        >
+          {DESK.map((d, i) => (
+            <li key={d.name} data-active={desk.active === i} onPointerEnter={() => desk.setActive(i)} className="desk-tile relative bg-card px-4 py-4">
+              <p className="type-mono-sm flex items-center gap-2 text-muted-foreground">
+                {d.code}
+                <span aria-hidden="true" className="desk-live h-1.5 w-1.5 rounded-full bg-primary" />
+              </p>
+              <p className="type-title-md mt-1.5">{d.name}</p>
+              <p className="type-body-sm mt-0.5 text-muted-foreground">{d.note.replace('Local counsel · ', '')}</p>
+            </li>
+          ))}
+          <li className="type-body-sm col-span-2 bg-card px-4 py-3 text-muted-foreground md:col-span-3 lg:col-span-6">
+            + Cambodia, Laos, Myanmar and Brunei through referral counsel. Local counsel in each market is briefed and managed by us.
+          </li>
+        </ul>
+      </Reveal>
+
+      <Reveal as="dl" stagger className="mt-10 grid grid-cols-2 border-t border-border md:mt-12 lg:grid-cols-4">
         {PROMISES.map((p, i) => (
           <div
             key={p.label}
@@ -202,40 +213,25 @@ export const Hero = () => {
   );
 };
 
-/** v4.0: the receipt printer, route picker and the three failure modes, as their own section below Markets. */
-export const RouteDemo = () => {
-  const [route, setRoute] = useState(0);
-  return (
-    <section id="route" className="section band">
-      <div className="container">
-        <SectionHeading
-          index="05"
-          eyebrow="Try a route"
-          title="What an origin claim is worth."
-          subtitle="Pick a route and the printer shows the duty a correct origin claim would save on a first consignment."
-        />
-        <div className="after-heading grid-12 items-center gap-y-10">
-          <div className="col-span-4 md:col-span-12 lg:col-span-6">
-            <p className="type-eyebrow text-muted-foreground">Example route</p>
-            <div className="mt-2">
-              <RoutePicker value={route} onChange={setRoute} />
-            </div>
-            <h3 className="type-title-md mt-10">Three ways a first shipment goes wrong</h3>
-            <ul className="mt-3 divide-y divide-border border-y border-border">
-              {PROBLEMS.map((p) => (
-                <li key={p.title} className="grid grid-cols-[8px_minmax(0,1fr)] content-start items-center gap-x-3 py-4">
-                  <span aria-hidden="true" className="h-2 w-2 rounded-full bg-primary" />
-                  <h4 className="type-title-sm">{p.title}</h4>
-                  <p className="type-body-sm col-start-2 mt-1 text-muted-foreground">{p.copy}</p>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="col-span-4 md:col-span-12 lg:col-span-5 lg:col-start-8">
-            <ClearancePrinter selected={route} onSelect={setRoute} />
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
+/** v5.1: the three failure modes as their own short section (the printer now lives in the hero). */
+export const RouteDemo = () => (
+  <section id="route" className="section band">
+    <div className="container">
+      <SectionHeading
+        index="05"
+        eyebrow="Why exports stall"
+        title="Three ways a first shipment goes wrong."
+        subtitle="None of them is expensive to prevent. All of them are expensive to fix after the goods have left."
+      />
+      <ol className="after-heading stack-gap grid md:grid-cols-3">
+        {PROBLEMS.map((p, i) => (
+          <Reveal as="li" key={p.title} index={i} className="surface-1 card-hover rounded-[12px] p-5">
+            <span className="sh-num text-[40px]">{String(i + 1).padStart(2, '0')}</span>
+            <h3 className="type-title-lg mt-3">{p.title}</h3>
+            <p className="type-body-md mt-2 text-muted-foreground">{p.copy}</p>
+          </Reveal>
+        ))}
+      </ol>
+    </div>
+  </section>
+);

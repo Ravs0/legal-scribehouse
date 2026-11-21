@@ -483,3 +483,10 @@ See `docs/WORKSPACE.md` for the internal system, access levels, database structu
 New public pages: /services and /services/:slug, /markets and /markets/:code, /team, /privacy, /terms, /disclaimer;
 articles now live at /insights/:slug and are written in the workspace. The footer gains a "Firm" column with these
 and the client & team sign-in.
+
+## v5.1 Printer back in the hero
+
+The receipt printer and route picker return to the hero, printer on the left as chosen in v3.8. The text, the route
+picker and the two buttons sit on the right. The desk grid becomes a full-width strip under the hero (six markets in one
+row from 1024px, with the cycling highlight), followed by the four promises. The "Try a route" section becomes
+"Why exports stall": the three failure modes as numbered cards.
