@@ -1,7 +1,4 @@
 import { CSSProperties, KeyboardEvent, PointerEvent, useEffect, useRef, useState } from 'react';
-import { ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { HashLink } from '@/components/site/HashLink';
 import { ClearancePrinter } from '@/components/home/ClearancePrinter';
 import { Crate, Plant, ShippingContainer } from '@/components/home/heroProps';
 import { cn } from '@/lib/utils';
@@ -136,26 +133,47 @@ export const Hero = () => {
           <span aria-hidden="true" className="hero-serif inline-block">to sell.</span>
         </h1>
 
-        <div className="relative z-[3] mt-5 max-w-[34rem] lg:mt-4 lg:max-w-[30rem]">
-          <p className="intro hero-lede" style={step(3)}>
-            We clear the route before your first shipment leaves: structure, contracts, customs and registration, in ten
-            markets, for one fixed fee.
-          </p>
-          <div className="intro mt-6" style={step(4)}>
-            <p className="type-mono-sm text-[#2A1206]/75">try a route →</p>
-            <div className="mt-2">
-              <RoutePicker value={route} onChange={setRoute} />
+        {/* v5.7: from 1024px the copy and the set are two columns of the same grid, under the headline, so the
+            objects can never sit on the text at any screen width. No buttons here: "Book a free call" lives in the
+            top bar and appears once you scroll past the hero. */}
+        <div className="hero-body lg:grid lg:grid-cols-12 lg:gap-x-8">
+          <div className="relative z-[3] mt-5 max-w-[34rem] lg:col-span-5 lg:mt-8 lg:max-w-none">
+            <p className="intro hero-lede" style={step(3)}>
+              We clear the route before your first shipment leaves: structure, contracts, customs and registration, in
+              ten markets, for one fixed fee.
+            </p>
+            <div className="intro mt-7" style={step(4)}>
+              <p className="type-mono-sm text-[#2A1206]/75">try a route →</p>
+              <div className="mt-2">
+                <RoutePicker value={route} onChange={setRoute} />
+              </div>
+              <p className="type-body-sm mt-3 max-w-[40ch] text-[#2A1206]/75">Pick one and the printer shows the duty an origin claim would save.</p>
             </div>
           </div>
-          <div className="intro mt-6 flex flex-wrap gap-3" style={step(5)}>
-            <Button asChild size="lg" icon="trailing">
-              <HashLink to="contact">
-                Book a free call <ArrowRight aria-hidden="true" />
-              </HashLink>
-            </Button>
-            <Button asChild size="lg" variant="outline">
-              <HashLink to="process">How we work</HashLink>
-            </Button>
+
+          {/* The set. Light from the upper left: every object throws a soft shadow up-right onto the wall and sits on a
+              contact shadow on the floor. The calculator rests on two crates; its receipt drapes down their front. */}
+          <div className="hero-set relative z-[2] lg:col-span-7">
+            <div className="prop set-container absolute" style={{ '--d': 0.8, '--k': 8 } as CSSProperties}>
+              <span aria-hidden="true" className="wall-shadow" />
+              <ShippingContainer className="relative h-full w-full" />
+              <span aria-hidden="true" className="floor-shadow" />
+            </div>
+            <div className="prop set-cluster absolute" style={{ '--d': 0.3, '--k': 18 } as CSSProperties}>
+              <span aria-hidden="true" className="wall-shadow" />
+              <span aria-hidden="true" className="floor-shadow" />
+              <Crate id="crate-a" label="FRAGILE" sub="MEL → PKG" className="crate crate-low absolute" />
+              <Crate id="crate-b" sub="NO. 0412 · THIS WAY UP" className="crate crate-high absolute" />
+              <div className="set-calc absolute">
+                <div className="intro-printer">
+                  <ClearancePrinter bare selected={route} onSelect={setRoute} />
+                </div>
+              </div>
+            </div>
+            <div className="prop set-plant absolute" style={{ '--d': 0.15, '--k': 30 } as CSSProperties}>
+              <span aria-hidden="true" className="floor-shadow" />
+              <Plant className="relative h-full w-full" />
+            </div>
           </div>
         </div>
       </div>
@@ -163,31 +181,6 @@ export const Hero = () => {
       {/* Light and air: window light on the wall, a soft vignette over the whole room. */}
       <div aria-hidden="true" className="hero-light pointer-events-none absolute" />
       <div aria-hidden="true" className="hero-vignette pointer-events-none absolute inset-0 z-[1]" />
-
-      {/* The set. Light comes from the upper left, so every object throws a soft shadow up-right onto the wall and
-          sits on a contact shadow on the floor. The calculator rests on two crates; its receipt drapes down their front. */}
-      <div className="hero-set relative z-[2] lg:absolute lg:inset-0 lg:pointer-events-none">
-        <div className="prop set-container absolute" style={{ '--d': 0.8, '--k': 8 } as CSSProperties}>
-          <span aria-hidden="true" className="wall-shadow" />
-          <ShippingContainer className="relative h-full w-full" />
-          <span aria-hidden="true" className="floor-shadow" />
-        </div>
-        <div className="prop set-cluster absolute" style={{ '--d': 0.3, '--k': 18 } as CSSProperties}>
-          <span aria-hidden="true" className="wall-shadow" />
-          <span aria-hidden="true" className="floor-shadow" />
-          <Crate id="crate-a" label="FRAGILE" sub="MEL → PKG" className="crate crate-low absolute" />
-          <Crate id="crate-b" sub="NO. 0412 · THIS WAY UP" className="crate crate-high absolute" />
-          <div className="set-calc absolute lg:pointer-events-auto">
-            <div className="intro-printer">
-              <ClearancePrinter bare selected={route} onSelect={setRoute} />
-            </div>
-          </div>
-        </div>
-        <div className="prop set-plant absolute" style={{ '--d': 0.15, '--k': 30 } as CSSProperties}>
-          <span aria-hidden="true" className="floor-shadow" />
-          <Plant className="relative h-full w-full" />
-        </div>
-      </div>
 
       {/* Floor notes, clock and scroll pill */}
       <div className="hero-notes relative z-[3] lg:absolute lg:inset-x-0 lg:bottom-0">

@@ -74,7 +74,6 @@ const Header = () => {
   );
   const inInsights = pathname.startsWith('/posts') || INSIGHT_LINKS.some((l) => pathname.startsWith(l.to));
   const activeKey = onHome ? spy : pathname === '/about' ? 'about' : inInsights ? 'insights' : null;
-  const sectionLabel = onHome ? SECTIONS.find((x) => x.id === spy)?.label ?? null : null;
 
   // Header CTA: hidden over the home hero, shown once the hero has scrolled away (always on other routes).
   const [pastHero, setPastHero] = useState(!onHome);
@@ -203,19 +202,11 @@ const Header = () => {
           data-scrolled={scrolled}
           className="hidden h-[68px] grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-2 lg:grid xl:gap-4"
         >
-          <div className="relative z-[1] flex min-w-0 items-center gap-3 justify-self-start">
-            <Link to="/" aria-label={`${SITE.name} home`} className="press rounded-lg">
-              <Wordmark withDescriptor={!sectionLabel} />
-            </Link>
-            {/* v5.2: the section you're in, as a mono file marker (after human-md.ai). */}
-            {sectionLabel && (
-              <span key={sectionLabel} aria-hidden="true" className="type-mono-sm section-marker hidden truncate border-l border-border pl-3 text-muted-foreground min-[1440px]:inline">
-                § {sectionLabel.toLowerCase()}
-              </span>
-            )}
-          </div>
+          <Link to="/" aria-label={`${SITE.name} home`} className="press relative z-[1] justify-self-start rounded-lg">
+            <Wordmark />
+          </Link>
 
-          <nav ref={navRef} aria-label="Main" className="relative z-[1] flex h-full items-center xl:gap-1">
+          <nav ref={navRef} aria-label="Main" className="nav-track recessed relative z-[1] flex items-center gap-0.5 [background-color:var(--well-fill)]">
             <span
               aria-hidden="true"
               className="nav-lens nav-pill"

@@ -576,3 +576,22 @@ Feedback: the idea is right, the finish isn't. Fixes:
 - **Follow-ups:**
   - the call-to-action panel keeps an edge in dark mode;
   - article cards link to `/insights/:slug`.
+
+## v5.7 Hero on the grid; minimal top bar; no hero buttons
+
+- **Hero layout.** The set no longer sits absolutely against the window, which put the printer on top of the
+  headline at 1366/1536 and left it floating loose at 1920+. From 1024px the copy (5 columns) and the set
+  (7 columns) are two columns of one grid under the headline. The set column is 570px tall: a 44px floor offset,
+  the 426px crate stack, the 72px printer head above it, and 28px of clearance under the headline. Measured at
+  1024, 1280, 1366, 1440, 1536, 1680, 1920 and 2560, nothing overlaps.
+  - The container shows from 1280px, inside the set column.
+  - At 1024–1279 the set is zoomed to 0.82.
+  - The floor band is 236px.
+- **No buttons in the hero.** "Book a free call" lives only in the top bar and appears once you scroll past the hero
+  (as asked in v3.5). The hero keeps the route picker and a one-line helper.
+- **Minimal top bar.**
+  - Logo on its own, without the descriptor or section marker.
+  - One recessed track holding pill nav buttons (Services, How it works, Markets, Insights, About); the active one
+    is the raised pill.
+  - The theme key, and the call button once you've scrolled.
+  - Our desk and the readiness check stay in the page and the footer.

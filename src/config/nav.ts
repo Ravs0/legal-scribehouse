@@ -1,10 +1,9 @@
 // v4.0: same order as the sections on the page (scroll-spy picks the first one under the header).
+// v5.7: minimal top bar. Our desk and the readiness check stay reachable from the footer.
 export const SECTIONS = [
-  { id: 'desk', label: 'Our desk' },
   { id: 'services', label: 'Services' },
   { id: 'process', label: 'How it works' },
   { id: 'markets', label: 'Markets' },
-  { id: 'readiness', label: 'Readiness check' },
 ];
 
 export const INSIGHT_LINKS = [
