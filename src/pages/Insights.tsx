@@ -137,7 +137,7 @@ export const InsightsListing = ({
           <>
             {featured && (
               <Reveal className="mb-6 xl:mb-8">
-                <Link to={`/posts/${featured.id}`} className="surface-2 card-hover pg-card group grid-12 items-center rounded-[14px] p-2.5 md:p-3">
+                <Link to={`/insights/${featured.slug ?? featured.id}`} className="surface-2 card-hover pg-card group grid-12 items-center rounded-[14px] p-2.5 md:p-3">
                   <div className="order-2 col-span-4 p-3 md:order-1 md:col-span-7 md:p-6">
                     <Badge>{TYPE_META[featured.type]?.label ?? 'Analysis'} · Featured</Badge>
                     <h2 className="type-headline-lg mt-4 max-w-[26ch]">{featured.title}</h2>

@@ -1279,3 +1279,5 @@
 .nav-pill .nav-lens__body::before { display: none; }
 .nav-item { border-radius: 9999px; height: 44px !important; margin-block: 12px; transition: color 200ms, background-color 200ms; }
 @media (hover: hover) { .nav-item[data-active="false"]:hover { background-color: hsl(var(--foreground) / 0.05); } }
+/* The closing call-to-action panel keeps its edge in dark mode (its ink fill is close to the dark ground). */
+.dark .cta-panel { background-color: #1D1814; box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.09), inset 0 1px 0 rgb(255 255 255 / 0.12), 0 24px 48px -24px rgb(0 0 0 / 0.7); }
