@@ -612,3 +612,34 @@ motion gated by `html.motion-ok`, a reduced-motion static version, and a designe
 - Results figures were rendering in the serif because of an old `#proof dd` override, which I removed.
 - The desk word was raised so it reads above the frames.
 - The services wall word was made visible and the stamp now wraps on narrow phones.
+
+## v5.9 Glass header, performance, colour pass
+
+All in `src/styles/perf.css` (imported after `index.css` in `main.tsx`), plus small component edits.
+
+**Header**
+- The whole bar is frosted glass: a translucent card gradient with backdrop blur and saturation, a lit top edge, a
+  bright rim and a soft drop.
+- Every nav item is a tactile button: the current section is the orange `btn-filled` pill, the rest are raised cream
+  `btn-raised` pills.
+- The mobile menu button is a raised pill.
+
+**Performance** (frame time measured while scrolling every section)
+- Before: hero 26ms, How it works 25ms, dashboard 24ms, Results 38ms.
+- After: every section is about 16.6ms (60fps).
+- Fixes:
+  - live blurs (36–46px) on window lights became pre-feathered radial gradients;
+  - grain overlays use normal blending instead of multiply or overlay;
+  - the animated SVG turbulence grain over How it works was removed;
+  - the Results slips no longer sway forever under a drop-shadow;
+  - the desk frame shadows are gradients;
+  - the fixed background is its own contained layer;
+  - looping animations pause in off-screen sections (`src/lib/offscreen.ts` sets `[data-offscreen]`).
+
+**Colour**
+- A contrast scan of every text element (light and dark, across five pages) now passes 4.5:1, or 3:1 for large text.
+- The "DUTY SAVED" printer label is lighter, and the readiness verdict and legend tags, plus the warning and
+  destructive badges, mix their colour with the foreground.
+- The dark theme moved from violet-black (hue 258) to the same warm ink family as the scenes (hue 24). This covers
+  background, cards, borders, bands, the footer ink, wells and background blobs, so dark mode reads as one palette
+  with the orange, teal and ink scenes. The light dawn theme is unchanged.

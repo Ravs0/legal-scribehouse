@@ -184,7 +184,7 @@ export const ClearancePrinter = ({ className, selected: selectedProp, onSelect, 
           </div>
           <div className="relative mt-1 flex items-end justify-between gap-2">
             <div className="flex h-[44px] w-[124px] flex-col justify-center rounded-lg bg-[#0B0907] px-2.5 shadow-[inset_0_2px_6px_#000] roomy:w-[148px]">
-              <span className="type-mono-sm text-[8px] text-white/40">Duty saved</span>
+              <span className="type-mono-sm text-[8px] text-white/60">Duty saved</span>
               <span className="type-led text-led tabular" style={{ textShadow: '0 0 8px hsl(32 100% 55% / .7)' }} aria-live="polite">
                 {led}
               </span>

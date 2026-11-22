@@ -154,7 +154,7 @@ export const ReadinessCheck = () => {
                   <h3 className="type-headline-sm">Export readiness</h3>
                   <span
                     className="type-label-sm inline-flex h-5 items-center rounded-md px-2 transition-colors duration-200"
-                    style={{ color: status.color, background: `color-mix(in srgb, ${status.color} 14%, transparent)` }}
+                    style={{ color: `color-mix(in srgb, ${status.color} 72%, hsl(var(--foreground)))`, background: `color-mix(in srgb, ${status.color} 14%, transparent)` }}
                     aria-live="polite"
                   >
                     {status.label}
@@ -194,7 +194,7 @@ export const ReadinessCheck = () => {
                     <li key={l.stamp} className="flex items-start gap-2.5">
                       <span
                         className="type-label-sm inline-flex h-5 w-16 shrink-0 items-center justify-center rounded-md"
-                        style={{ color: STATUS[l.stamp].color, background: `color-mix(in srgb, ${STATUS[l.stamp].color} 14%, transparent)` }}
+                        style={{ color: `color-mix(in srgb, ${STATUS[l.stamp].color} 72%, hsl(var(--foreground)))`, background: `color-mix(in srgb, ${STATUS[l.stamp].color} 14%, transparent)` }}
                       >
                         {STATUS[l.stamp].label}
                       </span>

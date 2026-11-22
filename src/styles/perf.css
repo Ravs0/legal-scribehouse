@@ -1,0 +1,85 @@
+/* ============================================================
+ * v5.9 Performance. Live filters and blend modes are recalculated every frame over large areas while the page
+ * scrolls; each one is swapped for a near-identical static equivalent. Looping animations pause off-screen
+ * (src/lib/offscreen.ts sets [data-offscreen] on sections).
+ * ============================================================ */
+
+/* Window lights: a pre-feathered gradient instead of a live 36–46px blur. */
+.hero-light, .desk-light, .pl-light { filter: none !important; mix-blend-mode: normal !important; }
+.hero-light { background: radial-gradient(60% 70% at 50% 20%, rgb(255 236 205 / 0.22), transparent 70%) !important; }
+.desk-light { background: radial-gradient(60% 70% at 50% 20%, rgb(150 220 215 / 0.18), transparent 72%) !important; }
+.pl-light { background: radial-gradient(60% 70% at 45% 15%, rgb(255 214 160 / 0.12), transparent 72%) !important; }
+.sv-light, [class*="sv-"][style*="blur"] { filter: none; }
+
+/* Grain overlays: normal blending (multiply/overlay force a full re-composite of everything beneath). */
+.hero-wall::after, .desk-wall::after, .desk-edge::after, .sv-wall::after, .sv-floor::after, .pl-paper::before,
+.desk-face::before, .pl-scene::after { mix-blend-mode: normal !important; opacity: 0.35 !important; }
+
+
+/* The fixed page background: its own layer, normal-blend grain. */
+.dawn-bg { will-change: transform; contain: strict; }
+.dawn-bg > .dawn-grain { mix-blend-mode: normal !important; opacity: 0.025 !important; }
+
+/* Pinned scenes: isolate layout and paint to the stage. */
+.story-stage, .prc-stage, #process [class*="sticky"] { contain: layout paint; }
+
+/* Pause every looping animation in sections that are off-screen. */
+[data-offscreen] *, [data-offscreen] *::before, [data-offscreen] *::after { animation-play-state: paused !important; }
+
+/* Results slips: no idle sway (a drop-shadow re-rendered every frame); they still lift on hover/focus. */
+.motion-ok .pl-sway { animation: none !important; }
+/* Desk frame shadows: a feathered radial gradient instead of a live 22px blur. */
+.desk-wall-shadow { filter: none !important; background: radial-gradient(closest-side, rgb(0 26 30 / 0.55), rgb(0 26 30 / 0.25) 60%, transparent) !important; inset: 0 -8% -4% 2% !important; }
+
+/* ============================================================
+ * v5.9 Glass header: the whole bar is frosted glass (one composited backdrop layer), with a lit top edge,
+ * a bright rim and a soft drop. Nav items use the tactile button finish (see Header.tsx).
+ * ============================================================ */
+.corp-header {
+  background: linear-gradient(180deg, hsl(var(--card) / 0.56), hsl(var(--card) / 0.34)) !important;
+  -webkit-backdrop-filter: blur(20px) saturate(185%) brightness(1.04);
+  backdrop-filter: blur(20px) saturate(185%) brightness(1.04);
+  border-bottom: 1px solid hsl(0 0% 100% / 0.55) !important;
+  box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.75), inset 0 -1px 0 hsl(var(--tint) / 0.06), 0 10px 30px -18px hsl(var(--tint) / 0.35);
+}
+.corp-header::before { content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(100deg, hsl(0 0% 100% / 0) 30%, hsl(0 0% 100% / 0.22) 45%, hsl(0 0% 100% / 0) 60%); }
+.dark .corp-header {
+  background: linear-gradient(180deg, hsl(var(--card) / 0.62), hsl(var(--card) / 0.4)) !important;
+  border-bottom-color: hsl(0 0% 100% / 0.08) !important;
+  box-shadow: inset 0 1px 0 hsl(0 0% 100% / 0.1), 0 10px 30px -18px hsl(0 0% 0% / 0.7);
+}
+.dark .corp-header::before { background: linear-gradient(100deg, transparent 30%, hsl(0 0% 100% / 0.05) 45%, transparent 60%); }
+.corp-header .nav-item { height: 38px !important; padding-inline: 16px !important; margin-block: 0 !important; }
+
+/* ============================================================
+ * v5.9 Colour pass. The dark theme's ground was violet-black (hue 258), which clashed with the warm ink, teal and
+ * orange scenes beside it. It now uses the same warm ink family as the scenes. The light dawn theme is unchanged.
+ * ============================================================ */
+.dark {
+  --background: 24 14% 6.5%;
+  --card: 24 12% 10.5%;
+  --popover: 24 12% 10%;
+  --secondary: 24 10% 14.5%;
+  --muted: 24 10% 12%;
+  --muted-foreground: 32 16% 72%;
+  --border: 24 9% 19%;
+  --input: 24 8% 44%;
+  --outline-variant: 24 9% 18%;
+  --surface-container-low: 24 12% 8.5%;
+  --surface-container-high: 24 10% 13.5%;
+  --bezel: 24 10% 13%;
+  --device: 24 16% 4.5%;
+  --tint: 24 30% 2%;
+  --well-fill: #0d0a08;
+  --bg-base: linear-gradient(180deg, #110d0b, #16110e);
+  --blob-1: hsl(22 90% 50% / 0.16);
+  --blob-2: hsl(186 60% 30% / 0.14);
+  --blob-3: hsl(30 80% 45% / 0.08);
+  --corp-line: hsl(24 9% 19%);
+  --corp-line-strong: hsl(24 9% 27%);
+  --corp-band: 24 12% 8.5%;
+  --corp-ink: 24 16% 4.5%;
+  --corp-ink-2: 24 12% 8%;
+  --nav-fill: hsl(24 12% 14% / 0.62);
+}

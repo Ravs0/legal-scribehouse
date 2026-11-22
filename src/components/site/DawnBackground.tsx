@@ -9,7 +9,7 @@ const BLOBS = [
 ];
 
 export const DawnBackground = () => (
-  <div aria-hidden="true" className="pointer-events-none fixed inset-0 -z-10 overflow-hidden" style={{ background: 'var(--bg-base)' }}>
+  <div aria-hidden="true" className="dawn-bg pointer-events-none fixed inset-0 -z-10 overflow-hidden" style={{ background: 'var(--bg-base)' }}>
     {BLOBS.map((b) => (
       <div
         key={b.v}
@@ -24,7 +24,7 @@ export const DawnBackground = () => (
       />
     ))}
     <div
-      className="absolute inset-0"
+      className="dawn-grain absolute inset-0"
       style={{ backgroundImage: GRAIN, opacity: 'var(--grain-opacity)' as unknown as number, mixBlendMode: 'var(--grain-blend)' as never }}
     />
   </div>

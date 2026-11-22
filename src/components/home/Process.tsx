@@ -304,7 +304,6 @@ const RouteScene = ({ geo, pathRef, wakeRef, shipRef, sunRef, pts, stage }: Scen
       </g>
 
       {/* grain */}
-      <rect x="-150" y="-150" width={w + 300} height={h + 300} filter="url(#prc-grain)" opacity="0.1" style={{ mixBlendMode: 'overlay' }} pointerEvents="none" />
     </svg>
   );
 };

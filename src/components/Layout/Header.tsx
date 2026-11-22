@@ -181,7 +181,8 @@ const Header = () => {
     onPointerDown: () => activeKey === key && setPressed(true),
     onPointerUp: () => setPressed(false),
     onPointerLeave: () => setPressed(false),
-    className: cn(itemClass, activeKey === key ? 'text-foreground' : 'text-muted-foreground hover:text-foreground'),
+    // v5.9: every nav item is a tactile button. Current section = the orange filled pill; the rest = raised cream pills.
+    className: cn(itemClass, 'btn-lift', activeKey === key ? 'btn-filled text-primary-foreground' : 'btn-raised bg-card text-foreground'),
   });
 
   return (
@@ -206,10 +207,10 @@ const Header = () => {
             <Wordmark />
           </Link>
 
-          <nav ref={navRef} aria-label="Main" className="nav-track recessed relative z-[1] flex items-center gap-0.5 [background-color:var(--well-fill)]">
+          <nav ref={navRef} aria-label="Main" className="relative z-[1] flex items-center gap-2">
             <span
               aria-hidden="true"
-              className="nav-lens nav-pill"
+              className="nav-lens nav-pill hidden"
               data-snap={lens.snap}
               data-pressed={pressed}
               style={{
@@ -283,7 +284,7 @@ const Header = () => {
             </div>
             <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="press-strong hit ml-2">
+                <Button variant="outline" size="icon" className="hit ml-2">
                   <Menu />
                   <span className="sr-only">Open menu</span>
                 </Button>
