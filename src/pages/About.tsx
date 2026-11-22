@@ -1,4 +1,5 @@
 import { Compass, Handshake, Receipt, Users } from 'lucide-react';
+import '@/styles/polish-pages.css';
 import { CardHeader } from '@/components/site/CardHeader';
 import { Badge } from '@/components/ui/badge';
 import { CountUp } from '@/components/motion/CountUp';
@@ -28,13 +29,15 @@ const PRINCIPLES = [
 
 const About = () => (
   <>
-    <section className="container pb-16 pt-12 md:pt-16">
+    <section className="container pg-top">
       <SectionHeading
         as="h1"
         eyebrow="About"
         title="Trade counsel sized for small exporters."
         subtitle={`${SITE.name} helps small and growing product businesses sell into Southeast Asia, without a legal department.`}
-      />
+      >
+        {PLACEHOLDER && <Badge variant="warning" className="mt-4">Sample data</Badge>}
+      </SectionHeading>
 
       <div className="grid-12 after-heading">
         <Reveal className="surface-3 card-shell card-shell-lg col-span-4 rounded-[14px] md:col-span-12 lg:col-span-7">
@@ -51,26 +54,21 @@ const About = () => (
             </p>
           </div>
         </Reveal>
-        <div className="stack-gap col-span-4 grid grid-cols-2 md:col-span-12 lg:col-span-5">
+        <div className="stack-gap col-span-4 grid grid-cols-2 md:col-span-12 lg:col-span-5 lg:grid-rows-2">
           {STATS.map((s, i) => (
-            <Reveal key={s.label} index={i} className="surface-1 flex flex-col justify-center rounded-[12px] p-5">
+            <Reveal key={s.label} index={i} className="surface-1 flex flex-col justify-center rounded-[12px] p-5 md:p-6">
               <span className="type-display-md text-gradient tabular">
                 <CountUp value={s.value} suffix={s.suffix} />
               </span>
               <span className="type-body-sm mt-2 text-muted-foreground">{s.label}</span>
             </Reveal>
           ))}
-          {PLACEHOLDER && (
-            <Badge variant="warning" className="col-span-2 justify-self-start">
-              Sample data
-            </Badge>
-          )}
         </div>
       </div>
     </section>
 
     <section className="container pb-16 md:pb-24">
-      <SectionHeading eyebrow="How we work" title="Three promises we keep." />
+      <SectionHeading index="01" eyebrow="How we work" title="Three promises we keep." />
       <ul className="after-heading stack-gap grid md:grid-cols-3">
         {PRINCIPLES.map((p, i) => (
           <Reveal as="li" key={p.title} index={i}>

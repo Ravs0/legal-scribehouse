@@ -7,6 +7,8 @@ import { IconContainer } from '@/components/ui/chip';
 import { Skeleton } from '@/components/ui/skeleton';
 import { PostCard } from '@/components/Blog/PostCard';
 import { formatDate, TYPE_META } from '@/lib/insights';
+import '@/styles/polish-pages.css';
+import { SectionHeading } from '@/components/site/SectionHeading';
 import { CtaBand } from '@/components/site/CtaBand';
 import { useInsights } from '@/hooks/useInsights';
 import { renderArticle } from '@/lib/markdown';
@@ -85,68 +87,54 @@ const PostDetail = () => {
 
   const meta = TYPE_META[post.type] ?? TYPE_META.post;
   const author = authors.find((a) => post.authors.includes(a.id));
+  const initials = author?.name.split(' ').map((w) => w[0]).slice(0, 2).join('');
 
   return (
     <>
-      <article className="container pb-16 pt-10 md:pb-24 md:pt-14">
-        <div className="grid-12">
-          <div className="col-span-4 md:col-span-12 lg:col-span-8 lg:col-start-3">
-            <Button asChild variant="ghost" icon="leading" className="-ml-3">
+      <article className="container pg-top pb-16 md:pb-24">
+        <div className="grid-12 gap-y-0">
+          <div className="col-span-4 md:col-span-12">
+            <Button asChild variant="ghost" size="sm" className="-ml-3">
               <Link to="/insights">
                 <ArrowLeft aria-hidden="true" /> Back to insights
               </Link>
             </Button>
-            <Badge className="mt-6">{meta.label}</Badge>
-            <h1 className="type-display-md mt-4 max-w-[20ch]">{post.title}</h1>
+          </div>
+
+          <header className="col-span-4 mt-6 md:col-span-12 lg:col-span-9 lg:col-start-4">
+            <Badge>{meta.label}</Badge>
+            <h1 className="type-display-md article-title mt-4">{post.title}</h1>
             <div className="mt-6 flex items-center gap-3">
               {author && (
-                <span className="type-label-md flex h-10 w-10 items-center justify-center rounded-full bg-tertiary-container text-tertiary-on-container">
-                  {author.name
-                    .split(' ')
-                    .map((w) => w[0])
-                    .slice(0, 2)
-                    .join('')}
+                <span className="type-label-md flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-tertiary-container text-tertiary-on-container">
+                  {initials}
                 </span>
               )}
-              <div>
+              <div className="min-w-0">
                 {author && <p className="type-label-lg">{author.name}</p>}
                 <p className="type-body-sm text-muted-foreground">
-                  {formatDate(post.created_at)}
+                  <time dateTime={post.created_at}>{formatDate(post.created_at)}</time>
                   {post.reading_time ? ` · ${post.reading_time} min read` : ''}
                 </p>
               </div>
             </div>
-
-            {post.summary && <p className="type-body-lg mt-10 max-w-[68ch] text-muted-foreground">{post.summary}</p>}
-
-            <div
-              className="prose-tidewater mt-8 max-w-[68ch]"
-              // Content is authored by the firm in the CMS.
-              dangerouslySetInnerHTML={{ __html: html }}
-            />
-
-            <div className="mt-12 flex gap-3 rounded-lg border border-outline-variant p-5">
-              <Info className="mt-0.5 h-4 w-4 shrink-0 text-primary-ink" aria-hidden="true" />
-              <p className="type-body-sm text-muted-foreground">
-                This article is general information, current at the date of publication. It is not legal advice; rules
-                change and depend on your product and route.
-              </p>
-            </div>
-          </div>
+            {post.summary && <p className="article-lede mt-8 border-t border-border pt-8">{post.summary}</p>}
+          </header>
 
           {toc.length > 1 && (
-            <aside className="hidden xl:col-span-2 xl:col-start-11 xl:row-start-1 xl:block">
-              <nav aria-label="On this page" className="surface-1 sticky top-[120px] rounded-[12px] p-4">
+            <aside className="mt-12 hidden lg:col-span-3 lg:col-start-1 lg:row-start-3 lg:block">
+              <nav aria-label="On this page" className="sticky top-[112px] max-w-[240px] border-t border-border pt-4">
                 <p className="type-label-md text-muted-foreground">On this page</p>
-                <ul className="mt-3 space-y-1">
+                <ul className="mt-3 space-y-0.5">
                   {toc.map((t) => (
                     <li key={t.id}>
                       <a
                         href={`#${t.id}`}
+                        aria-current={activeId === t.id ? 'true' : undefined}
                         className={
                           activeId === t.id
-                            ? 'type-label-md block border-l-2 border-primary py-1 pl-3 text-primary-ink'
-                            : 'type-label-md block border-l-2 border-transparent py-1 pl-3 text-muted-foreground hover:text-foreground'
+                            ? 'toc-link type-label-md block border-l-2 border-primary py-1.5 pl-3 text-primary-ink'
+                            : 'toc-link type-label-md block border-l-2 border-transparent py-1.5 pl-3 text-muted-foreground hover:text-foreground'
                         }
                       >
                         {t.text}
@@ -157,21 +145,36 @@ const PostDetail = () => {
               </nav>
             </aside>
           )}
-        </div>
 
-        {related.length > 0 && (
-          <section className="mt-16 md:mt-24">
-            <h2 className="type-headline-md">Keep reading</h2>
-            <ul className="after-heading stack-gap grid sm:grid-cols-2 lg:grid-cols-3">
-              {related.map((p) => (
-                <li key={p.id}>
-                  <PostCard post={p} />
-                </li>
-              ))}
-            </ul>
-          </section>
-        )}
+          <div className="col-span-4 mt-10 md:col-span-12 lg:col-span-8 lg:col-start-4 lg:row-start-3 lg:mt-12">
+            <div
+              className="article-prose"
+              // Content is authored by the firm in the CMS.
+              dangerouslySetInnerHTML={{ __html: html }}
+            />
+            <div className="surface-1 mt-12 flex max-w-[65ch] gap-3 rounded-[12px] p-5">
+              <Info className="mt-0.5 h-4 w-4 shrink-0 text-primary-ink" aria-hidden="true" />
+              <p className="type-body-sm text-muted-foreground">
+                This article is general information, current at the date of publication. It is not legal advice; rules
+                change and depend on your product and route.
+              </p>
+            </div>
+          </div>
+        </div>
       </article>
+
+      {related.length > 0 && (
+        <section className="container pb-16 md:pb-24">
+          <SectionHeading eyebrow={meta.label} title="Keep reading" />
+          <ul className={`after-heading stack-gap grid sm:grid-cols-2 ${related.length > 2 ? 'lg:grid-cols-3' : ''}`}>
+            {related.map((p) => (
+              <li key={p.id}>
+                <PostCard post={p} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
       <CtaBand />
     </>
   );
