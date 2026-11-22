@@ -1,0 +1,65 @@
+/* Inner-page polish (v5.6): shared page-top rhythm and article reading typography. No italics anywhere. */
+
+/* Page top: same spacing on every inner page. */
+.pg-top { padding-top: 48px; padding-bottom: 48px; }
+@media (min-width: 768px) { .pg-top { padding-top: 64px; padding-bottom: 56px; } }
+
+/* Detail-page titles (service, market): one scale, one measure. */
+.pg-title { font-size: clamp(40px, 5vw, 64px); max-width: 16ch; text-wrap: balance; }
+.pg-lede { max-width: 56ch; }
+@media (min-width: 768px) { .pg-lede { font-size: 19px; line-height: 1.6; } }
+
+/* Visible keyboard focus on card links. */
+.pg-card:focus-visible { outline: 2px solid hsl(var(--primary)); outline-offset: 3px; }
+
+/* ---------- Article ---------- */
+.article-title { font-size: clamp(34px, 4.4vw, 56px); line-height: 1.06; max-width: 22ch; text-wrap: balance; }
+.article-lede {
+  font-family: theme("fontFamily.serif"); font-weight: 400; font-size: clamp(20px, 1.2vw + 15px, 25px);
+  line-height: 1.4; letter-spacing: -0.01em; color: hsl(var(--foreground) / 0.78); max-width: 52ch; text-wrap: pretty;
+}
+
+.article-prose { font-size: 17px; line-height: 1.75; color: hsl(var(--foreground)); max-width: 65ch; overflow-wrap: anywhere; }
+@media (min-width: 768px) { .article-prose { font-size: 18px; } }
+.article-prose > * + * { margin-top: 1.25em; }
+.article-prose > :first-child { margin-top: 0; }
+.article-prose p { text-wrap: pretty; }
+.article-prose h2 {
+  margin-top: 2.6em; margin-bottom: 0; padding-top: 1.1em; scroll-margin-top: 112px;
+  border-top: 1px solid hsl(var(--outline-variant)); font-size: clamp(24px, 1.4vw + 18px, 30px); line-height: 1.2;
+}
+.article-prose h2 + * { margin-top: 0.8em; }
+.article-prose > h2:first-child { border-top: 0; padding-top: 0; margin-top: 0; }
+.article-prose h3 { margin-top: 2em; margin-bottom: 0; scroll-margin-top: 112px; font-size: 20px; line-height: 1.3; }
+.article-prose h3 + * { margin-top: 0.6em; }
+.article-prose h2, .article-prose h3 { font-family: theme("fontFamily.display"); font-weight: 600; letter-spacing: -0.025em; }
+.article-prose strong { font-weight: 650; }
+.article-prose em { font-style: normal; font-weight: 600; color: hsl(var(--primary-ink)); }
+.article-prose a {
+  color: hsl(var(--primary-ink)); font-weight: 550; text-decoration: underline; text-decoration-thickness: 1px;
+  text-underline-offset: 4px; text-decoration-color: hsl(var(--primary) / 0.5); border-radius: 3px;
+  transition: text-decoration-color 150ms, background-color 150ms;
+}
+.article-prose a:hover { text-decoration-color: currentColor; background: hsl(var(--primary) / 0.1); }
+.article-prose a:focus-visible { outline: 2px solid hsl(var(--primary)); outline-offset: 2px; }
+.article-prose ul, .article-prose ol { padding-left: 1.5em; }
+.article-prose ul { list-style: disc; }
+.article-prose ol { list-style: decimal; }
+.article-prose li { padding-left: 0.25em; }
+.article-prose li + li { margin-top: 0.55em; }
+.article-prose li::marker { color: hsl(var(--primary-ink)); font-weight: 600; }
+.article-prose blockquote {
+  margin-block: 2em; padding: 18px 22px 18px 24px; border-radius: 12px; border: 0;
+  border-left: 3px solid hsl(var(--primary)); background: hsl(var(--primary) / 0.07); box-shadow: none;
+  font-style: normal; font-size: 0.97em; line-height: 1.65;
+}
+.article-prose blockquote p + p { margin-top: 0.8em; }
+.article-prose hr { border: 0; border-top: 1px solid hsl(var(--outline-variant)); margin-block: 2.4em; }
+.article-prose code { font-style: normal; background: hsl(var(--muted)); padding: 0.12em 0.4em; border-radius: 6px; }
+.article-prose img { max-width: 100%; height: auto; border-radius: 12px; }
+.article-prose table { font-size: 0.9em; max-width: 100%; border-radius: 12px; }
+
+/* Table of contents. */
+.toc-link { transition: color 150ms, border-color 150ms, background-color 150ms; border-radius: 0 8px 8px 0; }
+.toc-link:hover { background: hsl(var(--foreground) / 0.04); }
+.toc-link:focus-visible { outline: 2px solid hsl(var(--primary)); outline-offset: 1px; }

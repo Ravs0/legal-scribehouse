@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, ChevronLeft, ChevronRight, Search, SearchX } from 'lucide-react';
+import '@/styles/polish-pages.css';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { FilterChip, IconContainer } from '@/components/ui/chip';
@@ -78,15 +79,15 @@ export const InsightsListing = ({
       <section className="container pb-10 pt-12 md:pt-16">
         <SectionHeading as="h1" eyebrow="Insights" title={title} subtitle={subtitle} />
 
-        <div className="mt-10 flex flex-col-reverse gap-4 md:flex-row md:items-center md:justify-between">
-          <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 sm:-mx-6 sm:px-6 md:mx-0 md:flex-wrap md:px-0">
+        <div className="after-heading flex flex-col-reverse gap-4 lg:flex-row lg:items-center lg:justify-between">
+          <div className="no-scrollbar -mx-4 flex gap-2 overflow-x-auto px-4 sm:-mx-6 sm:px-6 lg:mx-0 lg:flex-wrap lg:px-0">
             {FILTERS.map((f) => (
               <FilterChip key={f.to} selected={f.type === type && !category} onClick={() => navigate(f.to)}>
                 {f.label}
               </FilterChip>
             ))}
           </div>
-          <div className="relative w-full md:w-[280px]">
+          <div className="relative w-full lg:w-[280px]">
             <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
             <Input
               ref={searchRef}
@@ -136,13 +137,13 @@ export const InsightsListing = ({
           <>
             {featured && (
               <Reveal className="mb-6 xl:mb-8">
-                <Link to={`/posts/${featured.id}`} className="surface-2 card-hover grid-12 items-center rounded-[14px] p-2.5 md:p-3">
+                <Link to={`/posts/${featured.id}`} className="surface-2 card-hover pg-card group grid-12 items-center rounded-[14px] p-2.5 md:p-3">
                   <div className="order-2 col-span-4 p-3 md:order-1 md:col-span-7 md:p-6">
                     <Badge>{TYPE_META[featured.type]?.label ?? 'Analysis'} · Featured</Badge>
-                    <h2 className="type-headline-md mt-4">{featured.title}</h2>
+                    <h2 className="type-headline-lg mt-4 max-w-[26ch]">{featured.title}</h2>
                     <p className="type-body-lg mt-3 line-clamp-3 text-muted-foreground">{featured.summary}</p>
                     <p className="type-label-md mt-5 flex items-center gap-2 text-primary-ink">
-                      Read the {TYPE_META[featured.type]?.label.toLowerCase() ?? 'post'} <ArrowRight className="h-4 w-4" aria-hidden="true" />
+                      Read the {TYPE_META[featured.type]?.label.toLowerCase() ?? 'post'} <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
                     </p>
                   </div>
                   <GradientTile type={featured.type} className="order-1 col-span-4 aspect-[16/10] md:order-2 md:col-span-5" />
@@ -158,7 +159,7 @@ export const InsightsListing = ({
             </ul>
             {pages > 1 && (
               <nav aria-label="Pagination" className="mt-10 flex items-center justify-center gap-2">
-                <Button variant="ghost" size="icon" disabled={page === 0} onClick={() => setPage(page - 1)} className="disabled:bg-transparent">
+                <Button variant="outline" size="icon" disabled={page === 0} onClick={() => setPage(page - 1)} className="h-9 w-9">
                   <ChevronLeft />
                   <span className="sr-only">Previous page</span>
                 </Button>
@@ -176,7 +177,7 @@ export const InsightsListing = ({
                     {i + 1}
                   </button>
                 ))}
-                <Button variant="ghost" size="icon" disabled={page >= pages - 1} onClick={() => setPage(page + 1)} className="disabled:bg-transparent">
+                <Button variant="outline" size="icon" disabled={page >= pages - 1} onClick={() => setPage(page + 1)} className="h-9 w-9">
                   <ChevronRight />
                   <span className="sr-only">Next page</span>
                 </Button>

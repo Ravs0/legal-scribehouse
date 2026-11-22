@@ -1,3 +1,4 @@
+import '@/styles/polish-pages.css';
 import { Badge } from '@/components/ui/badge';
 import { SectionHeading } from '@/components/site/SectionHeading';
 import { SITE } from '@/config/site';
@@ -40,19 +41,22 @@ const DOCS = {
 const LegalPage = ({ doc }: { doc: keyof typeof DOCS }) => {
   const d = DOCS[doc];
   return (
-    <section className="container pb-20 pt-12 md:pt-16">
+    <section className="container pg-top pb-20 md:pb-24">
       <SectionHeading as="h1" index="—" eyebrow="Legal" title={d.title}>
         <Badge variant="warning" className="mt-4">Draft wording: to be reviewed before launch</Badge>
       </SectionHeading>
       <div className="grid-12 after-heading">
-        <div className="col-span-4 space-y-8 md:col-span-12 lg:col-span-7 lg:col-start-4">
-          {d.sections.map(([h, p]) => (
-            <section key={h}>
-              <h2 className="type-title-lg">{h}</h2>
-              <p className="type-body-lg mt-2 text-muted-foreground">{p}</p>
-            </section>
+        <ol className="col-span-4 md:col-span-12 lg:col-span-7 lg:col-start-4">
+          {d.sections.map(([h, p], i) => (
+            <li key={h} className="grid grid-cols-[2.25rem_minmax(0,1fr)] gap-x-3 border-t border-border py-6 first:border-t-0 first:pt-0 md:grid-cols-[3rem_minmax(0,1fr)] md:py-8 md:first:pt-0">
+              <span aria-hidden="true" className="sh-num tabular text-[22px] md:text-[26px]">{String(i + 1).padStart(2, '0')}</span>
+              <div>
+                <h2 className="type-title-lg">{h}</h2>
+                <p className="type-body-lg mt-2 max-w-[62ch] text-muted-foreground">{p}</p>
+              </div>
+            </li>
           ))}
-        </div>
+        </ol>
       </div>
     </section>
   );

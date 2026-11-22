@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
+import '@/styles/polish-pages.css';
 import { Button } from '@/components/ui/button';
 import { Contours } from '@/components/site/Contours';
 
@@ -8,7 +9,7 @@ const NotFound = () => (
     <div aria-hidden="true" className="bezel absolute inset-x-4 inset-y-8 -z-0 rounded-[16px] opacity-70 md:inset-x-16">
       <div className="bezel-well relative h-full w-full overflow-hidden rounded-[14px]">
         <Contours className="absolute inset-0 h-full w-full" />
-        <span className="absolute left-[58%] top-[34%] flex h-4 w-4 items-center justify-center rounded-full bg-primary shadow-[0_0_0_6px_hsl(var(--primary)/0.2)]" />
+        <span className="absolute left-[70%] top-[22%] flex h-4 w-4 items-center justify-center rounded-full bg-primary shadow-[0_0_0_6px_hsl(var(--primary)/0.2)]" />
       </div>
     </div>
     <p className="type-display-lg text-gradient tabular relative" aria-hidden="true">
@@ -22,7 +23,7 @@ const NotFound = () => (
           Back to home <ArrowRight aria-hidden="true" />
         </Link>
       </Button>
-      <Button asChild variant="ghost">
+      <Button asChild variant="outline">
         <Link to="/insights">Browse insights</Link>
       </Button>
     </div>
