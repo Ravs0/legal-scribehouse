@@ -7,7 +7,7 @@ import { Wordmark } from './Header';
 import { Reveal } from '@/components/motion/Reveal';
 
 // v3.7: 44px rows on touch widths (<1024), compact list from 1024.
-const linkClass = 'type-body-sm flex min-h-11 items-center text-muted-foreground transition-colors hover:text-foreground lg:min-h-0 lg:py-1';
+const linkClass = 'type-body-sm flex min-h-11 items-center rounded-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring lg:min-h-0 lg:py-1.5';
 
 const Footer = () => (
   <footer className="band-ink relative overflow-hidden">
@@ -26,7 +26,7 @@ const Footer = () => (
           </div>
         </div>
 
-        <nav aria-label="Explore" className="col-span-2 md:col-span-3 lg:col-span-2">
+        <nav aria-label="Explore" className="col-span-2 md:col-span-3 lg:col-span-2 lg:pt-2">
           <h2 className="type-label-md mb-3 font-sans text-foreground">Explore</h2>
           <ul>
             {SECTIONS.map((s) => (
@@ -44,7 +44,7 @@ const Footer = () => (
           </ul>
         </nav>
 
-        <nav aria-label="Insights" className="col-span-2 md:col-span-3 lg:col-span-2">
+        <nav aria-label="Insights" className="col-span-2 md:col-span-3 lg:col-span-2 lg:pt-2">
           <h2 className="type-label-md mb-3 font-sans text-foreground">Insights</h2>
           <ul>
             {INSIGHT_LINKS.map((l) => (
@@ -57,7 +57,7 @@ const Footer = () => (
           </ul>
         </nav>
 
-        <nav aria-label="Firm" className="col-span-2 md:col-span-3 lg:col-span-2">
+        <nav aria-label="Firm" className="col-span-2 md:col-span-3 lg:col-span-2 lg:pt-2">
           <h2 className="type-label-md mb-3 font-sans text-foreground">Firm</h2>
           <ul>
             {[
@@ -77,23 +77,21 @@ const Footer = () => (
         </nav>
 
         {/* Disclaimer wording depends on the firm's regulatory status; confirm before launch. */}
-        <div className="col-span-4 md:col-span-3 lg:col-span-3">
-          <div className="rounded-[10px] border border-border p-4">
-            <h2 className="type-label-md font-sans text-foreground">Disclaimer</h2>
-            <p className="type-body-sm mt-2 text-muted-foreground">
-              Information on this site is general in nature and is not legal advice. Contacting us does not create an
-              adviser–client relationship. Local-law services are provided with independent local counsel where
-              required.
-            </p>
-          </div>
+        <div className="col-span-4 md:col-span-3 lg:col-span-3 lg:pt-2">
+          <h2 className="type-label-md mb-3 font-sans text-foreground">Disclaimer</h2>
+          <p className="type-body-sm max-w-[44ch] text-muted-foreground">
+            Information on this site is general in nature and is not legal advice. Contacting us does not create an
+            adviser–client relationship. Local-law services are provided with independent local counsel where
+            required.
+          </p>
         </div>
       </Reveal>
 
-      <div className="mt-12 flex items-center justify-between border-t border-border pt-5 md:mt-16">
+      <div className="mt-12 flex items-center justify-between gap-4 border-t border-border pt-5 md:mt-16">
         <p className="type-body-sm text-muted-foreground">
           © {new Date().getFullYear()} {SITE.name}
         </p>
-        <a href="#top" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); }} className="type-label-md inline-flex min-h-11 items-center gap-1.5 text-muted-foreground transition-colors hover:text-foreground lg:min-h-0">
+        <a href="#top" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); }} className="btn-lift btn-raised type-label-md inline-flex h-9 items-center gap-1.5 rounded-full bg-card px-4 text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
           Back to top <ArrowUp className="h-3.5 w-3.5" aria-hidden="true" />
         </a>
       </div>

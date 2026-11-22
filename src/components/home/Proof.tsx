@@ -20,7 +20,7 @@ export const Proof = () => (
       <SectionHeading index="08"
           eyebrow="Results" title="Small exporters, cleared to sell.">
         {PLACEHOLDER && (
-          <Badge variant="warning" className="mt-3">
+          <Badge variant="warning" className="mt-4">
             Sample data
           </Badge>
         )}
@@ -33,7 +33,7 @@ export const Proof = () => (
             <div
               key={s.label}
               className={[
-                'flex flex-col justify-start gap-1 px-5 py-5 md:px-6 md:py-6',
+                'flex flex-col justify-start gap-1 px-5 py-5 md:px-7 md:py-7',
                 i % 2 === 1 ? 'border-l border-outline-variant' : '',
                 i >= 2 ? 'border-t border-outline-variant lg:border-t-0' : '',
                 i === 2 ? 'lg:border-l' : '',
@@ -52,9 +52,9 @@ export const Proof = () => (
         {TESTIMONIALS.map((t, i) => (
           <Reveal as="li" key={t.who} index={i} className="w-[84vw] shrink-0 snap-center md:row-span-3 md:grid md:w-auto md:grid-rows-subgrid">
             {/* Subgrid rows keep quote marks, quotes and captions aligned across the three cards. */}
-            <figure className="surface-1 card-hover flex h-full flex-col rounded-[12px] p-5 md:row-span-3 md:grid md:grid-rows-subgrid">
+            <figure className="surface-1 card-hover flex h-full flex-col rounded-[12px] p-6 md:row-span-3 md:grid md:grid-rows-subgrid">
               <Quote className="h-5 w-5 text-primary-ink" aria-hidden="true" />
-              <blockquote className="type-body-lg mb-5 mt-3">{t.quote}</blockquote>
+              <blockquote className="type-body-lg mb-6 mt-4 text-pretty">{t.quote}</blockquote>
               <figcaption className="card-foot flex items-center gap-3 md:mt-0">
                 <span className="icon-well type-label-md flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-primary-ink">
                   {initials(t.who)}
