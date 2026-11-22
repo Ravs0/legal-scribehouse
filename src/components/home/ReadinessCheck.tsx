@@ -27,12 +27,15 @@ const Toggle = ({ checked, onChange, labelledBy, describedBy }: { checked: boole
     aria-checked={checked}
     aria-labelledby={labelledBy}
     aria-describedby={describedBy}
-    onClick={() => onChange(!checked)}
+    onClick={(e) => {
+      e.stopPropagation();
+      onChange(!checked);
+    }}
     className="press-soft hit group relative h-[26px] w-11 shrink-0 rounded-full p-[3px] transition-[background-color,transform] duration-200"
     style={{
-      background: checked ? 'hsl(var(--success))' : 'hsl(var(--input) / 0.3)',
+      background: checked ? 'hsl(var(--success))' : 'hsl(var(--input) / 0.42)',
       backgroundImage: 'linear-gradient(to bottom, hsl(0 0% 0% / .10), transparent 60%)',
-      boxShadow: 'inset 0 1px 2px hsl(0 0% 0% / .16), inset 0 -1px 0 hsl(0 0% 100% / .35)',
+      boxShadow: 'inset 0 1px 2px hsl(0 0% 0% / .16), inset 0 0 0 1px hsl(0 0% 0% / .06), inset 0 -1px 0 hsl(0 0% 100% / .35)',
     }}
   >
     <span
@@ -84,10 +87,10 @@ const CrateArt = ({ tag, viewBox, className }: { tag: string; viewBox: string; c
 /** Header illustration: a crate on a pallet with a clearance tag in the verdict colour. 168px strip below 1024; a 4:3
  *  well filling the left column above, cropped around the crate so it reads larger. */
 const CrateScene = ({ tag, score }: { tag: string; score: number }) => (
-  <div className="relative h-[168px] overflow-hidden rounded-[10px] bg-tertiary-container lg:aspect-[10/7] lg:h-auto">
+  <div className="relative h-[168px] overflow-hidden rounded-[10px] bg-tertiary-container shadow-[inset_0_0_0_1px_hsl(var(--tertiary)/0.12)] sm:h-[200px] lg:aspect-[10/7] lg:h-auto">
     <CrateArt tag={tag} viewBox="0 0 416 168" className="lg:hidden" />
     <CrateArt tag={tag} viewBox="82 4 280 196" className="hidden lg:block" />
-    <span className="type-mono-md tabular absolute right-3 top-3 inline-flex h-7 items-center rounded-full bg-white/80 px-2.5 text-paper-ink shadow-e1">
+    <span className="type-mono-md tabular absolute right-3 top-3 inline-flex h-7 items-center rounded-full bg-white/85 px-3 text-paper-ink shadow-e1">
       {score} / {MAX_SCORE}
     </span>
   </div>
@@ -158,24 +161,35 @@ export const ReadinessCheck = () => {
                   </span>
                 </div>
                 <p className="type-body-sm mt-0.5 text-muted-foreground">Flip on what's already done.</p>
+                <div className="mt-3 grid grid-cols-6 gap-1" aria-hidden="true">
+                  {READINESS_QUESTIONS.map((q, i) => (
+                    <span
+                      key={q.id}
+                      className="h-1.5 rounded-full bg-foreground/10 transition-colors duration-300"
+                      style={on[i] ? { background: status.color } : undefined}
+                    />
+                  ))}
+                </div>
               </div>
 
-              <p className="type-body-sm order-4 mt-3 min-h-[40px] px-3 text-muted-foreground lg:order-none lg:px-1">
-                {gaps.length ? (
-                  <>
-                    <span className="font-semibold text-foreground">Fix first:</span> {gaps[0].fix}.
-                  </>
-                ) : (
-                  <>
-                    <span className="font-semibold text-foreground">{verdict.title}</span> {verdict.copy}
-                  </>
-                )}
+              <p className="type-body-sm order-4 mx-3 mt-4 flex min-h-[60px] items-center rounded-[10px] bg-surface-container-low px-3.5 py-2.5 text-muted-foreground shadow-[inset_0_0_0_1px_hsl(var(--outline-variant)/0.7)] lg:order-none lg:mx-1">
+                <span>
+                  {gaps.length ? (
+                    <>
+                      <span className="font-semibold text-foreground">Fix first:</span> {gaps[0].fix}.
+                    </>
+                  ) : (
+                    <>
+                      <span className="font-semibold text-foreground">{verdict.title}</span> {verdict.copy}
+                    </>
+                  )}
+                </span>
               </p>
 
               {/* The score legend (was the separate "How to read your score" card). */}
-              <div className="order-5 mx-3 mt-3 border-t border-outline-variant pt-3 lg:order-none lg:mx-1">
+              <div className="order-5 mx-3 mt-4 border-t border-outline-variant pt-4 lg:order-none lg:mx-1">
                 <p className="sr-only">How to read your score</p>
-                <ul className="space-y-2">
+                <ul className="space-y-2.5">
                   {LEGEND.map((l) => (
                     <li key={l.stamp} className="flex items-start gap-2.5">
                       <span
@@ -191,7 +205,7 @@ export const ReadinessCheck = () => {
                 </ul>
               </div>
 
-              <div className="order-6 px-3 pb-1 pt-4 lg:order-none lg:mt-auto lg:px-1 lg:pb-0 lg:pt-5">
+              <div className="order-6 px-3 pb-2 pt-5 lg:order-none lg:mt-auto lg:px-1 lg:pb-0">
                 {/* One column below 380px so "Book a free call" never spills out of its pill. */}
                 <div className="grid grid-cols-1 gap-2 min-[380px]:grid-cols-2">
                   <Button onClick={sendResult} className="px-3">
@@ -201,24 +215,31 @@ export const ReadinessCheck = () => {
                     Mark all done
                   </Button>
                 </div>
-                <div className="mt-2 flex items-center justify-between">
+                <div className="mt-3 flex items-center justify-between gap-3">
                   <button
                     type="button"
                     onClick={() => setOn(READINESS_QUESTIONS.map(() => false))}
-                    className={cn('press hit type-label-md relative h-8 rounded-full px-2 text-primary-ink hover:bg-primary/10')}
+                    className="btn-raised btn-lift hit type-label-md relative h-8 shrink-0 rounded-full bg-card px-3.5 text-foreground"
                   >
                     Reset
                   </button>
-                  <span className="type-label-sm text-muted-foreground">Indicative only · not legal advice</span>
+                  <span className="type-label-sm text-right text-muted-foreground">Indicative only · not legal advice</span>
                 </div>
               </div>
             </div>
 
             <div className="contents lg:col-span-7 lg:flex lg:flex-col">
-              <ul className="order-3 mt-3 divide-y divide-outline-variant px-3 lg:order-none lg:mt-0 lg:flex lg:flex-1 lg:flex-col lg:px-2">
+              <ul className="order-3 mt-4 divide-y divide-outline-variant px-3 lg:order-none lg:mt-0 lg:flex lg:flex-1 lg:flex-col lg:px-0">
                 {READINESS_QUESTIONS.map((q, i) => (
-                  <li key={q.id} className="flex min-h-14 items-center justify-between gap-4 py-2 lg:min-h-16 lg:flex-1">
-                    <div className="min-w-0">
+                  <li
+                    key={q.id}
+                    onClick={() => setOn((prev) => prev.map((x, j) => (j === i ? !x : x)))}
+                    className="group/row flex min-h-14 cursor-pointer items-center gap-3 py-2 transition-colors lg:min-h-16 lg:flex-1 lg:gap-4 lg:px-5 lg:hover:bg-foreground/[0.03] lg:first:rounded-t-[10px] lg:last:rounded-b-[10px]"
+                  >
+                    <span aria-hidden="true" className="type-mono-md tabular hidden w-6 shrink-0 text-muted-foreground sm:block">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <div className="min-w-0 flex-1">
                       <p id={`rq-${q.id}`} className="type-title-sm">
                         {q.label}
                       </p>
