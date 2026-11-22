@@ -258,3 +258,12 @@
 .motion-ok .sv-stage[data-in="false"] .sv-paper-wrap { opacity: 0; }
 .motion-ok .sv-stage .sv-paper-wrap { transition: opacity 600ms ease 300ms; }
 @media (max-width: 639px) { .motion-ok .sv-stage[data-in="false"] .sv-folder { --ty: 0px; } }
+
+/* v5.8 review fixes. */
+/* The giant word reads as part of the wall, not a ghost. */
+.sv-word { color: hsl(28 55% 78% / 0.9) !important; opacity: 1 !important; }
+/* Narrow phones: the stamp wraps instead of running off the paper. */
+.sv-stamp { white-space: normal; overflow-wrap: anywhere; }
+/* Below 1024px only the active sheet takes space, so short services don't leave blank paper. */
+@media (max-width: 1023px) { .sv-sheet[data-on="false"] { display: none; } }
+@media (max-width: 380px) { .sv-stamp { font-size: 11px; letter-spacing: 0.04em; padding: 6px 10px; transform: rotate(-2deg); } }
