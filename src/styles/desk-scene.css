@@ -1,0 +1,121 @@
+/* v5.8 "The desk": a full-bleed teal room, a wooden desk across the bottom, three framed portraits standing on it
+   in front of a giant DESK. Light from the upper left. Fixed colours (like the hero): same in light and dark. */
+.desk-scene {
+  --fw: clamp(170px, 24vw, 236px);
+  --desk-h: 176px;
+  --feet: 104px; /* distance from the section bottom to where the frames stand */
+  position: relative; overflow: hidden; isolation: isolate; color: #FFF4E6;
+  background: #0F4C52; padding-block: clamp(36px, 5vw, 64px) 0;
+}
+@media (min-width: 1024px) { .desk-scene { --fw: clamp(220px, 17vw, 258px); --desk-h: 210px; --feet: 120px; } }
+@media (max-width: 639px) { .desk-scene { --fw: min(58vw, 236px); --desk-h: 164px; --feet: 98px; } }
+
+.desk-wall { position: absolute; inset: 0; z-index: -3;
+  background:
+    radial-gradient(90% 80% at 14% 0%, rgb(60 150 150 / 0.55), transparent 62%),
+    radial-gradient(70% 60% at 85% 100%, rgb(5 40 44 / 0.5), transparent 70%),
+    linear-gradient(180deg, #14575D 0%, #0F4C52 55%, #0B4146 100%); }
+.desk-wall::after { content: ""; position: absolute; inset: 0; background-image: var(--grain-fine); background-size: 140px 140px; opacity: 0.8; mix-blend-mode: multiply; }
+.desk-light { position: absolute; z-index: -2; top: -16%; left: 2%; width: 46%; height: 90%; pointer-events: none; transform: skewX(-18deg); filter: blur(40px); mix-blend-mode: soft-light;
+  background: linear-gradient(180deg, rgb(255 240 214 / 0.5), rgb(255 240 214 / 0) 74%); }
+.desk-vignette { position: absolute; inset: 0; z-index: -1; pointer-events: none; background: radial-gradient(120% 95% at 38% 42%, transparent 52%, rgb(2 26 30 / 0.45)); }
+
+/* Header copy */
+.desk-title { font-family: theme("fontFamily.serif"); font-weight: 400; font-style: normal; color: #FFF4E6; font-size: clamp(32px, 22px + 2.8vw, 56px); line-height: 1.08; letter-spacing: -0.02em; max-width: 18ch; }
+.desk-lede { color: rgb(255 244 230 / 0.78); max-width: 44ch; font-size: clamp(15px, 14px + 0.3vw, 18px); line-height: 1.5; }
+.desk-mono { font-family: theme("fontFamily.mono"); font-size: 12px; line-height: 16px; font-weight: 500; color: rgb(255 244 230 / 0.82); }
+.desk-chip { display: inline-flex; margin-top: 14px; padding: 3px 10px; border-radius: 9999px; font-family: theme("fontFamily.mono"); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: #FFD9B8; background: rgb(232 89 12 / 0.22); box-shadow: inset 0 0 0 1px rgb(255 160 90 / 0.5); }
+
+/* Stage: giant word + frames + desk */
+.desk-stage { position: relative; margin-top: clamp(8px, 2vw, 24px); padding-top: clamp(60px, 9vw, 110px); padding-bottom: var(--feet); }
+.desk-word { position: absolute; left: 0; right: 0; bottom: calc(var(--desk-h) - 44px); z-index: 0; text-align: center; pointer-events: none; user-select: none;
+  font-family: theme("fontFamily.display"); font-weight: 800; color: #FFF4E6; white-space: nowrap; letter-spacing: -0.055em; line-height: 0.8;
+  font-size: clamp(120px, 27vw, 400px); padding-bottom: 0.04em;
+  text-shadow: 0 0.012em 0 rgb(255 255 255 / 0.35), 0.03em 0.05em 0.09em rgb(0 30 34 / 0.35);
+  transform: translate(calc(var(--px, 0) * -10px), calc(var(--py, 0) * -4px)); transition: transform 600ms cubic-bezier(0.2, 0.7, 0, 1); }
+
+
+.desk-row { position: relative; z-index: 2; display: flex; align-items: flex-end; justify-content: center; gap: clamp(12px, 6vw, 96px); list-style: none; margin: 0; padding: 0; }
+@media (max-width: 639px) {
+  .desk-row { justify-content: flex-start; gap: 18px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scroll-padding-inline: 16px;
+    padding: 56px 16px 64px; margin: -56px -16px -64px; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+  .desk-row::-webkit-scrollbar { display: none; }
+  .desk-item { scroll-snap-align: center; flex: 0 0 auto; }
+}
+.desk-item { --s: 1; width: calc(var(--fw) * var(--s)); position: relative; flex: 0 0 auto;
+  transform: translate(calc(var(--px, 0) * var(--k, 0) * 1px), calc(var(--py, 0) * var(--k, 0) * 0.5px)); transition: transform 600ms cubic-bezier(0.2, 0.7, 0, 1); }
+.desk-item:nth-child(1) { --s: 0.96; --k: 18; --r: -1.2deg; }
+.desk-item:nth-child(2) { --s: 1.08; --k: 26; --r: 0.4deg; }
+.desk-item:nth-child(3) { --s: 0.94; --k: 20; --r: 1.3deg; }
+@media (max-width: 639px) { .desk-stage { padding-top: 150px; } .desk-word { font-size: 36vw; bottom: calc(var(--desk-h) + 200px); } }
+@media (min-width: 640px) and (max-width: 1023px) { .desk-word { font-size: 38vw; bottom: calc(var(--desk-h) - 14px); } }
+@media (max-width: 1023px) { .desk-item:nth-child(2) { --s: 1.04; } }
+
+.desk-btn { all: unset; box-sizing: border-box; display: block; position: relative; width: 100%; cursor: pointer; border-radius: 10px; -webkit-tap-highlight-color: transparent;
+  font-size: max(11px, calc(var(--fw) * var(--s) * 0.056)); }
+.desk-btn:focus-visible { outline: 3px solid #FFD9B8; outline-offset: 6px; }
+.desk-rise { display: block; position: relative; transform: rotate(var(--r, 0deg)); transform-origin: 50% 100%; }
+
+.desk-tilt { display: block; position: relative; transform-origin: 50% 100%; transform: perspective(900px) rotateX(0deg);
+  transition: transform 700ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+.desk-btn[aria-expanded="true"] .desk-tilt { transform: perspective(900px) rotateX(-7deg) translateY(-6px); }
+.desk-frame-svg { display: block; width: 100%; height: auto; position: relative; overflow: visible; }
+.desk-wall-shadow { position: absolute; inset: 8% 2% 2% 10%; border-radius: 10px; background: rgb(0 26 30 / 0.5); filter: blur(22px); transform: translate(30px, -12px); transition: transform 600ms, opacity 600ms; }
+.desk-btn[aria-expanded="true"] .desk-wall-shadow { transform: translate(40px, -18px); opacity: 0.85; }
+.desk-foot { position: absolute; left: -2%; right: -14%; bottom: -18px; height: 34px; border-radius: 50%; background: radial-gradient(closest-side, rgb(40 14 0 / 0.6), rgb(40 14 0 / 0.16) 62%, transparent); filter: blur(3px); }
+
+/* Placard: a folded paper tent card; flips (rotateX) to show the back */
+.desk-placard { display: block; position: absolute; left: 4%; right: 4%; bottom: -3.4em; height: 7em; perspective: 700px; z-index: 3; }
+.desk-card { display: block; position: absolute; inset: 0; transform-style: preserve-3d; transition: transform 800ms cubic-bezier(0.34, 1.56, 0.64, 1); transform: rotateX(0deg); }
+.desk-btn[aria-expanded="true"] .desk-card { transform: rotateX(180deg); }
+.desk-face { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; padding: 0.6em 0.8em 0.7em; backface-visibility: hidden; -webkit-backface-visibility: hidden; color: #1F1A16;
+  border-radius: 3px 3px 5px 5px;
+  background: linear-gradient(180deg, #FFFCF5 0%, #FBF1E0 48%, #F0E0C6 49%, #F6E9D3 100%);
+  box-shadow: inset 0 1px 0 #fff, inset 0 -1px 0 rgb(120 80 40 / 0.25), 0 1px 1px rgb(40 14 0 / 0.3), 0 10px 14px -6px rgb(40 14 0 / 0.55); }
+.desk-face::before { content: ""; position: absolute; inset: 0; border-radius: inherit; pointer-events: none; background-image: var(--grain-fine); background-size: 140px 140px; mix-blend-mode: multiply; opacity: 0.8; }
+.desk-face-back { transform: rotateX(180deg); background: linear-gradient(180deg, #F6E9D3 0%, #F0E0C6 50%, #FBF1E0 51%, #FFFCF5 100%); }
+.desk-name { position: relative; font-family: theme("fontFamily.display"); font-weight: 700; font-size: 1.28em; line-height: 1.1; letter-spacing: -0.02em; }
+.desk-role { position: relative; margin-top: 0.4em; font-family: theme("fontFamily.mono"); font-size: 0.8em; line-height: 1.2; letter-spacing: 0.06em; text-transform: uppercase; color: #8A3A08; font-weight: 500; }
+.desk-focus { position: relative; font-family: theme("fontFamily.display"); font-weight: 600; font-size: 0.98em; line-height: 1.2; letter-spacing: -0.01em; }
+.desk-adm { position: relative; margin-top: 0.4em; font-family: theme("fontFamily.mono"); font-size: 0.78em; line-height: 1.25; color: #5C4A3A; }
+
+/* The desk */
+.desk-top { position: absolute; left: 0; right: 0; bottom: 0; height: var(--desk-h); z-index: 1; }
+.desk-top::before { content: ""; position: absolute; inset-inline: 0; top: -54px; height: 54px; background: linear-gradient(180deg, transparent, rgb(0 24 28 / 0.5)); pointer-events: none; }
+.desk-surface { position: absolute; inset: 0 0 28px 0;
+  background:
+    radial-gradient(80% 140% at 18% 0%, rgb(255 226 176 / 0.5), transparent 65%),
+    var(--grain-fine),
+    repeating-linear-gradient(180deg, transparent 0 31px, rgb(86 46 18 / 0.28) 31px 32px, rgb(255 230 190 / 0.12) 32px 33px),
+    repeating-linear-gradient(180deg, rgb(255 255 255 / 0.03) 0 7px, rgb(80 40 10 / 0.05) 7px 13px),
+    linear-gradient(180deg, #D3995D 0%, #C48A50 55%, #B27B45 100%);
+  background-size: auto, 140px 140px, auto, auto, auto; }
+.desk-surface::before { content: ""; position: absolute; inset-inline: 0; top: 0; height: 5px; background: linear-gradient(180deg, #F2C58C, #DDA467); box-shadow: 0 1px 0 rgb(60 24 0 / 0.35); }
+.desk-surface::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, transparent 70%, rgb(70 30 5 / 0.22)); pointer-events: none; }
+.desk-edge { position: absolute; inset-inline: 0; bottom: 0; height: 28px; background: linear-gradient(180deg, #EDBB80 0, #D9A164 3px, #A66D3A 6px, #8C5730 70%, #754724 100%); box-shadow: 0 -2px 6px rgb(60 24 0 / 0.35); }
+.desk-edge::after { content: ""; position: absolute; inset: 0; background-image: var(--grain-fine); background-size: 140px 140px; mix-blend-mode: multiply; opacity: 0.8; }
+
+/* Scroll hint (phones) */
+.desk-hint { display: none; }
+@media (max-width: 639px) {
+  .desk-hint { display: inline-flex; align-items: center; gap: 8px; position: absolute; z-index: 4; left: 50%; bottom: 12px; transform: translateX(-50%); padding: 7px 14px; border-radius: 9999px; white-space: nowrap;
+    font-family: theme("fontFamily.mono"); font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: #F4EEE6; background: #1F1A16; box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.18), 0 6px 12px -4px rgb(0 0 0 / 0.5); }
+  .desk-hint span[aria-hidden] { display: inline-block; animation: desk-nudge 1.6s ease-in-out infinite; }
+}
+@keyframes desk-nudge { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(5px); } }
+
+/* Motion (only with html.motion-ok) */
+.motion-ok .desk-stage[data-in="false"] .desk-rise { opacity: 0; transform: translateY(70px) rotate(var(--r, 0deg)); }
+.motion-ok .desk-stage[data-in="true"] .desk-rise { animation: desk-rise 1000ms cubic-bezier(0.34, 1.35, 0.64, 1) backwards; animation-delay: calc(var(--n, 0) * 160ms + 120ms); }
+@keyframes desk-rise { from { opacity: 0; transform: translateY(70px) rotate(calc(var(--r, 0deg) - 2deg)); } to { opacity: 1; transform: rotate(var(--r, 0deg)); } }
+.motion-ok .desk-stage[data-in="false"] .desk-word { opacity: 0; }
+.motion-ok .desk-stage[data-in="true"] .desk-word { animation: desk-word 900ms cubic-bezier(0.2, 0.7, 0, 1) backwards; }
+@keyframes desk-word { from { opacity: 0; letter-spacing: -0.02em; } }
+.motion-ok .desk-stage[data-in="false"] .desk-foot { opacity: 0; }
+.motion-ok .desk-stage[data-in="true"] .desk-foot { animation: desk-fade 700ms ease-out calc(var(--n, 0) * 160ms + 600ms) backwards; }
+@keyframes desk-fade { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  .desk-item, .desk-word, .desk-tilt, .desk-card, .desk-wall-shadow { transition: none; }
+  .desk-item, .desk-word { transform: none; }
+  .desk-hint span[aria-hidden] { animation: none; }
+}
