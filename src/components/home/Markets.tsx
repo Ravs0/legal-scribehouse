@@ -99,10 +99,10 @@ export const Markets = () => {
         />
 
         <Reveal className="after-heading">
-          <div className="device-surface dark rounded-[16px] bg-device p-3 text-device-foreground">
+          <div className="device-surface dark rounded-[14px] bg-device p-3 text-device-foreground ring-1 ring-inset ring-white/[0.08] md:p-4">
             {/* Top row */}
-            <div className="flex h-11 items-center justify-between gap-3 px-1">
-              <div className="no-scrollbar flex gap-1.5 overflow-x-auto py-[7px]">
+            <div className="flex min-h-11 items-center justify-between gap-3">
+              <div role="group" aria-label="Filter markets" className="no-scrollbar -my-1 flex gap-1.5 overflow-x-auto px-1 py-1 -mx-1">
                 {FILTERS.map((f) => (
                   <button
                     key={f.id}
@@ -113,8 +113,8 @@ export const Markets = () => {
                       if (!f.codes.includes(activeCode)) setActiveCode(f.codes[0]);
                     }}
                     className={cn(
-                      'press hit type-label-md relative h-[30px] shrink-0 rounded-full px-3 transition-colors',
-                      filter === f.id ? 'pebble btn-lift bg-paper text-paper-ink [--sheen-a:0.7]' : 'bg-white/[0.08] text-white/75 hover:bg-white/[0.12]',
+                      'press hit type-label-md relative h-8 shrink-0 rounded-full px-3.5 transition-colors focus-visible:outline-offset-2',
+                      filter === f.id ? 'pebble btn-lift bg-paper text-paper-ink [--sheen-a:0.7]' : 'bg-white/[0.08] text-white/80 shadow-[inset_0_0_0_1px_hsl(0_0%_100%/0.06)] hover:bg-white/[0.14] hover:text-white',
                     )}
                   >
                     {f.label}
@@ -124,13 +124,13 @@ export const Markets = () => {
               <button
                 type="button"
                 onClick={askAbout}
-                className="pebble btn-lift hit type-label-md relative hidden h-[30px] shrink-0 items-center gap-1.5 rounded-full bg-paper px-3 text-paper-ink [--sheen-a:0.7] sm:inline-flex"
+                className="pebble btn-lift hit type-label-md relative hidden h-8 shrink-0 items-center gap-1.5 rounded-full bg-paper px-3.5 text-paper-ink [--sheen-a:0.7] sm:inline-flex"
               >
                 Ask about {market.name} <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
               </button>
             </div>
 
-            <div className="mt-2 grid gap-3 lg:grid-cols-[400px_minmax(0,1fr)]">
+            <div className="mt-3 grid gap-3 lg:grid-cols-[300px_minmax(0,1fr)] xl:grid-cols-[400px_minmax(0,1fr)]">
               {/* List */}
               <div
                 role="tablist"
@@ -141,7 +141,7 @@ export const Markets = () => {
                 onScroll={onListScroll}
                 data-at-top={listEdge.top}
                 data-at-end={listEdge.end}
-                className="market-list-fade no-scrollbar relative flex snap-x snap-proximity scroll-px-1 gap-1.5 overflow-x-auto max-lg:py-1 lg:max-h-[420px] lg:snap-none lg:flex-col lg:gap-0.5 lg:overflow-y-auto lg:overflow-x-visible"
+                className="market-list-fade no-scrollbar relative -mx-1 flex max-lg:[mask-image:linear-gradient(to_right,#000_calc(100%-28px),transparent)] snap-x snap-proximity scroll-px-2 gap-1.5 overflow-x-auto px-1 max-lg:py-1 lg:mx-0 lg:max-h-[420px] lg:px-0 lg:snap-none lg:flex-col lg:gap-0.5 lg:overflow-y-auto lg:overflow-x-visible"
               >
                 <span
                   aria-hidden="true"
@@ -169,13 +169,13 @@ export const Markets = () => {
                       onClick={() => select(m.code)}
                       className={cn(
                         'press hit group relative z-[1] flex shrink-0 snap-start items-center gap-3 rounded-full px-3.5 text-left transition-colors lg:h-16 lg:rounded-[10px] lg:px-4',
-                        'h-9 lg:h-16',
-                        on ? 'bg-paper text-paper-ink lg:bg-transparent lg:text-paper' : 'bg-white/[0.08] text-white/70 hover:text-white lg:bg-transparent',
+                        'h-10 lg:h-16 focus-visible:outline-offset-[-2px]',
+                        on ? 'bg-paper text-paper-ink lg:bg-transparent lg:text-paper' : 'bg-white/[0.08] text-white/75 shadow-[inset_0_0_0_1px_hsl(0_0%_100%/0.06)] hover:text-white lg:bg-transparent lg:shadow-none lg:hover:bg-white/[0.04]',
                       )}
                     >
                       <span className="min-w-0 flex-1">
-                        <span className="type-label-md block whitespace-nowrap lg:type-title-md">{m.name}</span>
-                        <span className="type-body-sm hidden text-white/55 lg:block">{m.tagline}</span>
+                        <span className="type-label-md block whitespace-nowrap lg:type-title-md lg:leading-5">{m.name}</span>
+                        <span className="type-body-sm hidden truncate text-white/60 lg:block">{m.tagline}</span>
                       </span>
                       <ArrowRight
                         aria-hidden="true"
@@ -207,7 +207,7 @@ export const Markets = () => {
                       <MarketScene scene={SCENES[market.code]} />
                     </div>
                   </div>
-                  <span className="glass-chip type-mono-md absolute bottom-4 left-4 z-[2] inline-flex h-7 items-center gap-2 rounded-full px-2.5 text-white">
+                  <span className="glass-chip type-mono-md absolute bottom-3 left-3 z-[2] inline-flex h-7 items-center gap-2 rounded-full px-3 text-white sm:bottom-4 sm:left-4">
                     <span className="tabular">{String(index + 1).padStart(2, '0')} / 10</span>
                     <span className="text-white/60">·</span>
                     {CAPITALS[market.code]}
@@ -217,7 +217,7 @@ export const Markets = () => {
                     onClick={() => setSheetOpen((o) => !o)}
                     aria-expanded={sheetOpen}
                     aria-controls="market-sheet"
-                    className="glass-chip press hit absolute right-4 top-4 z-[3] flex h-8 w-8 items-center justify-center rounded-full text-white"
+                    className="glass-chip press hit absolute right-3 top-3 z-[3] flex h-8 w-8 items-center justify-center rounded-full text-white sm:right-4 sm:top-4"
                   >
                     <ChevronDown className={cn('h-4 w-4 transition-transform duration-300', sheetOpen ? 'rotate-0' : 'rotate-180')} aria-hidden="true" />
                     <span className="sr-only">{sheetOpen ? 'Hide details' : 'Show details'}</span>
@@ -227,7 +227,7 @@ export const Markets = () => {
                   <div
                     id="market-sheet"
                     className={cn(
-                      'absolute inset-x-3 bottom-3 z-[2] hidden rounded-[12px] bg-paper p-6 text-paper-ink shadow-[0_20px_40px_-12px_#000] transition-[transform,opacity] [transition-duration:420ms] [transition-timing-function:cubic-bezier(0.32,0.72,0,1)] lg:block',
+                      'absolute inset-x-3 bottom-3 z-[2] hidden rounded-[12px] bg-paper p-5 text-paper-ink xl:p-6 shadow-[0_20px_40px_-12px_#000] transition-[transform,opacity] [transition-duration:420ms] [transition-timing-function:cubic-bezier(0.32,0.72,0,1)] lg:block',
                       sheetOpen ? 'translate-y-0 opacity-100' : 'pointer-events-none translate-y-[110%] opacity-0',
                     )}
                   >
@@ -239,9 +239,16 @@ export const Markets = () => {
 
             <div className="mt-3 rounded-[12px] bg-paper p-5 text-paper-ink md:p-6 lg:hidden">
               <MarketDetail market={market} />
+              <button
+                type="button"
+                onClick={askAbout}
+                className="btn-filled btn-lift hit type-label-lg relative mt-5 inline-flex h-10 w-full items-center justify-center gap-2 rounded-full bg-primary px-4 text-primary-foreground sm:hidden"
+              >
+                Ask about {market.name} <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </button>
             </div>
 
-            <p className="type-body-sm mt-3 px-3 pb-2 pt-1 text-white/50">
+            <p className="type-body-sm mt-3 max-w-[78ch] px-1 pb-1 pt-1 text-white/60 lg:px-4">
               General information only{MARKETS_REVIEWED ? `, as of ${MARKETS_REVIEWED}` : ''}. Rules change often and vary by product. Not legal advice.
               Timor-Leste, ASEAN's newest member: on request.
             </p>
@@ -256,19 +263,19 @@ const MarketDetail = ({ market }: { market: (typeof MARKETS)[number] }) => (
   <div key={market.code} className="animate-in fade-in duration-300">
     {/* v3.7: the badge sits beside the name, so the snapshot gets the full width on phones. */}
     <div className="flex items-start justify-between gap-3">
-      <h3 className="type-title-lg">{market.name}</h3>
+      <h3 className="type-headline-sm">{market.name}</h3>
       {!MARKETS_REVIEWED && (
         <span className="type-label-sm inline-flex h-5 shrink-0 items-center rounded-md bg-paper-chip px-2 text-paper-muted">Draft: under review</span>
       )}
     </div>
-    <p className="type-body-sm mt-1 max-w-[60ch] text-paper-muted">{market.snapshot}</p>
+    <p className="type-body-sm mt-1.5 max-w-[62ch] text-paper-muted">{market.snapshot}</p>
     {/* v3.6: three even columns from 768px; labels use the sans eyebrow in the sheet's muted ink. */}
-    <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-3 md:gap-6">
+    <div className="mt-4 grid grid-cols-1 gap-5 border-t border-paper-rule/70 pt-4 md:grid-cols-3 md:gap-6 xl:mt-5 xl:pt-5">
       <div>
-        <p className="type-eyebrow mb-2.5 text-paper-muted">Regulators</p>
+        <p className="type-mono-sm mb-2.5 text-paper-muted">Regulators</p>
         <div className="flex flex-wrap gap-1.5">
           {market.regulators.map((r) => (
-            <span key={r} className="type-label-sm inline-flex h-6 items-center gap-1 rounded-[5px] bg-white px-2 shadow-[inset_0_1px_0_#fff,0_0_0_1px_hsl(24_40%_20%/0.09),0_1px_2px_hsl(24_40%_20%/0.08)]">
+            <span key={r} className="type-label-sm inline-flex h-6 items-center gap-1 rounded-md bg-white px-2 shadow-[inset_0_1px_0_#fff,0_0_0_1px_hsl(24_40%_20%/0.09),0_1px_2px_hsl(24_40%_20%/0.08)]">
               <Landmark className="h-3 w-3 shrink-0 text-paper-accent" aria-hidden="true" />
               {r}
             </span>
@@ -276,7 +283,7 @@ const MarketDetail = ({ market }: { market: (typeof MARKETS)[number] }) => (
         </div>
       </div>
       <div>
-        <p className="type-eyebrow mb-2.5 text-paper-muted">Typical hurdles</p>
+        <p className="type-mono-sm mb-2.5 text-paper-muted">Typical hurdles</p>
         <ul className="grid gap-y-2">
           {market.hurdles.map((h) => (
             <li key={h} className="type-body-sm flex gap-2 leading-5">
@@ -287,7 +294,7 @@ const MarketDetail = ({ market }: { market: (typeof MARKETS)[number] }) => (
         </ul>
       </div>
       <div>
-        <p className="type-eyebrow mb-2.5 text-paper-muted">Agreements</p>
+        <p className="type-mono-sm mb-2.5 text-paper-muted">Agreements</p>
         <div className="flex flex-wrap items-start gap-1.5">
           {market.agreements.map((a) => (
             <Badge key={a} variant="tertiary" className="bg-paper-teal text-paper-teal-ink">

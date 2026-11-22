@@ -1,5 +1,5 @@
 import { ReactNode, useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { ArrowUpRight, Check, Clock3 } from 'lucide-react';
+import { ArrowUpRight, Check, Clock3, Plus } from 'lucide-react';
 import { MarketScene, SCENES } from '@/components/site/MarketScene';
 import { SectionHeading } from '@/components/site/SectionHeading';
 import { Reveal } from '@/components/motion/Reveal';
@@ -115,10 +115,10 @@ export const Glance = () => {
         className={cn(
           'pebble absolute overflow-hidden transition-[left,top,width,height,transform,opacity,border-radius,box-shadow,--lx,--ly] [transition-duration:480ms] [transition-timing-function:cubic-bezier(0.32,0.72,0,1)]',
           surface,
-          // Concentric with the board well (44px radius, 16px / 20px padding): 28px mobile, 24px from sm.
+          // Cards are 12px inside a 14px well.
           isOpen
-            ? 'z-[2] rounded-[14px] sm:rounded-[14px] [box-shadow:var(--edge-top),var(--edge-rim),inset_0_-14px_22px_-16px_hsl(var(--tint)/var(--shade-a)),var(--edge-out),var(--e4)]'
-            : 'z-[1] rounded-[14px] sm:rounded-[14px] [box-shadow:var(--edge-top),var(--edge-rim),inset_0_-14px_22px_-16px_hsl(var(--tint)/var(--shade-a)),var(--edge-out),var(--float-drop)]',
+            ? 'z-[2] rounded-[12px] [box-shadow:var(--edge-top),var(--edge-rim),inset_0_-14px_22px_-16px_hsl(var(--tint)/var(--shade-a)),var(--edge-out),var(--e4)]'
+            : 'z-[1] rounded-[12px] [box-shadow:var(--edge-top),var(--edge-rim),inset_0_-14px_22px_-16px_hsl(var(--tint)/var(--shade-a)),var(--edge-out),var(--float-drop)]',
           !open && 'hover:-translate-y-1 hover:[box-shadow:var(--edge-top),var(--edge-rim),inset_0_-14px_22px_-16px_hsl(var(--tint)/var(--shade-a)),var(--edge-out),var(--float-drop-hover)]',
           dim && "scale-[0.96] opacity-[0.45]",
         )}
@@ -129,8 +129,15 @@ export const Glance = () => {
           aria-expanded={isOpen}
           aria-label={`${label}: ${isOpen ? 'close' : 'open'}`}
           onClick={() => setOpen(isOpen ? null : id)}
-          className="press-strong absolute inset-0 z-0 rounded-[inherit] outline-offset-[-4px]"
+          className="press-strong absolute inset-0 z-0 rounded-[inherit] outline-offset-[-5px] focus-visible:[outline-color:currentColor]"
         />
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute right-3.5 top-3.5 z-[1] flex h-6 w-6 items-center justify-center rounded-full"
+          style={{ backgroundColor: 'color-mix(in srgb, currentColor 14%, transparent)' }}
+        >
+          <Plus className={cn('h-3.5 w-3.5 transition-transform duration-300', isOpen && 'rotate-45')} strokeWidth={2.5} />
+        </span>
         <div className={cn('pointer-events-none absolute inset-0 p-5 transition-opacity', isOpen ? 'opacity-0 [transition-duration:120ms]' : 'opacity-100 [transition-delay:220ms] duration-200')}>{rest}</div>
         <div
           className={cn(
@@ -156,9 +163,9 @@ export const Glance = () => {
         />
 
         {/* v3.12: on the grid. The legend is a list in the left 4 columns, the board in the right 8, from 1024px. */}
-        <div className="after-heading grid-12 items-start">
+        <div className="after-heading grid-12 items-start lg:items-stretch">
         <Reveal className="col-span-4 md:col-span-12 lg:order-2 lg:col-span-8">
-            <div className="bezel-well w-full rounded-[12px] p-4 sm:p-5">
+            <div className="bezel-well w-full rounded-[14px] p-4 sm:p-5">
               <div ref={boardRef} className="relative" style={{ height: boardHeight }}>
                 {widget(
                   'duty',
@@ -166,12 +173,12 @@ export const Glance = () => {
                   'Duty saved',
                   <div className="flex h-full flex-col">
                     <p className="type-mono-sm opacity-70">Duty saved · this shipment</p>
-                    <p className="mt-auto font-display text-[44px] font-semibold leading-none tracking-[-0.04em] tabular sm:text-[56px]">{fmt(savedAnim)}</p>
-                    <div className="mt-4 flex h-12 items-end gap-2" aria-hidden="true">
-                      {[30, 46, 38, 60, 52, 74, 92].map((h, i, arr) => (
+                    <p className="mt-3 font-display text-[44px] font-semibold leading-none tracking-[-0.04em] tabular sm:text-[56px]">{fmt(savedAnim)}</p>
+                    <div className="mt-5 flex min-h-12 flex-1 items-end gap-1" aria-hidden="true">
+                      {[22, 30, 26, 38, 34, 46, 40, 54, 50, 62, 58, 70, 66, 80, 76, 92].map((h, i, arr) => (
                         <span
                           key={i}
-                          className={i === arr.length - 1 ? 'w-2 rounded-full bg-primary-foreground/80' : 'w-2 rounded-full bg-primary-foreground/25'}
+                          className={cn('flex-1 rounded-full', i === arr.length - 1 ? 'bg-primary-foreground/80' : 'bg-primary-foreground/25')}
                           style={{ height: `${h}%` }}
                         />
                       ))}
@@ -220,21 +227,21 @@ export const Glance = () => {
                   'Shipment status',
                   <div className="flex h-full flex-col">
                     <div className="flex items-center justify-between">
-                      <p className="type-mono-sm text-white/60">Shipment · MEL → Port Klang</p>
-                      <span className="relative flex h-2 w-2">
+                      <span className="relative mr-2 flex h-2 w-2 shrink-0">
                         <span className="absolute inset-0 animate-ping rounded-full bg-primary opacity-60" />
                         <span className="relative h-2 w-2 rounded-full bg-primary" />
                       </span>
+                      <p className="type-mono-sm min-w-0 flex-1 truncate pr-8 text-white/60">Shipment · MEL → Port Klang</p>
                     </div>
+                    <p className="mt-3 font-display text-[28px] font-semibold leading-none tracking-[-0.03em]">3 of 4 checks cleared</p>
                     <div className="mt-auto flex items-center gap-1.5" aria-hidden="true">
                       {[0, 1, 2, 3].map((i) => (
                         <span key={i} className="flex flex-1 items-center gap-1.5">
-                          <span className={cn('h-3 w-3 shrink-0 rounded-full', i < 3 ? 'bg-success' : 'border-2 border-primary')} />
+                          <span className={cn('h-3.5 w-3.5 shrink-0 rounded-full', i < 3 ? 'bg-success' : 'border-2 border-primary')} />
                           {i < 3 && <span className={cn('h-0.5 flex-1 rounded-full', i < 2 ? 'bg-success' : 'bg-white/20')} />}
                         </span>
                       ))}
                     </div>
-                    <p className="type-title-md mt-3">3 of 4 checks cleared</p>
                   </div>,
                   <div className="flex h-full flex-col">
                     <p className="type-mono-sm text-white/60">Shipment · MEL → Port Klang</p>
@@ -318,17 +325,17 @@ export const Glance = () => {
               </div>
             </div>
           </Reveal>
-        <Reveal as="ul" stagger className="col-span-4 grid grid-cols-2 gap-x-4 gap-y-5 md:col-span-12 md:grid-cols-4 md:gap-x-6 lg:order-1 lg:col-span-4 lg:grid-cols-1 lg:gap-0 lg:divide-y lg:divide-border lg:border-y lg:border-border">
+        <Reveal as="ul" stagger className="col-span-4 grid grid-cols-2 gap-x-4 gap-y-5 md:col-span-12 md:grid-cols-4 md:gap-x-6 lg:order-1 lg:col-span-4 lg:grid-cols-1 lg:grid-rows-4 lg:gap-0 lg:divide-y lg:divide-border lg:border-y lg:border-border">
           {LEGEND.map((l) => (
-            <li key={l.name} className="grid grid-cols-[10px_minmax(0,1fr)] content-start items-center gap-x-2.5 lg:py-4">
-              <span aria-hidden="true" className={cn('h-2.5 w-2.5 rounded-[3px] shadow-[var(--edge-out)]', l.swatch)} />
+            <li key={l.name} className="grid grid-cols-[10px_minmax(0,1fr)] content-start items-center gap-x-2.5 lg:content-center lg:py-3">
+              <span aria-hidden="true" className={cn('h-2.5 w-2.5 rounded-[3px] shadow-[inset_0_0_0_1px_hsl(var(--foreground)/0.18)]', l.swatch)} />
               <span className="type-title-sm">{l.name}</span>
               <span className="type-body-sm col-start-2 mt-0.5 text-muted-foreground">{l.copy}</span>
             </li>
           ))}
         </Reveal>
         </div>
-        <p className="type-label-sm mt-5 text-muted-foreground lg:text-right">{NOTE}</p>
+        <p className="type-label-sm mt-4 text-muted-foreground lg:text-right">{NOTE}</p>
       </div>
     </section>
   );
