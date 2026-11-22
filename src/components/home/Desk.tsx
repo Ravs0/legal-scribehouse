@@ -6,7 +6,7 @@ import { PLACEHOLDER, TEAM } from '@/data/team';
 /** Neutral portrait frame used until a real photo is supplied. */
 const Frame = () => (
   <svg viewBox="0 0 360 450" className="absolute inset-x-0 bottom-0 mx-auto h-[86%] w-auto" aria-hidden="true">
-    <circle cx="180" cy="150" r="76" fill="hsl(var(--foreground) / 0.12)" />
+    <circle cx="180" cy="150" r="76" fill="hsl(var(--foreground) / 0.14)" />
     <path d="M24 450c0-108 70-172 156-172s156 64 156 172z" fill="hsl(var(--foreground) / 0.09)" />
   </svg>
 );
@@ -17,7 +17,7 @@ export const Desk = () => (
     <div className="container">
       <SectionHeading
         index="01"
-          eyebrow="Your desk"
+        eyebrow="Your desk"
         title="The people on your file."
         subtitle="A small team of lawyers in Singapore and Kuala Lumpur. The person on your first call stays on your file."
       >
@@ -28,27 +28,31 @@ export const Desk = () => (
         )}
       </SectionHeading>
 
-      <ul className="after-heading stack-gap grid sm:grid-cols-2 lg:grid-cols-3">
+      <ul className="after-heading stack-gap grid md:grid-cols-3">
         {TEAM.map((p, i) => (
-          <Reveal as="li" key={p.name} index={i}>
-            <article className="grid grid-cols-[96px_minmax(0,1fr)] gap-x-4 sm:block">
-              <div className="relative row-span-4 aspect-[4/5] self-start overflow-hidden rounded-[8px] border border-border bg-card sm:rounded-[10px]">
+          <Reveal as="li" key={p.name} index={i} className="h-full">
+            <article className="surface-1 card-hover grid h-full grid-cols-[88px_minmax(0,1fr)] overflow-hidden rounded-[12px] md:flex md:flex-col">
+              <div className="relative min-h-[120px] overflow-hidden border-r border-outline-variant bg-secondary md:aspect-[16/11] md:border-b md:border-r-0">
                 {p.photo ? (
-                  <img src={p.photo} alt={p.name} className="absolute inset-0 h-full w-full object-cover grayscale-[20%]" loading="lazy" />
+                  <img src={p.photo} alt={p.name} className="absolute inset-0 h-full w-full object-cover object-top grayscale-[20%]" loading="lazy" />
                 ) : (
                   <Frame />
                 )}
-                <span className="type-mono-sm absolute left-3 top-3 hidden rounded-[5px] bg-background/80 px-2 py-1 text-muted-foreground backdrop-blur sm:inline">
+                <span className="type-mono-sm absolute left-3 top-3 hidden rounded-[6px] bg-card/90 px-2 py-1 text-muted-foreground shadow-sm backdrop-blur md:inline">
                   {p.base}
                 </span>
               </div>
-              <h3 className="type-title-lg sm:mt-4">{p.name}</h3>
-              <p className="type-label-lg text-primary-ink">
-                {p.role}
-                <span className="font-medium text-muted-foreground sm:hidden"> · {p.base}</span>
-              </p>
-              <p className="type-body-sm mt-1.5 text-muted-foreground sm:type-body-md sm:mt-2">{p.focus}</p>
-              <p className="type-body-sm mt-2 text-muted-foreground sm:mt-3 sm:border-t sm:border-border sm:pt-3">{p.admitted}</p>
+              <div className="flex min-w-0 flex-col p-4 md:flex-1 md:p-5 lg:p-6">
+                <h3 className="type-title-lg">{p.name}</h3>
+                <p className="type-label-lg mt-0.5 text-primary-ink">
+                  {p.role}
+                  <span className="font-medium text-muted-foreground md:hidden"> · {p.base}</span>
+                </p>
+                <p className="type-body-md mt-2 text-muted-foreground md:mt-3 md:mb-4">{p.focus}</p>
+                <p className="type-body-sm mt-3 border-t border-outline-variant pt-3 text-muted-foreground md:mt-auto md:min-h-[calc(2lh+1rem)] md:pt-4">
+                  {p.admitted}
+                </p>
+              </div>
             </article>
           </Reveal>
         ))}

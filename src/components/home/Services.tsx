@@ -17,7 +17,7 @@ export const Services = () => (
     <div className="container">
       <SectionHeading
         index="02"
-          eyebrow="What we do"
+        eyebrow="What we do"
         title="Six jobs we take off your desk."
         subtitle="Hire us for one, or for the whole route from structure to first shipment."
       />
@@ -36,13 +36,16 @@ export const Services = () => (
         ))}
       </ul>
       <Reveal className="mt-4 md:mt-5 xl:mt-6">
-        <div className="surface-2 rounded-[14px]">
-          <p className="type-label-md px-4 pt-4 text-muted-foreground md:px-5">How pricing works</p>
-          <ul className="mt-1 grid divide-y divide-outline-variant md:grid-cols-3 md:divide-x md:divide-y-0">
+        <div className="surface-2 rounded-[14px] lg:grid lg:grid-cols-12">
+          <div className="p-4 pb-1 md:p-5 lg:col-span-3 lg:border-r lg:border-outline-variant lg:pb-5">
+            <h3 className="type-label-lg">How pricing works</h3>
+            <p className="type-body-sm mt-1 hidden text-muted-foreground lg:block">One quote, agreed before work starts.</p>
+          </div>
+          <ul className="grid divide-y divide-outline-variant md:grid-cols-3 md:divide-x md:divide-y-0 lg:col-span-9">
             {TERMS.map((t) => (
-              <li key={t.title} className="grid grid-cols-[20px_minmax(0,1fr)] content-start items-center gap-x-3 p-4 md:p-5">
-                <BadgeCheck className="h-5 w-5 text-tertiary" strokeWidth={2} aria-hidden="true" />
-                <h3 className="type-title-sm">{t.title}</h3>
+              <li key={t.title} className="grid grid-cols-[20px_minmax(0,1fr)] content-start items-start gap-x-3 p-4 md:p-5">
+                <BadgeCheck className="mt-px h-5 w-5 text-tertiary" strokeWidth={2} aria-hidden="true" />
+                <h4 className="type-title-sm">{t.title}</h4>
                 <p className="type-body-sm col-start-2 mt-1 text-muted-foreground">{t.copy}</p>
               </li>
             ))}
