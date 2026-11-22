@@ -554,3 +554,25 @@ Feedback: the idea is right, the finish isn't. Fixes:
   - Mid-size desktops zoom the set to 0.8, so "to sell." stays clear.
   - The tablet/phone set is shorter, so there's no empty band.
 - **Motion.** The bottom crate rises, the top crate drops onto it, and the shadows fade in after them.
+
+## v5.5–v5.6 Upright hero phrase, pill nav, and a site-wide polish pass
+
+- **Hero:** "to sell." is upright: Sora 600, half the size of "Cleared", in deep ink. No italics anywhere on the site.
+- **Top bar:** the active section is a raised pill (the btn-raised finish) and nav items get a soft pill on hover. The
+  mono section marker only shows from 1440px, because it collided with the nav at 1024–1280.
+- **Polish pass:** five sub-agents each owned a separate area and worked in their own branch. Each branch was reviewed
+  from before/after screenshots at 390/820/1440 in light and dark, then merged.
+  - Our desk / Services / How it works: equal-height cards with pinned footers; the pricing strip is on the 12-column
+    grid.
+  - Markets / Readiness / Glance: tactile pills in the markets panel; numbered readiness rows with a six-segment
+    meter; dashboard widgets with +/× hints.
+  - Results / Insights / FAQ / Contact / Footer: one form-field family with clear errors; FAQ pill toggles; footer
+    columns aligned.
+  - Inner pages (`src/styles/polish-pages.css`): one page-top rhythm; article reading typography with the contents
+    list in the left margin; equal-height cards; numbered legal sections.
+  - Workspace / portal / sign-in (`src/workspace/workspace.css`):
+    - one page header, toolbar, field family, tactile Chip and TabBar, designed empty states;
+    - a fix for task-status changes not refreshing the board (copy-on-read in `kit.tsx`).
+- **Follow-ups:**
+  - the call-to-action panel keeps an edge in dark mode;
+  - article cards link to `/insights/:slug`.
