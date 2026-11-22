@@ -7,7 +7,7 @@
   position: relative; overflow: hidden; isolation: isolate; color: #FFF4E6;
   background: #0F4C52; padding-block: clamp(36px, 5vw, 64px) 0;
 }
-@media (min-width: 1024px) { .desk-scene { --fw: clamp(220px, 17vw, 258px); --desk-h: 210px; --feet: 120px; } }
+@media (min-width: 1024px) { .desk-scene { --fw: clamp(240px, 20vw, 304px); --desk-h: 220px; --feet: 124px; } }
 @media (max-width: 639px) { .desk-scene { --fw: min(58vw, 236px); --desk-h: 164px; --feet: 98px; } }
 
 .desk-wall { position: absolute; inset: 0; z-index: -3;
@@ -118,4 +118,9 @@
   .desk-item, .desk-word, .desk-tilt, .desk-card, .desk-wall-shadow { transition: none; }
   .desk-item, .desk-word { transform: none; }
   .desk-hint span[aria-hidden] { animation: none; }
+}
+/* Desktop: the word stands taller and higher than the frames, so its top half reads above them (figures in front of a title). */
+@media (min-width: 1024px) {
+  .desk-stage { padding-top: clamp(150px, 15vw, 230px); }
+  .desk-word { font-size: clamp(220px, 30vw, 460px); bottom: calc(var(--desk-h) + 60px); }
 }
