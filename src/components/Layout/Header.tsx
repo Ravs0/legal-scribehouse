@@ -209,7 +209,7 @@ const Header = () => {
             </Link>
             {/* v5.2: the section you're in, as a mono file marker (after human-md.ai). */}
             {sectionLabel && (
-              <span key={sectionLabel} aria-hidden="true" className="type-mono-sm section-marker hidden truncate border-l border-border pl-3 text-muted-foreground xl:inline">
+              <span key={sectionLabel} aria-hidden="true" className="type-mono-sm section-marker hidden truncate border-l border-border pl-3 text-muted-foreground min-[1440px]:inline">
                 § {sectionLabel.toLowerCase()}
               </span>
             )}
