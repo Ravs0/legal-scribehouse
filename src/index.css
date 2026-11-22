@@ -1090,8 +1090,6 @@
   .section-heading .type-headline-lg { font-size: clamp(32px, 24.174px + 2.1739vw, 52px); line-height: 1.04; }
   /* Card and item titles move to Manrope bold, as in the mock-up. */
   .type-title-lg, .type-headline-sm, .type-headline-md { font-family: theme("fontFamily.sans"); font-weight: 700; letter-spacing: -0.01em; }
-  /* The Results stats read as figures in serif too. */
-  #proof dd { font-family: theme("fontFamily.serif"); font-weight: 400; letter-spacing: -0.02em; }
   .dark .band-ink { --background: var(--corp-ink); --card: 24 18% 8%; }
 }
 
