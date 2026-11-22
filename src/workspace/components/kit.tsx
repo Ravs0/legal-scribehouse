@@ -1,5 +1,9 @@
-import { ReactNode } from 'react';
+import { forwardRef, ReactNode } from 'react';
+import { ChevronDown, Inbox, type LucideIcon } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
 import { Badge } from '@/components/ui/badge';
 import { cn } from '@/lib/utils';
@@ -9,11 +13,14 @@ import { STAGE_LABEL } from '../types';
 import { ROLE_LABEL } from '../access';
 import { useSession } from '../session';
 
+/** The demo adapter mutates its stored rows in place, so react-query would see "no change" after a write. Copy rows on read. */
+export const fresh = <T extends object>(p: Promise<T[]>) => p.then((rows) => rows.map((r) => ({ ...r })));
+
 /* ---------- Data hooks (react-query; keys are invalidated after every write) ---------- */
-export const usePeople = () => useQuery({ queryKey: ['people'], queryFn: () => repo.listPeople() });
-export const useClients = () => useQuery({ queryKey: ['clients'], queryFn: () => repo.listClients() });
-export const useMatters = () => useQuery({ queryKey: ['matters'], queryFn: () => repo.listMatters() });
-export const useFees = () => useQuery({ queryKey: ['fees'], queryFn: () => repo.listFees() });
+export const usePeople = () => useQuery({ queryKey: ['people'], queryFn: () => fresh(repo.listPeople()) });
+export const useClients = () => useQuery({ queryKey: ['clients'], queryFn: () => fresh(repo.listClients()) });
+export const useMatters = () => useQuery({ queryKey: ['matters'], queryFn: () => fresh(repo.listMatters()) });
+export const useFees = () => useQuery({ queryKey: ['fees'], queryFn: () => fresh(repo.listFees()) });
 
 export const useRefresh = () => {
   const qc = useQueryClient();
@@ -79,7 +86,7 @@ export const RoleBadge = ({ role }: { role: Person['role'] }) => (
 );
 
 export const Avatar = ({ name, className }: { name: string; className?: string }) => (
-  <span aria-hidden="true" className={cn('icon-well type-label-sm inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-primary-ink', className)}>
+  <span aria-hidden="true" className={cn('icon-well type-meta inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-primary-ink', className)}>
     {initials(name)}
   </span>
 );
@@ -92,20 +99,27 @@ export const DueLabel = ({ date, done }: { date?: string; done?: boolean }) => {
 };
 
 /* ---------- Layout bits ---------- */
-export const PageHead = ({ title, sub, actions }: { title: ReactNode; sub?: ReactNode; actions?: ReactNode }) => (
-  <div className="flex flex-wrap items-end justify-between gap-4 border-b border-border pb-5">
+/** One page header everywhere: title + sub on the left, actions on the right, 24px to the content below. */
+export const PageHead = ({ title, sub, actions, eyebrow }: { title: ReactNode; sub?: ReactNode; actions?: ReactNode; eyebrow?: ReactNode }) => (
+  <header className="flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
     <div className="min-w-0">
+      {eyebrow && <p className="type-mono-md mb-1.5 text-muted-foreground">{eyebrow}</p>}
       <h1 className="type-headline-md">{title}</h1>
-      {sub && <p className="type-body-md mt-1 text-muted-foreground">{sub}</p>}
+      {sub && <p className="type-body-md mt-1 max-w-[62ch] text-muted-foreground">{sub}</p>}
     </div>
     {actions && <div className="flex flex-wrap items-center gap-2">{actions}</div>}
-  </div>
+  </header>
+);
+
+/** Filters and search sit in one row under the header. */
+export const Toolbar = ({ children, className }: { children: ReactNode; className?: string }) => (
+  <div className={cn('flex flex-wrap items-center gap-2', className)}>{children}</div>
 );
 
 export const Panel = ({ title, action, children, className }: { title?: ReactNode; action?: ReactNode; children: ReactNode; className?: string }) => (
-  <section className={cn('surface-1 rounded-[12px]', className)}>
+  <section className={cn('surface-1 min-w-0 rounded-[14px]', className)}>
     {(title || action) && (
-      <div className="flex items-center justify-between gap-3 border-b border-border px-4 py-3">
+      <div className="flex min-h-[52px] items-center justify-between gap-3 border-b border-border px-4 py-2.5">
         <h2 className="type-title-sm">{title}</h2>
         {action}
       </div>
@@ -114,27 +128,96 @@ export const Panel = ({ title, action, children, className }: { title?: ReactNod
   </section>
 );
 
-export const Empty = ({ children }: { children: ReactNode }) => (
-  <p className="type-body-sm px-4 py-8 text-center text-muted-foreground">{children}</p>
+/** Small link used in panel headers. */
+export const PanelLink = ({ to, children }: { to: string; children: ReactNode }) => (
+  <Link to={to} className="type-label-md rounded-full px-2 py-1 text-primary-ink hover:bg-primary/10">{children}</Link>
 );
 
-export const Stat = ({ label, value, hint }: { label: string; value: ReactNode; hint?: ReactNode }) => (
-  <div className="surface-1 rounded-[12px] px-4 py-4">
-    <p className="type-body-sm text-muted-foreground">{label}</p>
-    <p className="type-stat mt-1 text-[34px] text-primary-ink">{value}</p>
-    {hint && <p className="type-label-sm mt-1 text-muted-foreground">{hint}</p>}
+export const Empty = ({ children, icon: Icon = Inbox }: { children: ReactNode; icon?: LucideIcon }) => (
+  <div className="flex flex-col items-center gap-2.5 px-4 py-10 text-center">
+    <span className="icon-well inline-flex h-10 w-10 items-center justify-center rounded-full text-muted-foreground">
+      <Icon className="h-[18px] w-[18px]" strokeWidth={1.75} aria-hidden="true" />
+    </span>
+    <p className="type-body-sm max-w-[34ch] text-muted-foreground">{children}</p>
   </div>
 );
 
-/** Native select styled as a field (keeps forms simple and accessible). */
-export const NativeSelect = ({ className, ...p }: React.SelectHTMLAttributes<HTMLSelectElement>) => (
-  <select {...p} className={cn('recessed type-body-sm h-9 rounded-[8px] px-2.5 text-foreground', className)} />
+/** Loading placeholder rows. */
+export const Loading = ({ rows = 4 }: { rows?: number }) => (
+  <div className="space-y-3 px-4 py-4" role="status" aria-label="Loading">
+    {Array.from({ length: rows }).map((_, i) => (
+      <div key={i} className="flex items-center gap-3">
+        <div className="ws-skel h-8 w-8 shrink-0 rounded-full" />
+        <div className="flex-1 space-y-2">
+          <div className="ws-skel h-3.5 w-2/5" />
+          <div className="ws-skel h-3 w-4/5" />
+        </div>
+      </div>
+    ))}
+  </div>
+);
+
+export const Stat = ({ label, value, hint }: { label: string; value: ReactNode; hint?: ReactNode }) => (
+  <div className="surface-1 rounded-[14px] px-4 py-4">
+    <p className="type-body-sm text-muted-foreground">{label}</p>
+    <p className="type-stat mt-1 text-[34px] leading-none text-primary-ink">{value}</p>
+    {hint && <p className="type-meta mt-2.5 text-muted-foreground">{hint}</p>}
+  </div>
+);
+
+/* ---------- Fields: one family (40px, 10px radius, 14px text) ---------- */
+export const TextInput = forwardRef<HTMLInputElement, React.ComponentProps<'input'>>(({ className, ...p }, ref) => (
+  <Input ref={ref} {...p} className={cn('h-10 rounded-[10px] px-3 text-[14px]', className)} />
+));
+TextInput.displayName = 'TextInput';
+
+export const TextArea = forwardRef<HTMLTextAreaElement, React.ComponentProps<'textarea'>>(({ className, ...p }, ref) => (
+  <Textarea ref={ref} {...p} className={cn('min-h-0 rounded-[10px] px-3 py-2.5 text-[14px] leading-6', className)} />
+));
+TextArea.displayName = 'TextArea';
+
+/** Native select in the same field family as inputs. `className` goes on the wrapper (width, flex). */
+export const NativeSelect = ({ className, compact, ...p }: React.SelectHTMLAttributes<HTMLSelectElement> & { compact?: boolean }) => (
+  <span className={cn('relative inline-flex min-w-0', className)}>
+    <select
+      {...p}
+      className={cn(
+        'recessed w-full min-w-0 cursor-pointer appearance-none truncate rounded-[10px] pl-3 pr-8 text-[14px] text-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-40',
+        compact ? 'h-8 text-[13px]' : 'h-10',
+      )}
+    />
+    <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
+  </span>
 );
 
 export const Field = ({ label, children, hint }: { label: string; children: ReactNode; hint?: string }) => (
   <label className="block">
     <span className="type-label-md mb-1.5 block">{label}</span>
     {children}
-    {hint && <span className="type-label-sm mt-1 block text-muted-foreground">{hint}</span>}
+    {hint && <span className="type-meta mt-1.5 block text-muted-foreground">{hint}</span>}
   </label>
+);
+
+/* ---------- Tactile chips and tabs ---------- */
+export const chipClass = (on: boolean, size: 'sm' | 'md' = 'md') =>
+  cn(
+    'inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-full',
+    size === 'md' ? 'type-label-md h-9 px-3.5' : 'type-meta h-7 px-2.5',
+    on ? 'btn-filled btn-lift text-primary-foreground' : 'btn-raised btn-lift bg-card text-muted-foreground hover:text-foreground',
+  );
+
+export const Chip = ({ on, size = 'md', className, children, ...p }: { on: boolean; size?: 'sm' | 'md' } & React.ButtonHTMLAttributes<HTMLButtonElement>) => (
+  <button type="button" aria-pressed={on} {...p} className={cn(chipClass(on, size), className)}>{children}</button>
+);
+
+/** Tabs: role=tab buttons. Active is the orange pill, inactive the raised pill. */
+export const TabBar = ({ tabs, value, onChange, label }: { tabs: { id: string; label: ReactNode; count?: number }[]; value: string; onChange: (id: string) => void; label: string }) => (
+  <div role="tablist" aria-label={label} className="flex flex-wrap gap-2">
+    {tabs.map((t) => (
+      <button key={t.id} role="tab" type="button" aria-selected={value === t.id} onClick={() => onChange(t.id)} className={chipClass(value === t.id)}>
+        {t.label}
+        {t.count !== undefined && <span className={cn('tabular type-meta', value === t.id ? 'opacity-75' : 'text-muted-foreground')}>{t.count}</span>}
+      </button>
+    ))}
+  </div>
 );

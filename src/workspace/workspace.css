@@ -1,0 +1,23 @@
+/* Workspace, portal and sign-in finish. Only things Tailwind utilities cannot express. */
+.type-meta { font-family: theme("fontFamily.sans"); font-size: 12px; line-height: 16px; font-weight: 500; }
+
+/* Row hover: a soft wash with a 2px orange edge that appears on hover and for the selected row. */
+.ws-row { position: relative; transition: background-color 150ms; }
+.ws-row::before { content: ""; position: absolute; left: 0; top: 8px; bottom: 8px; width: 2px; border-radius: 2px; background: hsl(var(--primary)); opacity: 0; transition: opacity 150ms; }
+@media (hover: hover) {
+  .ws-row:hover { background-color: hsl(var(--foreground) / 0.035); }
+  .ws-row:hover::before { opacity: 0.55; }
+}
+.ws-row[aria-current="true"] { background-color: hsl(var(--primary) / 0.08); }
+.ws-row[aria-current="true"]::before { opacity: 1; }
+
+/* Loading skeleton */
+@keyframes ws-pulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+.ws-skel { border-radius: 8px; background: hsl(var(--foreground) / 0.07); animation: ws-pulse 1.4s ease-in-out infinite; }
+@media (prefers-reduced-motion: reduce) { .ws-skel { animation: none; } }
+
+/* Timeline connector */
+.ws-line::before { content: ""; position: absolute; left: 15px; top: 16px; bottom: 16px; width: 1px; background: hsl(var(--border)); }
+tr.ws-row::before { display: none; }
+tr.ws-row { box-shadow: inset 0 0 0 0 transparent; }
+@media (hover: hover) { tr.ws-row:hover { background-color: hsl(var(--foreground) / 0.035); } }
