@@ -595,3 +595,20 @@ Feedback: the idea is right, the finish isn't. Fixes:
     is the raised pill.
   - The theme key, and the call button once you've scrolled.
   - Our desk and the readiness check stay in the page and the footer.
+
+## v5.8 Scene revamps for 01, 02, 03 and 08 (after human-md.ai)
+
+Sections 04–07 and 09–11 are unchanged. Each revamp is a fixed-colour scene that looks the same in both themes, with
+motion gated by `html.motion-ok`, a reduced-motion static version, and a designed phone layout.
+
+| Section | Scene | Files |
+| --- | --- | --- |
+| 01 Our desk | A teal room with a giant "DESK." behind three framed portraits standing on a wooden desk. Folded name placards flip (hover, focus or tap) to show focus and admissions. Phones get a swipe row. | `Desk.tsx`, `src/styles/desk-scene.css` |
+| 02 Services | A sand room with an oak drawer of six tabbed folders (a real tablist with arrow keys; it auto-advances until touched). The active folder lifts out as a paper document with a "YOU GET" stamp and a link to the service page. Pricing is a ledger slip. Phones get pill tabs. | `Services.tsx`, `src/styles/services-drawer.css` |
+| 03 How it works | A pinned dawn sea. A cargo ship sails a dashed lane from MEL to Port Klang as you scroll; the buoys light up, step cards swap in and earlier steps collapse to ticks. Phones get a vertical route. | `Process.tsx`, `src/styles/process-route.css` |
+| 08 Results | A dark ledger wall. Giant Sora figures count up with labels beside them, and the testimonials are receipt slips taped to the wall. Phones get swipeable slips. | `Proof.tsx`, `src/styles/proof-ledger.css` |
+
+**Review fixes**
+- Results figures were rendering in the serif because of an old `#proof dd` override, which I removed.
+- The desk word was raised so it reads above the frames.
+- The services wall word was made visible and the stamp now wraps on narrow phones.
