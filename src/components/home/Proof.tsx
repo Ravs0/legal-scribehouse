@@ -1,73 +1,93 @@
-import { Quote } from 'lucide-react';
+import { PointerEvent, useEffect, useRef, useState } from 'react';
 import { PLACEHOLDER, STATS, TESTIMONIALS } from '@/data/proof';
-import { Badge } from '@/components/ui/badge';
 import { CountUp } from '@/components/motion/CountUp';
-import { Reveal } from '@/components/motion/Reveal';
-import { SectionHeading } from '@/components/site/SectionHeading';
+import { useInView } from '@/hooks/useInView';
+import { prefersReducedMotion } from '@/lib/reveal';
+import '@/styles/proof-ledger.css';
 
-const initials = (who: string) =>
-  who
-    .replace(/\(.*?\)/g, '')
-    .split(/[ ,]+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((w) => w[0]?.toUpperCase())
-    .join('');
+const ROT = [-2.6, 1.9, -1.3];
+const LETTERS = ['A', 'B', 'C', 'D'];
 
-export const Proof = () => (
-  <section id="proof" className="section band-ink">
-    <div className="container">
-      <SectionHeading index="08"
-          eyebrow="Results" title="Small exporters, cleared to sell.">
-        {PLACEHOLDER && (
-          <Badge variant="warning" className="mt-4">
-            Sample data
-          </Badge>
-        )}
-      </SectionHeading>
+/** v5.8 "The ledger wall": giant counted numerals ruled like a ledger; client notes pinned up as receipt slips. */
+export const Proof = () => {
+  const scene = useRef<HTMLElement>(null);
+  const slips = useRef<HTMLUListElement>(null);
+  const raf = useRef(0);
+  const inView = useInView(slips, { threshold: 0.2 });
+  const [armed, setArmed] = useState(false);
+  useEffect(() => setArmed(true), []);
 
-      {/* v3.11: one stat strip (the same anatomy as the hero's problems strip) instead of four pebbles. */}
-      <Reveal className="after-heading">
-        <dl className="surface-2 grid grid-cols-2 rounded-[14px] lg:grid-cols-4">
-          {STATS.map((s, i) => (
-            <div
-              key={s.label}
-              className={[
-                'flex flex-col justify-start gap-1 px-5 py-5 md:px-7 md:py-7',
-                i % 2 === 1 ? 'border-l border-outline-variant' : '',
-                i >= 2 ? 'border-t border-outline-variant lg:border-t-0' : '',
-                i === 2 ? 'lg:border-l' : '',
-              ].join(' ')}
-            >
-              <dt className="type-body-sm text-muted-foreground">{s.label}</dt>
-              <dd className="order-first type-headline-lg tabular font-semibold text-primary-ink">
-                <CountUp value={s.value} suffix={s.suffix} />
-              </dd>
-            </div>
-          ))}
-        </dl>
-      </Reveal>
+  const onPointerMove = (e: PointerEvent<HTMLElement>) => {
+    if (e.pointerType !== 'mouse' || prefersReducedMotion() || !scene.current) return;
+    const r = scene.current.getBoundingClientRect();
+    const x = (e.clientX - r.left) / r.width - 0.5;
+    const y = (e.clientY - r.top) / r.height - 0.5;
+    cancelAnimationFrame(raf.current);
+    raf.current = requestAnimationFrame(() => {
+      scene.current?.style.setProperty('--px', x.toFixed(3));
+      scene.current?.style.setProperty('--py', y.toFixed(3));
+    });
+  };
+  useEffect(() => () => cancelAnimationFrame(raf.current), []);
 
-      <ul className="no-scrollbar -mx-4 mt-4 md:mt-5 xl:mt-6 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 sm:-mx-6 sm:px-6 md:mx-0 md:grid md:grid-cols-3 md:gap-x-5 md:gap-y-0 md:overflow-visible md:px-0 xl:gap-x-6">
-        {TESTIMONIALS.map((t, i) => (
-          <Reveal as="li" key={t.who} index={i} className="w-[84vw] shrink-0 snap-center md:row-span-3 md:grid md:w-auto md:grid-rows-subgrid">
-            {/* Subgrid rows keep quote marks, quotes and captions aligned across the three cards. */}
-            <figure className="surface-1 card-hover flex h-full flex-col rounded-[12px] p-6 md:row-span-3 md:grid md:grid-rows-subgrid">
-              <Quote className="h-5 w-5 text-primary-ink" aria-hidden="true" />
-              <blockquote className="type-body-lg mb-6 mt-4 text-pretty">{t.quote}</blockquote>
-              <figcaption className="card-foot flex items-center gap-3 md:mt-0">
-                <span className="icon-well type-label-md flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-primary-ink">
-                  {initials(t.who)}
-                </span>
-                <div className="min-w-0">
-                  <div className="type-label-lg">{t.who}</div>
-                  <div className="type-label-sm text-muted-foreground">{t.route}</div>
+  return (
+    <section id="proof" ref={scene} onPointerMove={onPointerMove} className="pl-scene" aria-labelledby="proof-title">
+      <div aria-hidden="true" className="pl-light" />
+      <div aria-hidden="true" className="pl-vignette" />
+
+      <div className="container pl-inner">
+        <div className="pl-marker type-mono-sm">
+          <span>§ 08 results</span>
+          {PLACEHOLDER && <span className="pl-chip">sample data</span>}
+        </div>
+
+        <div className="pl-grid">
+          <div className="pl-left">
+            <h2 id="proof-title" className="pl-title">Small exporters, cleared to sell.</h2>
+
+            <dl className="pl-stats">
+              {STATS.map((s, i) => (
+                <div key={s.label} className="pl-stat">
+                  <span className="pl-idx type-mono-sm" aria-hidden="true">{LETTERS[i]}</span>
+                  <dd className="pl-num">
+                    <CountUp value={s.value} />
+                    {s.suffix && (
+                      <>
+                        <span className="pl-suf" aria-hidden="true">{s.suffix}</span>
+                        <span className="sr-only">{s.suffix}</span>
+                      </>
+                    )}
+                  </dd>
+                  <dt className="pl-label type-mono-sm">{s.label}</dt>
                 </div>
-              </figcaption>
-            </figure>
-          </Reveal>
-        ))}
-      </ul>
-    </div>
-  </section>
-);
+              ))}
+            </dl>
+          </div>
+
+          <ul ref={slips} className="pl-slips no-scrollbar" data-in={armed && inView ? 'true' : 'false'} aria-label="Client notes">
+            {TESTIMONIALS.map((t, i) => (
+              <li
+                key={t.who}
+                className="pl-slip"
+                style={{ ['--r' as string]: `${ROT[i % ROT.length]}deg`, ['--i' as string]: i, ['--k' as string]: 14 + i * 6 }}
+              >
+                <span className="pl-tape" aria-hidden="true" />
+                <div className="pl-sway">
+                  <figure className="pl-paper receipt-edge" tabIndex={0}>
+                    <div className="pl-slip-head type-mono-sm"><span>Straitline · client note</span><span>No. {String(14 + i * 13).padStart(3, '0')}</span></div>
+                    <blockquote className="pl-quote">{t.quote}</blockquote>
+                    <figcaption className="pl-cap">
+                      <span className="pl-who">{t.who}</span>
+                      <span className="pl-route type-mono-sm">{t.route}</span>
+                      <span className="barcode pl-bar" aria-hidden="true" />
+                    </figcaption>
+                  </figure>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+};
