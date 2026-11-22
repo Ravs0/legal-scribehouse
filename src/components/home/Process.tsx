@@ -1,6 +1,6 @@
 import { Reveal } from '@/components/motion/Reveal';
 import { SectionHeading } from '@/components/site/SectionHeading';
-import { CardHeader } from '@/components/site/CardHeader';
+import { CardFooter, CardHeader } from '@/components/site/CardHeader';
 
 // Durations are placeholders until the firm confirms its service levels.
 const STEPS = [
@@ -13,8 +13,7 @@ const STEPS = [
 export const Process = () => (
   <section id="process" className="section band">
     <div className="container">
-      <SectionHeading index="03"
-          eyebrow="How it works" title="Four steps from first call to first shipment." />
+      <SectionHeading index="03" eyebrow="How it works" title="Four steps from first call to first shipment." />
 
       {/* v3.8: one row of four from 1024, 2×2 from 640, one column on phones. */}
       <ol className="after-heading stack-gap grid sm:grid-cols-2 lg:grid-cols-4">
@@ -23,7 +22,6 @@ export const Process = () => (
             <article className="surface-1 card-hover card-shell h-full rounded-[12px]">
               <CardHeader
                 numeral={String(i + 1).padStart(2, '0')}
-                meta={s.meta}
                 title={
                   <>
                     <span className="sr-only">Step {i + 1}: </span>
@@ -32,6 +30,9 @@ export const Process = () => (
                 }
               />
               <p className="card-body type-body-md text-muted-foreground">{s.copy}</p>
+              <CardFooter>
+                <span className="type-mono-sm text-muted-foreground">{s.meta}</span>
+              </CardFooter>
             </article>
           </Reveal>
         ))}
