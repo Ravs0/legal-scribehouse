@@ -16,6 +16,8 @@ import { SITE } from '@/config/site';
 import { MARKETS } from '@/data/markets';
 import { IS_DEMO_INBOX, submitEnquiry, type Enquiry } from '@/lib/enquiry';
 import { Link } from 'react-router-dom';
+import { cn } from '@/lib/utils';
+import '@/styles/polish-proof-contact.css';
 import { useEnquiryDraft } from '@/stores/enquiryDraft';
 
 const CATEGORIES = ['Food & beverage', 'Cosmetics & personal care', 'Medical devices', 'Consumer goods', 'Industrial', 'Other'];
@@ -57,14 +59,14 @@ const Field = ({
   children: ReactNode;
 }) => (
   <div className={className}>
-    <label id={labelId} htmlFor={htmlFor} className="type-label-md mb-1.5 block text-foreground">
+    <label id={labelId} htmlFor={htmlFor} className="type-label-md mb-2 block text-foreground">
       {label}
       {required && <span className="text-destructive"> *</span>}
     </label>
     {children}
     {error && (
-      <p id={errorId} className="type-body-sm mt-1.5 flex items-center gap-1.5 text-destructive">
-        <AlertCircle className="h-4 w-4 shrink-0" aria-hidden="true" />
+      <p id={errorId} role="alert" className="type-body-sm mt-2 flex items-start gap-1.5 text-destructive">
+        <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
         {error}
       </p>
     )}
@@ -131,7 +133,7 @@ export const Contact = () => {
         {/* v3.12: on the grid. "What happens next" and the contact details in the left 4 columns, the form in the
             right 8, from 1024px. Below that: steps, form, details. */}
         <div className="after-heading grid-12 items-start">
-          <div className="col-span-4 md:col-span-12 lg:col-span-4">
+          <div className="col-span-4 md:col-span-12 lg:sticky lg:top-24 lg:col-span-4">
             <NextSteps />
             <div className="hidden lg:block">
               <ContactDetails rows={contactRows} />
@@ -166,7 +168,7 @@ export const Contact = () => {
                   </Button>
                 </div>
               ) : (
-                <form noValidate onSubmit={handleSubmit(onSubmit)} className="grid gap-x-3 gap-y-3.5 sm:grid-cols-2">
+                <form noValidate onSubmit={handleSubmit(onSubmit)} className="grid gap-x-4 gap-y-5 sm:grid-cols-2">
                   <Field label="Name" htmlFor="enquiry-name" required error={errors.name?.message} errorId="name-error">
                     <Input id="enquiry-name" autoComplete="name" {...register('name')} {...a11y('name')} />
                   </Field>
@@ -219,14 +221,14 @@ export const Contact = () => {
                   </Field>
                   {/* v3.11: Stage is a full-width segmented choice (native radios), so the row has no empty half. */}
                   <fieldset className="sm:col-span-2">
-                    <legend className="type-label-md mb-1.5 block text-foreground">Where are you now?</legend>
+                    <legend className="type-label-md mb-2 block text-foreground">Where are you now?</legend>
                     <Controller
                       control={control}
                       name="stage"
                       render={({ field }) => (
-                        <div className="recessed grid grid-cols-2 gap-1 rounded-[10px] p-1 [background-color:var(--well-fill)] sm:grid-cols-4 sm:rounded-full">
+                        <div role="radiogroup" aria-label="Where are you now?" className="grid grid-cols-2 gap-2 sm:grid-cols-4">
                           {STAGES.map((st) => (
-                            <label key={st} className="relative">
+                            <label key={st} className="relative block">
                               <input
                                 type="radio"
                                 name={field.name}
@@ -236,7 +238,14 @@ export const Contact = () => {
                                 onBlur={field.onBlur}
                                 className="peer sr-only"
                               />
-                              <span className="press type-label-md flex h-9 cursor-pointer items-center justify-center whitespace-nowrap rounded-[10px] px-3 text-muted-foreground transition-[color,background-color,box-shadow] [transition-duration:200ms] hover:text-foreground peer-checked:btn-raised peer-checked:bg-card peer-checked:text-foreground peer-focus-visible:ring-2 peer-focus-visible:ring-ring sm:rounded-full">
+                              <span
+                                className={cn(
+                                  'btn-lift type-label-md flex h-10 cursor-pointer select-none items-center justify-center whitespace-nowrap rounded-full px-3 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ring',
+                                  field.value === st
+                                    ? 'btn-filled bg-primary text-primary-foreground'
+                                    : 'btn-raised bg-card text-foreground',
+                                )}
+                              >
                                 {st}
                               </span>
                             </label>
@@ -254,7 +263,7 @@ export const Contact = () => {
                     errorId="message-error"
                     className="sm:col-span-2"
                   >
-                    <Textarea id="enquiry-message" rows={4} {...register('message')} {...a11y('message')} />
+                    <Textarea id="enquiry-message" rows={5} className="resize-y" {...register('message')} {...a11y('message')} />
                   </Field>
 
                   {/* Honeypot: hidden from people, tempting to bots. */}
@@ -264,7 +273,7 @@ export const Contact = () => {
                   </div>
 
                   <div className="sm:col-span-2">
-                    <label htmlFor={consentId} className="flex min-h-11 cursor-pointer items-start gap-3 py-3">
+                    <label htmlFor={consentId} className="flex min-h-11 cursor-pointer items-start gap-3 py-1.5">
                       <input
                         id={consentId}
                         type="checkbox"
@@ -281,14 +290,14 @@ export const Contact = () => {
                       </span>
                     </label>
                     {errors.consent?.message && (
-                      <p id="consent-error" className="type-body-sm mt-1 flex items-center gap-1.5 text-destructive">
-                        <AlertCircle className="h-4 w-4" aria-hidden="true" />
+                      <p id="consent-error" role="alert" className="type-body-sm mt-1 flex items-start gap-1.5 text-destructive">
+                        <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
                         {errors.consent.message}
                       </p>
                     )}
                   </div>
 
-                  <div className="flex flex-col gap-3 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between">
+                  <div className="flex flex-col gap-4 border-t border-border pt-5 sm:col-span-2 sm:flex-row sm:items-center sm:justify-between">
                     <Button
                       type="submit"
                       size="lg"
@@ -300,7 +309,7 @@ export const Contact = () => {
                       Send enquiry
                       {isSubmitting ? <Loader2 className="animate-spin" aria-hidden="true" /> : <Send aria-hidden="true" />}
                     </Button>
-                    <span className="type-body-sm text-muted-foreground">* Required</span>
+                    <span className="type-body-sm text-muted-foreground"><span className="text-destructive">*</span> Required</span>
                   </div>
                 </form>
               )}
@@ -351,7 +360,7 @@ const NextSteps = () => (
       <ol className="relative mt-4 space-y-5 before:absolute before:bottom-3 before:left-[13px] before:top-3 before:w-px before:bg-border">
         {NEXT_STEPS.map((s, i) => (
           <li key={s} className="relative flex items-start gap-3.5">
-            <span className="type-label-md relative flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px] border border-border bg-card text-primary-ink tabular">
+            <span className="type-label-md relative flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-border bg-card text-primary-ink tabular">
               {i + 1}
             </span>
             <span className="type-body-md pt-0.5 text-foreground">{s}</span>
