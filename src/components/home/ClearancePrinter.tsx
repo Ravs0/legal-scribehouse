@@ -184,12 +184,12 @@ export const ClearancePrinter = ({ className, selected: selectedProp, onSelect, 
           </div>
           <div className="relative mt-1 flex items-end justify-between gap-2">
             <div className="flex h-[44px] w-[124px] flex-col justify-center rounded-lg bg-[#0B0907] px-2.5 shadow-[inset_0_2px_6px_#000] roomy:w-[148px]">
-              <span className="type-mono-sm text-[10px] leading-[12px] text-white/65">Duty saved</span>
+              <span className="type-mono-sm text-[11px] leading-[12px] text-white/65">Duty saved</span>
               <span className="type-led text-led tabular" style={{ textShadow: '0 0 8px hsl(32 100% 55% / .7)' }} aria-live="polite">
                 {led}
               </span>
             </div>
-            <div role="radiogroup" aria-label="Example route" className="flex gap-1.5">
+            <div role="radiogroup" aria-label="Example route" className="flex gap-3 roomy:gap-2">
               {PRESETS.map((pr, i) => {
                 const on = i === selected;
                 return (
@@ -199,7 +199,7 @@ export const ClearancePrinter = ({ className, selected: selectedProp, onSelect, 
                     role="radio"
                     aria-checked={on}
                     onClick={() => choose(i)}
-                    className="hit type-mono-sm relative h-9 w-[40px] rounded-[10px] text-white/85 transition-[transform,box-shadow] duration-150 roomy:w-[52px]"
+                    className="type-mono-sm relative h-9 w-[36px] rounded-[10px] text-white/85 transition-[transform,box-shadow] duration-150 after:absolute after:-inset-x-[13px] after:-inset-y-[14px] after:content-[''] roomy:w-[52px]"
                     style={{
                       background: '#3A342F',
                       transform: on ? 'translateY(2px)' : undefined,

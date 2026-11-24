@@ -37,7 +37,7 @@ const RoutePicker = ({ value, onChange }: { value: number; onChange: (i: number)
     refs.current[next]?.focus();
   };
   return (
-    <div role="radiogroup" aria-label="Example route" onKeyDown={onKeyDown} className="recessed inline-flex h-11 max-w-full items-center rounded-full p-1 [background-color:var(--well-fill)]">
+    <div role="radiogroup" aria-label="Example route" onKeyDown={onKeyDown} className="recessed inline-flex h-11 max-w-full items-center gap-1 rounded-full p-1 [background-color:var(--well-fill)] max-lg:h-[52px] [@media(pointer:coarse)]:h-[52px]">
       {ROUTES.map((r, i) => {
         const on = i === value;
         return (
@@ -49,7 +49,7 @@ const RoutePicker = ({ value, onChange }: { value: number; onChange: (i: number)
             aria-checked={on}
             tabIndex={on ? 0 : -1}
             onClick={() => onChange(i)}
-            className={cn('btn-lift hit type-label-md relative h-9 shrink-0 whitespace-nowrap rounded-full px-[14px]', on ? 'btn-raised bg-card text-foreground' : 'text-muted-foreground hover:text-foreground')}
+            className={cn('btn-lift hit type-label-md relative h-9 shrink-0 whitespace-nowrap rounded-full px-[14px] max-lg:h-11 [@media(pointer:coarse)]:h-11', on ? 'btn-raised bg-card text-foreground' : 'text-muted-foreground hover:text-foreground')}
           >
             {r.country}
             <span className="max-[479px]:hidden"> · {r.product}</span>

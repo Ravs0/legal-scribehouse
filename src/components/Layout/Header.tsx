@@ -61,7 +61,7 @@ function useGlare<T extends HTMLElement>() {
 }
 
 // Tighter item padding below 1280px so the centred nav leaves room for the wordmark and actions inside the bar.
-const itemClass = 'nav-item type-label-lg inline-flex items-center px-[9px] outline-none xl:px-3.5';
+const itemClass = 'nav-item type-label-lg inline-flex items-center px-[9px] xl:px-3.5';
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -268,7 +268,7 @@ const Header = () => {
           data-scrolled={scrolled}
           className="flex h-[60px] items-center justify-between gap-2 lg:hidden"
         >
-          <Link to="/" aria-label={`${SITE.name} home`} className="press hit relative z-[1] shrink-0 rounded-lg">
+          <Link to="/" aria-label={`${SITE.name} home`} className="press hit relative z-[1] flex min-h-11 shrink-0 items-center rounded-lg">
             <Wordmark />
           </Link>
           <div className="relative z-[1] flex items-center">
@@ -276,7 +276,7 @@ const Header = () => {
             <div {...slotProps} className="header-cta-slot hidden [--cta-gap:8px] min-[480px]:grid">
               <div className="header-cta-clip">
                 <div className="header-cta w-max">
-                  <Button asChild size="sm" tabIndex={ctaHidden ? -1 : undefined}>
+                  <Button asChild tabIndex={ctaHidden ? -1 : undefined} className="h-10 px-4 type-label-md">
                     <HashLink to="contact">Book a free call</HashLink>
                   </Button>
                 </div>
@@ -284,7 +284,7 @@ const Header = () => {
             </div>
             <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger asChild>
-                <Button variant="outline" size="icon" className="hit ml-2">
+                <Button variant="outline" size="icon" className="hit ml-2 h-11 w-11">
                   <Menu />
                   <span className="sr-only">Open menu</span>
                 </Button>
@@ -311,6 +311,15 @@ const Header = () => {
                     ))}
                     <li>
                       <Link
+                        to="/team"
+                        onClick={() => setOpen(false)}
+                        className={cn('state-layer type-title-md flex h-[52px] items-center rounded-[8px] px-3', pathname === '/team' && 'bg-foreground/[0.05] text-foreground')}
+                      >
+                        Team
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
                         to="/about"
                         onClick={() => setOpen(false)}
                         className={cn('state-layer type-title-md flex h-[52px] items-center rounded-[8px] px-3', pathname === '/about' && 'bg-foreground/[0.05] text-foreground')}
@@ -323,7 +332,7 @@ const Header = () => {
                   <ul>
                     {INSIGHT_LINKS.map((l) => (
                       <li key={l.to}>
-                        <Link to={l.to} onClick={() => setOpen(false)} className="state-layer press type-body-md flex h-11 items-center rounded-lg px-3 text-muted-foreground hover:text-foreground">
+                        <Link to={l.to} onClick={() => setOpen(false)} className="state-layer press type-body-md flex min-h-11 items-center rounded-lg px-3 text-muted-foreground hover:text-foreground">
                           {l.label}
                         </Link>
                       </li>

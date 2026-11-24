@@ -102,7 +102,7 @@ export const Markets = () => {
           <div className="device-surface dark rounded-[14px] bg-device p-3 text-device-foreground ring-1 ring-inset ring-white/[0.08] md:p-4">
             {/* Top row */}
             <div className="flex min-h-11 items-center justify-between gap-3">
-              <div role="group" aria-label="Filter markets" className="no-scrollbar -my-1 flex gap-1.5 overflow-x-auto px-1 py-1 -mx-1">
+              <div role="group" aria-label="Filter markets" className="no-scrollbar -my-1 flex gap-2 overflow-x-auto px-1 py-1 -mx-1 snap-x snap-proximity [scroll-padding-inline:16px]">
                 {FILTERS.map((f) => (
                   <button
                     key={f.id}
@@ -113,7 +113,7 @@ export const Markets = () => {
                       if (!f.codes.includes(activeCode)) setActiveCode(f.codes[0]);
                     }}
                     className={cn(
-                      'press hit type-label-md relative h-8 shrink-0 rounded-full px-3.5 transition-colors focus-visible:outline-offset-2',
+                      'press hit type-label-md relative h-11 shrink-0 snap-start rounded-full px-3.5 transition-colors focus-visible:outline-offset-2 lg:h-8',
                       filter === f.id ? 'pebble btn-lift bg-paper text-paper-ink [--sheen-a:0.7]' : 'bg-white/[0.08] text-white/80 shadow-[inset_0_0_0_1px_hsl(0_0%_100%/0.06)] hover:bg-white/[0.14] hover:text-white',
                     )}
                   >
@@ -124,7 +124,7 @@ export const Markets = () => {
               <button
                 type="button"
                 onClick={askAbout}
-                className="pebble btn-lift hit type-label-md relative hidden h-8 shrink-0 items-center gap-1.5 rounded-full bg-paper px-3.5 text-paper-ink [--sheen-a:0.7] sm:inline-flex"
+                className="btn-raised btn-lift bg-card text-foreground type-label-md relative hidden h-11 shrink-0 items-center gap-1.5 rounded-full px-3.5 sm:inline-flex lg:h-10"
               >
                 Ask about {market.name} <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
               </button>
@@ -141,11 +141,11 @@ export const Markets = () => {
                 onScroll={onListScroll}
                 data-at-top={listEdge.top}
                 data-at-end={listEdge.end}
-                className="market-list-fade no-scrollbar relative -mx-1 flex max-lg:[mask-image:linear-gradient(to_right,#000_calc(100%-28px),transparent)] snap-x snap-proximity scroll-px-2 gap-1.5 overflow-x-auto px-1 max-lg:py-1 lg:mx-0 lg:max-h-[420px] lg:px-0 lg:snap-none lg:flex-col lg:gap-0.5 lg:overflow-y-auto lg:overflow-x-visible"
+                className="market-list-fade no-scrollbar relative -mx-1 flex max-lg:[mask-image:linear-gradient(to_right,#000_calc(100%-28px),transparent)] snap-x snap-proximity [scroll-padding-inline:16px] gap-2 overflow-x-auto px-1 max-lg:py-1 lg:mx-0 lg:max-h-[420px] lg:pb-4 lg:[scroll-padding-block:16px] lg:px-0 lg:snap-none lg:flex-col lg:gap-0.5 lg:overflow-y-auto lg:overflow-x-visible"
               >
                 <span
                   aria-hidden="true"
-                  className="pebble absolute inset-x-0 hidden rounded-[10px] bg-white/[0.08] [--sheen-a:0.12] lg:block"
+                  className="pebble absolute inset-x-0 hidden rounded-[12px] bg-white/[0.08] [--sheen-a:0.12] lg:block"
                   style={{
                     top: 0,
                     height: surface.h,
@@ -168,8 +168,8 @@ export const Markets = () => {
                       tabIndex={on ? 0 : -1}
                       onClick={() => select(m.code)}
                       className={cn(
-                        'press hit group relative z-[1] flex shrink-0 snap-start items-center gap-3 rounded-full px-3.5 text-left transition-colors lg:h-16 lg:rounded-[10px] lg:px-4',
-                        'h-10 lg:h-16 focus-visible:outline-offset-[-2px]',
+                        'press hit group relative z-[1] flex shrink-0 snap-start items-center gap-3 rounded-full px-3.5 text-left transition-colors lg:h-16 lg:rounded-[12px] lg:px-4',
+                        'h-11 lg:h-16 focus-visible:outline-offset-[-2px] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[hsl(var(--ring))]',
                         on ? 'bg-paper text-paper-ink lg:bg-transparent lg:text-paper' : 'bg-white/[0.08] text-white/75 shadow-[inset_0_0_0_1px_hsl(0_0%_100%/0.06)] hover:text-white lg:bg-transparent lg:shadow-none lg:hover:bg-white/[0.04]',
                       )}
                     >
@@ -217,7 +217,7 @@ export const Markets = () => {
                     onClick={() => setSheetOpen((o) => !o)}
                     aria-expanded={sheetOpen}
                     aria-controls="market-sheet"
-                    className="glass-chip press hit absolute right-3 top-3 z-[3] flex h-8 w-8 items-center justify-center rounded-full text-white sm:right-4 sm:top-4"
+                    className="glass-chip press absolute right-2 top-2 z-[3] flex h-11 w-11 items-center justify-center rounded-full text-white sm:right-3 sm:top-3 lg:right-3 lg:top-3 lg:h-8 lg:w-8 lg:after:absolute lg:after:-inset-1.5 lg:after:content-['']"
                   >
                     <ChevronDown className={cn('h-4 w-4 transition-transform duration-300', sheetOpen ? 'rotate-0' : 'rotate-180')} aria-hidden="true" />
                     <span className="sr-only">{sheetOpen ? 'Hide details' : 'Show details'}</span>
@@ -248,7 +248,7 @@ export const Markets = () => {
               </button>
             </div>
 
-            <p className="type-body-sm mt-3 max-w-[78ch] px-1 pb-1 pt-1 text-white/60 lg:px-4">
+            <p className="type-body-sm mt-4 max-w-[78ch] px-1 pb-1 pt-1 text-white/60 lg:px-4">
               General information only{MARKETS_REVIEWED ? `, as of ${MARKETS_REVIEWED}` : ''}. Rules change often and vary by product. Not legal advice.
               Timor-Leste, ASEAN's newest member: on request.
             </p>
