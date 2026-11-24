@@ -92,17 +92,24 @@ const Line = ({ on, children, className }: { on: boolean; children: React.ReactN
   </span>
 );
 
+/** Stacked panels: phones and reduced motion. Each beat is one compact full-bleed colour panel with its giant word. */
 const Static = () => (
-  <div className="space-y-px">
-    {BEATS.map((b) => (
-      <div key={b.id} className="px-4 py-14 md:px-8" style={{ background: b.bg, color: b.fg }}>
-        <div className="container">
-          <p className="type-body-lg md:text-[22px]">{b.lines[0]} {b.lines[1]}</p>
-          <p className="story-word mt-2" style={{ color: b.wordColor }}>{b.word}</p>
-          <p className="type-body-md mt-3 max-w-[52ch]" style={{ color: b.muted }}>{b.tail}</p>
+  <div>
+    {BEATS.map((b, i) => (
+      <div key={b.id} className="story-panel" style={{ background: b.bg, color: b.fg }}>
+        <div className="container py-12">
+          <p className="type-mono-md" style={{ color: b.muted }}>§ 00 why exports stall · 0{i + 1} / 03</p>
+          <p className="story-panel-copy mt-4">{b.lines[0]} {b.lines[1]}</p>
+          <p className="story-word story-word-static mt-1" style={{ color: b.wordColor }}>{b.word}</p>
+          <p className="type-body-md mt-3 max-w-[40ch]" style={{ color: b.muted }}>{b.tail}</p>
         </div>
       </div>
     ))}
+    <div className="story-panel" style={{ background: '#16120F', color: '#F4EEE6' }}>
+      <div className="container py-12">
+        <p className="story-panel-copy">We close all three before the goods <span className="text-[#F26A1C]">leave.</span></p>
+      </div>
+    </div>
   </div>
 );
 
@@ -110,7 +117,14 @@ export const ScrollStory = () => {
   const ref = useRef<HTMLElement>(null);
   const p = useProgress(ref);
   const [still, setStill] = useState(false);
-  useEffect(() => setStill(prefersReducedMotion()), []);
+  // v6.2: phones get the stacked panels (no 5-screen pin); desktop keeps the pinned story.
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 639px)');
+    const f = () => setStill(prefersReducedMotion() || mq.matches);
+    f();
+    mq.addEventListener('change', f);
+    return () => mq.removeEventListener('change', f);
+  }, []);
 
   const step = p * TOTAL_STEPS; // continuous
   const beatIndex = Math.min(BEATS.length, Math.floor(step / STEPS_PER_BEAT));

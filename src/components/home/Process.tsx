@@ -24,10 +24,12 @@ type Layout = 'wide' | 'mid' | 'tall';
 const MQ_TALL = '(max-width: 639.98px)';
 const MQ_WIDE = '(min-width: 1024px) and (min-aspect-ratio: 23/20)';
 
+const PHONE = '(max-width: 639px)';
 const readEnv = () => {
   if (typeof window === 'undefined') return { layout: 'wide' as Layout, still: false };
   const m = (q: string) => window.matchMedia(q).matches;
-  const still = prefersReducedMotion();
+  // v6.2: phones get the static route (no 3-screen pin).
+  const still = prefersReducedMotion() || m(PHONE);
   let layout: Layout = m(MQ_TALL) ? 'tall' : m(MQ_WIDE) ? 'wide' : 'mid';
   if (still && layout === 'wide') layout = 'mid'; // the static version uses the stacked layout at every desktop width
   return { layout, still };
@@ -36,7 +38,7 @@ const readEnv = () => {
 const useEnv = () => {
   const [env, setEnv] = useState(readEnv);
   useEffect(() => {
-    const mqs = [MQ_TALL, MQ_WIDE, '(prefers-reduced-motion: reduce)'].map((q) => window.matchMedia(q));
+    const mqs = [MQ_TALL, MQ_WIDE, PHONE, '(prefers-reduced-motion: reduce)'].map((q) => window.matchMedia(q));
     const f = () => setEnv((prev) => { const n = readEnv(); return n.layout === prev.layout && n.still === prev.still ? prev : n; });
     mqs.forEach((q) => q.addEventListener('change', f));
     return () => mqs.forEach((q) => q.removeEventListener('change', f));

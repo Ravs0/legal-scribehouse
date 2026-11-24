@@ -684,3 +684,20 @@ colour over the real background of its neighbour, mixed in OKLab (no grey midton
 | Page → footer | ink up into the page, 150px, on every public page |
 
 Tinted `.band` sections lose their hairline borders so they meet their neighbours softly.
+
+## v6.2 Phone composition; inner-page seams
+
+**Phones (<640px) get their own composition, not a squeezed desktop.** The page went from 24.1 to 18.7 screens.
+- The scroll story is no longer pinned on phones (it was 4,000px of mostly empty colour). It shows three compact
+  full-bleed panels (sand, teal, orange) with the giant PORT. / BRAND. / DUTY. words visible, then a closing ink
+  panel.
+- How it works uses its static vertical route on phones instead of a 2,500px pin.
+- Hero: the container prop and floor notes are hidden; the crates, printer and plant are sized to the screen; and
+  the headline is 64–104px.
+- Desk: frames are 44vw so a frame and a half show; "DESK." sits fully inside the room.
+- Section padding is 48px and the gap after headings is 24px.
+
+**Inner pages**
+- The page→footer seam is reversed: the page colour eases down into the footer (`onto="next"`) instead of ink
+  climbing up behind the closing call-to-action panel. The footer content starts 140px down so it clears the fade.
+- `.band` sections feather in and out over 96px instead of starting with a hard edge.

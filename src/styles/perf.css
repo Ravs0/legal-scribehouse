@@ -86,3 +86,35 @@
 
 /* v6.1 seams: tinted bands lose their hard hairlines so neighbouring sections blend. */
 .band { border-block: 0 !important; }
+
+/* ============================================================
+ * v6.2 Phones (<640px): their own composition, not a squeezed desktop.
+ * ============================================================ */
+.story-panel-copy { font-family: theme("fontFamily.serif"); font-weight: 400; font-size: clamp(24px, 6.6vw, 34px); line-height: 1.15; letter-spacing: -0.015em; max-width: 20ch; }
+.story-word-static { font-size: clamp(72px, 24vw, 140px) !important; line-height: 0.9 !important; }
+@media (max-width: 639px) {
+  /* Tighter rhythm between sections. */
+  .section { padding-block: 48px !important; }
+  .after-heading { margin-top: 24px !important; }
+
+  /* Hero: one column; the set is just the crates, printer and plant, sized to the screen, standing on the floor. */
+  .hero-stage { --floor: 150px; }
+  .hero-set { height: 400px !important; }
+  .set-container { display: none !important; }
+  .set-cluster { zoom: 0.72 !important; left: 50% !important; margin-left: -190px !important; bottom: 30px !important; }
+  .set-plant { zoom: 0.7; right: 0 !important; bottom: 18px !important; }
+  .hero-notes { display: none !important; }
+  .hero-title { font-size: clamp(64px, 22vw, 104px) !important; }
+
+  /* Desk: smaller frames so a frame and a half show; the word sits fully inside the room. */
+  .desk-scene { --fw: 44vw !important; --desk-h: 132px !important; --feet: 84px !important; }
+  .desk-stage { padding-top: 120px !important; }
+  .desk-word { font-size: 30vw !important; bottom: calc(var(--desk-h) + 150px) !important; }
+}
+
+/* v6.2 tinted bands feather in and out instead of starting with a hard edge. */
+.band {
+  background: linear-gradient(180deg, hsl(var(--corp-band) / 0) 0, hsl(var(--corp-band)) 96px, hsl(var(--corp-band)) calc(100% - 96px), hsl(var(--corp-band) / 0) 100%) !important;
+}
+/* The footer's content starts below the page→footer fade (130px). */
+footer .footer-safe { padding-top: 140px !important; }
