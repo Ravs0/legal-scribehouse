@@ -742,3 +742,24 @@ Four audit passes (typography, desktop pixels, phone and tablet, components) wer
   the header menu, sheet close, market chips and tabs, switches, contact links, stage pills and footer links.
 - Scroll rows snap with 16–20px of padding.
 - Workspace forms show inline errors instead of browser bubbles.
+
+## v6.6 Round-2 polish
+
+The round-2 audits covered desktop, tablet, phone and the workspace. They checked against design-system references (shadcn, Radix, Geist and Material).
+- **One phone gutter:** all text starts 24px from the screen edge, in panels and in light sections. Every panel is inset 8px.
+- **One heading rhythm:** eyebrow to title is 12px on phones; title to lede is 16px everywhere. Panel padding is 48px on phones.
+- **Wrapping:** body text and ledes use `text-wrap: pretty`, so no one-word last lines. Headings use `balance`.
+- **Inner-page headers:** the stray em-dash index is gone. On service detail pages the placeholder badge now sits in the header.
+- **Cards:** service card footers share one rule height across each row.
+- **Dark ink panels:** results, footer and the closing story panel get a 1px inset edge at 7% white.
+- **Contrast:** folder tabs, the "Duty saved" label and the Market weather label now reach at least 4.5:1.
+- **No sub-pixel text at rest:** story lines, the story word and service labels rest at whole pixels.
+- **Results on phones:** each stat label stacks under its figure, so no mid-word breaks.
+- **Phone menu sheet:** the scrolling list fades out above the pinned buttons.
+- **Footer:** link rows are 44px on touch; column headings use the mono label style.
+- **Workspace on phones:**
+  - the matters list becomes cards;
+  - every link and checkbox has a 44px hit area;
+  - tab bars sit in one scrolling row;
+  - the demo banner is one line;
+  - toasts clear the safe area.
