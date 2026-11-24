@@ -4,6 +4,7 @@ import "./index.css";
 import "./styles/perf.css";
 import "./styles/type.css";
 import "./styles/polish-r1.css";
+import "./styles/polish-r2.css";
 import { prefersReducedMotion } from "@/lib/reveal";
 import { watchOffscreen } from "@/lib/offscreen";
 

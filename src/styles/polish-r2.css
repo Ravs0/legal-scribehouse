@@ -1,0 +1,45 @@
+/* ============================================================
+ * v6.6 Round-2 layout / rhythm fixes (overrides; loaded after polish-r1.css).
+ * ============================================================ */
+
+/* ── 1. Phone edge gutter: every piece of text starts at x=24 (panel inset 8 + 16 gutter; light sections 24 flat) ── */
+@media (max-width: 639px) {
+  :is(#markets, #readiness, #glance, #insights, #faq, #contact) .container { --gutter: 24px; }
+  .story-panel .container { padding-inline: 16px; }
+}
+
+/* ── 2. Footer panel inset matches the other panels (8px on phones). `body > #root footer` out-ranks the perf.css media rule. ── */
+@media (max-width: 639px) {
+  body > #root footer.band-ink { margin: 8px 8px 8px; }
+}
+
+/* ── 3. Dark mode: ink panels on the ink ground keep a faint edge (inset, because clip-path clips outer shadows) ── */
+.dark #proof, .dark footer.band-ink, .dark .story-panel:last-child {
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.07);
+}
+
+/* ── 4. Phone vertical rhythm: 48px at the top of every panel's content (light sections already pad 48/48) ── */
+@media (max-width: 639px) {
+  #proof { padding-block: 48px; }
+  #desk { padding-top: 48px; }
+  #services > .container { padding-top: 48px; }
+}
+
+/* ── 5. Heading gaps: eyebrow → title 12px below 1024, title → lede 16px everywhere ── */
+@media (max-width: 1023px) {
+  .section-heading.grid-12 { row-gap: 0; }
+  .section-heading .sh-body > :is(h1, h2) { margin-top: 12px; }
+  #desk .desk-title { margin-top: 12px; }
+  #services .section-title { margin-top: 12px; }
+  #proof .pl-grid { margin-top: 12px; }
+  #process .prc-h2 { margin-top: 12px; }
+}
+.section-heading .sh-body > :is(h1, h2) + p { margin-top: 16px; }
+#desk .desk-title + .desk-lede { margin-top: 16px; }
+#services .section-title + p { margin-top: 16px; }
+
+/* ── 6. Phone small text ── */
+@media (max-width: 639px) {
+  footer.band-ink .type-body-sm { font-size: 14px; line-height: 20px; }
+  .desk-focus { font-size: max(13px, 0.98em) !important; }
+}
