@@ -55,3 +55,7 @@
 h1, h2, h3, .section-title { text-wrap: balance; }
 /* Light glass header: a warm hairline instead of a white edge (white stays in dark). */
 .corp-header:not(.dark *) { border-bottom-color: hsl(var(--border) / 0.7) !important; }
+/* Toasts clear the home indicator on notched phones (viewport-fit=cover). */
+@media (max-width: 600px) {
+  [data-sonner-toaster][data-y-position="bottom"] { bottom: max(16px, calc(env(safe-area-inset-bottom) + 8px)) !important; }
+}
