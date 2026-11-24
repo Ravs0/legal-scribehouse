@@ -712,3 +712,33 @@ Results and the footer.
 - 12px inset and 32px corners; 8px and 22px on phones.
 - `clip-path: inset(0 round …)` does the rounding (not `overflow`), so the pinned story and route still stick.
 - Light sections sit directly on the page ground between panels, so no seam has to be colour-matched.
+
+## v6.4 One type scale
+
+- **Section titles:** one size everywhere. Newsreader 400, `clamp(32px, 23.3px + 2.42vw, 56px)`, line-height 1.05,
+  -0.02em. That is 56px at 1440 and 33px at 390.
+- **Floors:** mono labels never go below 11px (11/16, +0.08em). Small UI text never goes below 12px (12/16, weight 600).
+- **Hero:** headline tracking -0.045em; the lede uses line-height 1.4.
+- **Figures:** every figure is tabular so numbers don't jitter as they count.
+- **Typed notes:** the width allows for letter-spacing, so the typed hero notes never clip.
+
+## v6.5 Round-1 polish (measured audit)
+
+Four audit passes (typography, desktop pixels, phone and tablet, components) were followed by these shared fixes:
+
+- **Panel gaps:** 12px gaps between panels are restored everywhere.
+- **Alignment:** content inside panels lines up with content outside them (x=48 at 1280px).
+- **Focus:** one focus recipe (`--ring`) for nav pills, tabs, radios and switches.
+- **Motion:** fields never shrink on press, and pills lift 1px on hover.
+- **Phone inputs:** inputs are 16px on phones, so iOS doesn't zoom.
+- **Glance legend:** swatches get an inset ring so they stay visible.
+- **Results:** rows and dark edges no longer overflow.
+- **Tablet (640–1023):** the hero hides the container prop and centres the crates and printer. Desk frames are
+  `min(25vw, 210px)`.
+- **Fields:** radius 10px on every input, select and textarea.
+
+**Component round 1** (three fixers working on disjoint files):
+- Every touch target is 44px or more on touch screens. That covers the route pills, calculator keys (via hit-slop),
+  the header menu, sheet close, market chips and tabs, switches, contact links, stage pills and footer links.
+- Scroll rows snap with 16–20px of padding.
+- Workspace forms show inline errors instead of browser bubbles.
