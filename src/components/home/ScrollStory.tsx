@@ -87,7 +87,7 @@ const useProgress = (ref: React.RefObject<HTMLElement>) => {
 };
 
 const Line = ({ on, children, className }: { on: boolean; children: React.ReactNode; className?: string }) => (
-  <span className={cn('story-line block', className)} data-on={on}>
+  <span className={cn('story-line block', className)} data-on={on} style={{ transform: on ? 'none' : 'translateY(14px)' }}>
     {children}
   </span>
 );
@@ -168,7 +168,7 @@ export const ScrollStory = () => {
                   <Line on={local >= 1}>{beat.lines[1]}</Line>
                 </p>
                 <div className="story-mask mt-1 overflow-hidden">
-                  <span className="story-word block" style={{ color: beat.wordColor, transform: `translateY(${(1 - wordT) * 105}%)` }}>
+                  <span className="story-word block" style={{ color: beat.wordColor, transform: wordT >= 1 ? 'none' : `translateY(${(1 - wordT) * 105}%)` }}>
                     {beat.word}
                   </span>
                 </div>

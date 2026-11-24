@@ -172,7 +172,7 @@ export const Glance = () => {
                   'btn-filled bg-primary text-primary-foreground',
                   'Duty saved',
                   <div className="flex h-full flex-col">
-                    <p className="type-mono-sm opacity-70">Duty saved · this shipment</p>
+                    <p className="type-mono-sm pr-9 opacity-85">Duty saved · this shipment</p>
                     <p className="mt-3 font-display text-[44px] font-semibold leading-none tracking-[-0.04em] tabular sm:text-[56px]">{fmt(savedAnim)}</p>
                     <div className="mt-5 flex min-h-12 flex-1 items-end gap-1" aria-hidden="true">
                       {[22, 30, 26, 38, 34, 46, 40, 54, 50, 62, 58, 70, 66, 80, 76, 92].map((h, i, arr) => (
@@ -185,7 +185,7 @@ export const Glance = () => {
                     </div>
                   </div>,
                   <div className="flex h-full flex-col">
-                    <p className="type-mono-sm opacity-70">Duty saved with an FTA origin claim</p>
+                    <p className="type-mono-sm pr-9 opacity-85">Duty saved with an FTA origin claim</p>
                     <p className="mt-2 font-display text-[44px] font-semibold leading-none tracking-[-0.04em] tabular sm:text-[56px]">{fmt(savedAnim)}</p>
                     <div role="radiogroup" aria-label="Shipment value" className="mt-4 inline-flex w-fit gap-0.5 rounded-full bg-primary-foreground/10 p-[3px]">
                       {SHIPMENT_SIZES.map((s, i) => (
@@ -268,14 +268,14 @@ export const Glance = () => {
                   'surface-2 text-foreground',
                   'Next deadline',
                   <div className="flex h-full flex-col">
-                    <p className="type-mono-sm text-muted-foreground">Next deadline</p>
+                    <p className="type-mono-sm pr-9 text-muted-foreground">Next deadline</p>
                     <p className="mt-auto font-display text-[32px] font-semibold leading-none tracking-[-0.04em] tabular min-[400px]:text-[40px]">
                       12<span className="ml-1 font-sans text-[13px] font-semibold tracking-normal text-muted-foreground">days</span>
                     </p>
                     <p className="type-label-sm mt-1.5 text-muted-foreground">TM renewal · MY</p>
                   </div>,
                   <div className="flex h-full flex-col">
-                    <p className="type-mono-sm text-muted-foreground">Upcoming</p>
+                    <p className="type-mono-sm pr-9 text-muted-foreground">Upcoming</p>
                     <ul className="mt-3 divide-y divide-outline-variant">
                       {[
                         ['12 days', 'Trademark renewal', 'Malaysia'],
@@ -303,11 +303,11 @@ export const Glance = () => {
                     <div className="-mx-5 -mt-5 h-[56%] overflow-hidden">
                       <MarketScene scene={SCENES.ID} />
                     </div>
-                    <p className="type-mono-sm mt-auto opacity-70">Market weather</p>
+                    <p className="type-mono-sm mt-auto opacity-90">Market weather</p>
                     <p className="type-title-sm">ID · Watch</p>
                   </div>,
                   <div className="flex h-full flex-col">
-                    <p className="type-mono-sm opacity-70">Market weather · regulatory change watch</p>
+                    <p className="type-mono-sm pr-9 opacity-90">Market weather · regulatory change watch</p>
                     <ul className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2">
                       {MARKETS.map((m) => (
                         <li key={m.code} className="type-label-md flex items-center gap-2">

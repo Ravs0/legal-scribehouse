@@ -27,7 +27,7 @@ export const PostCard = ({ post }: { post: ContentItem }) => {
         <div className="flex items-start gap-3">
           <h3 className="type-title-lg line-clamp-3 min-w-0 flex-1">{post.title}</h3>
           <ArrowUpRight
-            className="mt-0.5 h-4 w-4 shrink-0 text-primary-ink transition-transform duration-short4 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+            className="mt-[5px] h-4 w-4 shrink-0 text-primary-ink transition-transform duration-short4 group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
             aria-hidden="true"
           />
         </div>

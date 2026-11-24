@@ -27,7 +27,7 @@ const Footer = () => (
         </div>
 
         <nav aria-label="Explore" className="col-span-2 md:col-span-3 lg:col-span-2 lg:pt-2">
-          <h2 className="type-label-md mb-3 font-sans text-foreground">Explore</h2>
+          <h2 className="type-mono-sm mb-3 text-foreground">Explore</h2>
           <ul>
             {SECTIONS.map((s) => (
               <li key={s.id}>
@@ -45,7 +45,7 @@ const Footer = () => (
         </nav>
 
         <nav aria-label="Insights" className="col-span-2 md:col-span-3 lg:col-span-2 lg:pt-2">
-          <h2 className="type-label-md mb-3 font-sans text-foreground">Insights</h2>
+          <h2 className="type-mono-sm mb-3 text-foreground">Insights</h2>
           <ul>
             {INSIGHT_LINKS.map((l) => (
               <li key={l.to}>
@@ -58,7 +58,7 @@ const Footer = () => (
         </nav>
 
         <nav aria-label="Firm" className="col-span-2 md:col-span-3 lg:col-span-2 lg:pt-2">
-          <h2 className="type-label-md mb-3 font-sans text-foreground">Firm</h2>
+          <h2 className="type-mono-sm mb-3 text-foreground">Firm</h2>
           <ul>
             {[
               ['/services', 'Services'],
@@ -78,7 +78,7 @@ const Footer = () => (
 
         {/* Disclaimer wording depends on the firm's regulatory status; confirm before launch. */}
         <div className="col-span-4 md:col-span-3 lg:col-span-3 lg:pt-2">
-          <h2 className="type-label-md mb-3 font-sans text-foreground">Disclaimer</h2>
+          <h2 className="type-mono-sm mb-3 text-foreground">Disclaimer</h2>
           <p className="type-body-sm max-w-[44ch] text-muted-foreground">
             Information on this site is general in nature and is not legal advice. Contacting us does not create an
             adviser–client relationship. Local-law services are provided with independent local counsel where
