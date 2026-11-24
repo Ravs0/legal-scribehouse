@@ -116,5 +116,19 @@
 .band {
   background: linear-gradient(180deg, hsl(var(--corp-band) / 0) 0, hsl(var(--corp-band)) 96px, hsl(var(--corp-band)) calc(100% - 96px), hsl(var(--corp-band) / 0) 100%) !important;
 }
-/* The footer's content starts below the page→footer fade (130px). */
-footer .footer-safe { padding-top: 140px !important; }
+
+/* ============================================================
+ * v6.3 Scene panels. No colour blending between scenes: every full-bleed colour scene is a self-contained rounded
+ * panel inset from the window edges, with the page ground showing in a small gap between panels. clip-path (not
+ * overflow) does the rounding, so the pinned scroll scenes keep working.
+ * ============================================================ */
+#hero, #route, #desk, #services, #process, #proof, body > #root footer, footer.band-ink {
+  margin: 12px 12px 0; clip-path: inset(0 round 32px);
+}
+footer.band-ink { margin-bottom: 12px; }
+@media (max-width: 639px) {
+  #hero, #route, #desk, #services, #process, #proof, footer.band-ink { margin: 8px 8px 0; clip-path: inset(0 round 22px); }
+  footer.band-ink { margin-bottom: 8px; }
+}
+/* Light sections that follow a panel start with breathing room. */
+#process + section, #proof + section, #route + section, #desk + section, #services + section { margin-top: 0; }

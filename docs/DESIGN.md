@@ -701,3 +701,14 @@ Tinted `.band` sections lose their hairline borders so they meet their neighbour
 - The page→footer seam is reversed: the page colour eases down into the footer (`onto="next"`) instead of ink
   climbing up behind the closing call-to-action panel. The footer content starts 140px down so it clears the fade.
 - `.band` sections feather in and out over 96px instead of starting with a hard edge.
+
+## v6.3 Scene panels replace colour blending
+
+Gradient seams between very different colours (teal, ink, orange, cream) always read as muddy bands, so they are
+gone (`SeamFade` is deleted). Instead, every full-bleed colour scene is a self-contained rounded panel inset from
+the window, with the page ground showing in a small gap between panels: hero, story, desk, services, How it works,
+Results and the footer.
+
+- 12px inset and 32px corners; 8px and 22px on phones.
+- `clip-path: inset(0 round …)` does the rounding (not `overflow`), so the pinned story and route still stick.
+- Light sections sit directly on the page ground between panels, so no seam has to be colour-matched.
