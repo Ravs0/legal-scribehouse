@@ -328,7 +328,7 @@ export const Glance = () => {
         <Reveal as="ul" stagger className="col-span-4 grid grid-cols-2 gap-x-4 gap-y-5 md:col-span-12 md:grid-cols-4 md:gap-x-6 lg:order-1 lg:col-span-4 lg:grid-cols-1 lg:grid-rows-4 lg:gap-0 lg:divide-y lg:divide-border lg:border-y lg:border-border">
           {LEGEND.map((l) => (
             <li key={l.name} className="grid grid-cols-[10px_minmax(0,1fr)] content-start items-center gap-x-2.5 lg:content-center lg:py-3">
-              <span aria-hidden="true" className={cn('h-2.5 w-2.5 rounded-[3px] shadow-[inset_0_0_0_1px_hsl(var(--foreground)/0.18)]', l.swatch)} />
+              <span aria-hidden="true" className={cn('h-2.5 w-2.5 rounded-[3px] ring-1 ring-inset ring-foreground/40', l.swatch)} />
               <span className="type-title-sm">{l.name}</span>
               <span className="type-body-sm col-start-2 mt-0.5 text-muted-foreground">{l.copy}</span>
             </li>

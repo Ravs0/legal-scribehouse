@@ -1,0 +1,50 @@
+/* ============================================================
+ * v6.5 Round-1 audit fixes (shared rules). Component-level fixes live in the components.
+ * ============================================================ */
+
+/* Panel content sits on the same left line as the header and light sections at every width
+   (panels are inset 12px, so their container gives back 12px of gutter). */
+@media (min-width: 640px) {
+  :is(#hero, #route, #desk, #services, #process, #proof) .container,
+  footer.band-ink .container {
+    max-width: calc(1280px + 2 * var(--gutter) - 24px);
+    padding-left: max(calc(var(--gutter) - 12px), 8px);
+    padding-right: max(calc(var(--gutter) - 12px), 8px);
+  }
+}
+
+/* One focus recipe: 2px ring in the brand colour, 2px offset, on keyboard focus only. */
+.nav-item:focus-visible, [role="tab"]:focus-visible, [role="radio"]:focus-visible, [role="switch"]:focus-visible {
+  outline: 2px solid hsl(var(--ring)) !important; outline-offset: 2px !important;
+}
+.recessed { --field-ring: hsl(var(--ring)); }
+
+/* Fields and full-width rows don't shrink when pressed; they tint instead. Small controls lift 1px, not 2px. */
+.press-soft:active { transform: none !important; }
+.recessed:active, .faq-item button:active { background-color: hsl(var(--foreground) / 0.03); }
+@media (hover: hover) { .btn-lift:hover:not(:disabled) { transform: translateY(-1px) !important; } }
+
+/* Phones: inputs at 16px so iOS never zooms on focus. */
+@media (max-width: 639px) { input, select, textarea { font-size: 16px !important; } }
+
+/* Dark theme: the markets device panel keeps a visible edge on the dark ground. */
+.dark #markets .device-surface { box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.12), 0 24px 48px -24px rgb(0 0 0 / 0.7) !important; }
+
+/* Results: nothing pokes past the panel. */
+#proof { overflow-x: clip; }
+
+/* Story panels on phones: words and text clear the panel edge. */
+@media (max-width: 639px) {
+  .story-panel .container { padding-inline: 20px; }
+  .story-word-static { font-size: clamp(60px, 19vw, 120px) !important; }
+}
+
+/* Tablets (640–1023): the hero set is centred with no half-hidden container; the desk shows three frames that fit. */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .set-container { display: none !important; }
+  .set-cluster { left: 50% !important; margin-left: -190px !important; }
+  .hero-notes { display: none !important; }
+  .desk-scene { --fw: min(25vw, 210px) !important; }
+  .desk-row { gap: 3vw !important; }
+}
+.desk-hint { font-size: 11px !important; }

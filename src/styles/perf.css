@@ -131,4 +131,3 @@ footer.band-ink { margin-bottom: 12px; }
   footer.band-ink { margin-bottom: 8px; }
 }
 /* Light sections that follow a panel start with breathing room. */
-#process + section, #proof + section, #route + section, #desk + section, #services + section { margin-top: 0; }
