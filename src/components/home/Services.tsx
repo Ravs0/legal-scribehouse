@@ -23,12 +23,12 @@ const TERMS = [
 const SHORT: Record<string, string> = { structure: 'Structure', contracts: 'Contracts', customs: 'Customs', registration: 'Licensing', ip: 'Trademark', disputes: 'Disputes' };
 // Dawn palette: orange, teal, sand, cream, ink, orange. `ink` is the label colour on that tab.
 const TABS: { bg: string; ink: string }[] = [
-  { bg: '#F26A1C', ink: '#FFFFFF' },
+  { bg: '#F26A1C', ink: '#2A1206' },
   { bg: '#0F4C52', ink: '#FFF4E6' },
   { bg: '#D9B98A', ink: '#2A1206' },
   { bg: '#FFF4E6', ink: '#2A1206' },
   { bg: '#2A1206', ink: '#FFF4E6' },
-  { bg: '#F26A1C', ink: '#FFFFFF' },
+  { bg: '#F26A1C', ink: '#2A1206' },
 ];
 
 const pad = (n: number) => String(n).padStart(2, '0');

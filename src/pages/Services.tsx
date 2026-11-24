@@ -61,8 +61,9 @@ export const ServiceDetail = () => {
         <div className="grid-12 mt-6 items-start gap-y-8">
           <div className="col-span-4 md:col-span-12 lg:col-span-7">
             <span className="icon-well inline-flex h-12 w-12 items-center justify-center rounded-[12px] text-primary-ink"><Icon className="h-6 w-6" aria-hidden="true" /></span>
-            <h1 className="type-hero pg-title mt-5">{s.title}</h1>
+            <h1 className="type-hero pg-title mt-4">{s.title}</h1>
             <p className="type-body-lg pg-lede mt-5 text-muted-foreground">{d.intro}</p>
+            <Badge variant="warning" className="mt-4 h-auto max-w-full whitespace-normal py-1">Timelines and inclusions are placeholders until confirmed by the firm</Badge>
           </div>
           <aside className="surface-2 col-span-4 rounded-[14px] p-5 md:col-span-12 md:p-6 lg:col-span-4 lg:col-start-9 lg:mt-4">
             <p className="type-label-md text-muted-foreground">You get</p>
@@ -115,7 +116,6 @@ export const ServiceDetail = () => {
           </div>
         </section>
       )}
-      <div className="container pb-8"><Badge variant="warning" className="h-auto max-w-full whitespace-normal py-1">Timelines and inclusions are placeholders until confirmed by the firm</Badge></div>
       <CtaBand />
     </>
   );

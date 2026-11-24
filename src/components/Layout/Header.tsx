@@ -293,7 +293,7 @@ const Header = () => {
                 <SheetTitle className="flex h-8 items-center">
                   <Wordmark />
                 </SheetTitle>
-                <nav aria-label="Mobile" className="-mx-1 mt-6 flex-1 overflow-y-auto">
+                <nav aria-label="Mobile" className="-mx-1 mt-6 flex-1 overflow-y-auto pb-6 [-webkit-mask-image:linear-gradient(#000_calc(100%-24px),transparent)] [mask-image:linear-gradient(#000_calc(100%-24px),transparent)]">
                   <ul className="space-y-0.5">
                     {SECTIONS.map((s) => (
                       <li key={s.id}>

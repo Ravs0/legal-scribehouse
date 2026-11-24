@@ -76,7 +76,12 @@
 @keyframes pl-drop { 0% { opacity: 0; transform: translateY(-70px) rotate(-6deg); } 55% { opacity: 1; } 100% { transform: none; } }
 @media (prefers-reduced-motion: reduce) { .pl-stats, .pl-slip { transition: none; } }
 /* Phones: labels never run past the edge. */
-@media (max-width: 639px) { .pl-label { font-size: 11px; letter-spacing: 0.08em; max-width: 12ch; overflow-wrap: anywhere; } }
+@media (max-width: 639px) { .pl-label { font-size: 11px; letter-spacing: 0.08em; max-width: 12ch; overflow-wrap: normal; word-break: normal; hyphens: none; } }
+/* Narrow phones: the label stacks under its figure so no word is ever split. */
+@media (max-width: 479px) {
+  .pl-stat { grid-template-columns: 1fr; grid-template-areas: "idx" "num" "label"; row-gap: 8px; }
+  .pl-label { text-align: left; max-width: none; padding: 0; }
+}
 /* Phones: the slips stay a swipe row, but exactly as wide as the panel; the first rotated slip clears the padding. */
 @media (max-width: 639px) {
   .pl-slips { margin-inline: -16px; padding-inline: 20px; scroll-padding-inline: 20px; }

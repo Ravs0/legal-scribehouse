@@ -192,16 +192,16 @@ export const ReadinessCheck = () => {
               {/* The score legend (was the separate "How to read your score" card). */}
               <div className="order-5 mt-4 border-t border-outline-variant pt-4 lg:order-none">
                 <p className="sr-only">How to read your score</p>
-                <ul className="space-y-2.5">
+                <ul className="grid grid-cols-[4rem_3rem_minmax(0,1fr)] gap-x-2.5 gap-y-2.5">
                   {LEGEND.map((l) => (
-                    <li key={l.stamp} className="flex items-start gap-2.5">
+                    <li key={l.stamp} className="col-span-3 grid grid-cols-[subgrid] items-start gap-x-2.5">
                       <span
-                        className="type-label-sm inline-flex h-5 w-16 shrink-0 items-center justify-center rounded-md"
+                        className="type-label-sm inline-flex h-5 items-center justify-center rounded-md"
                         style={{ color: `color-mix(in srgb, ${STATUS[l.stamp].color} 72%, hsl(var(--foreground)))`, background: `color-mix(in srgb, ${STATUS[l.stamp].color} 14%, transparent)` }}
                       >
                         {STATUS[l.stamp].label}
                       </span>
-                      <span className="type-mono-md tabular w-12 shrink-0 leading-5">{l.range}</span>
+                      <span className="type-mono-md tabular leading-5">{l.range}</span>
                       <span className="type-body-sm min-w-0 leading-5 text-muted-foreground [text-wrap:pretty]">{l.copy}</span>
                     </li>
                   ))}
