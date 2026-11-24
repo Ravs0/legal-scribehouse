@@ -48,3 +48,10 @@
   .desk-row { gap: 3vw !important; }
 }
 .desk-hint { font-size: 11px !important; }
+
+/* ── Round 2 (shared) ───────────────────────────────────────────────────── */
+/* No one-word last lines in ledes and body copy; balanced headings. */
+.type-body-lg, .type-body-md, .type-body-sm, .desk-lede, .hero-lede, .type-meta { text-wrap: pretty; }
+h1, h2, h3, .section-title { text-wrap: balance; }
+/* Light glass header: a warm hairline instead of a white edge (white stays in dark). */
+.corp-header:not(.dark *) { border-bottom-color: hsl(var(--border) / 0.7) !important; }

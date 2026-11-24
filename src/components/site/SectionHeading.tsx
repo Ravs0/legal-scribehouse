@@ -36,7 +36,7 @@ export const SectionHeading = ({ eyebrow, title, subtitle, className, as: H = 'h
     </div>
     <div className="sh-body col-span-4 md:col-span-12 lg:col-span-9 lg:col-start-4">
       <H className={cn('mt-3 lg:mt-0', H === 'h1' ? 'type-display-md max-w-[20ch]' : 'type-headline-lg max-w-[20ch]')}>{title}</H>
-      {subtitle && <p className="type-body-lg mt-4 max-w-[54ch] text-muted-foreground">{subtitle}</p>}
+      {subtitle && <p className="type-body-lg mt-4 max-w-[58ch] text-muted-foreground">{subtitle}</p>}
       {children}
     </div>
   </Reveal>

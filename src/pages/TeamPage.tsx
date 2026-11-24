@@ -10,7 +10,7 @@ import { MARKETS } from '@/data/markets';
 const TeamPage = () => (
   <>
     <section className="container pg-top">
-      <SectionHeading as="h1" index="—" eyebrow="Our desk" title="The people on your file." subtitle="A small team of lawyers in Singapore and Kuala Lumpur. The person on your first call stays on your file to the end.">
+      <SectionHeading as="h1" eyebrow="Our desk" title="The people on your file." subtitle="A small team of lawyers in Singapore and Kuala Lumpur. The person on your first call stays on your file to the end.">
         {PLACEHOLDER && <Badge variant="warning" className="mt-4">Sample people</Badge>}
       </SectionHeading>
       <ul className="after-heading stack-gap grid sm:grid-cols-2 lg:grid-cols-3">

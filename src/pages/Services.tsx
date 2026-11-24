@@ -19,7 +19,7 @@ const bySlug = (slug?: string) => SERVICES.find((s) => SERVICE_DETAILS[s.id]?.sl
 const ServicesPage = () => (
   <>
     <section className="container pg-top">
-      <SectionHeading as="h1" index="—" eyebrow="Services" title="Six jobs we take off your desk." subtitle="Each one is a fixed-fee job with a defined deliverable. Hire us for one, or for the whole route." />
+      <SectionHeading as="h1" eyebrow="Services" title="Six jobs we take off your desk." subtitle="Each one is a fixed-fee job with a defined deliverable. Hire us for one, or for the whole route." />
       <ul className="after-heading stack-gap grid sm:grid-cols-2 lg:grid-cols-3">
         {SERVICES.map((s, i) => {
           const d = SERVICE_DETAILS[s.id];
@@ -28,7 +28,7 @@ const ServicesPage = () => (
               <Link to={`/services/${d.slug}`} className="surface-1 card-hover card-shell pg-card group h-full rounded-[12px]">
                 <CardHeader icon={s.icon} title={s.title} />
                 <p className="card-body type-body-md text-muted-foreground">{s.copy}</p>
-                <CardFooter className="flex items-center justify-between gap-2">
+                <CardFooter className="flex min-h-[49px] items-center justify-between gap-3">
                   <span className="type-label-sm text-muted-foreground">{d.timeline}</span>
                   <span className="type-label-md inline-flex items-center gap-1 text-primary-ink">Details <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" aria-hidden="true" /></span>
                 </CardFooter>

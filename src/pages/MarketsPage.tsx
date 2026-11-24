@@ -18,7 +18,7 @@ const Draft = () => (MARKETS_REVIEWED ? null : <Badge variant="warning">Draft: u
 const MarketsPage = () => (
   <>
     <section className="container pg-top">
-      <SectionHeading as="h1" index="—" eyebrow="Markets" title="Ten markets. Ten rulebooks." subtitle="Who regulates what, where exporters usually get stuck, and which trade agreements apply.">
+      <SectionHeading as="h1" eyebrow="Markets" title="Ten markets. Ten rulebooks." subtitle="Who regulates what, where exporters usually get stuck, and which trade agreements apply.">
         <div className="mt-4"><Draft /></div>
       </SectionHeading>
       <ul className="after-heading stack-gap grid sm:grid-cols-2 lg:grid-cols-3">

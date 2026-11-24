@@ -42,7 +42,7 @@ const LegalPage = ({ doc }: { doc: keyof typeof DOCS }) => {
   const d = DOCS[doc];
   return (
     <section className="container pg-top pb-20 md:pb-24">
-      <SectionHeading as="h1" index="—" eyebrow="Legal" title={d.title}>
+      <SectionHeading as="h1" eyebrow="Legal" title={d.title}>
         <Badge variant="warning" className="mt-4">Draft wording: to be reviewed before launch</Badge>
       </SectionHeading>
       <div className="grid-12 after-heading">
