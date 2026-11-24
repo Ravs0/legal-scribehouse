@@ -161,7 +161,7 @@ export const Desk = () => {
           </p>
           <p className="desk-mono">3 lawyers · singapore · kuala lumpur</p>
         </div>
-        <h2 id="desk-title" className="desk-title mt-4">
+        <h2 id="desk-title" className="desk-title section-title mt-4">
           <span className="sr-only">01 Your desk. </span>The people on your file.
         </h2>
         <p className="desk-lede mt-3">The person on your first call stays on your file to the end.</p>

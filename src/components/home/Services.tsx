@@ -139,7 +139,7 @@ export const Services = () => {
           <p>§ 02 what we do</p>
           <p>06 fixed-fee jobs</p>
         </div>
-        <h2 id="services-title" className="mt-5 max-w-[16ch] font-serif text-[clamp(36px,6vw,72px)] font-normal leading-[1.02] tracking-[-0.02em] text-[#2A1206] md:mt-6 md:max-w-[18ch]">
+        <h2 id="services-title" className="section-title mt-5 max-w-[18ch]">
           Six jobs we take off your desk.
         </h2>
         <p className="mt-3 max-w-[46ch] text-[16px] leading-[24px] text-[#2A1206]/75 md:text-[18px] md:leading-[28px]">Hire us for one, or for the whole route from structure to first shipment.</p>

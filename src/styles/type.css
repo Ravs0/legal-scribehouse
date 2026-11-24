@@ -1,0 +1,39 @@
+/* ============================================================
+ * v6.4 Type system (round-1 typography audit). One scale, applied over the scene stylesheets.
+ *   Section title  Newsreader 400  32 → 56px / 1.05 / -0.02em  (every homepage section, including scenes)
+ *   Mono caps      Geist Mono 500  11px / 16px / +0.08em       (markers, tags, captions; never below 11px)
+ *   Badge / small  Manrope 600     12px / 16px                 (never below 12px)
+ * ============================================================ */
+.section-title,
+.section-heading .type-headline-lg {
+  font-family: theme("fontFamily.serif") !important; font-weight: 400 !important; font-style: normal !important;
+  font-size: clamp(32px, 23.3px + 2.42vw, 56px) !important; line-height: 1.05 !important; letter-spacing: -0.02em !important;
+  text-wrap: balance;
+}
+/* Scene titles keep their own colour; only the size/rhythm is unified. */
+.prc-h2.section-title { margin-bottom: 0; }
+
+/* Mono roles: 11px caps (+.08em), never smaller. */
+.type-mono-sm { font-size: 11px !important; line-height: 16px !important; letter-spacing: 0.08em !important; }
+.sv-folder-tab, .sv-label, .pl-label, .pl-idx, .pl-route, .desk-chip, .scroll-pill, .story-hint {
+  font-size: 11px !important; letter-spacing: 0.08em !important;
+}
+.pl-route { letter-spacing: 0.04em !important; }
+.desk-role, .desk-adm { font-size: max(11px, 0.78em) !important; }
+.desk-focus { font-size: max(12px, 0.98em) !important; }
+
+/* Small UI text: 12px floor, a touch bolder for legibility. */
+.type-label-sm { font-size: 12px !important; line-height: 16px !important; font-weight: 600 !important; letter-spacing: 0.01em; }
+
+/* Hero: tighter giant word (no glyph collisions) and a calmer lede. */
+.hero-title { letter-spacing: -0.045em !important; }
+.hero-lede { line-height: 1.4 !important; letter-spacing: 0 !important; max-width: 40ch; }
+
+/* Serif tracking by size; let the variable font choose its optical size. */
+.font-serif, .story-copy, .story-panel-copy, .desk-title, .pl-title { font-optical-sizing: auto; }
+.story-panel-copy { letter-spacing: -0.01em; }
+
+/* Big figures always tabular. */
+.pl-num, .prc-num, .type-stat, #glance [class*="tabular"] { font-variant-numeric: tabular-nums; }
+/* Typed hero notes: reveal width matches the 11px / +0.08em mono role. */
+.typed { width: calc(var(--n) * (1ch + 0.08em) + 4px) !important; }

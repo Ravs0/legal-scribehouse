@@ -490,7 +490,7 @@ export const Process = () => {
     <div className="prc-band">
       <div className="container">
         <Markers active={still ? 3 : active} />
-        <h2 id="process-title" className="prc-h2">{TITLE}</h2>
+        <h2 id="process-title" className="prc-h2 section-title">{TITLE}</h2>
       </div>
     </div>
   );

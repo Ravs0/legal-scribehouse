@@ -43,7 +43,7 @@ export const Proof = () => {
 
         <div className="pl-grid">
           <div className="pl-left">
-            <h2 id="proof-title" className="pl-title">Small exporters, cleared to sell.</h2>
+            <h2 id="proof-title" className="pl-title section-title">Small exporters, cleared to sell.</h2>
 
             <dl className="pl-stats">
               {STATS.map((s, i) => (
