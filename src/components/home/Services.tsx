@@ -177,7 +177,7 @@ export const Services = () => {
                       <button
                         key={s.id}
                         {...common}
-                        className={cn('btn-lift hit type-label-md h-10 shrink-0 snap-center whitespace-nowrap rounded-full px-4', on ? 'btn-filled bg-primary text-primary-foreground' : 'btn-raised bg-paper text-paper-ink')}
+                        className={cn('btn-lift hit type-label-md h-10 shrink-0 snap-start whitespace-nowrap rounded-full px-4', on ? 'btn-filled bg-primary text-primary-foreground' : 'btn-raised bg-paper text-paper-ink')}
                       >
                         {SHORT[s.id]}
                       </button>
@@ -244,7 +244,7 @@ export const Services = () => {
                       )}
                       <div className="sv-foot">
                         {d && (
-                          <Link to={`/services/${d.slug}`} tabIndex={on ? 0 : -1} className="btn-raised btn-lift hit type-label-lg inline-flex h-11 items-center gap-2 rounded-full bg-paper px-5 text-paper-ink">
+                          <Link to={`/services/${d.slug}`} tabIndex={on ? 0 : -1} className="btn-raised btn-lift hit type-label-lg box-border inline-flex h-11 min-h-11 items-center gap-2 rounded-full bg-paper px-5 text-paper-ink">
                             Read the full service <span aria-hidden="true">→</span>
                           </Link>
                         )}

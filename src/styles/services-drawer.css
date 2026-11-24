@@ -199,8 +199,10 @@
 .sv-slip { background: var(--grain-fine), hsl(var(--paper)); background-size: 140px 140px, auto; color: hsl(var(--paper-ink)); padding-bottom: 14px; }
 .sv-slip-head {
   display: flex; flex-wrap: wrap; justify-content: space-between; gap: 2px 16px; padding: 14px 20px 10px; border-bottom: 2px solid hsl(var(--paper-ink) / 0.85);
-  font-family: theme("fontFamily.mono"); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700;
+  font-family: theme("fontFamily.mono"); font-size: 11px; line-height: 16px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700;
 }
+/* The h3 must not bring the display face in: the label is the mono label role. */
+.sv-slip-head h3 { font: inherit; letter-spacing: inherit; text-transform: inherit; margin: 0; }
 .sv-slip-head span:last-child { font-weight: 500; color: hsl(var(--paper-muted)); }
 .sv-slip-rows { list-style: none; margin: 0; padding: 0; display: grid; }
 .sv-slip-rows li { display: grid; grid-template-columns: 22px minmax(0, 1fr); column-gap: 10px; padding: 14px 20px; border-bottom: 1px dashed hsl(var(--paper-rule)); }
@@ -230,8 +232,9 @@
 @media (max-width: 639px) {
   .sv-drawer { height: auto; max-width: none; container-type: normal; }
   .sv-back, .sv-rail, .sv-front, .sv-shadow, .sv-word { display: none; }
-  .sv-folders { position: static; height: auto; display: flex; overflow-x: auto; gap: 8px; scroll-snap-type: x proximity; padding: 4px 16px 10px; margin-inline: -16px; scrollbar-width: none; }
+  .sv-folders { position: static; height: auto; display: flex; overflow-x: auto; gap: 8px; scroll-snap-type: x mandatory; scroll-padding-inline: 16px; padding: 4px 16px 10px; margin-inline: -16px; scrollbar-width: none; }
   .sv-folders::-webkit-scrollbar { display: none; }
+  .sv-folders > [role="tab"] { scroll-snap-align: start; }
   .sv-folders::after { display: none; }
   .sv-stage { margin-bottom: 0; gap: 16px; }
   .sv-floor { padding-top: 40px !important; }

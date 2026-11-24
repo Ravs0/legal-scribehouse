@@ -31,7 +31,9 @@
   .pl-slips { grid-column: 8 / span 5; }
   .pl-num { font-size: clamp(96px, 9vw, 168px); }
   /* The label sits right beside its figure (not pinned to the far edge), aligned to the figure's baseline. */
-  .pl-stat { grid-template-columns: auto 1fr; column-gap: clamp(18px, 2vw, 32px); }
+  /* All four rows share the same two columns (figure | label) through subgrid, so every label starts on one x. */
+  .pl-stats { grid-template-columns: max-content minmax(160px, 1fr); }
+  .pl-stat { grid-column: 1 / -1; grid-template-columns: subgrid; column-gap: clamp(18px, 2vw, 32px); }
   .pl-label { text-align: left; max-width: 16ch; padding-bottom: 0.9em; }
 }
 
@@ -64,7 +66,7 @@
 @media (min-width: 1024px) {
   .pl-slips { flex-direction: column; justify-content: space-between; gap: 14px; overflow: visible; margin-inline: 0; padding: 36px 0 24px; scroll-snap-type: none; }
   .pl-slip { flex: none; width: 90%; }
-  .pl-slip:nth-child(2) { align-self: flex-end; }
+  .pl-slip:nth-child(2) { align-self: flex-end; margin-right: 4px; }
   .pl-slip:nth-child(3) { align-self: flex-start; margin-left: 4%; }
 }
 
@@ -75,3 +77,9 @@
 @media (prefers-reduced-motion: reduce) { .pl-stats, .pl-slip { transition: none; } }
 /* Phones: labels never run past the edge. */
 @media (max-width: 639px) { .pl-label { font-size: 11px; letter-spacing: 0.08em; max-width: 12ch; overflow-wrap: anywhere; } }
+/* Phones: the slips stay a swipe row, but exactly as wide as the panel; the first rotated slip clears the padding. */
+@media (max-width: 639px) {
+  .pl-slips { margin-inline: -16px; padding-inline: 20px; scroll-padding-inline: 20px; }
+  .pl-slip { scroll-snap-align: start; }
+  .pl-slip:first-child { margin-left: 8px; }
+}
