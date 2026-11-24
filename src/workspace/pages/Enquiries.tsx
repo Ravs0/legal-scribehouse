@@ -1,13 +1,13 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { ArrowRight, Inbox, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { can, isFeeEarner } from '../access';
 import { repo } from '../data';
 import { MARKET_NAME, SERVICE_LABEL, SERVICES, type Enquiry, type EnquiryStatus, type Service } from '../types';
-import { Empty, ENQUIRY_LABEL, EnquiryBadge, Field, fmtAgo, Loading, NativeSelect, PageHead, Panel, TabBar, useAction, useMe, usePeople, TextInput, TextArea, fresh } from '../components/kit';
+import { Empty, useFormErrors, WsDialogContent, ENQUIRY_LABEL, EnquiryBadge, Field, fmtAgo, Loading, NativeSelect, PageHead, Panel, TabBar, useAction, useMe, usePeople, TextInput, TextArea, fresh } from '../components/kit';
 
 const FILTERS: { id: 'open' | EnquiryStatus | 'all'; label: string }[] = [
   { id: 'open', label: 'Open' },
@@ -25,8 +25,8 @@ const Convert = ({ enquiry, onDone }: { enquiry: Enquiry; onDone: () => void }) 
   const [title, setTitle] = useState('');
   const [service, setService] = useState<Service>('market-entry');
   const [lead, setLead] = useState('');
-  const submit = async (e: FormEvent) => {
-    e.preventDefault();
+  const f = useFormErrors();
+  const submit = async () => {
     const m = await act(() => repo.convertEnquiry(enquiry.id, { client_name: client, title, service, lead_id: lead || undefined }), 'Matter opened from enquiry');
     if (m) {
       onDone();
@@ -34,9 +34,9 @@ const Convert = ({ enquiry, onDone }: { enquiry: Enquiry; onDone: () => void }) 
     }
   };
   return (
-    <form onSubmit={submit} className="grid gap-4">
-      <Field label="Client" hint="Matches an existing client by name, or creates a new one."><TextInput required value={client} onChange={(e) => setClient(e.target.value)} /></Field>
-      <Field label="Matter title"><TextInput required value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g. Thailand distribution agreement" /></Field>
+    <form {...f.form(() => ({ client: !client.trim() && 'Enter the client name.', title: !title.trim() && 'Enter a matter title.' }), submit)} className="grid gap-4">
+      <Field label="Client" hint="Matches an existing client by name, or creates a new one." error={f.error('client')}><TextInput {...f.field('client')} value={client} onChange={(e) => setClient(e.target.value)} /></Field>
+      <Field label="Matter title" error={f.error('title')}><TextInput {...f.field('title')} value={title} onChange={(e) => setTitle(e.target.value)} placeholder="e.g. Thailand distribution agreement" /></Field>
       <div className="grid gap-4 sm:grid-cols-2">
         <Field label="Service">
           <NativeSelect className="w-full" value={service} onChange={(e) => setService(e.target.value as Service)}>
@@ -81,7 +81,7 @@ const Enquiries = () => {
 
       <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-4 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)]">
         <Panel>
-          {list.isLoading ? <Loading rows={4} /> : rows.length === 0 ? <Empty icon={Inbox}>No enquiries here.</Empty> : (
+          {list.isLoading ? <Loading rows={4} /> : rows.length === 0 ? <Empty icon={Inbox} title="No enquiries here" help="New website enquiries land in this list." /> : (
             <ul className="divide-y divide-border">
               {rows.map((e) => (
                 <li key={e.id}>
@@ -142,13 +142,13 @@ const Enquiries = () => {
 
       {current && (
         <Dialog open={converting} onOpenChange={setConverting}>
-          <DialogContent className="max-w-[520px]">
+          <WsDialogContent className="max-w-[520px]">
             <DialogHeader>
               <DialogTitle>Open a matter from this enquiry</DialogTitle>
               <DialogDescription>The enquiry's markets and message carry over; the enquiry is marked converted.</DialogDescription>
             </DialogHeader>
             <Convert enquiry={current} onDone={() => setConverting(false)} />
-          </DialogContent>
+          </WsDialogContent>
         </Dialog>
       )}
     </div>

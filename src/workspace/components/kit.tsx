@@ -1,5 +1,6 @@
-import { forwardRef, ReactNode } from 'react';
-import { ChevronDown, Inbox, type LucideIcon } from 'lucide-react';
+import { FormEvent, forwardRef, ReactNode, useId, useState } from 'react';
+import { AlertCircle, ChevronDown, Inbox, type LucideIcon } from 'lucide-react';
+import { DialogContent } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
@@ -12,6 +13,7 @@ import type { ContentStatus, EnquiryStatus, Person, Stage, TaskStatus } from '..
 import { STAGE_LABEL } from '../types';
 import { ROLE_LABEL } from '../access';
 import { useSession } from '../session';
+import '../workspace.css';
 
 /** The demo adapter mutates its stored rows in place, so react-query would see "no change" after a write. Copy rows on read. */
 export const fresh = <T extends object>(p: Promise<T[]>) => p.then((rows) => rows.map((r) => ({ ...r })));
@@ -133,12 +135,15 @@ export const PanelLink = ({ to, children }: { to: string; children: ReactNode })
   <Link to={to} className="type-label-md rounded-full px-2 py-1 text-primary-ink hover:bg-primary/10">{children}</Link>
 );
 
-export const Empty = ({ children, icon: Icon = Inbox }: { children: ReactNode; icon?: LucideIcon }) => (
-  <div className="flex flex-col items-center gap-2.5 px-4 py-10 text-center">
-    <span className="icon-well inline-flex h-10 w-10 items-center justify-center rounded-full text-muted-foreground">
+/** Empty state: icon, a one-line title, one line of help and (where obvious) an action. Always centred. */
+export const Empty = ({ title, help, action, icon: Icon = Inbox }: { title: ReactNode; help?: ReactNode; action?: ReactNode; icon?: LucideIcon }) => (
+  <div className="flex flex-col items-center gap-1 px-4 py-10 text-center">
+    <span className="icon-well mb-2 inline-flex h-10 w-10 items-center justify-center rounded-full text-muted-foreground">
       <Icon className="h-[18px] w-[18px]" strokeWidth={1.75} aria-hidden="true" />
     </span>
-    <p className="type-body-sm max-w-[34ch] text-muted-foreground">{children}</p>
+    <p className="type-label-lg max-w-[40ch] text-foreground">{title}</p>
+    {help && <p className="type-body-sm max-w-[44ch] text-muted-foreground">{help}</p>}
+    {action && <div className="mt-3">{action}</div>}
   </div>
 );
 
@@ -167,7 +172,7 @@ export const Stat = ({ label, value, hint }: { label: string; value: ReactNode; 
 
 /* ---------- Fields: one family (40px, 10px radius, 14px text) ---------- */
 export const TextInput = forwardRef<HTMLInputElement, React.ComponentProps<'input'>>(({ className, ...p }, ref) => (
-  <Input ref={ref} {...p} className={cn('h-10 rounded-[10px] px-3 text-[14px]', className)} />
+  <Input ref={ref} {...p} className={cn('h-10 rounded-[10px] px-3 text-[14px]', p.type === 'date' && 'ws-date', className)} />
 ));
 TextInput.displayName = 'TextInput';
 
@@ -177,32 +182,89 @@ export const TextArea = forwardRef<HTMLTextAreaElement, React.ComponentProps<'te
 TextArea.displayName = 'TextArea';
 
 /** Native select in the same field family as inputs. `className` goes on the wrapper (width, flex). */
-export const NativeSelect = ({ className, compact, ...p }: React.SelectHTMLAttributes<HTMLSelectElement> & { compact?: boolean }) => (
+export const NativeSelect = ({ className, compact: _compact, ...p }: React.SelectHTMLAttributes<HTMLSelectElement> & { compact?: boolean }) => (
   <span className={cn('relative inline-flex min-w-0', className)}>
     <select
       {...p}
       className={cn(
         'recessed w-full min-w-0 cursor-pointer appearance-none truncate rounded-[10px] pl-3 pr-8 text-[14px] text-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-40',
-        compact ? 'h-8 text-[13px]' : 'h-10',
+        'h-10',
       )}
     />
     <ChevronDown className="pointer-events-none absolute right-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" aria-hidden="true" />
   </span>
 );
 
-export const Field = ({ label, children, hint }: { label: string; children: ReactNode; hint?: string }) => (
+export type FieldError = { id: string; text: string };
+
+/** Inline error: 13px destructive text with an alert icon, announced by screen readers. */
+export const FieldMessage = ({ error }: { error: FieldError }) => (
+  <span id={error.id} role="alert" className="mt-1.5 flex items-start gap-1.5 text-[13px] leading-[18px] text-destructive">
+    <AlertCircle className="mt-px h-4 w-4 shrink-0" aria-hidden="true" />
+    {error.text}
+  </span>
+);
+
+export const Field = ({ label, children, hint, error }: { label: string; children: ReactNode; hint?: string; error?: FieldError }) => (
   <label className="block">
     <span className="type-label-md mb-1.5 block">{label}</span>
     {children}
-    {hint && <span className="type-meta mt-1.5 block text-muted-foreground">{hint}</span>}
+    {error ? <FieldMessage error={error} /> : hint && <span className="type-meta mt-1.5 block text-muted-foreground">{hint}</span>}
   </label>
+);
+
+/**
+ * Inline validation for every workspace form (no native bubbles). Give each field `{...f.field('name')}`, wrap with
+ * `<form {...f.form(() => ({ name: value.trim() ? '' : 'Enter a name.' }), onValid)}>` and pass `error={f.error('name')}` to Field.
+ * Submit shows every error and focuses the first invalid field in page order; editing a field clears its error.
+ */
+export const useFormErrors = () => {
+  const uid = useId();
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const errId = (name: string) => `${uid}-${name}-err`;
+  const error = (name: string): FieldError | undefined => (errors[name] ? { id: errId(name), text: errors[name] } : undefined);
+  const field = (name: string) => ({
+    'data-field': name,
+    'aria-invalid': errors[name] ? (true as const) : undefined,
+    'aria-describedby': errors[name] ? errId(name) : undefined,
+  });
+  const clear = (name: string) => setErrors((e) => (e[name] ? Object.fromEntries(Object.entries(e).filter(([k]) => k !== name)) : e));
+  const reset = () => setErrors({});
+  /** Validates a rule map ({ field: message | '' }); returns true when clean. Focuses the first invalid field inside `scope`. */
+  const check = (rules: Record<string, string | false | undefined>, scope: ParentNode = document) => {
+    const bad = Object.fromEntries(Object.entries(rules).filter(([, m]) => !!m)) as Record<string, string>;
+    setErrors(bad);
+    const names = Object.keys(bad);
+    if (!names.length) return true;
+    const els = Array.from(scope.querySelectorAll<HTMLElement>('[data-field]'));
+    els.find((el) => names.includes(el.dataset.field ?? ''))?.focus();
+    return false;
+  };
+  const form = (rules: () => Record<string, string | false | undefined>, onValid: (e: FormEvent<HTMLFormElement>) => void | Promise<void>) => ({
+    noValidate: true,
+    onSubmit: (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+      if (check(rules(), e.currentTarget)) void onValid(e);
+    },
+    onChange: (e: FormEvent<HTMLFormElement>) => {
+      const n = (e.target as HTMLElement).dataset?.field;
+      if (n) clear(n);
+    },
+  });
+  return { errors, error, field, clear, reset, check, form };
+};
+
+/** Workspace dialog: 14px radius, 24px padding, a 36px (44 on touch) round ghost close button top-right. */
+export const WsDialogContent = ({ className, ...p }: React.ComponentProps<typeof DialogContent>) => (
+  <DialogContent {...p} className={cn('ws-dialog max-h-[calc(100dvh-32px)] w-[calc(100vw-24px)] sm:w-full overflow-y-auto rounded-[14px] p-6 sm:rounded-[14px]', className)} />
 );
 
 /* ---------- Tactile chips and tabs ---------- */
 export const chipClass = (on: boolean, size: 'sm' | 'md' = 'md') =>
   cn(
     'inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-full',
-    size === 'md' ? 'type-label-md h-9 px-3.5' : 'type-meta h-7 px-2.5',
+    size === 'md' ? 'type-label-md h-8 px-3.5' : 'type-meta h-7 px-2.5',
+    'ws-chip',
     on ? 'btn-filled btn-lift text-primary-foreground' : 'btn-raised btn-lift bg-card text-muted-foreground hover:text-foreground',
   );
 

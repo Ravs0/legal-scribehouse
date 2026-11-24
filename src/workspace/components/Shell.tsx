@@ -55,7 +55,7 @@ const UserCard = ({ user, onSignOut }: { user: Person; onSignOut: () => void }) 
       <p className="type-label-md truncate">{user.name}</p>
       <p className="type-meta truncate text-muted-foreground">{ROLE_LABEL[user.role]}</p>
     </div>
-    <Button variant="ghost" size="icon-sm" onClick={onSignOut} aria-label="Sign out">
+    <Button variant="ghost" size="icon-sm" className="ws-icon-btn h-9 w-9" onClick={onSignOut} aria-label="Sign out">
       <LogOut />
     </Button>
   </div>
@@ -118,7 +118,7 @@ export const WorkspaceShell = () => {
           {links}
           <div className="flex items-center justify-between px-5 pb-3 pt-2">
             <Link to="/" className="type-meta text-muted-foreground hover:text-foreground">← Public site</Link>
-            <ThemeKey className="scale-[0.85]" />
+            <ThemeKey />
           </div>
           <UserCard user={user} onSignOut={out} />
         </aside>

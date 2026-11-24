@@ -21,3 +21,33 @@
 tr.ws-row::before { display: none; }
 tr.ws-row { box-shadow: inset 0 0 0 0 transparent; }
 @media (hover: hover) { tr.ws-row:hover { background-color: hsl(var(--foreground) / 0.035); } }
+
+/* Date input: the field family (40px, 10px radius, 12px padding, 14px text) with the native picker kept. */
+.ws-date { appearance: none; -webkit-appearance: none; font: inherit; font-size: 14px; line-height: 20px; display: flex; align-items: center; min-width: 0; text-align: left; }
+.ws-date::-webkit-datetime-edit { padding: 0; }
+.ws-date::-webkit-datetime-edit-fields-wrapper { padding: 0; }
+.ws-date::-webkit-date-and-time-value { text-align: left; min-height: 20px; }
+.ws-date::-webkit-calendar-picker-indicator { margin: 0 -4px 0 4px; padding: 4px; border-radius: 6px; cursor: pointer; opacity: 0.6; transition: opacity 150ms; }
+.ws-date:hover::-webkit-calendar-picker-indicator, .ws-date:focus::-webkit-calendar-picker-indicator { opacity: 0.95; }
+.dark .ws-date::-webkit-calendar-picker-indicator { filter: invert(1); }
+.ws-date:disabled::-webkit-calendar-picker-indicator { opacity: 0.3; cursor: not-allowed; }
+
+/* Dialog close: 36px round ghost button (44 on touch). The header leaves room for it. */
+.ws-dialog > button:last-child {
+  position: absolute; right: 12px; top: 12px; width: 36px; height: 36px; border-radius: 9999px; opacity: 1;
+  display: inline-flex; align-items: center; justify-content: center; color: hsl(var(--muted-foreground)); background: transparent;
+  transition: background-color 150ms, color 150ms;
+}
+.ws-dialog > button:last-child > svg { width: 18px; height: 18px; }
+.ws-dialog > button:last-child:hover { background: hsl(var(--foreground) / 0.06); color: hsl(var(--foreground)); }
+.ws-dialog > button:last-child:focus-visible { outline: none; box-shadow: 0 0 0 2px hsl(var(--primary)), 0 0 0 5px hsl(var(--primary) / 0.16); }
+.ws-dialog > :first-child { padding-right: 40px; }
+@media (pointer: coarse) { .ws-dialog > button:last-child { width: 44px; height: 44px; right: 8px; top: 8px; } }
+
+/* Chips: 32px, 44px on touch. */
+@media (pointer: coarse) { .ws-chip { min-height: 44px; } }
+
+/* Icon buttons in the workspace: 36px, 44px on touch; hover is a tint, never a lift. */
+.ws-icon-btn { width: 36px; height: 36px; }
+.ws-icon-btn:hover:not(:disabled) { transform: none; }
+@media (pointer: coarse) { .ws-icon-btn { width: 44px; height: 44px; } }

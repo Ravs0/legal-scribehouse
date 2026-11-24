@@ -1,11 +1,11 @@
-import { FormEvent, useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowRight, Lock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { isStaff, ROLE_LABEL, ROLE_SUMMARY } from '../access';
 import { BACKEND, repo } from '../data';
 import { useSession } from '../session';
-import { Avatar, Field, TextInput } from '../components/kit';
+import { Avatar, Field, TextInput, useFormErrors } from '../components/kit';
 import { DemoBanner, Mark } from '../components/Shell';
 
 const Login = () => {
@@ -22,8 +22,8 @@ const Login = () => {
     nav(next && next.startsWith(role === 'client' ? '/portal' : '/workspace') ? next : role === 'client' ? '/portal' : '/workspace', { replace: true });
   };
 
-  const submit = async (e: FormEvent) => {
-    e.preventDefault();
+  const f = useFormErrors();
+  const submit = async () => {
     setBusy(true);
     setError(null);
     try {
@@ -48,18 +48,18 @@ const Login = () => {
             <Link to="/" className="type-label-md rounded-full px-3 py-1.5 text-muted-foreground hover:bg-foreground/[0.05] hover:text-foreground">← Back to the site</Link>
           </div>
           <div className="grid gap-5 md:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] md:gap-6">
-            <form onSubmit={submit} className="surface-2 flex flex-col rounded-[16px] p-6 md:p-8" aria-labelledby="login-title">
+            <form {...f.form(() => ({ email: !email.trim() ? 'Enter your email address.' : !/^\S+@\S+\.\S+$/.test(email.trim()) && 'Enter a valid email address.', password: BACKEND !== 'demo' && !password && 'Enter your password.' }), submit)} className="surface-2 flex flex-col rounded-[16px] p-6 md:p-8" aria-labelledby="login-title">
               <span className="icon-well inline-flex h-10 w-10 items-center justify-center rounded-[10px] text-primary-ink">
                 <Lock className="h-5 w-5" aria-hidden="true" />
               </span>
               <h1 id="login-title" className="type-headline-sm mt-5">Sign in</h1>
               <p className="type-body-sm mt-1 text-muted-foreground">For the Straitline team and clients with portal access.</p>
               <div className="mt-6 space-y-5">
-                <Field label="Email">
-                  <TextInput type="email" autoComplete="email" required value={email} onChange={(e) => setEmail(e.target.value)} />
+                <Field label="Email" error={f.error('email')}>
+                  <TextInput type="email" autoComplete="email" {...f.field('email')} value={email} onChange={(e) => setEmail(e.target.value)} />
                 </Field>
-                <Field label="Password" hint={BACKEND === 'demo' ? 'Demo mode: any password works for a demo email.' : undefined}>
-                  <TextInput type="password" autoComplete="current-password" required={BACKEND !== 'demo'} value={password} onChange={(e) => setPassword(e.target.value)} />
+                <Field label="Password" hint={BACKEND === 'demo' ? 'Demo mode: any password works for a demo email.' : undefined} error={f.error('password')}>
+                  <TextInput type="password" autoComplete="current-password" {...f.field('password')} value={password} onChange={(e) => setPassword(e.target.value)} />
                 </Field>
               </div>
               {error && <p role="alert" className="type-body-sm mt-4 text-destructive">{error}</p>}

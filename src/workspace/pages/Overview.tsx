@@ -40,7 +40,7 @@ const Overview = () => {
         {isFeeEarner(me.role) && (
           <Panel title="My tasks" action={<PanelLink to="/workspace/matters">All matters</PanelLink>}>
             {tasks.length === 0 ? (
-              <Empty icon={ListChecks}>Nothing assigned to you. Nice.</Empty>
+              <Empty icon={ListChecks} title="Nothing assigned to you" help="Tasks assigned to you will show here." />
             ) : (
               <ul className="divide-y divide-border">
                 {tasks.slice(0, 8).map((t) => {
@@ -77,7 +77,7 @@ const Overview = () => {
         {can.seeEnquiries(me) && (
           <Panel title="Website enquiries" action={<PanelLink to="/workspace/enquiries">Open inbox</PanelLink>}>
             {(enquiries.data ?? []).filter((e) => e.status !== 'declined' && e.status !== 'converted').length === 0 ? (
-              <Empty icon={Inbox}>Inbox clear.</Empty>
+              <Empty icon={Inbox} title="Inbox clear" help="New website enquiries will show here." />
             ) : (
               <ul className="divide-y divide-border">
                 {(enquiries.data ?? []).filter((e) => e.status !== 'declined' && e.status !== 'converted').slice(0, 5).map((e) => (
@@ -96,7 +96,7 @@ const Overview = () => {
 
         {can.writeArticles(me) && (
           <Panel title="Articles" action={<PanelLink to="/workspace/articles">All articles</PanelLink>}>
-            {(articles.data ?? []).length === 0 && <Empty icon={BookOpenText}>No articles yet.</Empty>}
+            {(articles.data ?? []).length === 0 && <Empty icon={BookOpenText} title="No articles yet" help="Drafts and published articles will show here." />}
             <ul className="divide-y divide-border">
               {(articles.data ?? []).slice(0, 5).map((a) => (
                 <li key={a.id} className="ws-row flex items-center gap-3 px-4 py-3">
@@ -113,7 +113,7 @@ const Overview = () => {
         {isFeeEarner(me.role) && (
           <Panel title="Latest on your matters">
             {(updates.data ?? []).length === 0 ? (
-              <Empty icon={MessageSquareText}>No updates yet.</Empty>
+              <Empty icon={MessageSquareText} title="No updates yet" help="Notes, filings and messages will appear here." />
             ) : (
               <ul className="divide-y divide-border">
                 {(updates.data ?? []).slice(0, 6).map((u) => {
@@ -141,7 +141,7 @@ const Overview = () => {
         {isFeeEarner(me.role) && (
           <Panel title="Open matters" className="lg:col-span-2">
             {open.length === 0 ? (
-              <Empty icon={Briefcase}>No open matters.</Empty>
+              <Empty icon={Briefcase} title="No open matters" help="Open matters you work on will show here." />
             ) : (
               <ul className="divide-y divide-border">
                 {open.slice(0, 6).map((m) => (

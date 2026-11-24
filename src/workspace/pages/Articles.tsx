@@ -8,7 +8,7 @@ import { TYPE_META } from '@/lib/insights';
 import { can } from '../access';
 import { repo } from '../data';
 import { MARKET_CODES, MARKET_NAME, type Article, type ContentStatus, type ContentType } from '../types';
-import { ARTICLE_LABEL, ArticleBadge, Chip, Empty, Field, fmtAgo, Loading, NativeSelect, PageHead, Panel, useAction, useMe, usePeople, TextInput, TextArea, fresh } from '../components/kit';
+import { ARTICLE_LABEL, ArticleBadge, Chip, Empty, Field, FieldMessage, useFormErrors, fmtAgo, Loading, NativeSelect, PageHead, Panel, useAction, useMe, usePeople, TextInput, TextArea, fresh } from '../components/kit';
 
 export const ARTICLE_CATEGORIES = ['Market entry', 'Contracts', 'Customs & FTAs', 'Product registration', 'Trademarks & IP', 'Disputes & payment risk'];
 const TYPES: ContentType[] = ['guide', 'briefing', 'post', 'case', 'statute'];
@@ -42,7 +42,7 @@ export const ArticleList = () => {
         ))}
       </div>
       <Panel>
-        {list.isLoading ? <Loading rows={4} /> : rows.length === 0 ? <Empty icon={BookOpenText}>No articles here.</Empty> : (
+        {list.isLoading ? <Loading rows={4} /> : rows.length === 0 ? <Empty icon={BookOpenText} title="No articles here" help="Articles with this status will appear here." /> : (
           <ul className="divide-y divide-border">
             {rows.map((a) => (
               <li key={a.id}>
@@ -85,6 +85,7 @@ export const ArticleEditor = () => {
   const [a, setA] = useState<Article | null>(null);
   const [dirty, setDirty] = useState(false);
   const [preview, setPreview] = useState(false);
+  const f = useFormErrors();
   useEffect(() => {
     if (q.data) {
       setA(q.data);
@@ -94,16 +95,22 @@ export const ArticleEditor = () => {
   const html = useMemo(() => (a ? renderArticle(a.content) : ''), [a]);
 
   if (q.isLoading || (!a && q.data)) return <Panel><Loading rows={5} /></Panel>;
-  if (!a) return <Panel><Empty icon={BookOpenText}>Article not found.</Empty></Panel>;
+  if (!a) return <Panel><Empty icon={BookOpenText} title="Article not found" help="It may have been deleted or moved." /></Panel>;
 
   const editable = can.editArticle(me, a);
   const senior = can.publishArticles(me);
   const set = <K extends keyof Article>(k: K, v: Article[K]) => {
     setA((x) => (x ? { ...x, [k]: v } : x));
     setDirty(true);
+    if (k === 'title') f.clear('title');
   };
-  const save = () => act(() => repo.saveArticle(a), 'Saved').then(() => setDirty(false));
+  const titleOk = () => {
+    if (preview) setPreview(false);
+    return f.check({ title: !a.title.trim() && 'Enter a title before saving.' });
+  };
+  const save = () => (!titleOk() ? Promise.resolve() : act(() => repo.saveArticle(a), 'Saved').then(() => setDirty(false)));
   const status = async (s: ContentStatus, msg: string) => {
+    if (editable && !titleOk()) return;
     if (dirty && editable) await repo.saveArticle(a).catch(() => undefined);
     await act(() => repo.setArticleStatus(a.id, s), msg);
     setDirty(false);
@@ -137,7 +144,10 @@ export const ArticleEditor = () => {
 
       <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div className="min-w-0 space-y-4">
-          <TextInput aria-label="Title" value={a.title} disabled={!editable} onChange={(e) => set('title', e.target.value)} className="type-headline-md h-auto rounded-none border-0 !bg-transparent !bg-none px-0 py-1 text-[26px] !shadow-none" />
+          <div>
+            <TextInput aria-label="Title" {...f.field('title')} value={a.title} disabled={!editable} onChange={(e) => set('title', e.target.value)} className="type-headline-md h-auto rounded-none border-0 !bg-transparent !bg-none px-0 py-1 text-[26px] !shadow-none aria-[invalid=true]:rounded-[10px] aria-[invalid=true]:px-3 aria-[invalid=true]:!shadow-[0_0_0_2px_hsl(var(--destructive)),0_0_0_6px_hsl(var(--destructive)/0.16)]" />
+            {f.error('title') && <FieldMessage error={f.error('title')!} />}
+          </div>
           <TextArea aria-label="Summary" rows={2} className="resize-none" value={a.summary} disabled={!editable} onChange={(e) => set('summary', e.target.value)} placeholder="One or two sentences shown on cards and in search results." />
           {preview ? (
             <article className="prose-article surface-1 min-h-[480px] rounded-[14px] px-5 py-6 sm:px-8 sm:py-8" dangerouslySetInnerHTML={{ __html: html }} />
