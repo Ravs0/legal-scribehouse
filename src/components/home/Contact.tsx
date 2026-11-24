@@ -240,7 +240,7 @@ export const Contact = () => {
                               />
                               <span
                                 className={cn(
-                                  'btn-lift type-label-md flex h-10 cursor-pointer select-none items-center justify-center whitespace-nowrap rounded-full px-3 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ring',
+                                  'type-label-md flex h-11 cursor-pointer select-none items-center justify-center whitespace-nowrap rounded-full px-3 peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-ring',
                                   field.value === st
                                     ? 'btn-filled bg-primary text-primary-foreground'
                                     : 'btn-raised bg-card text-foreground',
@@ -338,7 +338,7 @@ const ContactDetails = ({
         <div className="min-w-0 text-left">
           <p className="type-label-sm text-muted-foreground">{r.label}</p>
           {r.href ? (
-            <a href={r.href} className="hit type-title-sm relative block hover:text-primary-ink">
+            <a href={r.href} className="type-title-sm flex min-h-11 items-center hover:text-primary-ink">
               {r.value}
             </a>
           ) : (

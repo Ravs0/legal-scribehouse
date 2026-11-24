@@ -7,7 +7,7 @@ import { Wordmark } from './Header';
 import { Reveal } from '@/components/motion/Reveal';
 
 // v3.7: 44px rows on touch widths (<1024), compact list from 1024.
-const linkClass = 'type-body-sm flex min-h-11 items-center rounded-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring lg:min-h-0 lg:py-1.5';
+const linkClass = 'type-body-sm flex min-h-11 items-center rounded-sm text-muted-foreground transition-colors hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring lg:min-h-0 lg:py-1.5 [@media(pointer:coarse)]:min-h-11';
 
 const Footer = () => (
   <footer className="band-ink relative overflow-hidden">
@@ -91,7 +91,7 @@ const Footer = () => (
         <p className="type-body-sm text-muted-foreground">
           © {new Date().getFullYear()} {SITE.name}
         </p>
-        <a href="#top" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); }} className="btn-lift btn-raised type-label-md inline-flex h-9 items-center gap-1.5 rounded-full bg-card px-4 text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
+        <a href="#top" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' }); }} className="btn-lift type-label-md inline-flex h-10 items-center gap-1.5 rounded-full bg-white/[0.06] px-4 text-[#F4EEE6] shadow-[inset_0_0_0_1px_rgb(255_255_255/0.15)] transition-colors hover:bg-white/10 [@media(pointer:coarse)]:h-11 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
           Back to top <ArrowUp className="h-3.5 w-3.5" aria-hidden="true" />
         </a>
       </div>

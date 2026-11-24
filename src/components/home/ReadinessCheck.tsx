@@ -19,7 +19,8 @@ const LEGEND: { stamp: keyof typeof STATUS; range: string; copy: string }[] = [
   { stamp: 'CLEARED', range: '10–12', copy: 'Ready. A quick review, then go.' },
 ];
 
-/** iOS-style switch: track 44×26, thumb 20, 18px travel on a spring. */
+/** iOS-style switch: the visible track is 44×26 (thumb 20, 18px travel on a spring); the button around it is 44×44 so
+ *  the whole hit area meets the touch minimum without changing the look. */
 const Toggle = ({ checked, onChange, labelledBy, describedBy }: { checked: boolean; onChange: (v: boolean) => void; labelledBy: string; describedBy: string }) => (
   <button
     type="button"
@@ -31,20 +32,22 @@ const Toggle = ({ checked, onChange, labelledBy, describedBy }: { checked: boole
       e.stopPropagation();
       onChange(!checked);
     }}
-    className="press-soft hit group relative h-[26px] w-11 shrink-0 rounded-full p-[3px] transition-[background-color,transform] duration-200"
-    style={{
-      background: checked ? 'hsl(var(--success))' : 'hsl(var(--input) / 0.42)',
-      backgroundImage: 'linear-gradient(to bottom, hsl(0 0% 0% / .10), transparent 60%)',
-      boxShadow: 'inset 0 1px 2px hsl(0 0% 0% / .16), inset 0 0 0 1px hsl(0 0% 0% / .06), inset 0 -1px 0 hsl(0 0% 100% / .35)',
-    }}
+    className="press-soft group relative flex h-11 w-11 shrink-0 items-center justify-center rounded-full"
   >
     <span
       aria-hidden="true"
-      className="pebble-thumb block h-5 w-5 rounded-full transition-[transform,width] [transition-duration:220ms] [transition-timing-function:cubic-bezier(0.34,1.2,0.64,1)] group-active:w-6"
+      className="block h-[26px] w-11 rounded-full p-[3px] transition-[background-color] duration-200"
       style={{
-        transform: `translateX(${checked ? 18 : 0}px)`,
+        background: checked ? 'hsl(var(--success))' : 'hsl(var(--input) / 0.42)',
+        backgroundImage: 'linear-gradient(to bottom, hsl(0 0% 0% / .10), transparent 60%)',
+        boxShadow: 'inset 0 1px 2px hsl(0 0% 0% / .16), inset 0 0 0 1px hsl(0 0% 0% / .06), inset 0 -1px 0 hsl(0 0% 100% / .35)',
       }}
-    />
+    >
+      <span
+        className="pebble-thumb block h-5 w-5 rounded-full transition-[transform,width] [transition-duration:220ms] [transition-timing-function:cubic-bezier(0.34,1.2,0.64,1)] group-active:w-6"
+        style={{ transform: `translateX(${checked ? 18 : 0}px)` }}
+      />
+    </span>
   </button>
 );
 
@@ -149,7 +152,7 @@ export const ReadinessCheck = () => {
                 <CrateScene tag={status.color} score={score} />
               </div>
 
-              <div className="order-2 px-3 pt-4 lg:order-none lg:px-1">
+              <div className="order-2 pt-4 lg:order-none">
                 <div className="flex items-center justify-between gap-3">
                   <h3 className="type-headline-sm">Export readiness</h3>
                   <span
@@ -172,7 +175,7 @@ export const ReadinessCheck = () => {
                 </div>
               </div>
 
-              <p className="type-body-sm order-4 mx-3 mt-4 flex min-h-[60px] items-center rounded-[10px] bg-surface-container-low px-3.5 py-2.5 text-muted-foreground shadow-[inset_0_0_0_1px_hsl(var(--outline-variant)/0.7)] lg:order-none lg:mx-1">
+              <p className="type-body-sm order-4 mt-4 flex min-h-[60px] items-center rounded-[10px] bg-surface-container-low px-3.5 py-2.5 text-muted-foreground shadow-[inset_0_0_0_1px_hsl(var(--outline-variant)/0.7)] lg:order-none">
                 <span>
                   {gaps.length ? (
                     <>
@@ -187,7 +190,7 @@ export const ReadinessCheck = () => {
               </p>
 
               {/* The score legend (was the separate "How to read your score" card). */}
-              <div className="order-5 mx-3 mt-4 border-t border-outline-variant pt-4 lg:order-none lg:mx-1">
+              <div className="order-5 mt-4 border-t border-outline-variant pt-4 lg:order-none">
                 <p className="sr-only">How to read your score</p>
                 <ul className="space-y-2.5">
                   {LEGEND.map((l) => (
@@ -205,10 +208,10 @@ export const ReadinessCheck = () => {
                 </ul>
               </div>
 
-              <div className="order-6 px-3 pb-2 pt-5 lg:order-none lg:mt-auto lg:px-1 lg:pb-0">
+              <div className="order-6 pb-2 pt-5 lg:order-none lg:mt-auto lg:pb-0">
                 {/* One column below 380px so "Book a free call" never spills out of its pill. */}
                 <div className="grid grid-cols-1 gap-2 min-[380px]:grid-cols-2">
-                  <Button onClick={sendResult} className="px-3">
+                  <Button onClick={sendResult}>
                     Book a free call <ArrowRight aria-hidden="true" />
                   </Button>
                   <Button variant="outline" onClick={() => setOn(READINESS_QUESTIONS.map(() => true))}>
@@ -219,7 +222,7 @@ export const ReadinessCheck = () => {
                   <button
                     type="button"
                     onClick={() => setOn(READINESS_QUESTIONS.map(() => false))}
-                    className="btn-raised btn-lift hit type-label-md relative h-8 shrink-0 rounded-full bg-card px-3.5 text-foreground"
+                    className="btn-raised btn-lift type-label-md relative h-10 shrink-0 rounded-full bg-card px-4 [@media(pointer:coarse)]:h-11 text-foreground"
                   >
                     Reset
                   </button>
@@ -229,7 +232,7 @@ export const ReadinessCheck = () => {
             </div>
 
             <div className="contents lg:col-span-7 lg:flex lg:flex-col">
-              <ul className="order-3 mt-4 divide-y divide-outline-variant px-3 lg:order-none lg:mt-0 lg:flex lg:flex-1 lg:flex-col lg:px-0">
+              <ul className="order-3 mt-4 divide-y divide-outline-variant lg:order-none lg:mt-0 lg:flex lg:flex-1 lg:flex-col lg:px-0">
                 {READINESS_QUESTIONS.map((q, i) => (
                   <li
                     key={q.id}

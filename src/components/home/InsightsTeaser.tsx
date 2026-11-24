@@ -64,9 +64,9 @@ export const InsightsTeaser = () => {
             ))}
           </div>
         ) : latest.length === 0 ? (
-          <ul className="after-heading stack-gap grid md:grid-cols-3">
+          <ul className="after-heading stack-gap grid md:grid-cols-3 max-sm:no-scrollbar max-sm:-mx-4 max-sm:flex max-sm:snap-x max-sm:snap-mandatory max-sm:overflow-x-auto max-sm:scroll-px-4 max-sm:px-4 max-sm:pb-2">
             {UPCOMING.map((g, i) => (
-              <Reveal as="li" key={g.title} index={i}>
+              <Reveal as="li" key={g.title} index={i} className="max-sm:w-[85vw] max-sm:shrink-0 max-sm:snap-start">
                 <article className="surface-1 card-shell h-full rounded-[12px]">
                   <CardHeader icon={g.icon} title={g.title} meta={g.meta} />
                   <p className="card-body type-body-md text-muted-foreground">{g.copy}</p>
@@ -79,9 +79,9 @@ export const InsightsTeaser = () => {
             ))}
           </ul>
         ) : (
-          <ul className="after-heading stack-gap grid md:grid-cols-3">
+          <ul className="after-heading stack-gap grid md:grid-cols-3 max-sm:no-scrollbar max-sm:-mx-4 max-sm:flex max-sm:snap-x max-sm:snap-mandatory max-sm:overflow-x-auto max-sm:scroll-px-4 max-sm:px-4 max-sm:pb-2">
             {latest.map((post, i) => (
-              <Reveal as="li" key={post.id} index={i}>
+              <Reveal as="li" key={post.id} index={i} className="max-sm:w-[85vw] max-sm:shrink-0 max-sm:snap-start">
                 <PostCard post={post} />
               </Reveal>
             ))}
