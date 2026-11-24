@@ -104,7 +104,7 @@ const Enquiries = () => {
           <Panel title={current.company || current.name} action={<EnquiryBadge status={current.status} />}>
             <div className="space-y-5 p-4 sm:p-5">
               <dl className="type-body-sm grid grid-cols-[104px_minmax(0,1fr)] gap-x-3 gap-y-2.5 sm:grid-cols-[120px_minmax(0,1fr)]">
-                <dt className="text-muted-foreground">From</dt><dd>{current.name} · <a href={`mailto:${current.email}`} className="text-primary-ink">{current.email}</a></dd>
+                <dt className="text-muted-foreground">From</dt><dd>{current.name} · <a href={`mailto:${current.email}`} className="relative hit text-primary-ink">{current.email}</a></dd>
                 <dt className="text-muted-foreground">Exporting from</dt><dd>{current.origin || '—'}</dd>
                 <dt className="text-muted-foreground">Markets</dt><dd>{current.markets.map((c) => MARKET_NAME[c] ?? c).join(', ') || '—'}</dd>
                 <dt className="text-muted-foreground">Product</dt><dd>{current.category || '—'}</dd>

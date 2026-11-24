@@ -51,14 +51,14 @@ const Overview = () => {
                         type="button"
                         aria-label={`Mark "${t.title}" done`}
                         onClick={() => act(() => repo.updateTask(t.id, { status: 'done' }), 'Task done')}
-                        className="check-well flex h-5 w-5 shrink-0 items-center justify-center rounded-[5px] text-transparent hover:text-muted-foreground"
+                        className="check-well hit relative flex h-5 w-5 shrink-0 items-center justify-center rounded-[5px] text-transparent hover:text-muted-foreground"
                       >
                         <Check className="h-3.5 w-3.5" strokeWidth={3} />
                       </button>
                       <div className="min-w-0 flex-1">
                         <p className="type-label-lg truncate">{t.title}</p>
                         {m && (
-                          <Link to={`/workspace/matters/${m.id}`} className="type-meta text-muted-foreground hover:text-primary-ink">
+                          <Link to={`/workspace/matters/${m.id}`} className="type-meta relative hit text-muted-foreground hover:text-primary-ink">
                             {m.reference} · {m.title}
                           </Link>
                         )}
@@ -100,7 +100,7 @@ const Overview = () => {
             <ul className="divide-y divide-border">
               {(articles.data ?? []).slice(0, 5).map((a) => (
                 <li key={a.id} className="ws-row flex items-center gap-3 px-4 py-3">
-                  <Link to={`/workspace/articles/${a.id}`} className="type-label-lg min-w-0 flex-1 truncate hover:text-primary-ink">{a.title}</Link>
+                  <Link to={`/workspace/articles/${a.id}`} className="type-label-lg -my-3 flex min-h-11 min-w-0 flex-1 items-center hover:text-primary-ink"><span className="truncate">{a.title}</span></Link>
                   <ArticleBadge status={a.status} />
                 </li>
               ))}

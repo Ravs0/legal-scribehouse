@@ -39,7 +39,7 @@ export const Team = () => {
       </Panel>
 
       <Panel title="Access levels">
-        <div className="ws-scroll overflow-x-auto">
+        <div className="ws-scroll ws-fade-x overflow-x-auto">
           <table className="w-full min-w-[720px] text-left">
             <thead>
               <tr className="type-label-md border-b border-border bg-foreground/[0.02] text-muted-foreground">

@@ -340,7 +340,7 @@ const MatterDetail = () => {
   return (
     <div className="space-y-6">
       <div className="space-y-4">
-        <Link to="/workspace/matters" className="type-label-md -ml-1 inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-muted-foreground hover:bg-foreground/[0.05] hover:text-foreground"><ArrowLeft className="h-4 w-4" /> Matters</Link>
+        <Link to="/workspace/matters" className="type-label-md -ml-1 inline-flex min-h-11 items-center gap-1.5 rounded-full px-2 py-1 sm:min-h-0 text-muted-foreground hover:bg-foreground/[0.05] hover:text-foreground"><ArrowLeft className="h-4 w-4" /> Matters</Link>
         <PageHead
           eyebrow={<>{m.reference} · {client?.name}</>}
           title={m.title}
@@ -387,7 +387,7 @@ const MatterDetail = () => {
                     <dt className="text-muted-foreground">Fixed fee</dt>
                     <dd>
                       {feeDraft === null ? (
-                        <button type="button" className="tabular hover:text-primary-ink" onClick={() => setFeeDraft(String(fee?.fee_amount ?? ''))}>{fmtMoney(fee?.fee_amount, fee?.fee_currency)}</button>
+                        <button type="button" className="tabular relative hit hover:text-primary-ink" onClick={() => setFeeDraft(String(fee?.fee_amount ?? ''))}>{fmtMoney(fee?.fee_amount, fee?.fee_currency)}</button>
                       ) : (
                         <form className="flex flex-col items-end" {...ff.form(() => ({ fee: !!feeDraft && !(Number(feeDraft) >= 0) && 'Enter an amount of 0 or more.' }), async () => { await act(() => repo.setFee(m.id, feeDraft ? Number(feeDraft) : null, m.fee_currency), 'Fee saved'); setFeeDraft(null); })}>
                           <div className="flex items-center gap-1">
@@ -411,7 +411,7 @@ const MatterDetail = () => {
               <div className="type-body-sm space-y-1 px-4 py-3">
                 <p className="type-label-lg">{client.name}</p>
                 <p className="text-muted-foreground">{[client.industry, client.country].filter(Boolean).join(' · ')}</p>
-                {client.contact_name && <p>{client.contact_name}{client.contact_email && <> · <a className="text-primary-ink" href={`mailto:${client.contact_email}`}>{client.contact_email}</a></>}</p>}
+                {client.contact_name && <p>{client.contact_name}{client.contact_email && <> · <a className="relative hit text-primary-ink" href={`mailto:${client.contact_email}`}>{client.contact_email}</a></>}</p>}
                 {client.notes && <p className="mt-2 rounded-[8px] bg-warning/10 px-2.5 py-2 text-warning"><Lock className="mr-1 inline h-3 w-3" aria-hidden="true" />{client.notes}</p>}
               </div>
             </Panel>

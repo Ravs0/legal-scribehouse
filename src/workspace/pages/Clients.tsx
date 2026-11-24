@@ -36,7 +36,7 @@ const Clients = () => {
             <Panel key={c.id} title={c.name} action={<Badge variant={c.status === 'active' ? 'success' : c.status === 'prospect' ? 'warning' : 'secondary'}>{c.status[0].toUpperCase() + c.status.slice(1)}</Badge>}>
               <div className="type-body-sm px-4 py-3.5 text-muted-foreground">
                 {[c.industry, c.country].filter(Boolean).join(' · ') || '—'}
-                {c.contact_name && <p className="mt-1 text-foreground">{c.contact_name} {c.contact_email && <a className="text-primary-ink" href={`mailto:${c.contact_email}`}>· {c.contact_email}</a>}</p>}
+                {c.contact_name && <p className="mt-1 text-foreground">{c.contact_name} {c.contact_email && <a className="relative hit text-primary-ink" href={`mailto:${c.contact_email}`}>· {c.contact_email}</a>}</p>}
               </div>
               {ms.length === 0 ? <div className="border-t border-border"><Empty icon={Building2} title="No matters yet" help="Matters opened for this client appear here." /></div> : (
                 <ul className="divide-y divide-border border-t border-border">

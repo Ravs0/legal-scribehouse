@@ -141,7 +141,26 @@ const Matters = () => {
         ) : rows.length === 0 ? (
           <Empty icon={Briefcase} title="No matters match these filters" help="Try a different stage or service." />
         ) : (
-          <div className="overflow-x-auto">
+          <>
+          <ul className="divide-y divide-border sm:hidden">
+            {rows.map((m) => (
+              <li key={m.id}>
+                <Link to={`/workspace/matters/${m.id}`} className="ws-row block min-h-11 px-4 py-3">
+                  <span className="flex items-center justify-between gap-3">
+                    <span className="type-mono-md text-muted-foreground">{m.reference}</span>
+                    <StageBadge stage={m.stage} />
+                  </span>
+                  <span className="type-label-lg mt-1 block">{m.title}</span>
+                  <span className="type-meta mt-0.5 block text-muted-foreground">{clients.data?.find((c) => c.id === m.client_id)?.name} · {SERVICE_LABEL[m.service]}</span>
+                  <span className="type-meta mt-1.5 flex items-center justify-between gap-3">
+                    <span className="min-w-0 truncate">{people.data?.find((p) => p.id === m.lead_id)?.name ?? '—'}</span>
+                    <DueLabel date={m.due_date} done={m.stage === 'completed' || m.stage === 'closed'} />
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <div className="hidden overflow-x-auto sm:block">
             <table className="w-full min-w-[760px] text-left">
               <thead className="type-label-md bg-foreground/[0.02] text-muted-foreground">
                 <tr className="border-b border-border">
@@ -170,6 +189,7 @@ const Matters = () => {
               </tbody>
             </table>
           </div>
+          </>
         )}
       </Panel>
       {can.openMatter(me) && <NewMatterDialog open={creating} onOpenChange={setCreating} />}

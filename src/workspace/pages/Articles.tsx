@@ -118,7 +118,7 @@ export const ArticleEditor = () => {
 
   return (
     <div className="space-y-6">
-      <Link to="/workspace/articles" className="type-label-md -ml-1 inline-flex items-center gap-1.5 rounded-full px-2 py-1 text-muted-foreground hover:bg-foreground/[0.05] hover:text-foreground"><ArrowLeft className="h-4 w-4" /> Articles</Link>
+      <Link to="/workspace/articles" className="type-label-md -ml-1 inline-flex min-h-11 items-center gap-1.5 rounded-full px-2 py-1 sm:min-h-0 text-muted-foreground hover:bg-foreground/[0.05] hover:text-foreground"><ArrowLeft className="h-4 w-4" /> Articles</Link>
       <div className="surface-1 flex flex-wrap items-center justify-between gap-x-4 gap-y-3 rounded-[14px] px-4 py-3">
         <div className="flex items-center gap-3">
           <ArticleBadge status={a.status} />

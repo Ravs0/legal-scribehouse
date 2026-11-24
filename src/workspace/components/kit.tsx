@@ -132,7 +132,7 @@ export const Panel = ({ title, action, children, className }: { title?: ReactNod
 
 /** Small link used in panel headers. */
 export const PanelLink = ({ to, children }: { to: string; children: ReactNode }) => (
-  <Link to={to} className="type-label-md rounded-full px-2 py-1 text-primary-ink hover:bg-primary/10">{children}</Link>
+  <Link to={to} className="type-label-md relative hit rounded-full px-2 py-1 text-primary-ink hover:bg-primary/10">{children}</Link>
 );
 
 /** Empty state: icon, a one-line title, one line of help and (where obvious) an action. Always centred. */
@@ -274,7 +274,7 @@ export const Chip = ({ on, size = 'md', className, children, ...p }: { on: boole
 
 /** Tabs: role=tab buttons. Active is the orange pill, inactive the raised pill. */
 export const TabBar = ({ tabs, value, onChange, label }: { tabs: { id: string; label: ReactNode; count?: number }[]; value: string; onChange: (id: string) => void; label: string }) => (
-  <div role="tablist" aria-label={label} className="flex flex-wrap gap-2">
+  <div role="tablist" aria-label={label} className="ws-tabs flex gap-2 overflow-x-auto sm:flex-wrap sm:overflow-visible">
     {tabs.map((t) => (
       <button key={t.id} role="tab" type="button" aria-selected={value === t.id} onClick={() => onChange(t.id)} className={chipClass(value === t.id)}>
         {t.label}

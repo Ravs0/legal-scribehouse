@@ -22,7 +22,7 @@ const NAV: { to: string; label: string; icon: typeof Briefcase; show: (u: Person
 ];
 
 export const Mark = ({ label = 'Workspace', to = '/workspace' }: { label?: string; to?: string }) => (
-  <Link to={to} className="flex min-w-0 items-center gap-2.5">
+  <Link to={to} className="flex min-h-11 min-w-0 items-center gap-2.5">
     <span aria-hidden="true" className="btn-filled flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] font-display text-[15px] font-semibold text-primary-foreground">S</span>
     <span className="font-display text-[17px] font-semibold leading-none tracking-[-0.02em]">Straitline</span>
     <span className="type-meta rounded-full border border-border px-2 py-0.5 text-muted-foreground">{label}</span>
@@ -32,17 +32,18 @@ export const Mark = ({ label = 'Workspace', to = '/workspace' }: { label?: strin
 export const DemoBanner = () => {
   if (BACKEND !== 'demo') return null;
   return (
-    <div className="type-meta flex flex-wrap items-center justify-center gap-x-3 gap-y-1 bg-primary/[0.12] px-4 py-1.5 text-center text-primary-ink">
-      Demo mode: fictional data, stored only in this browser.
+    <div className="type-meta flex items-center justify-center gap-x-3 bg-primary/[0.12] px-4 py-1.5 text-center text-primary-ink max-sm:min-h-11 max-sm:justify-between max-sm:py-0 sm:flex-wrap sm:gap-y-1">
+      <span className="min-w-0 truncate max-sm:hidden">Demo mode: fictional data, stored only in this browser.</span>
+      <span className="min-w-0 truncate sm:hidden">Demo data · stored in this browser</span>
       <button
         type="button"
-        className="inline-flex items-center gap-1 underline underline-offset-2"
+        className="inline-flex shrink-0 items-center gap-1 underline underline-offset-2 max-sm:-mr-2 max-sm:min-h-11 max-sm:px-2"
         onClick={() => {
           repo.resetDemo?.();
           window.location.reload();
         }}
       >
-        <RotateCcw className="h-3 w-3" aria-hidden="true" /> Reset demo data
+        <RotateCcw className="h-3 w-3" aria-hidden="true" /> <span className="max-sm:hidden">Reset demo data</span><span className="sm:hidden">Reset</span>
       </button>
     </div>
   );
