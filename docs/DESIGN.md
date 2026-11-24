@@ -665,3 +665,22 @@ above and below. `transparent` lets the theme's page ground show through, so one
 | Page → footer ink | on every public page (`App.tsx`), 150px |
 
 After: every seam measures 15 or less in light, and 13 or less in dark.
+
+## v6.1 Seams, redone
+
+The v6.0 strips read as muddy added bands with visible start and end lines. They are replaced: `SeamFade` is now a
+zero-height marker that lays an eased fade (a 16-stop easing curve, so there is no visible edge) of one scene's
+colour over the real background of its neighbour, mixed in OKLab (no grey midtones). No height is added.
+
+| Seam | Fade |
+| --- | --- |
+| Hero floor → story | sand, onto the story, 120px |
+| Story ink → desk | ink, onto the teal room, 110px (kept short so the room's top label stays clear) |
+| Desk → services | a short cast shadow on the services wall, 64px |
+| Services → How it works | floor colour onto the dawn sky, 96px |
+| Sea → Markets | teal onto the page, 190px |
+| Dashboard → Results | ink fades up into the dashboard's bottom, 150px |
+| Results → Insights | ink onto Insights, 170px |
+| Page → footer | ink up into the page, 150px, on every public page |
+
+Tinted `.band` sections lose their hairline borders so they meet their neighbours softly.

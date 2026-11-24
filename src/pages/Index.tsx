@@ -17,26 +17,23 @@ import { Contact } from '@/components/home/Contact';
 const Index = () => (
   <>
     <Hero />
-    {/* Sand floor → the story's sand stage. */}
-    <SeamFade from="#D5B792" to="#F2E6D6" height={72} />
+    {/* Each seam fades the colour of one scene over the real background of its neighbour (no added bands). */}
+    <SeamFade color="#D5B792" height={120} />
     <ScrollStory />
-    {/* The story ends on ink; the desk room is teal. Dusk into the room. */}
-    <SeamFade from="#16120F" to="#22676B" height={140} />
+    <SeamFade color="#16120F" height={110} />
     <Desk />
-    {/* The desk's cast shadow falls onto the next room's cream wall. */}
-    <SeamFade from="#80502A" via="#4A2B15 18%, rgb(120 84 58 / 0.6) 55%, #F7EEE1 92%" to="#F7EEE1" height={130} />
+    {/* The desk casts a short shadow onto the next room's wall. */}
+    <SeamFade color="rgb(60 30 10 / 0.42)" height={64} />
     <Services />
-    <SeamFade from="#E1C8A0" to="#F6C49B" height={56} />
+    <SeamFade color="#E1C8A0" height={96} />
     <Process />
-    {/* The teal sea shallows onto the page ground (works in both themes). */}
-    <SeamFade from="#0D3E43" via="rgb(13 62 67 / 0.45)" to="transparent" height={170} />
+    <SeamFade color="#0D3E43" height={190} />
     <Markets />
     <ReadinessCheck />
     <Glance />
-    {/* Daylight → the ink ledger wall, like evening falling. */}
-    <SeamFade from="transparent" via="rgb(31 25 21 / 0.55)" to="#1F1915" height={170} />
+    <SeamFade color="#1F1915" onto="prev" height={150} />
     <Proof />
-    <SeamFade from="#120F0D" via="rgb(18 15 13 / 0.5)" to="transparent" height={170} />
+    <SeamFade color="#120F0D" height={170} />
     <InsightsTeaser />
     <Faq />
     <Contact />

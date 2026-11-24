@@ -57,7 +57,7 @@ const SiteChrome = () => (
         </PageTransition>
       </main>
       {/* Page ground → the ink footer, on every public page. */}
-      <SeamFade from="transparent" via="hsl(var(--corp-ink) / 0.5)" to="hsl(var(--corp-ink))" height={150} />
+      <SeamFade color="hsl(var(--corp-ink))" onto="prev" height={150} />
       <Footer />
     </div>
   </>

@@ -83,3 +83,6 @@
   --corp-ink-2: 24 12% 8%;
   --nav-fill: hsl(24 12% 14% / 0.62);
 }
+
+/* v6.1 seams: tinted bands lose their hard hairlines so neighbouring sections blend. */
+.band { border-block: 0 !important; }
