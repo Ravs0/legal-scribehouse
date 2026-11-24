@@ -15,6 +15,7 @@ import { ScrollManager } from "@/components/site/ScrollManager";
 import { DawnBackground } from "@/components/site/DawnBackground";
 import { PebbleLight } from "@/components/site/PebbleLight";
 import { PageTransition } from "@/components/site/PageTransition";
+import { SeamFade } from "@/components/site/SeamFade";
 import { ScrollProgress } from "@/components/site/ScrollProgress";
 import Posts from "./pages/Posts";
 import Cases from "./pages/Cases";
@@ -55,6 +56,8 @@ const SiteChrome = () => (
           <Outlet />
         </PageTransition>
       </main>
+      {/* Page ground → the ink footer, on every public page. */}
+      <SeamFade from="transparent" via="hsl(var(--corp-ink) / 0.5)" to="hsl(var(--corp-ink))" height={150} />
       <Footer />
     </div>
   </>

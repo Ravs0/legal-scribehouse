@@ -643,3 +643,25 @@ All in `src/styles/perf.css` (imported after `index.css` in `main.tsx`), plus sm
 - The dark theme moved from violet-black (hue 258) to the same warm ink family as the scenes (hue 24). This covers
   background, cards, borders, bands, the footer ink, wells and background blobs, so dark mode reads as one palette
   with the orange, teal and ink scenes. The light dawn theme is unchanged.
+
+## v6.0 Seams between scenes
+
+Every boundary on the homepage was measured: the colour jump between rows 4px above and 4px below each seam, at
+1440 wide in light and dark (`scratchpad/seam/seams.cjs`). Before, seven seams jumped hard (88–377 RGB distance),
+for example the dashboard to the ink Results wall, the teal sea to Markets, and the page to the footer.
+
+Fix: `src/components/site/SeamFade.tsx`, a gradient strip whose end colours are the sampled colours of the scene
+above and below. `transparent` lets the theme's page ground show through, so one strip works in both themes.
+
+| Seam | Treatment |
+| --- | --- |
+| Sand floor → story | sand to sand, 72px |
+| Story ink → desk room | dusk into teal, 140px |
+| Desk front → services wall | wood front, its cast shadow, then the cream wall, 130px |
+| Services floor → dawn sky | 56px |
+| Sea → page | the sea shallows onto the page, 170px |
+| Page → Results ink | evening falls, 170px |
+| Results ink → page | morning, 170px |
+| Page → footer ink | on every public page (`App.tsx`), 150px |
+
+After: every seam measures 15 or less in light, and 13 or less in dark.
