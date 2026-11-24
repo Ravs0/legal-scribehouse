@@ -1,12 +1,12 @@
-import { FormEvent, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Briefcase, Plus, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { can, isFeeEarner } from '../access';
 import { repo } from '../data';
 import { MARKET_CODES, MARKET_NAME, SERVICE_LABEL, SERVICES, STAGE_LABEL, STAGES, type Service, type Stage } from '../types';
-import { Chip, DueLabel, Empty, Field, Loading, NativeSelect, PageHead, Panel, StageBadge, Toolbar, useAction, useClients, useMatters, useMe, usePeople, TextInput, TextArea } from '../components/kit';
+import { Chip, DueLabel, useFormErrors, WsDialogContent, Empty, Field, Loading, NativeSelect, PageHead, Panel, StageBadge, Toolbar, useAction, useClients, useMatters, useMe, usePeople, TextInput, TextArea } from '../components/kit';
 
 export const NewMatterDialog = ({ open, onOpenChange, defaults }: { open: boolean; onOpenChange: (o: boolean) => void; defaults?: { client_id?: string } }) => {
   const clients = useClients();
@@ -17,8 +17,8 @@ export const NewMatterDialog = ({ open, onOpenChange, defaults }: { open: boolea
   const set = (k: keyof typeof form, v: unknown) => setForm((f) => ({ ...f, [k]: v }));
   const staff = (people.data ?? []).filter((p) => isFeeEarner(p.role));
 
-  const submit = async (e: FormEvent) => {
-    e.preventDefault();
+  const f = useFormErrors();
+  const submit = async () => {
     const m = await act(
       () => repo.createMatter({
         client_id: form.client_id, title: form.title, service: form.service, markets: form.markets, lead_id: form.lead_id || undefined,
@@ -34,22 +34,22 @@ export const NewMatterDialog = ({ open, onOpenChange, defaults }: { open: boolea
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-[560px]">
+      <WsDialogContent className="max-w-[560px]">
         <DialogHeader>
           <DialogTitle>Open a matter</DialogTitle>
           <DialogDescription>It gets the next reference number and starts at Intake.</DialogDescription>
         </DialogHeader>
-        <form onSubmit={submit} className="grid gap-4 sm:grid-cols-2">
+        <form {...f.form(() => ({ client_id: !form.client_id && 'Choose a client.', title: !form.title.trim() && 'Enter a matter title.' }), submit)} className="grid gap-4 sm:grid-cols-2">
           <div className="sm:col-span-2">
-            <Field label="Client">
-              <NativeSelect required className="w-full" value={form.client_id} onChange={(e) => set('client_id', e.target.value)}>
+            <Field label="Client" error={f.error('client_id')}>
+              <NativeSelect {...f.field('client_id')} className="w-full" value={form.client_id} onChange={(e) => set('client_id', e.target.value)}>
                 <option value="">Choose a client…</option>
                 {(clients.data ?? []).map((c) => <option key={c.id} value={c.id}>{c.name}</option>)}
               </NativeSelect>
             </Field>
           </div>
           <div className="sm:col-span-2">
-            <Field label="Title"><TextInput required value={form.title} onChange={(e) => set('title', e.target.value)} placeholder="e.g. Malaysia entry and NPRA notification" /></Field>
+            <Field label="Title" error={f.error('title')}><TextInput {...f.field('title')} value={form.title} onChange={(e) => set('title', e.target.value)} placeholder="e.g. Malaysia entry and NPRA notification" /></Field>
           </div>
           <Field label="Service">
             <NativeSelect className="w-full" value={form.service} onChange={(e) => set('service', e.target.value)}>
@@ -85,7 +85,7 @@ export const NewMatterDialog = ({ open, onOpenChange, defaults }: { open: boolea
             <Button type="submit">Open matter</Button>
           </div>
         </form>
-      </DialogContent>
+      </WsDialogContent>
     </Dialog>
   );
 };
@@ -139,7 +139,7 @@ const Matters = () => {
         {matters.isLoading ? (
           <Loading rows={5} />
         ) : rows.length === 0 ? (
-          <Empty icon={Briefcase}>No matters match these filters.</Empty>
+          <Empty icon={Briefcase} title="No matters match these filters" help="Try a different stage or service." />
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full min-w-[760px] text-left">

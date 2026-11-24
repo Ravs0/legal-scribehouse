@@ -1,12 +1,12 @@
-import { FormEvent, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Building2, Plus } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { repo } from '../data';
 import type { ClientStatus } from '../types';
-import { Empty, Field, Loading, NativeSelect, PageHead, Panel, StageBadge, useAction, useClients, useMatters, TextInput, TextArea } from '../components/kit';
+import { Empty, Field, useFormErrors, WsDialogContent, Loading, NativeSelect, PageHead, Panel, StageBadge, useAction, useClients, useMatters, TextInput, TextArea } from '../components/kit';
 
 const Clients = () => {
   const clients = useClients();
@@ -16,8 +16,8 @@ const Clients = () => {
   const [form, setForm] = useState({ name: '', country: '', industry: '', contact_name: '', contact_email: '', status: 'active' as ClientStatus, notes: '' });
   const set = (k: keyof typeof form, v: string) => setForm((f) => ({ ...f, [k]: v }));
 
-  const submit = async (e: FormEvent) => {
-    e.preventDefault();
+  const f = useFormErrors();
+  const submit = async () => {
     const c = await act(() => repo.createClient({ ...form, notes: form.notes || undefined }), 'Client added');
     if (c) {
       setOpen(false);
@@ -38,7 +38,7 @@ const Clients = () => {
                 {[c.industry, c.country].filter(Boolean).join(' · ') || '—'}
                 {c.contact_name && <p className="mt-1 text-foreground">{c.contact_name} {c.contact_email && <a className="text-primary-ink" href={`mailto:${c.contact_email}`}>· {c.contact_email}</a>}</p>}
               </div>
-              {ms.length === 0 ? <div className="border-t border-border"><Empty icon={Building2}>No matters yet.</Empty></div> : (
+              {ms.length === 0 ? <div className="border-t border-border"><Empty icon={Building2} title="No matters yet" help="Matters opened for this client appear here." /></div> : (
                 <ul className="divide-y divide-border border-t border-border">
                   {ms.map((m) => (
                     <li key={m.id}>
@@ -57,17 +57,17 @@ const Clients = () => {
       </div>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-w-[520px]">
+        <WsDialogContent className="max-w-[520px]">
           <DialogHeader>
             <DialogTitle>Add a client</DialogTitle>
             <DialogDescription>Notes are internal and never shown in the client portal.</DialogDescription>
           </DialogHeader>
-          <form onSubmit={submit} className="grid gap-4 sm:grid-cols-2">
-            <div className="sm:col-span-2"><Field label="Name"><TextInput required value={form.name} onChange={(e) => set('name', e.target.value)} /></Field></div>
+          <form {...f.form(() => ({ name: !form.name.trim() && 'Enter the client name.', contact_email: !!form.contact_email.trim() && !/^\S+@\S+\.\S+$/.test(form.contact_email.trim()) && 'Enter a valid email address.' }), submit)} className="grid gap-4 sm:grid-cols-2">
+            <div className="sm:col-span-2"><Field label="Name" error={f.error('name')}><TextInput {...f.field('name')} value={form.name} onChange={(e) => set('name', e.target.value)} /></Field></div>
             <Field label="Exports from"><TextInput value={form.country} onChange={(e) => set('country', e.target.value)} /></Field>
             <Field label="Product category"><TextInput value={form.industry} onChange={(e) => set('industry', e.target.value)} /></Field>
             <Field label="Contact"><TextInput value={form.contact_name} onChange={(e) => set('contact_name', e.target.value)} /></Field>
-            <Field label="Contact email"><TextInput type="email" value={form.contact_email} onChange={(e) => set('contact_email', e.target.value)} /></Field>
+            <Field label="Contact email" error={f.error('contact_email')}><TextInput {...f.field('contact_email')} type="email" value={form.contact_email} onChange={(e) => set('contact_email', e.target.value)} /></Field>
             <Field label="Status">
               <NativeSelect className="w-full" value={form.status} onChange={(e) => set('status', e.target.value)}>
                 {(['prospect', 'active', 'dormant', 'closed'] as ClientStatus[]).map((s) => <option key={s} value={s}>{s[0].toUpperCase() + s.slice(1)}</option>)}
@@ -79,7 +79,7 @@ const Clients = () => {
               <Button type="submit">Add client</Button>
             </div>
           </form>
-        </DialogContent>
+        </WsDialogContent>
       </Dialog>
     </div>
   );

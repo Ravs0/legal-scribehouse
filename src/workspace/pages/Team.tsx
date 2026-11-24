@@ -86,7 +86,7 @@ export const Activity = () => {
     <div className="space-y-6">
       <PageHead title="Activity log" sub="Changes to clients, matters, tasks, documents, enquiries, articles and access." />
       <Panel>
-        {log.isLoading ? <Loading rows={5} /> : (log.data ?? []).length === 0 ? <Empty icon={ScrollText}>Nothing logged yet. Changes you make appear here.</Empty> : (
+        {log.isLoading ? <Loading rows={5} /> : (log.data ?? []).length === 0 ? <Empty icon={ScrollText} title="Nothing logged yet" help="Changes to clients, matters and access appear here." /> : (
           <ul className="divide-y divide-border">
             {(log.data ?? []).map((e) => (
               <li key={e.id} className="ws-row grid grid-cols-[auto_minmax(0,1fr)] items-baseline gap-x-3 gap-y-1 px-4 py-3 md:grid-cols-[64px_112px_minmax(0,1fr)_auto]">

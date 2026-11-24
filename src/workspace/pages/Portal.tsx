@@ -23,9 +23,9 @@ export const PortalShell = () => {
         <div className="mx-auto flex h-16 max-w-[1040px] items-center justify-between gap-3 px-4 md:px-8">
           <Mark label="Client portal" to="/portal" />
           <div className="flex items-center gap-2">
-            <ThemeKey className="hidden scale-[0.85] sm:block" />
+            <ThemeKey className="hidden sm:block" />
             <span className="hidden items-center gap-2 pl-1 md:inline-flex"><Avatar name={me.name} className="h-8 w-8" /><span className="type-label-md">{me.name}</span></span>
-            <Button variant="ghost" size="icon-sm" aria-label="Sign out" onClick={async () => { await signOut(); nav('/login'); }}><LogOut /></Button>
+            <Button variant="ghost" size="icon-sm" className="ws-icon-btn h-9 w-9" aria-label="Sign out" onClick={async () => { await signOut(); nav('/login'); }}><LogOut /></Button>
           </div>
         </div>
       </header>
@@ -48,7 +48,7 @@ export const PortalHome = () => {
       <PageHead title={`Hello, ${me.name.split(' ')[0]}.`} sub="Your matters with Straitline, and everything we've shared with you." />
       <div className="grid grid-cols-[minmax(0,1fr)] gap-4 md:grid-cols-2">
         {matters.isLoading && <Panel className="md:col-span-2"><Loading rows={2} /></Panel>}
-        {!matters.isLoading && list.length === 0 && <Panel className="md:col-span-2"><Empty>No matters yet.</Empty></Panel>}
+        {!matters.isLoading && list.length === 0 && <Panel className="md:col-span-2"><Empty title="No matters yet" help="Your matters will show here once the firm opens one." /></Panel>}
         {list.map((m) => {
           const fee = fees.data?.find((f) => f.matter_id === m.id);
           const lead = people.data?.find((p) => p.id === m.lead_id);
@@ -70,7 +70,7 @@ export const PortalHome = () => {
         })}
       </div>
       <Panel title="Latest from the team">
-        {(updates.data ?? []).length === 0 ? <Empty icon={Inbox}>Nothing new.</Empty> : (
+        {(updates.data ?? []).length === 0 ? <Empty icon={Inbox} title="Nothing new" help="Shared updates will show here." /> : (
           <ul className="divide-y divide-border">
             {(updates.data ?? []).map((u) => (
               <li key={u.id} className="px-4 py-3.5">
@@ -92,7 +92,7 @@ export const PortalMatter = () => {
   const bundle = useQuery({ queryKey: ['matter', id], queryFn: () => repo.getMatter(id).then((b) => (b ? { ...b, matter: { ...b.matter }, members: b.members.map((x) => ({ ...x })) } : b)) });
   const tasks = useQuery({ queryKey: ['tasks', id], queryFn: () => fresh(repo.listTasks({ matterId: id })) });
   if (bundle.isLoading) return <Panel><Loading rows={4} /></Panel>;
-  if (!bundle.data) return <Panel><Empty>We couldn't find that matter.</Empty></Panel>;
+  if (!bundle.data) return <Panel><Empty title="Matter not found" help="It may have been closed or isn't shared with you." /></Panel>;
   const { matter: m, members } = bundle.data;
   const milestones = [...(tasks.data ?? [])].sort((a, b) => (a.due_date ?? '9').localeCompare(b.due_date ?? '9'));
   const doneCount = milestones.filter((t) => t.status === 'done').length;
@@ -110,7 +110,7 @@ export const PortalMatter = () => {
       <div className="grid grid-cols-[minmax(0,1fr)] items-start gap-6 lg:grid-cols-[minmax(0,1fr)_320px]">
         <div className="min-w-0 space-y-6">
           <Panel title="Milestones" action={milestones.length > 0 && <span className="type-meta tabular text-muted-foreground">{doneCount} of {milestones.length} complete</span>}>
-            {milestones.length === 0 ? <Empty icon={Flag}>Milestones will appear here.</Empty> : (
+            {milestones.length === 0 ? <Empty icon={Flag} title="No milestones yet" help="Milestones the team shares will appear here." /> : (
               <div>
                 <div className="px-4 pt-4"><div className="h-2 overflow-hidden rounded-full bg-foreground/10"><div className="h-full rounded-full bg-primary transition-[width] duration-500" style={{ width: `${Math.round((doneCount / milestones.length) * 100)}%` }} /></div></div>
                 <ol className="px-4 py-2">

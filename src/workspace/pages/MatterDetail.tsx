@@ -1,4 +1,4 @@
-import { FormEvent, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { ArrowLeft, Eye, EyeOff, FileText, ListChecks, Lock, MessageSquareText, Plus, Send, Upload, Users } from 'lucide-react';
@@ -12,7 +12,7 @@ import {
   type UpdateKind, type Visibility,
 } from '../types';
 import {
-  Avatar, Chip, fresh, DueLabel, Empty, fmtAgo, fmtDate, fmtMoney, Loading, NativeSelect, PageHead, Panel, StageBadge, TabBar, TASK_LABEL, TextArea, TextInput, useAction, useFees, useMe, usePeople,
+  Avatar, Chip, FieldMessage, fresh, useFormErrors, DueLabel, Empty, fmtAgo, fmtDate, fmtMoney, Loading, NativeSelect, PageHead, Panel, StageBadge, TabBar, TASK_LABEL, TextArea, TextInput, useAction, useFees, useMe, usePeople,
 } from '../components/kit';
 
 const KIND_LABEL: Record<UpdateKind, string> = { note: 'Note', filing: 'Filing', authority: 'Authority', stage: 'Stage', client_message: 'Client message' };
@@ -27,25 +27,26 @@ export const Timeline = ({ matterId, people, asClient }: { matterId: string; peo
   const [visibility, setVisibility] = useState<Visibility>('internal');
   const who = (id: string) => people.find((p) => p.id === id);
 
-  const post = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!body.trim()) return;
+  const f = useFormErrors();
+  const post = async () => {
     const ok = await act(() => repo.postUpdate({ matter_id: matterId, body: body.trim(), kind: asClient ? 'client_message' : kind, visibility: asClient ? 'client' : visibility }), asClient ? 'Message sent' : 'Update posted');
     if (ok) setBody('');
   };
 
   return (
     <div className="space-y-5">
-      <form onSubmit={post} className="surface-1 rounded-[14px] p-3">
+      <form {...f.form(() => ({ body: !body.trim() && (asClient ? 'Write a message first.' : 'Write an update first.') }), post)} className="surface-1 rounded-[14px] p-3">
         <label htmlFor={`post-${matterId}`} className="sr-only">{asClient ? 'Message the team' : 'Post a work update'}</label>
         <TextArea
           id={`post-${matterId}`}
           rows={3}
+          {...f.field('body')}
           value={body}
           onChange={(e) => setBody(e.target.value)}
           placeholder={asClient ? 'Write to the team working on this matter…' : 'What happened? Filing made, authority replied, client chased…'}
           className="min-h-[88px] resize-y"
         />
+        {f.error('body') && <FieldMessage error={f.error('body')!} />}
         <div className="mt-3 flex flex-wrap items-center justify-between gap-x-3 gap-y-2">
           {!asClient ? (
             <div className="flex flex-wrap items-center gap-2">
@@ -65,7 +66,7 @@ export const Timeline = ({ matterId, people, asClient }: { matterId: string; peo
           ) : (
             <span className="type-meta text-muted-foreground">Your message goes to the team on this matter.</span>
           )}
-          <Button type="submit" icon="trailing" disabled={!body.trim()}>
+          <Button type="submit" icon="trailing">
             {asClient ? 'Send' : 'Post update'} <Send />
           </Button>
         </div>
@@ -74,7 +75,7 @@ export const Timeline = ({ matterId, people, asClient }: { matterId: string; peo
       {updates.isLoading ? (
         <Loading rows={3} />
       ) : (updates.data ?? []).length === 0 ? (
-        <Empty icon={MessageSquareText}>No updates yet.</Empty>
+        <Empty icon={MessageSquareText} title="No updates yet" help="Notes, filings and messages will appear here." />
       ) : (
         <ol className="ws-line relative space-y-1">
           {(updates.data ?? []).map((u) => {
@@ -121,9 +122,8 @@ const Tasks = ({ matterId, people, canWork }: { matterId: string; people: Person
   const [shared, setShared] = useState(false);
   const staff = people.filter((p) => isFeeEarner(p.role));
 
-  const add = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!title.trim()) return;
+  const f = useFormErrors();
+  const add = async () => {
     const ok = await act(() => repo.createTask({ matter_id: matterId, title: title.trim(), status: 'todo', priority: 'normal', assignee_id: assignee || undefined, due_date: due || undefined, client_visible: shared }), 'Task added');
     if (ok) {
       setTitle('');
@@ -135,10 +135,13 @@ const Tasks = ({ matterId, people, canWork }: { matterId: string; people: Person
   return (
     <div className="space-y-4">
       {canWork && (
-        <form onSubmit={add} className="surface-1 space-y-2.5 rounded-[14px] p-3">
-          <div className="flex flex-col gap-2 sm:flex-row">
-            <TextInput aria-label="New task" placeholder="Add a task…" value={title} onChange={(e) => setTitle(e.target.value)} className="min-w-0 sm:flex-1" />
-            <Button type="submit" icon="leading" disabled={!title.trim()}><Plus /> Add task</Button>
+        <form {...f.form(() => ({ title: !title.trim() && 'Enter a task title.' }), add)} className="surface-1 space-y-2.5 rounded-[14px] p-3">
+          <div>
+            <div className="flex flex-col gap-2 sm:flex-row">
+              <TextInput aria-label="New task" placeholder="Add a task…" {...f.field('title')} value={title} onChange={(e) => setTitle(e.target.value)} className="min-w-0 sm:flex-1" />
+              <Button type="submit" icon="leading"><Plus /> Add task</Button>
+            </div>
+            {f.error('title') && <FieldMessage error={f.error('title')!} />}
           </div>
           <div className="flex flex-wrap items-center gap-2">
             <NativeSelect aria-label="Assignee" value={assignee} onChange={(e) => setAssignee(e.target.value)} className="w-full sm:w-[180px]">
@@ -243,7 +246,7 @@ export const Documents = ({ matterId, people, canUpload, asClient }: { matterId:
       )}
     >
       {(docs.data ?? []).length === 0 ? (
-        <Empty icon={FileText}>No documents yet.</Empty>
+        <Empty icon={FileText} title="No documents yet" help="Upload a file to share it with the team." />
       ) : (
         <ul className="divide-y divide-border">
           {(docs.data ?? []).map((d) => (
@@ -298,7 +301,7 @@ const Team = ({ matterId, members, people, canStaff }: { matterId: string; membe
             </li>
           );
         })}
-        {!draft && list.length === 0 && <Empty icon={Users}>No one staffed yet.</Empty>}
+        {!draft && list.length === 0 && <Empty icon={Users} title="No one staffed yet" help="Edit the team to add people to this matter." />}
       </ul>
     </Panel>
   );
@@ -314,6 +317,7 @@ const MatterDetail = () => {
   const bundle = useQuery({ queryKey: ['matter', id], queryFn: () => repo.getMatter(id).then((b) => (b ? { ...b, matter: { ...b.matter }, members: b.members.map((x) => ({ ...x })) } : b)) });
   const tasks = useQuery({ queryKey: ['tasks', id], queryFn: () => fresh(repo.listTasks({ matterId: id })) });
   const [feeDraft, setFeeDraft] = useState<string | null>(null);
+  const ff = useFormErrors();
   const [tab, setTab] = useState('timeline');
 
   if (bundle.isLoading) return <Panel><Loading rows={5} /></Panel>;
@@ -321,7 +325,7 @@ const MatterDetail = () => {
     return (
       <div className="space-y-4">
         <Link to="/workspace/matters" className="type-label-md inline-flex items-center gap-1 text-muted-foreground"><ArrowLeft className="h-4 w-4" /> Matters</Link>
-        <Panel><Empty icon={Lock}>This matter doesn't exist, or you aren't staffed on it.</Empty></Panel>
+        <Panel><Empty icon={Lock} title="Matter not available" help="It doesn't exist, or you aren't staffed on it." /></Panel>
       </div>
     );
   }
@@ -385,9 +389,12 @@ const MatterDetail = () => {
                       {feeDraft === null ? (
                         <button type="button" className="tabular hover:text-primary-ink" onClick={() => setFeeDraft(String(fee?.fee_amount ?? ''))}>{fmtMoney(fee?.fee_amount, fee?.fee_currency)}</button>
                       ) : (
-                        <form className="flex items-center gap-1" onSubmit={async (e) => { e.preventDefault(); await act(() => repo.setFee(m.id, feeDraft ? Number(feeDraft) : null, m.fee_currency), 'Fee saved'); setFeeDraft(null); }}>
-                          <TextInput aria-label="Fee" type="number" min="0" value={feeDraft} onChange={(e) => setFeeDraft(e.target.value)} className="h-8 w-24 text-[13px]" autoFocus />
-                          <Button size="sm" type="submit">Save</Button>
+                        <form className="flex flex-col items-end" {...ff.form(() => ({ fee: !!feeDraft && !(Number(feeDraft) >= 0) && 'Enter an amount of 0 or more.' }), async () => { await act(() => repo.setFee(m.id, feeDraft ? Number(feeDraft) : null, m.fee_currency), 'Fee saved'); setFeeDraft(null); })}>
+                          <div className="flex items-center gap-1">
+                            <TextInput aria-label="Fee" type="number" {...ff.field('fee')} value={feeDraft} onChange={(e) => setFeeDraft(e.target.value)} className="w-28" autoFocus />
+                            <Button size="sm" type="submit">Save</Button>
+                          </div>
+                          {ff.error('fee') && <FieldMessage error={ff.error('fee')!} />}
                         </form>
                       )}
                     </dd>
